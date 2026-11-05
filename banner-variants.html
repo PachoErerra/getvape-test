@@ -1,0 +1,87 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Варіанти банерів — тест</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f5f9;font-family:Montserrat,Arial,sans-serif;color:#17151c}
+.wrap{max-width:1150px;margin:0 auto;padding:30px 16px 80px}
+h1{font-size:28px;margin:0 0 6px} .lead{color:#666;margin:0 0 34px;font-size:15px}
+.var{margin:0 0 64px} .var h2{display:flex;align-items:center;gap:12px;font-size:21px;margin:0 0 6px}
+.var h2 b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#ff3ea5;color:#fff;font-size:17px}
+.var p{margin:0 0 18px;color:#666;font-size:14px;line-height:1.5}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+/* 1 — Класика, але краще */
+.c1{position:relative}
+.c1-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 3*16px)/4);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:6px 2px 14px}
+.c1-track::-webkit-scrollbar{display:none}
+.c1-card{position:relative;aspect-ratio:5/9;border-radius:22px;overflow:hidden;scroll-snap-align:start;box-shadow:0 10px 24px -14px rgba(40,10,40,.45);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.c1-card::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 45%,transparent 60%);transform:translateX(-120%);transition:transform .8s}
+.c1-card:hover{transform:translateY(-6px);box-shadow:0 22px 34px -16px rgba(255,62,165,.6)}
+.c1-card:hover::after{transform:translateX(120%)}
+.c1-btn{position:absolute;top:calc(50% - 24px);width:48px;height:48px;border-radius:50%;border:0;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.15);cursor:pointer;font-size:22px;color:#17151c;z-index:2;transition:background .2s,color .2s}
+.c1-btn:hover{background:#ff3ea5;color:#fff} .c1-prev{left:-14px} .c1-next{right:-14px}
+.c1-dots{display:flex;justify-content:center;gap:6px} .c1-dots i{width:8px;height:8px;border-radius:8px;background:#d8d3de;transition:width .3s,background .3s} .c1-dots i.on{width:26px;background:#ff3ea5}
+
+/* 2 — Гармошка */
+.c2{display:flex;gap:10px;height:440px}
+.c2-item{flex:1 1 0;min-width:0;border-radius:22px;overflow:hidden;position:relative;transition:flex .6s cubic-bezier(.2,.8,.2,1),filter .4s;filter:saturate(.85) brightness(.82)}
+.c2-item img{object-position:center}
+.c2-item.on{flex:0 0 245px;filter:none;box-shadow:0 18px 36px -16px rgba(255,62,165,.7)}
+.c2-item::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(255,62,165,0);transition:box-shadow .4s}
+.c2-item.on::after{box-shadow:inset 0 0 0 2px rgba(255,62,165,.9)}
+
+/* 3 — Віяло */
+.c3{position:relative;height:470px;display:flex;justify-content:center;align-items:flex-end;padding-bottom:20px;overflow:hidden;border-radius:28px;background:radial-gradient(70% 90% at 50% 100%,rgba(255,62,165,.28),transparent 70%),linear-gradient(#1a0d1f,#100811)}
+.c3-card{position:absolute;bottom:26px;left:calc(50% - 110px);width:220px;aspect-ratio:5/9;border-radius:20px;overflow:hidden;transform-origin:50% 140%;
+  transform:rotate(calc(var(--i) * 9deg)) translateY(calc(var(--i) * var(--i) * 6px));box-shadow:0 18px 30px -12px rgba(0,0,0,.8);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s;z-index:1}
+.c3:hover .c3-card{transform:rotate(calc(var(--i) * 12deg)) translateY(calc(var(--i) * var(--i) * 8px))}
+.c3 .c3-card:hover{transform:rotate(calc(var(--i) * 12deg)) translateY(calc(var(--i) * var(--i) * 8px - 60px)) scale(1.06);z-index:9;box-shadow:0 0 0 2px #ff5abf,0 28px 50px -12px rgba(255,62,165,.8)}
+
+/* 4 — Нескінченна стрічка */
+.c4{overflow:hidden;border-radius:24px;padding:10px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.c4-row{display:flex;gap:16px;width:max-content;animation:c4 38s linear infinite}
+.c4:hover .c4-row{animation-play-state:paused}
+.c4-card{flex:0 0 190px;aspect-ratio:5/9;border-radius:20px;overflow:hidden;transition:transform .35s,box-shadow .35s}
+.c4-card:hover{transform:scale(1.07) rotate(-1.5deg);box-shadow:0 18px 30px -14px rgba(255,62,165,.7)}
+@keyframes c4{to{transform:translateX(calc(-50% - 8px))}}
+
+@media (max-width:760px){.c1-track{grid-auto-columns:62%}.c1-btn{display:none}.c2{height:360px;gap:6px}.c2-item.on{flex-basis:190px}
+ .c3{height:400px}.c3-card{width:170px;left:calc(50% - 85px)}.c4-card{flex-basis:150px}}
+@media (prefers-reduced-motion:reduce){.c4-row{animation:none}*{transition:none!important}}
+</style></head><body><div class="wrap">
+<h1>Варіанти блоку банерів</h1>
+<p class="lead">Банери ті самі, що зараз на getvape.com.ua. Наведи мишку, погортай — і напиши номер варіанту, який подобається.</p>
+
+<section class="var"><h2><b>1</b>Класика, але охайніше</h2>
+<p>Як зараз — 4 банери в ряд, але з заокругленням, тінню, блиском при наведенні, крапками й кнопками збоку. Гортаються самі.</p>
+<div class="c1"><button class="c1-btn c1-prev" aria-label="Назад">‹</button><div class="c1-track"><a class="c1-card" href="https://vapors.app/l/5xfyht" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a><a class="c1-card" href="https://vapors.app/l/9gygxz" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="c1-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="c1-card" href="https://getvape.com.ua/latest/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="c1-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a><a class="c1-card" href="https://t.me/vapors_vape_shop" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="c1-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a></div><button class="c1-btn c1-next" aria-label="Далі">›</button><div class="c1-dots"></div></div></section>
+
+<section class="var"><h2><b>2</b>Гармошка</h2>
+<p>Усі банери видно одразу вузькими смужками. Той, на який наводиш мишку, розкривається на повну. Сам перемикається кожні 4 секунди.</p>
+<div class="c2"><a class="c2-item" href="https://vapors.app/l/5xfyht" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a><a class="c2-item" href="https://vapors.app/l/9gygxz" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="c2-item" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="c2-item" href="https://getvape.com.ua/latest/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="c2-item" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a><a class="c2-item" href="https://t.me/vapors_vape_shop" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="c2-item" href="https://getvape.com.ua/kartridj-1271/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a></div></section>
+
+<section class="var"><h2><b>3</b>Віяло</h2>
+<p>Банери розкладені віялом, як карти, на темному неоновому фоні. Наводиш на карту — вона виїжджає вгору.</p>
+<div class="c3"><a class="c3-card" href="https://vapors.app/l/5xfyht" target="_blank" rel="noopener" style="--i:-3.0;z-index:7"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a><a class="c3-card" href="https://vapors.app/l/9gygxz" target="_blank" rel="noopener" style="--i:-2.0;z-index:8"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="c3-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" rel="noopener" style="--i:-1.0;z-index:9"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="c3-card" href="https://getvape.com.ua/latest/" target="_blank" rel="noopener" style="--i:0.0;z-index:10"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="c3-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" rel="noopener" style="--i:1.0;z-index:9"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a><a class="c3-card" href="https://t.me/vapors_vape_shop" target="_blank" rel="noopener" style="--i:2.0;z-index:8"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="c3-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank" rel="noopener" style="--i:3.0;z-index:7"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a></div></section>
+
+<section class="var"><h2><b>4</b>Нескінченна стрічка</h2>
+<p>Банери повільно пливуть стрічкою без кінця. Наводиш мишку — стрічка зупиняється, банер трохи збільшується.</p>
+<div class="c4"><div class="c4-row"><a class="c4-card" href="https://vapors.app/l/5xfyht" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a><a class="c4-card" href="https://vapors.app/l/9gygxz" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/latest/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="c4-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a><a class="c4-card" href="https://t.me/vapors_vape_shop" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a><a class="c4-card" href="https://vapors.app/l/5xfyht" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a><a class="c4-card" href="https://vapors.app/l/9gygxz" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/latest/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="c4-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a><a class="c4-card" href="https://t.me/vapors_vape_shop" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a></div></div></section>
+</div>
+<script>
+(function(){var t=document.querySelector('.c1-track'),d=document.querySelector('.c1-dots'),cards=[].slice.call(t.children);
+cards.forEach(function(){d.appendChild(document.createElement('i'))});
+function step(){return cards[1].offsetLeft-cards[0].offsetLeft}
+function upd(){var k=Math.round(t.scrollLeft/step());[].forEach.call(d.children,function(x,j){x.classList.toggle('on',j===k)})}
+t.addEventListener('scroll',upd);upd();
+function go(n){var max=t.scrollWidth-t.clientWidth;var x=t.scrollLeft+n*step();if(x>max+5)x=0;if(x<-5)x=max;t.scrollTo({left:x})}
+document.querySelector('.c1-next').onclick=function(){go(1)};document.querySelector('.c1-prev').onclick=function(){go(-1)};
+var hov=false;t.parentNode.addEventListener('mouseenter',function(){hov=true});t.parentNode.addEventListener('mouseleave',function(){hov=false});
+setInterval(function(){if(!hov)go(1)},4500);
+var items=[].slice.call(document.querySelectorAll('.c2-item')),cur=0,h2=false;
+function on(k){items.forEach(function(x,j){x.classList.toggle('on',j===k)});cur=k}
+items.forEach(function(x,j){x.addEventListener('mouseenter',function(){h2=true;on(j)})});
+document.querySelector('.c2').addEventListener('mouseleave',function(){h2=false});
+on(0);setInterval(function(){if(!h2)on((cur+1)%items.length)},4000);
+})();
+</script></body></html>
