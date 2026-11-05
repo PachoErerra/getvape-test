@@ -7,6 +7,61 @@
             </div>
             <div class="home__body">
                 {{ content_top }}
+
+                {# Швидкі переходи (плитки категорій) — тест #}
+                <section class="vt-tiles" aria-label="Швидкі переходи">
+                    <ul class="vt-list">
+        <li><a class="vt-tile" href="/nabori-solov-3013/" style="--c:#22c55e">
+            <span class="vt-ic"><img src="https://getvape.com.ua/image/cache/catalog/categories/tiles/aromatyzatory-solovi-144x144.png" alt="" width="72" height="72" loading="lazy"></span>
+            <span class="vt-name">Ароматизатори сольові</span>
+            <span class="vt-go" aria-hidden="true">›</span>
+        </a></li>
+        <li><a class="vt-tile" href="/podsistemi-1122/" style="--c:#3b82f6">
+            <span class="vt-ic"><img src="https://getvape.com.ua/image/cache/catalog/categories/tiles/podsystemy-144x144.png" alt="" width="72" height="72" loading="lazy"></span>
+            <span class="vt-name">Подсистеми</span>
+            <span class="vt-go" aria-hidden="true">›</span>
+        </a></li>
+        <li><a class="vt-tile" href="/kartridj-1271/" style="--c:#64748b">
+            <span class="vt-ic"><img src="https://getvape.com.ua/image/cache/catalog/categories/tiles/kartridzhi-144x144.png" alt="" width="72" height="72" loading="lazy"></span>
+            <span class="vt-name">Картриджі</span>
+            <span class="vt-go" aria-hidden="true">›</span>
+        </a></li>
+        <li><a class="vt-tile" href="/specials/" style="--c:#ff3ea5">
+            <span class="vt-ic"><img src="https://getvape.com.ua/image/cache/catalog/categories/tiles/znyzhky-gradient-144x144.png" alt="" width="72" height="72" loading="lazy"></span>
+            <span class="vt-name">Знижки</span>
+            <span class="vt-go" aria-hidden="true">›</span>
+        </a></li>
+        <li><a class="vt-tile" href="/latest/" style="--c:#8b5cf6">
+            <span class="vt-ic"><img src="https://getvape.com.ua/image/cache/catalog/categories/tiles/novynky-gradient-144x144.png" alt="" width="72" height="72" loading="lazy"></span>
+            <span class="vt-name">Новинки</span>
+            <span class="vt-go" aria-hidden="true">›</span>
+        </a></li>
+        <li><a class="vt-tile" href="/populyarni-tovary/" style="--c:#f59e0b">
+            <span class="vt-ic"><img src="https://getvape.com.ua/image/cache/catalog/categories/tiles/populyarni-gradient-144x144.png" alt="" width="72" height="72" loading="lazy"></span>
+            <span class="vt-name">Популярні товари</span>
+            <span class="vt-go" aria-hidden="true">›</span>
+        </a></li>
+                    </ul>
+                </section>
+                <style>
+                .vt-tiles{margin:22px 0 34px}
+                .vt-list{display:grid;align-items:start;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+                .vt-tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:150px;padding:18px 10px 16px;border-radius:22px;background:#fff;border:1px solid #eef0f5;box-shadow:0 2px 10px rgba(20,24,40,.04);text-decoration:none;color:#1b1d26;overflow:hidden;isolation:isolate;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+                .vt-tile::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--c) 14%,#fff) 0%,#fff 62%);opacity:.9;transition:opacity .25s}
+                .vt-ic{position:relative;display:grid;place-items:center;width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--c) 10%,#fff)}
+                .vt-ic::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--c) 35%,transparent);opacity:0;transform:scale(.85);transition:opacity .3s,transform .3s}
+                .vt-ic img{width:64px;height:64px;object-fit:contain;mix-blend-mode:multiply;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+                .vt-name{font-size:15px;font-weight:600;line-height:1.25;text-align:center}
+                .vt-go{position:absolute;top:12px;right:14px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:18px;line-height:1;color:#fff;background:var(--c);opacity:0;transform:translateX(-6px);transition:opacity .25s,transform .25s}
+                .vt-tile:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--c) 40%,#fff);box-shadow:0 14px 30px -12px color-mix(in srgb,var(--c) 55%,transparent)}
+                .vt-tile:hover .vt-ic img{transform:scale(1.12) rotate(-4deg)}
+                .vt-tile:hover .vt-ic::after{opacity:1;transform:scale(1)}
+                .vt-tile:hover .vt-go{opacity:1;transform:none}
+                .vt-tile:hover .vt-name{color:var(--c)}
+                @media (max-width:1200px){.vt-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+                @media (max-width:640px){.vt-list{display:flex;overflow-x:auto;gap:10px;padding:2px 2px 8px;scroll-snap-type:x mandatory;scrollbar-width:none}.vt-list::-webkit-scrollbar{display:none}.vt-list li{flex:0 0 132px;scroll-snap-align:start}.vt-tile{min-height:138px;padding:16px 8px 14px;border-radius:18px}.vt-ic{width:64px;height:64px}.vt-ic img{width:48px;height:48px}.vt-name{font-size:13px}.vt-go{display:none}}
+                @media (prefers-reduced-motion:reduce){.vt-tile,.vt-tile *{transition:none!important}}
+                </style>
                 <ul class="home__categories home__categories--mob"></ul>
                 {{ content_bottom }}
             </div>
