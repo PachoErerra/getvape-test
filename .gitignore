@@ -1,0 +1,15 @@
+# Паролі бази — лише на хостингу, не в сховищі
+/config.php
+/admin/config.php
+# Картинки беруться з getvape.com.ua, кеш і логи — не потрібні
+/image/cache/
+/image/catalog/
+/system/storage/cache/
+/system/storage/logs/
+/system/storage/session/
+/system/storage/modification/
+/system/storage/upload/
+/system/storage/download/
+*.zip
+*.sql
+*.log

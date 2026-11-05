@@ -1,0 +1,46 @@
+# Після кожної зміни в main заливає на хостинг лише змінені файли (і прибирає видалені).
+name: Оновити тестовий сайт
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Встановити lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Список змінених файлів
+        id: diff
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then BEFORE="$(git rev-parse HEAD~1 2>/dev/null || echo '')"; fi
+          if [ -z "$BEFORE" ]; then echo "Перший коміт — нічого не заливаємо"; : > changed.txt; : > deleted.txt
+          else
+            git diff --name-only --diff-filter=ACMRT "$BEFORE" HEAD > changed.txt
+            git diff --name-only --diff-filter=D "$BEFORE" HEAD > deleted.txt
+          fi
+          # Службові файли сховища на сайт не йдуть
+          for f in changed.txt deleted.txt; do grep -vE '^(\.github/|\.gitignore$|README\.md$|CLAUDE\.md$|config\.php$|admin/config\.php$)' "$f" > "$f.tmp" || true; mv "$f.tmp" "$f"; done
+          echo "Змінено: $(wc -l < changed.txt), видалено: $(wc -l < deleted.txt)"; cat changed.txt deleted.txt
+      - name: Залити на хостинг
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          [ -s changed.txt ] || [ -s deleted.txt ] || { echo "Немає що заливати"; exit 0; }
+          {
+            echo "set ftp:ssl-allow yes; set ssl:verify-certificate no; set net:max-retries 3; set net:timeout 30;"
+            while IFS= read -r f; do d=$(dirname "$f"); [ "$d" != "." ] && echo "mkdir -p -f \"/$d\""; echo "put \"$f\" -o \"/$f\""; done < changed.txt
+            while IFS= read -r f; do echo "rm -f \"/$f\""; done < deleted.txt
+            echo "rm -rf /system/storage/cache/*; quit"
+          } > cmds.lftp
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_HOST" -f cmds.lftp
