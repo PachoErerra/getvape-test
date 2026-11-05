@@ -15,7 +15,7 @@ class ControllerExtensionModuleBanner extends Controller {
 		$results = $this->model_design_banner->getBanner($setting['banner_id']);
 
 		foreach ($results as $result) {
-			if (is_file(DIR_IMAGE . $result['image'])) {
+			if (!empty($result['image'])) { // ТЕСТ: картинок немає на тестовому хостингу, беремо з getvape.com.ua
 				
 			$link = str_replace('[telegram]',$this->config->get('config_telegram'),$result['link']);
 			

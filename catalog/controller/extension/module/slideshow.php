@@ -59,7 +59,7 @@ class ControllerExtensionModuleSlideshow extends Controller
 
 
                 $link = str_replace('[instagram]', $this->config->get('config_instagram'), $link);
-                if (is_file(DIR_IMAGE . $result['image'])) {
+                if (!empty($result['image'])) { // ТЕСТ: картинок немає на тестовому хостингу, беремо з getvape.com.ua
                     $data['banners'][] = array(
                         'title' => $result['title'],
                         'link' => $link,

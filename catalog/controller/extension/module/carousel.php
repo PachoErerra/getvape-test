@@ -15,7 +15,7 @@ class ControllerExtensionModuleCarousel extends Controller {
 		$results = $this->model_design_banner->getBanner($setting['banner_id']);
 
 		foreach ($results as $result) {
-			if (is_file(DIR_IMAGE . $result['image'])) {
+			if (!empty($result['image'])) { // ТЕСТ: картинок немає на тестовому хостингу, беремо з getvape.com.ua
 				$data['banners'][] = array(
 					'title' => $result['title'],
 					'link'  => $result['link'],
