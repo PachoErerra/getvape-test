@@ -146,6 +146,7 @@ class ControllerCommonHeader extends Controller
         $data['wishlist'] = $this->url->link('account/wishlist', '', true);
         $data['compare'] = $this->url->link('product/compare', '', true);
         $data['logged'] = $this->customer->isLogged();
+        $data['ultra_shop'] = $this->url->link('ultra/shop'); // ТЕСТ: ультра-магазин
         $data['account'] = $this->url->link('account/edit', '', true);
         $data['register'] = $this->url->link('account/register', '', true);
         $data['login'] = $this->url->link('account/login', '', true);

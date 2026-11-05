@@ -440,6 +440,7 @@
 
                     <a role="button" class="header__action icon-cart js-open-basket"
                        aria-label="cart"><span>{{ cart_total }}</span></a>
+                    <a href="{{ ultra_shop }}" class="header__action vt-ultra" aria-label="Ультра-магазин" title="Ультра-магазин"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke-width="1.9" stroke-linejoin="round"><defs><linearGradient id="ugr" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#22e6ff"/><stop offset=".55" stop-color="#8b5cf6"/><stop offset="1" stop-color="#ff2fa0"/></linearGradient></defs><path d="M12 2 21 7v10l-9 5-9-5V7z" stroke="url(#ugr)"/><path d="M12 7l4.3 2.5v5L12 17l-4.3-2.5v-5z" fill="url(#ugr)" stroke="url(#ugr)"/></svg></a>
                 </div>
 
 
@@ -491,6 +492,8 @@
                         </svg>
                     </button>
 
+                    <a href="{{ ultra_shop }}" class="header__btn-square vt-ultra-m" aria-label="Ультра-магазин"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke-width="1.9" stroke-linejoin="round"><defs><linearGradient id="ugr2" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#22e6ff"/><stop offset=".55" stop-color="#8b5cf6"/><stop offset="1" stop-color="#ff2fa0"/></linearGradient></defs><path d="M12 2 21 7v10l-9 5-9-5V7z" stroke="url(#ugr2)"/><path d="M12 7l4.3 2.5v5L12 17l-4.3-2.5v-5z" fill="url(#ugr2)" stroke="url(#ugr2)"/></svg></a>
+
                     <div class="header__burger"></div>
                 </div>
 
@@ -498,6 +501,16 @@
         </div>
     </div>
 </header>
+<style>
+.vt-ultra{position:relative;display:grid!important;place-items:center;background:#0d0818!important;border-color:transparent!important;box-shadow:0 0 0 1px rgba(139,92,246,.6),0 0 16px rgba(255,47,160,.35);transition:transform .25s,box-shadow .25s}
+.vt-ultra::after{content:"";position:absolute;inset:-1px;border-radius:inherit;background:conic-gradient(from 0deg,#22e6ff,#8b5cf6,#ff2fa0,#22e6ff);z-index:-1;opacity:0;transition:opacity .3s;animation:vtUltraSpin 3s linear infinite}
+.vt-ultra:hover{transform:translateY(-2px);box-shadow:0 0 0 1px #ff2fa0,0 0 26px rgba(255,47,160,.6)}
+.vt-ultra svg{animation:vtUltraPulse 2.6s ease-in-out infinite}
+@keyframes vtUltraPulse{50%{filter:drop-shadow(0 0 6px #ff2fa0)}}
+@keyframes vtUltraSpin{to{transform:rotate(360deg)}}
+.vt-ultra-m{display:grid;place-items:center;background:#0d0818!important}
+@media (prefers-reduced-motion:reduce){.vt-ultra svg{animation:none}}
+</style>
 
 
 {% if reward_total %}
