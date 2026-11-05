@@ -45,12 +45,67 @@ img{display:block;width:100%;height:100%;object-fit:cover}
 .c4-card:hover{transform:scale(1.07) rotate(-1.5deg);box-shadow:0 18px 30px -14px rgba(255,62,165,.7)}
 @keyframes c4{to{transform:translateX(calc(-50% - 8px))}}
 
+
+/* 5 — Сторіз */
+.c5{display:flex;gap:22px;overflow-x:auto;padding:6px 4px 10px;scrollbar-width:none}
+.c5-st{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;cursor:pointer;font:600 13px Montserrat,Arial;color:#17151c}
+.c5-ring{width:96px;height:96px;border-radius:50%;padding:3px;background:conic-gradient(from 210deg,#ff3ea5,#ff9a3c,#a855f7,#ff3ea5);transition:transform .3s}
+.c5-ring img{border-radius:50%;border:3px solid #f4f5f9;object-position:50% 40%}
+.c5-st:hover .c5-ring{transform:scale(1.07) rotate(-4deg)}
+.c5-st.seen .c5-ring{background:#d8d3de}
+.c5-view{position:fixed;inset:0;z-index:100;background:rgba(10,4,12,.92);display:none;align-items:center;justify-content:center}
+.c5-view.open{display:flex}
+.c5-box{position:relative;height:min(86vh,760px);aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:#000}
+.c5-bars{position:absolute;top:12px;left:12px;right:12px;display:flex;gap:4px;z-index:3}.c5-bars i{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.3);overflow:hidden}.c5-bars i b{display:block;height:100%;width:0;background:#fff}
+.c5-box img{object-fit:contain}
+.c5-l,.c5-r{position:absolute;top:0;bottom:70px;width:40%;z-index:2;cursor:pointer}.c5-l{left:0}.c5-r{right:0}
+.c5-x{position:absolute;top:26px;right:14px;z-index:4;width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.4);color:#fff;font-size:20px;cursor:pointer}
+.c5-go{position:absolute;left:16px;right:16px;bottom:16px;z-index:3;text-align:center;padding:14px;border-radius:14px;background:#ff3ea5;color:#fff;font-weight:700;text-decoration:none}
+
+/* 6 — Спотлайт */
+.c6{position:relative;display:flex;gap:34px;align-items:center;padding:28px;border-radius:28px;overflow:hidden;isolation:isolate;min-height:500px;color:#fff}
+.c6-bg{position:absolute;inset:-40px;z-index:-2;background-size:cover;background-position:center;filter:blur(40px) saturate(1.4) brightness(.55);transition:background-image .6s}
+.c6::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.15),rgba(0,0,0,.55))}
+.c6-main{flex:0 0 250px;aspect-ratio:5/9;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.8)}
+.c6-main img{transition:opacity .4s}
+.c6-info h3{margin:0 0 10px;font-size:34px;font-weight:800;line-height:1.05}.c6-info p{margin:0 0 22px;color:rgba(255,255,255,.75);max-width:420px}
+.c6-cta{display:inline-block;padding:13px 26px;border-radius:999px;background:#fff;color:#17151c;font-weight:700;text-decoration:none;transition:background .2s,color .2s}.c6-cta:hover{background:#ff3ea5;color:#fff}
+.c6-ths{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
+.c6-th{width:62px;aspect-ratio:5/9;border-radius:10px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;opacity:.6;transition:opacity .25s,transform .25s,border-color .25s;background:#000}
+.c6-th:hover{opacity:1;transform:translateY(-3px)}.c6-th.on{opacity:1;border-color:#ff3ea5}
+
+/* 7 — Стрічка Apple */
+.c7-head{display:flex;justify-content:flex-end;gap:10px;margin:0 0 10px}
+.c7-head button{width:40px;height:40px;border-radius:50%;border:0;background:#e9e6ee;cursor:pointer;font-size:18px;transition:background .2s}.c7-head button:hover{background:#ff3ea5;color:#fff}
+.c7{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:8px 2px 22px;scrollbar-width:none;cursor:grab}
+.c7.drag{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
+.c7-card{flex:0 0 250px;scroll-snap-align:start;text-decoration:none;color:#17151c}
+.c7-img{display:block;aspect-ratio:5/9;border-radius:24px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.c7-card:hover .c7-img{transform:scale(1.02);box-shadow:0 20px 40px -18px rgba(0,0,0,.35)}
+.c7-cap{display:flex;justify-content:space-between;margin-top:12px;font-weight:700;font-size:15px}.c7-cap em{font-style:normal;color:#ff3ea5;transition:transform .3s}.c7-card:hover .c7-cap em{transform:translateX(4px)}
+
+/* 8 — 3D-кільце */
+.c8{position:relative;height:500px;perspective:1300px;border-radius:28px;overflow:hidden;background:radial-gradient(60% 60% at 50% 60%,rgba(168,85,247,.35),transparent 70%),linear-gradient(#120a1a,#07040a)}
+.c8-ring{position:absolute;left:50%;top:50%;width:190px;height:342px;margin:-171px 0 0 -95px;transform-style:preserve-3d;transform:rotateY(var(--r,0deg));transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.c8-card{position:absolute;inset:0;border-radius:18px;overflow:hidden;transform:rotateY(var(--a)) translateZ(330px);backface-visibility:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 20px 40px -10px rgba(0,0,0,.8)}
+.c8-btn{position:absolute;bottom:20px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:20px;cursor:pointer}.c8-btn:hover{background:#ff3ea5}
+.c8-p{left:calc(50% - 56px)}.c8-n{left:calc(50% + 10px)}
+
+/* 9 — Стопка карток */
+.c9w{display:flex;align-items:center;justify-content:center;gap:60px;padding:30px;border-radius:28px;background:linear-gradient(135deg,#ffe3f2,#efe5ff)}
+.c9-txt h3{font-size:30px;font-weight:800;margin:0 0 10px}.c9-txt p{color:#555;margin:0 0 20px;max-width:300px}
+.c9-txt button{padding:12px 22px;border-radius:999px;border:0;background:#17151c;color:#fff;font:700 14px Montserrat,Arial;cursor:pointer}.c9-txt button:hover{background:#ff3ea5}
+.c9{position:relative;width:240px;aspect-ratio:5/9}
+.c9-card{position:absolute;inset:0;border-radius:22px;overflow:hidden;box-shadow:0 18px 30px -14px rgba(60,20,60,.55);transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .6s}
+.c9-card.out{transform:translateX(130%) rotate(18deg)!important;opacity:0}
+@media (max-width:760px){.c6{flex-direction:column;align-items:flex-start}.c6-main{flex-basis:auto;width:200px}.c6-info h3{font-size:26px}.c7-card{flex-basis:200px}.c8-card{transform:rotateY(var(--a)) translateZ(230px)}.c8-ring{width:140px;height:252px;margin:-126px 0 0 -70px}.c9w{flex-direction:column;gap:24px}}
+
 @media (max-width:760px){.c1-track{grid-auto-columns:62%}.c1-btn{display:none}.c2{height:360px;gap:6px}.c2-item.on{flex-basis:190px}
  .c3{height:400px}.c3-card{width:170px;left:calc(50% - 85px)}.c4-card{flex-basis:150px}}
 @media (prefers-reduced-motion:reduce){.c4-row{animation:none}*{transition:none!important}}
 </style></head><body><div class="wrap">
 <h1>Варіанти блоку банерів</h1>
-<p class="lead">Банери ті самі, що зараз на getvape.com.ua. Наведи мишку, погортай — і напиши номер варіанту, який подобається.</p>
+<p class="lead">Банери ті самі, що зараз на getvape.com.ua. Наведи мишку, погортай, понатискай — і напиши номер варіанту, який подобається. Можна поєднати (наприклад, «5 + 1»).</p>
 
 <section class="var"><h2><b>1</b>Класика, але охайніше</h2>
 <p>Як зараз — 4 банери в ряд, але з заокругленням, тінню, блиском при наведенні, крапками й кнопками збоку. Гортаються самі.</p>
@@ -67,6 +122,27 @@ img{display:block;width:100%;height:100%;object-fit:cover}
 <section class="var"><h2><b>4</b>Нескінченна стрічка</h2>
 <p>Банери повільно пливуть стрічкою без кінця. Наводиш мишку — стрічка зупиняється, банер трохи збільшується.</p>
 <div class="c4"><div class="c4-row"><a class="c4-card" href="https://vapors.app/l/5xfyht" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a><a class="c4-card" href="https://vapors.app/l/9gygxz" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/latest/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="c4-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a><a class="c4-card" href="https://t.me/vapors_vape_shop" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a><a class="c4-card" href="https://vapors.app/l/5xfyht" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a><a class="c4-card" href="https://vapors.app/l/9gygxz" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/latest/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="c4-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a><a class="c4-card" href="https://t.me/vapors_vape_shop" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="c4-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank" rel="noopener"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a></div></div></section>
+
+<section class="var"><h2><b>5</b>Сторіз (як в Instagram, Makeup, Rozetka)</h2>
+<p>Круглі «сторіз» з кольоровим обідком. Натиснув — банер відкривається на весь екран, гортається сам зі смужками прогресу, внизу кнопка «Перейти». Переглянуті стають сірими.</p>
+<div class="c5"><button class="c5-st" data-k="0"><span class="c5-ring"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt=""></span><span>Відгукнись</span></button><button class="c5-st" data-k="1"><span class="c5-ring"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt=""></span><span>Новинка</span></button><button class="c5-st" data-k="2"><span class="c5-ring"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt=""></span><span>Phantom</span></button><button class="c5-st" data-k="3"><span class="c5-ring"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt=""></span><span>Доставка</span></button><button class="c5-st" data-k="4"><span class="c5-ring"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt=""></span><span>Instagram</span></button><button class="c5-st" data-k="5"><span class="c5-ring"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt=""></span><span>Дешевше?</span></button><button class="c5-st" data-k="6"><span class="c5-ring"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt=""></span><span>Опт</span></button></div>
+<div class="c5-view"><div class="c5-box"><div class="c5-bars"></div><img alt=""><div class="c5-l"></div><div class="c5-r"></div><button class="c5-x" aria-label="Закрити">×</button><a class="c5-go" target="_blank">Перейти</a></div></div></section>
+
+<section class="var"><h2><b>6</b>Спотлайт (як Netflix, Apple TV)</h2>
+<p>Один великий банер, а фон — його ж розмита копія, тож колір блоку щоразу змінюється під банер. Праворуч заголовок, кнопка і мініатюри решти банерів.</p>
+<div class="c6"><div class="c6-bg"></div><a class="c6-main" target="_blank"><img alt=""></a><div class="c6-info"><h3>Акції тижня</h3><p>Найгарячіші пропозиції Vapors. Обирай — і забирай вигідніше.</p><a class="c6-cta" target="_blank">Дивитися</a><div class="c6-ths"><button class="c6-th" data-k="0"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt=""></button><button class="c6-th" data-k="1"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt=""></button><button class="c6-th" data-k="2"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt=""></button><button class="c6-th" data-k="3"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt=""></button><button class="c6-th" data-k="4"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt=""></button><button class="c6-th" data-k="5"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt=""></button><button class="c6-th" data-k="6"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt=""></button></div></div></div></section>
+
+<section class="var"><h2><b>7</b>Великі картки з підписом (як apple.com)</h2>
+<p>Великі картки, наступна виглядає з краю, ніби кличе погортати. Під кожною — підпис зі стрілкою. Можна тягнути мишкою, кнопки — вгорі праворуч.</p>
+<div class="c7-head"><button class="c7-p">‹</button><button class="c7-n">›</button></div><div class="c7"><a class="c7-card" href="https://vapors.app/l/5xfyht" target="_blank"><span class="c7-img"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="" loading="lazy"></span><span class="c7-cap">Відгукнись <em>→</em></span></a><a class="c7-card" href="https://vapors.app/l/9gygxz" target="_blank"><span class="c7-img"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="" loading="lazy"></span><span class="c7-cap">Новинка <em>→</em></span></a><a class="c7-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank"><span class="c7-img"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="" loading="lazy"></span><span class="c7-cap">Phantom <em>→</em></span></a><a class="c7-card" href="https://getvape.com.ua/latest/" target="_blank"><span class="c7-img"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="" loading="lazy"></span><span class="c7-cap">Доставка <em>→</em></span></a><a class="c7-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank"><span class="c7-img"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="" loading="lazy"></span><span class="c7-cap">Instagram <em>→</em></span></a><a class="c7-card" href="https://t.me/vapors_vape_shop" target="_blank"><span class="c7-img"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="" loading="lazy"></span><span class="c7-cap">Дешевше? <em>→</em></span></a><a class="c7-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank"><span class="c7-img"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="" loading="lazy"></span><span class="c7-cap">Опт <em>→</em></span></a></div></section>
+
+<section class="var"><h2><b>8</b>3D-кільце</h2>
+<p>Банери стоять по колу в 3D і повільно обертаються. Кнопками можна крутити вручну, при наведенні зупиняється.</p>
+<div class="c8"><div class="c8-ring"><a class="c8-card" href="https://vapors.app/l/5xfyht" target="_blank" style="--a:0.0deg"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt=""></a><a class="c8-card" href="https://vapors.app/l/9gygxz" target="_blank" style="--a:51.42857142857143deg"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt=""></a><a class="c8-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" style="--a:102.85714285714286deg"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt=""></a><a class="c8-card" href="https://getvape.com.ua/latest/" target="_blank" style="--a:154.28571428571428deg"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt=""></a><a class="c8-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" style="--a:205.71428571428572deg"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt=""></a><a class="c8-card" href="https://t.me/vapors_vape_shop" target="_blank" style="--a:257.14285714285717deg"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt=""></a><a class="c8-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank" style="--a:308.57142857142856deg"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt=""></a></div><button class="c8-btn c8-p">‹</button><button class="c8-btn c8-n">›</button></div></section>
+
+<section class="var"><h2><b>9</b>Стопка карток (як Tinder, Apple Wallet)</h2>
+<p>Банери лежать стопкою. Верхній «відлітає» вбік — під ним наступний. Поруч текст і кнопка.</p>
+<div class="c9w"><div class="c9-txt"><h3>Не пропусти</h3><p>Свіжі акції та новинки — гортай стопку.</p><button class="c9-next">Наступна акція →</button></div><div class="c9"><a class="c9-card" href="https://vapors.app/l/5xfyht" target="_blank"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt=""></a><a class="c9-card" href="https://vapors.app/l/9gygxz" target="_blank"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt=""></a><a class="c9-card" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt=""></a><a class="c9-card" href="https://getvape.com.ua/latest/" target="_blank"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt=""></a><a class="c9-card" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt=""></a><a class="c9-card" href="https://t.me/vapors_vape_shop" target="_blank"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt=""></a><a class="c9-card" href="https://getvape.com.ua/kartridj-1271/" target="_blank"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt=""></a></div></div></section>
 </div>
 <script>
 (function(){var t=document.querySelector('.c1-track'),d=document.querySelector('.c1-dots'),cards=[].slice.call(t.children);
@@ -83,5 +159,41 @@ function on(k){items.forEach(function(x,j){x.classList.toggle('on',j===k)});cur=
 items.forEach(function(x,j){x.addEventListener('mouseenter',function(){h2=true;on(j)})});
 document.querySelector('.c2').addEventListener('mouseleave',function(){h2=false});
 on(0);setInterval(function(){if(!h2)on((cur+1)%items.length)},4000);
+})();
+</script>
+<script>
+(function(){var D=[{"l": "https://vapors.app/l/5xfyht", "i": "https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png", "n": "Відгукнись"}, {"l": "https://vapors.app/l/9gygxz", "i": "https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png", "n": "Новинка"}, {"l": "https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/", "i": "https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png", "n": "Phantom"}, {"l": "https://getvape.com.ua/latest/", "i": "https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg", "n": "Доставка"}, {"l": "https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&utm_source=qr#", "i": "https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png", "n": "Instagram"}, {"l": "https://t.me/vapors_vape_shop", "i": "https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png", "n": "Дешевше?"}, {"l": "https://getvape.com.ua/kartridj-1271/", "i": "https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg", "n": "Опт"}];
+/* 5 */
+var v=document.querySelector('.c5-view'),bx=v.querySelector('.c5-box'),im=bx.querySelector('img'),go=bx.querySelector('.c5-go'),bars=bx.querySelector('.c5-bars'),k=0,t0,raf;
+D.forEach(function(){var i=document.createElement('i');i.appendChild(document.createElement('b'));bars.appendChild(i)});
+function show(j){if(j<0)j=0;if(j>=D.length){close();return}k=j;im.src=D[j].i;go.href=D[j].l;document.querySelectorAll('.c5-st')[j].classList.add('seen');
+[].forEach.call(bars.children,function(x,q){x.firstChild.style.width=q<j?'100%':'0'});t0=performance.now();cancelAnimationFrame(raf);tick()}
+function tick(){var p=(performance.now()-t0)/5000;bars.children[k].firstChild.style.width=Math.min(p,1)*100+'%';if(p>=1)show(k+1);else raf=requestAnimationFrame(tick)}
+function close(){v.classList.remove('open');cancelAnimationFrame(raf)}
+document.querySelectorAll('.c5-st').forEach(function(b){b.onclick=function(){v.classList.add('open');show(+b.dataset.k)}});
+bx.querySelector('.c5-l').onclick=function(){show(k-1)};bx.querySelector('.c5-r').onclick=function(){show(k+1)};bx.querySelector('.c5-x').onclick=close;
+v.onclick=function(e){if(e.target===v)close()};document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+/* 6 */
+var c6=document.querySelector('.c6'),m6=c6.querySelector('.c6-main'),i6=m6.querySelector('img'),cta=c6.querySelector('.c6-cta'),bg=c6.querySelector('.c6-bg'),ths=c6.querySelectorAll('.c6-th'),k6=0,h6=false;
+function s6(j){k6=j;i6.style.opacity=0;setTimeout(function(){i6.src=D[j].i;i6.style.opacity=1},200);bg.style.backgroundImage='url("'+D[j].i+'")';m6.href=cta.href=D[j].l;ths.forEach(function(x,q){x.classList.toggle('on',q===j)})}
+ths.forEach(function(x){x.onclick=function(){s6(+x.dataset.k)}});c6.onmouseenter=function(){h6=true};c6.onmouseleave=function(){h6=false};
+s6(0);setInterval(function(){if(!h6)s6((k6+1)%D.length)},5000);
+/* 7 */
+var c7=document.querySelector('.c7'),w7=function(){return c7.children[1].offsetLeft-c7.children[0].offsetLeft};
+document.querySelector('.c7-n').onclick=function(){c7.scrollBy({left:w7()})};document.querySelector('.c7-p').onclick=function(){c7.scrollBy({left:-w7()})};
+var dn=false,sx,sl,moved=false;c7.addEventListener('mousedown',function(e){dn=true;moved=false;sx=e.pageX;sl=c7.scrollLeft;c7.classList.add('drag')});
+window.addEventListener('mousemove',function(e){if(!dn)return;var d=e.pageX-sx;if(Math.abs(d)>4)moved=true;c7.scrollLeft=sl-d});
+window.addEventListener('mouseup',function(){if(dn){dn=false;c7.classList.remove('drag')}});
+c7.addEventListener('click',function(e){if(moved)e.preventDefault()},true);c7.addEventListener('dragstart',function(e){e.preventDefault()});
+/* 8 */
+var c8=document.querySelector('.c8'),r8=c8.querySelector('.c8-ring'),a8=0,h8=false,st8=360/D.length;
+function rot(d){a8+=d*st8;r8.style.setProperty('--r',(-a8)+'deg')}
+c8.querySelector('.c8-n').onclick=function(){rot(1)};c8.querySelector('.c8-p').onclick=function(){rot(-1)};
+c8.onmouseenter=function(){h8=true};c8.onmouseleave=function(){h8=false};setInterval(function(){if(!h8)rot(1)},3200);
+/* 9 */
+var c9=[].slice.call(document.querySelectorAll('.c9-card')),box9=document.querySelector('.c9');
+function lay(){c9.forEach(function(c,q){c.style.zIndex=c9.length-q;c.style.transform='translate('+(q*14)+'px,'+(q*-10)+'px) rotate('+(q*4)+'deg) scale('+(1-q*.05)+')';c.style.opacity=q>3?0:1})}
+function next9(){var top=c9[0];top.classList.add('out');setTimeout(function(){c9.push(c9.shift());top.classList.remove('out');lay()},450)}
+lay();document.querySelector('.c9-next').onclick=next9;var h9=false;box9.onmouseenter=function(){h9=true};box9.onmouseleave=function(){h9=false};setInterval(function(){if(!h9)next9()},4000);
 })();
 </script></body></html>
