@@ -17,72 +17,60 @@
     <span>{{ text_katehoriyi_tovariv }}</span>
 </button>
 
-{# Банери — сцена з об'ємом (тест) #}
-<section class="vt-stage" aria-label="Акції та новинки">
-    <div class="vt-stage__bars" aria-hidden="true">
-        {% for banner in banners %}<span class="vt-stage__bar"><i></i></span>{% endfor %}
-    </div>
-    <div class="vt-stage__swiper swiper">
-        <div class="swiper-wrapper">
-            {% for banner in banners %}
-                <div class="swiper-slide vt-stage__slide">
-                    <a {% if banner.link %}href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow"{% endif %}{% else %}role="button"{% endif %} class="vt-stage__card">
-                        <img src="{{ banner.image }}" alt="{{ banner.title }}" loading="{{ loop.index0 < 4 ? 'eager' : 'lazy' }}">
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-    <button type="button" class="vt-stage__nav vt-stage__nav--prev" aria-label="Попередній банер"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <button type="button" class="vt-stage__nav vt-stage__nav--next" aria-label="Наступний банер"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+{# Банери — три в ряд, вищі картки (тест). Тексти поки вписані тут; згодом — поля в адмінці #}
+<section class="vt-b3" aria-label="Акції та новинки">
+    <div class="vt-b3__track"><a class="vb v12-s swiper-slide" href="https://vapors.app/l/5xfyht" target="_blank" style="--g:linear-gradient(120deg,#2a0b2a,#6d1258 55%,#d0278f)"><span class="vb-txt"><span class="vb-chip">Бонус</span><span class="vb-t">Відгукнись —<br>отримай 30 ₴</span><span class="vb-s">Залиш відгук про покупку — і 30 гривень впадуть на бонусний рахунок.</span><span class="vb-cta">Залишити відгук <em>→</em></span></span><span class="vb-pic"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="" loading="lazy"></span></a><a class="vb v12-s swiper-slide" href="https://vapors.app/l/9gygxz" target="_blank" style="--g:linear-gradient(120deg,#1d0b24,#5a1450 55%,#c42a86)"><span class="vb-txt"><span class="vb-chip">Новинка</span><span class="vb-t">Разом вигідніше</span><span class="vb-price">799 ₴</span><span class="vb-s">Под + рідина Black Mint у наборі — дешевше, ніж окремо.</span><span class="vb-cta">До покупок <em>→</em></span></span><span class="vb-pic"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="" loading="lazy"></span></a><a class="vb v12-s swiper-slide" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" target="_blank" style="--g:linear-gradient(120deg,#160a2c,#4b1d7a 55%,#e0379a)"><span class="vb-txt"><span class="vb-chip">Хіт</span><span class="vb-t">Xros 6 Mini</span><span class="vb-price">899 ₴</span><span class="vb-s">Новий Vaporesso — компактний, яскравий, на кожен день.</span><span class="vb-cta">Обрати колір <em>→</em></span></span><span class="vb-pic"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="" loading="lazy"></span></a><a class="vb v12-s swiper-slide" href="https://getvape.com.ua/latest/" target="_blank" style="--g:linear-gradient(120deg,#0e0b10,#2b1426 55%,#a3165f)"><span class="vb-txt"><span class="vb-chip">Доставка</span><span class="vb-t">Безкоштовна доставка</span><span class="vb-price">від 750 ₴</span><span class="vb-s">Відправка в день замовлення до 19:00. Курʼєром — безкоштовно від 1500 ₴.</span><span class="vb-cta">Детальніше <em>→</em></span></span><span class="vb-pic"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="" loading="lazy"></span></a><a class="vb v12-s swiper-slide" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" target="_blank" style="--g:linear-gradient(120deg,#2b0a1c,#7a1440 50%,#e2508a)"><span class="vb-txt"><span class="vb-chip">Instagram</span><span class="vb-t">Час підписатися</span><span class="vb-s">Усі новинки й акції першими — в нашому Instagram.</span><span class="vb-cta">Підписатися <em>→</em></span></span><span class="vb-pic"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="" loading="lazy"></span></a><a class="vb v12-s swiper-slide" href="https://t.me/vapors_vape_shop" target="_blank" style="--g:linear-gradient(120deg,#063a46,#0e7f8d 55%,#ff4fa6)"><span class="vb-txt"><span class="vb-chip">Дешевше?</span><span class="vb-t">Знайшов дешевше?</span><span class="vb-s">Напиши нам — і ми зробимо ціну ще кращою.</span><span class="vb-cta">Написати <em>→</em></span></span><span class="vb-pic"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="" loading="lazy"></span></a><a class="vb v12-s swiper-slide" href="https://getvape.com.ua/kartridj-1271/" target="_blank" style="--g:linear-gradient(120deg,#151515,#3a3a3a 55%,#b3165e)"><span class="vb-txt"><span class="vb-chip">Опт</span><span class="vb-t">Опт стартує з 2-х</span><span class="vb-s">Картриджі й випаровувачі за оптовою ціною вже від двох штук.</span><span class="vb-cta">До каталогу <em>→</em></span></span><span class="vb-pic"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="" loading="lazy"></span></a></div>
+    <div class="vs-nav"><div class="vs-dots"></div><div class="vs-btns"><button type="button" class="p" aria-label="Назад">‹</button><button type="button" class="n" aria-label="Далі">›</button></div></div>
 </section>
 <style>
-.vt-stage{position:relative;margin:6px 0 0;padding:34px 0 18px;isolation:isolate;overflow:hidden;border-radius:28px;
-  background:radial-gradient(60% 70% at 50% 55%,rgba(255,62,165,.22) 0%,rgba(255,62,165,0) 70%),linear-gradient(180deg,#1a0d1f 0%,#120914 100%)}
-.vt-stage::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;
-  background-image:radial-gradient(rgba(255,255,255,.35) 1px,transparent 1.2px);background-size:22px 22px;
-  -webkit-mask-image:radial-gradient(70% 80% at 50% 50%,#000 0%,transparent 75%);mask-image:radial-gradient(70% 80% at 50% 50%,#000 0%,transparent 75%)}
-.vt-stage__bars{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;width:min(420px,70%);z-index:3}
-.vt-stage__bar{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden;cursor:pointer}
-.vt-stage__bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#ff7ac6,#ff3ea5)}
-.vt-stage__bar.is-done i{width:100%}
-.vt-stage__swiper{overflow:visible!important;padding:6px 0 10px}
-.vt-stage__slide{width:240px!important;height:432px;transition:filter .45s}
-.vt-stage__slide:not(.swiper-slide-active){filter:brightness(.55) saturate(.8)}
-.vt-stage__card{display:block;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#241329;
-  box-shadow:0 18px 40px -18px rgba(0,0,0,.8);transition:box-shadow .45s,transform .3s}
-.vt-stage__card img{display:block;width:100%;height:100%;object-fit:cover}
-.swiper-slide-active .vt-stage__card{box-shadow:0 0 0 2px rgba(255,90,190,.75),0 24px 60px -16px rgba(255,62,165,.65)}
-.swiper-slide-active .vt-stage__card:hover{transform:translateY(-3px)}
-.vt-stage__nav{position:absolute;top:50%;z-index:4;width:46px;height:46px;margin-top:-10px;border-radius:50%;border:1px solid rgba(255,255,255,.22);
-  display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;transition:background .25s,transform .25s,border-color .25s}
-.vt-stage__nav:hover{background:#ff3ea5;border-color:#ff3ea5;transform:scale(1.06)}
-.vt-stage__nav--prev{left:18px}.vt-stage__nav--next{right:18px}
-@media (max-width:767px){.vt-stage{border-radius:20px;padding:28px 0 14px}.vt-stage__slide{width:62vw!important;height:calc(62vw * 1.8)}.vt-stage__nav{display:none}.vt-stage__bars{top:11px}}
-@media (prefers-reduced-motion:reduce){.vt-stage__slide,.vt-stage__card{transition:none}}
+/* 10–13 — складені банери (текст кодом + картинка) */
+.vb{position:relative;display:flex;overflow:hidden;isolation:isolate;border-radius:26px;text-decoration:none;color:#fff;background:var(--g)}
+.vb::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 90% at 85% 60%,rgba(255,90,190,.45),transparent 65%)}
+.vb::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.18;background-image:radial-gradient(rgba(255,255,255,.6) 1px,transparent 1.3px);background-size:20px 20px;-webkit-mask-image:linear-gradient(90deg,#000,transparent 60%);mask-image:linear-gradient(90deg,#000,transparent 60%)}
+.vb-txt{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:34px 36px;flex:1;justify-content:center}
+.vb-chip{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+.vb-t{font-size:40px;font-weight:800;line-height:1.02;letter-spacing:-.5px}
+.vb-price{font-size:30px;font-weight:800;color:#ffd1ec;text-shadow:0 0 22px rgba(255,62,165,.8)}
+.vb-s{max-width:400px;font-size:15px;line-height:1.5;color:rgba(255,255,255,.78)}
+.vb-cta{margin-top:6px;display:inline-flex;gap:8px;align-items:center;padding:12px 22px;border-radius:999px;background:#fff;color:#17151c;font-weight:700;font-size:14px;transition:background .25s,color .25s}
+.vb-cta em{font-style:normal;transition:transform .25s}
+.vb:hover .vb-cta{background:#ff3ea5;color:#fff}.vb:hover .vb-cta em{transform:translateX(4px)}
+.vb-pic{position:relative;flex:0 0 auto;align-self:center;height:88%;aspect-ratio:5/9;margin-right:42px;border-radius:20px;overflow:hidden;transform:rotate(5deg);box-shadow:0 30px 50px -18px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.18);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.vb:hover .vb-pic{transform:rotate(0) scale(1.04)}
+.vs{position:relative}.vs-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}.vs-track::-webkit-scrollbar{display:none}
+.vs-track>*{scroll-snap-align:start;flex-shrink:0}
+.vs-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.vs-dots{display:flex;gap:6px}.vs-dots i{width:8px;height:8px;border-radius:8px;background:#d8d3de;transition:width .3s,background .3s;cursor:pointer}.vs-dots i.on{width:26px;background:#ff3ea5}
+.vs-btns{display:flex;gap:8px}.vs-btns button{width:42px;height:42px;border-radius:50%;border:0;background:#e9e6ee;cursor:pointer;font-size:18px;transition:background .2s,color .2s}.vs-btns button:hover{background:#ff3ea5;color:#fff}
+
+.vt-b3{margin:4px 0 0;font-family:inherit}
+.vt-b3__track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:4px 0 6px}
+.vt-b3__track::-webkit-scrollbar{display:none}
+.vt-b3 .v12-s{flex:0 0 calc((100% - 36px)/3);width:auto;height:470px;flex-direction:column;scroll-snap-align:start}
+.vt-b3 .v12-s .vb-txt{position:static;justify-content:flex-start;padding:26px 26px 0;gap:10px;flex:0}
+.vt-b3 .v12-s .vb-t{font-size:26px}.vt-b3 .v12-s .vb-price{font-size:23px}
+.vt-b3 .v12-s .vb-s{font-size:13.5px;max-width:92%;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vt-b3 .v12-s .vb-cta{position:absolute;left:26px;bottom:24px;padding:11px 18px;font-size:13.5px;margin:0;z-index:3}
+.vt-b3 .v12-s .vb-pic{position:absolute;right:18px;bottom:-34px;height:290px;margin:0;transform:rotate(9deg)}
+.vt-b3 .v12-s:hover .vb-pic{transform:rotate(2deg) translateY(-24px)}
+.vt-b3 .vs-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.vt-b3 .vs-dots{display:flex;gap:6px}.vt-b3 .vs-dots i{width:8px;height:8px;border-radius:8px;background:#d8d3de;transition:width .3s,background .3s;cursor:pointer}.vt-b3 .vs-dots i.on{width:26px;background:#ff3ea5}
+.vt-b3 .vs-btns{display:flex;gap:8px}.vt-b3 .vs-btns button{width:42px;height:42px;border-radius:50%;border:0;background:#e9e6ee;cursor:pointer;font-size:18px;line-height:1;color:#17151c;transition:background .2s,color .2s}.vt-b3 .vs-btns button:hover{background:#ff3ea5;color:#fff}
+@media (max-width:1100px){.vt-b3 .v12-s{flex-basis:calc((100% - 18px)/2)}}
+@media (max-width:640px){.vt-b3 .v12-s{flex-basis:78%;height:430px}.vt-b3 .v12-s .vb-t{font-size:23px}.vt-b3 .vs-btns{display:none}}
 </style>
 <script>
 (function(){
-  function init(){
-    var el=document.querySelector('.vt-stage__swiper');
-    if(!el||el.swiper||typeof Swiper==='undefined')return;
-    var stage=el.closest('.vt-stage'), bars=[].slice.call(stage.querySelectorAll('.vt-stage__bar'));
-    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, DELAY=4500;
-    var sw=new Swiper(el,{
-      effect:'coverflow',centeredSlides:true,slidesPerView:'auto',loop:bars.length>3,speed:650,grabCursor:true,
-      coverflowEffect:{rotate:0,stretch:-30,depth:220,modifier:1,scale:.86,slideShadows:false},
-      autoplay:reduce?false:{delay:DELAY,disableOnInteraction:false,pauseOnMouseEnter:true},
-      navigation:{nextEl:stage.querySelector('.vt-stage__nav--next'),prevEl:stage.querySelector('.vt-stage__nav--prev')},
-      slideToClickedSlide:true,
-      on:{
-        autoplayTimeLeft:function(s,t,p){var b=bars[s.realIndex];if(b)b.firstChild.style.width=((1-p)*100)+'%';},
-        slideChange:function(s){bars.forEach(function(b,i){b.classList.toggle('is-done',i<s.realIndex);b.firstChild.style.width=i<s.realIndex?'100%':'0';});}
-      }
-    });
-    bars.forEach(function(b,i){b.addEventListener('click',function(){sw.slideToLoop(i);});});
-    el.addEventListener('click',function(e){var a=e.target.closest('.vt-stage__card');if(a&&!a.closest('.swiper-slide-active'))e.preventDefault();},true);
-    sw.emit('slideChange');
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  var w=document.querySelector('.vt-b3');if(!w)return;var t=w.querySelector('.vt-b3__track'),its=[].slice.call(t.children),d=w.querySelector('.vs-dots'),hov=false;
+  function per(){return Math.max(1,Math.round(t.clientWidth/its[0].offsetWidth))}
+  function pages(){return Math.ceil(its.length/per())}
+  function cur(){if(t.scrollLeft+t.clientWidth>=t.scrollWidth-4)return pages()-1;return Math.round(t.scrollLeft/((its[0].offsetWidth+18)*per()))}
+  function dots(){d.innerHTML='';for(var q=0;q<pages();q++){(function(q){var i=document.createElement('i');i.onclick=function(){go(q)};d.appendChild(i)})(q)}upd()}
+  function upd(){var c=cur();[].forEach.call(d.children,function(x,j){x.classList.toggle('on',j===c)})}
+  function go(q){var n=pages();if(q>=n)q=0;if(q<0)q=n-1;t.scrollTo({left:its[Math.min(q*per(),its.length-1)].offsetLeft-its[0].offsetLeft})}
+  t.addEventListener('scroll',upd);window.addEventListener('resize',dots);dots();
+  w.querySelector('.n').onclick=function(){go(cur()+1)};w.querySelector('.p').onclick=function(){go(cur()-1)};
+  w.onmouseenter=function(){hov=true};w.onmouseleave=function(){hov=false};
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(function(){if(!hov&&document.visibilityState==='visible')go(cur()+1)},5500);
 })();
 </script>
