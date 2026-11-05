@@ -17,21 +17,19 @@
     <span>{{ text_katehoriyi_tovariv }}</span>
 </button>
 
-{# Банери — один великий (гортається) + два малих, лише фото (тест) #}
+{# Банери — один великий (гортається) + два малих; широкі версії банерів у image/vt/ban-N.jpg (тест) #}
 <section class="vt-b13" aria-label="Акції та новинки">
-    <div class="vt-b13__main"><a class="vp vp-big" href="https://vapors.app/l/9gygxz" style="--img:url('https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png')"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/3-500x900.png" alt="new" loading="lazy"></a><a class="vp vp-big" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" style="--img:url('https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png')"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/2-500x900.png" alt="Phantom" loading="lazy"></a><a class="vp vp-big" href="https://getvape.com.ua/kartridj-1271/" style="--img:url('https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg')"><img src="https://getvape.com.ua/image/cache/catalog/11111/Vibe%20Nano/optKart-500x900.jpg" alt="OPT" loading="lazy"></a><a class="vp vp-big" href="https://t.me/vapors_vape_shop" style="--img:url('https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png')"><img src="https://getvape.com.ua/image/cache/catalog/Troublemaker/22-500x900.png" alt="Знайшли дешевше?" loading="lazy"></a><a class="vp vp-big" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" style="--img:url('https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png')"><img src="https://getvape.com.ua/image/cache/catalog/Aegis/inst-500x900.png" alt="Inst" loading="lazy"></a>
+    <div class="vt-b13__main"><a class="vp vp-big" href="https://vapors.app/l/9gygxz" ><img src="/catalog/view/theme/default/image/vt/ban-1.jpg" alt="new" loading="lazy"></a><a class="vp vp-big" href="https://getvape.com.ua/podsistemi-1122/vaporesso-xros-6-mini-4596/" ><img src="/catalog/view/theme/default/image/vt/ban-2.jpg" alt="Phantom" loading="lazy"></a><a class="vp vp-big" href="https://getvape.com.ua/kartridj-1271/" ><img src="/catalog/view/theme/default/image/vt/ban-6.jpg" alt="OPT" loading="lazy"></a><a class="vp vp-big" href="https://t.me/vapors_vape_shop" ><img src="/catalog/view/theme/default/image/vt/ban-5.jpg" alt="Знайшли дешевше?" loading="lazy"></a><a class="vp vp-big" href="https://www.instagram.com/vaapoors/?igsh=dWVraG5heXZidHVu&amp;utm_source=qr#" ><img src="/catalog/view/theme/default/image/vt/ban-4.jpg" alt="Inst" loading="lazy"></a>
         <div class="vt-b13__nav"><div class="vt-b13__dots"></div><button type="button" class="p" aria-label="Назад">‹</button><button type="button" class="n" aria-label="Далі">›</button></div>
     </div>
-    <div class="vt-b13__col"><a class="vp vp-sm" href="https://getvape.com.ua/latest/" style="--img:url('https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg')"><img src="https://getvape.com.ua/image/cache/catalog/aaaa/банер%20сайт%20БЛЯ%20ЗАЄБАЛАСЬ-500x900.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="vp vp-sm" href="https://vapors.app/l/5xfyht" style="--img:url('https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png')"><img src="https://getvape.com.ua/image/cache/catalog/A-Products/1-500x900.png" alt="GFYX" loading="lazy"></a></div>
+    <div class="vt-b13__col"><a class="vp vp-sm" href="https://getvape.com.ua/latest/" ><img src="/catalog/view/theme/default/image/vt/ban-3.jpg" alt="Безкоштовна доставка" loading="lazy"></a><a class="vp vp-sm" href="https://vapors.app/l/5xfyht" ><img src="/catalog/view/theme/default/image/vt/ban-0.jpg" alt="GFYX" loading="lazy"></a></div>
 </section>
 <style>
 .vt-b13{display:grid;grid-template-columns:2fr 1fr;gap:16px;height:440px;margin:4px 0 0}
 .vt-b13__main{position:relative;min-width:0;border-radius:24px;overflow:hidden;background:#1a0d1f}
 .vt-b13__col{display:grid;grid-template-rows:1fr 1fr;gap:16px;min-height:0}
 .vp{position:relative;display:block;overflow:hidden;border-radius:24px;isolation:isolate;background:#1a0d1f}
-/* фон — та сама картинка, збільшена й розмита: заповнює боки */
-.vp::before{content:"";position:absolute;inset:-30px;z-index:-1;background:var(--img) center/cover no-repeat;filter:blur(28px) saturate(1.3) brightness(.75);transform:scale(1.1)}
-.vp img{position:relative;display:block;height:100%;width:auto;margin:0 auto;object-fit:contain;transition:transform .6s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 50px rgba(0,0,0,.35)}
+.vp img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .vp:hover img{transform:scale(1.03)}
 .vt-b13 .vp-big{position:absolute;inset:0;border-radius:0;opacity:0;visibility:hidden;transition:opacity .7s,visibility .7s}
 .vt-b13 .vp-big.on{opacity:1;visibility:visible}
@@ -41,8 +39,8 @@
 .vt-b13__nav button{width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:16px;line-height:1;cursor:pointer;transition:background .2s}
 .vt-b13__nav button:hover{background:#ff3ea5}
 .vt-b13__nav .p{order:-1}
-@media (max-width:900px){.vt-b13{grid-template-columns:1fr;height:auto}.vt-b13__main{height:420px}.vt-b13__col{grid-template-rows:none;grid-template-columns:1fr 1fr}.vt-b13 .vp-sm{height:240px}}
-@media (max-width:640px){.vt-b13__nav{left:50%;bottom:auto;top:12px;transform:translateX(-50%)}.vt-b13__main{height:min(150vw,560px)}.vt-b13 .vp-sm{height:200px}.vt-b13__nav button{display:none}}
+@media (max-width:900px){.vt-b13{grid-template-columns:1fr;height:auto}.vt-b13__main{height:auto;aspect-ratio:1200/680}.vt-b13__col{grid-template-rows:none;grid-template-columns:1fr 1fr}.vt-b13 .vp-sm{height:auto;aspect-ratio:1200/680}}
+@media (max-width:640px){.vt-b13__col{grid-template-columns:1fr}.vt-b13__nav{left:50%;bottom:8px;transform:translateX(-50%);padding:4px 6px}.vt-b13__main{height:auto;aspect-ratio:1200/680}.vt-b13 .vp-sm{height:auto;aspect-ratio:1200/680}.vt-b13__nav button{display:none}}
 </style>
 <script>
 (function(){
