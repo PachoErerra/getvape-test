@@ -38,9 +38,9 @@ jobs:
         run: |
           [ -s changed.txt ] || [ -s deleted.txt ] || { echo "Немає що заливати"; exit 0; }
           {
-            echo "set ftp:ssl-allow yes; set ssl:verify-certificate no; set net:max-retries 3; set net:timeout 30;"
+            echo "set ftp:ssl-allow yes; set ssl:verify-certificate no; set net:max-retries 3; set net:timeout 30; set cmd:fail-exit yes;"
             while IFS= read -r f; do d=$(dirname "$f"); [ "$d" != "." ] && echo "mkdir -p -f \"/$d\""; echo "put \"$f\" -o \"/$f\""; done < changed.txt
             while IFS= read -r f; do echo "rm -f \"/$f\""; done < deleted.txt
-            echo "rm -rf /system/storage/cache/*; quit"
+            echo "set cmd:fail-exit no; glob -a rm -rf /system/storage/cache/*; exit 0"
           } > cmds.lftp
-          lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_HOST" -f cmds.lftp
+          lftp -u "$FTP_USER","$FTP_PASSWORD" -e "source cmds.lftp" "$FTP_HOST"
