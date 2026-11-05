@@ -8,7 +8,7 @@ permissions:
 jobs:
   import:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Встановити lftp
@@ -19,15 +19,18 @@ jobs:
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
+          # Лише код і дизайн: файли в корені + папки catalog, admin, system.
+          # Картинки, кеш, бібліотеки vendor і конфіги з паролями не беремо — вони лишаються на хостингу.
+          EX="-x '(^|/)config\\.php\$' -x '\\.(zip|tar|gz|tgz|rar|7z|sql|log)\$' -x '(^|/)cachewebp/' -x '(^|/)node_modules/'"
           lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_HOST" -e "
             set ftp:ssl-allow yes; set ssl:verify-certificate no; set net:max-retries 3; set net:timeout 30;
-            mirror --parallel=8 --verbose=1 \
-              -x '^\.git/' -x '^\.github/' \
-              -x '^image/cache/' -x '^image/catalog/' -x '/image/cache/' \
-              -x '^system/storage/(cache|logs|session|modification|upload|download)/' \
-              -x '^config\.php$' -x '^admin/config\.php$' -x '/config\.php$' \
-              -x '\.(zip|tar|gz|tgz|rar|7z|sql|log)$' \
-              / ./ ; quit"
+            mirror --no-recursion --verbose=1 $EX / ./ ;
+            mirror --parallel=10 --verbose=1 $EX /catalog ./catalog ;
+            mirror --parallel=10 --verbose=1 $EX /admin ./admin ;
+            mirror --parallel=10 --verbose=1 $EX -x '^storage/' /system ./system ;
+            quit"
+          rm -f config.php admin/config.php
+          echo "Файлів: $(find . -path ./.git -prune -o -type f -print | wc -l)"; du -sh --exclude=.git .
       - name: Пропустити файли більші за 90 МБ (GitHub їх не приймає)
         run: |
           find . -path ./.git -prune -o -type f -size +90M -print | sed 's#^\./##' | tee -a .gitignore

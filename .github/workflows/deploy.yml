@@ -21,7 +21,7 @@ jobs:
         id: diff
         run: |
           BEFORE="${{ github.event.before }}"
-          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then BEFORE="$(git rev-parse HEAD~1 2>/dev/null || echo '')"; fi
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then BEFORE="$(git rev-parse --verify -q HEAD~1 || true)"; fi
           if [ -z "$BEFORE" ]; then echo "Перший коміт — нічого не заливаємо"; : > changed.txt; : > deleted.txt
           else
             git diff --name-only --diff-filter=ACMRT "$BEFORE" HEAD > changed.txt
