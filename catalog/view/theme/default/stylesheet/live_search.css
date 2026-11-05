@@ -1,0 +1,135 @@
+#live-search {
+    width: 100%;
+    position: absolute;
+    z-index: 1000;
+    padding-top: 5px;
+    margin-top: -10px;
+    background-color: #FFF;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0px 4px 30px rgba(79, 102, 152, 0.1);
+    display: none;
+    top: 50px;
+    left: 0;
+}
+
+#live-search .loading {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#live-search ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#live-search ul li {
+    cursor: pointer;
+    padding: 5px;
+    margin: 0px 16px;
+    background-color: #FFF;
+    min-height: 40px;
+    clear: both;
+}
+@media (max-width: 767px) {
+    #live-search ul li {
+        margin: 0 10px;
+    }
+}
+
+
+#live-search ul li:hover .product-name {
+    color: #FF6B98;
+}
+
+#live-search ul li a {
+    text-decoration: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#live-search ul li svg {
+    vertical-align: middle;
+    margin-right: 16px;
+    flex: 20px 0 0;
+}
+
+@media (max-width: 767px) {
+
+    #live-search ul li svg {
+        margin-right: 10px;
+    }
+}
+
+#live-search ul li:hover svg {
+    fill: #FF6B98;
+}
+
+#live-search ul li:hover svg path {
+    fill: #FF6B98;
+}
+
+#live-search ul li .product-image {
+    float: left;
+    margin-right: 18px;
+    margin-left: 10px;
+}
+
+#live-search ul li .product-name p {
+    font-weight: normal;
+    font-style: italic;
+    font-size: 10px;
+    color: #555555;
+    margin: 0px;
+    padding: 0px;
+}
+
+#live-search ul li .product-name {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    display: inline-block;
+    color: #000;
+}
+
+#live-search ul li .product-price {
+    text-align: right;
+    font-size: 12px;
+    font-weight: bold;
+    float: right;
+    margin-top: 10px;
+    width: 15%;
+}
+
+#live-search ul li .product-price .price {
+    color: #333333;
+    display: block;
+}
+
+#live-search ul li .product-price .special {
+    color: #FF0000;
+    text-decoration: line-through;
+    display: block;
+}
+
+#live-search .product-price > .special {
+    margin-top: -5px;
+}
+
+#live-search .result-text a {
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    padding: 8px 0;
+    line-height: 20px;
+    color: #000;
+    background-color: #e6ffff;
+}
+
+#live-search .result-text a:hover {
+    text-decoration: underline;
+}

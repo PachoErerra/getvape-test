@@ -1,0 +1,90 @@
+{{ header }}
+
+
+<div class="container">
+    <div class="profile__content">
+        <div class="profile__holder">
+            <div class="profile__lside">
+                <h1 class="h2 color-black profile__title">{{ text_obrani_tovary }}</h1>
+                {% if success %}
+                    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                    </div>
+                {% endif %}
+                <div class="profile__products">
+                    <div class="products four-items-in-line">
+                        {% if products %}
+                            {% for product in products %}
+                                <div class="product">
+                                    <div class="product__wrapper">
+                                        <div class="product__top">
+
+                                            <div class="product__labels-wrapper">
+                                                {% if product.isnew %}
+                                                    <div class="product__info bg-light-blue">{{ text_novynka }}</div>{% endif %}
+                                                {% if product.special %}
+                                                    <div class="product__info bg-pink">{{ product.economy }}</div>{% endif %}
+                                            </div>
+
+                                            <div class="product__sub-action">
+                                                <a href="{{ product.remove }}" class="product__sub-action-btn product__favorites is-active">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                                        <use href="#icon-fav"></use>
+                                                    </svg>
+                                                </a>
+
+                                                <button type="button" class="product__sub-action-btn product__comparison"
+                                                   onclick="compare.add('{{ product.product_id }}');">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                                        <use href="#icon-compare"></use>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <a href="{{ product.href }}" class="product__image">
+                                            <img src="{{ product.thumb }}" alt="{{ product.name }}"
+                                                 title="{{ product.name }}">
+                                        </a>
+                                        <a href="{{ product.href }}" class="product__name">{{ product.name }}</a>
+
+                                        <div class="product__rating d-flex align-items-center">
+                                            <div class="rating__stars">
+                                                <div class="rating__stars-current" style="width:{{ product.rating * 20 }}%;"></div>
+                                            </div>
+
+                                            <div class="rating__stars-count">{{ product.reviews }}</div>
+                                        </div>
+
+                                        <div class="product__bottom d-flex align-items-center justify-content-between">
+                                            <div class="product__prices">
+											<div class="product__prices-cashback">{{ text_keshbek }} {{ product.reward }}₴</div>
+                                                {% if not product.special %}
+                                                    <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                                {% else %}
+                                                    <span>{{ product.price }}</span>
+                                                    <strong>{{ product.special|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                                {% endif %}
+                                                {% if product.tax %}
+                                                    <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <button type="button" class="product__add-cart btn btn-primary" aria-label="{{ text_u_koshyk }}"
+                                               onclick="cart.add('{{ product.product_id }}');">
+                                                <svg width="20" height="20" viewBox="0 0 20 20">
+                                                    <use href="#icon-cart"></use>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>{{ text_empty }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{{ footer }}

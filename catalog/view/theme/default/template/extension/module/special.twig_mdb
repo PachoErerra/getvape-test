@@ -1,0 +1,104 @@
+<div class="home__inner{% if heading_title == 'Акції' %} m-top-min{% endif %}">
+    {% if heading_title != 'Home page' %}
+        <div class="h3 m-bottom-40">{{ heading_title }}</div>{% endif %}
+    <div class="home__products">
+        <div class="products four-items-in-line">
+            {% for product in products %}
+                <div class="product{% if product.quantity <= 0 %} outofstock{% endif %}">
+                    <div class="product__wrapper">
+                        <div class="product__top">
+
+                            <div class="product__labels-wrapper">
+                                {% if product.isnew %}
+                                    <div class="product__info bg-light-blue">Новинка</div>{% endif %}
+                                {% if product.special %}<div class="product__info bg-pink">{{ product.economy }}</div>{% endif %}
+                                {% if product.quantity_shop <= 0 and product.quantity >  0 %}
+                                    <!--div class="product__info bg-pink-300 order-manager">
+                                        Замовляй у менеджера
+                                    </div-->
+                                {% endif %}
+                            </div>
+
+                            <div class="product__sub-action">
+                                <button type="button" aria-label="favorite" class="product__sub-action-btn product__favorites" onclick="wishlist.add('{{ product.product_id }}');">
+                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                        <use href="#icon-fav"></use>
+                                    </svg>
+                                </button>
+
+                                <button type="button" class="product__sub-action-btn product__comparison" aria-label="comparison" onclick="compare.add('{{ product.product_id }}');">
+                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                        <use href="#icon-compare"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <a href="{{ product.href }}" class="product__image" aria-label="{{ product.name }}">
+                            <img src="{{ product.thumb }}" data-old-src="{{ product.thumb }}" loading="lazy" alt="{{ product.name }}"
+                                 title="{{ product.name }}">
+                        </a>
+                        <a href="{{ product.href }}" class="product__name">{{ product.name }}</a>
+
+                        <div class="product__rating d-flex align-items-center">
+                            <div class="rating__stars">
+                                <div class="rating__stars-current" style="width:{{ product.rating * 20 }}%;"></div>
+                            </div>
+
+                            <div class="rating__stars-count">{{ product.reviews }}</div>
+                        </div>
+
+                        <div class="product__bottom d-flex align-items-center justify-content-between">
+                            <div class="product__prices">
+							<div class="product__prices-cashback">Кешбек: {{ product.reward }}₴</div>
+                                {% if not product.special %}
+                                    <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                {% else %}
+                                    <span>{{ product.price }}</span>
+                                    <strong>{{ product.special|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                {% endif %}
+                                {% if product.tax %}
+                                    <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                                {% endif %}
+                            </div>
+                            <button type="button" class="product__add-cart btn btn-primary" aria-label="У кошик"
+                               onclick="cart.add('{{ product.product_id }}');">
+                                <svg width="20" height="20" viewBox="0 0 20 20">
+                                    <use href="#icon-cart"></use>
+                                </svg>
+                            </button>
+                        </div>
+                        {% if product.products_related %}
+                            <div class="product__inner">
+                                {% for key,item in product.products_related %}
+                                    <div class="product__inner-title">{{ key }}:</div>
+                                    <ul class="product__inner-items">
+                                        {% for product1 in item %}
+                                            <li class="product__inner-item">
+                                                <a href="{{ product1.href }}" data-img-lg="{{ product1.bigthumb }}">
+                                                    <img src="{{ product1.thumb }}" alt="{{ product1.name }}" loading="lazy">
+                                                    <span class="product__inner-item-drop">{{ product1.name }}</span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if show_button %}
+        <a href="{{ category_url }}" class="btn btn-primary btn-xl" style="margin-top:30px">
+            Більше товарів
+
+            <svg width="20" height="20" viewBox="0 0 24 24">
+                <use href="#icon-angle-right"></use>
+            </svg>
+        </a>
+    {% endif %}
+</div>
+{% if remarketing_code %}
+    {{ remarketing_code }}
+{% endif %} 

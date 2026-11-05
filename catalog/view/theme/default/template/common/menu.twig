@@ -1,0 +1,7 @@
+{% if categories %}
+        {% for category in categories %}
+        <li{% if category.is_primary|default(false) %} class="category--primary"{% endif %}><a href="{{ category.href }}">
+                        {% if category.image %}<img src="{{ category.image }}" width="24" height="24" loading="lazy" alt="{{ category.name | nl2br }}">{% endif %}
+                        {{ category.name }}</a></li>
+        {% endfor %}
+{% endif %} 

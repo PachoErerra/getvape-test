@@ -1,0 +1,206 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+	  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+	    <button type="button" class="close" data-dismiss="alert">&times;</button>
+	  </div>
+	  {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+            <li><a href="#tab-form" data-toggle="tab">{{ tab_form }}</a></li>
+            <li><a href="#tab-setting" data-toggle="tab">{{ tab_setting }}</a></li>
+            <li><a href="#tab-about" data-toggle="tab">{{ tab_about }}</a></li>
+          </ul>
+
+          <div class="tab-content">
+
+            <div class="tab-pane active" id="tab-general">
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-5">
+                  <select name="module_hotsearch_status" id="input-status" class="form-control">
+                    {% if module_hotsearch_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-ocstore"><span data-toggle="tooltip" title="" data-original-title="{{ help_ocstore }}">{{ entry_ocstore }}</span></label>
+                <div class="col-sm-5">
+                  <select name="module_hotsearch_ocstore" id="input-ocstore" class="form-control">
+                    {% if module_hotsearch_ocstore %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-form">
+              <div class="alert alert-info">{{ warning_form }}</div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-wrapper"><span data-toggle="tooltip" title="" data-original-title="{{ help_wrapper }}">{{ entry_wrapper }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-wrapper" class="form-control" name="module_hotsearch_wrapper" value="{{ module_hotsearch_wrapper }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-form"><span data-toggle="tooltip" title="" data-original-title="{{ help_form }}">{{ entry_form }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-form" class="form-control" name="module_hotsearch_form" value="{{ module_hotsearch_form }}">
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-setting">
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-sku"><span data-toggle="tooltip" title="" data-original-title="{{ help_sku }}">{{ entry_sku }}</span></label>
+                <div class="col-sm-5">
+                  <select name="module_hotsearch_sku" id="input-sku" class="form-control">
+                    {% if module_hotsearch_sku %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-model"><span data-toggle="tooltip" title="" data-original-title="{{ help_model }}">{{ entry_model }}</span></label>
+                <div class="col-sm-5">
+                  <select name="module_hotsearch_model" id="input-model" class="form-control">
+                    {% if module_hotsearch_model %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-stock"><span data-toggle="tooltip" title="" data-original-title="{{ help_stock }}">{{ entry_stock }}</span></label>
+                <div class="col-sm-5">
+                  <select name="module_hotsearch_stock" id="input-stock" class="form-control">
+                    {% if module_hotsearch_stock %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-price"><span data-toggle="tooltip" title="" data-original-title="{{ help_price }}">{{ entry_price }}</span></label>
+                <div class="col-sm-5">
+                  <select name="module_hotsearch_price" id="input-price" class="form-control">
+                    {% if module_hotsearch_price %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-products-count"><span data-toggle="tooltip" title="" data-original-title="{{ help_products_count }}">{{ entry_products_count }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-products-count" class="form-control" name="module_hotsearch_products_count" value="{{ module_hotsearch_products_count }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-categories-count"><span data-toggle="tooltip" title="" data-original-title="{{ help_categories_count }}">{{ entry_categories_count }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-categories-count" class="form-control" name="module_hotsearch_categories_count" value="{{ module_hotsearch_categories_count }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-breakpoint"><span data-toggle="tooltip" title="" data-original-title="{{ help_breakpoint }}">{{ entry_breakpoint }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-breakpoint" class="form-control" name="module_hotsearch_breakpoint" value="{{ module_hotsearch_breakpoint }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-minlength"><span data-toggle="tooltip" title="" data-original-title="{{ help_minlength }}">{{ entry_minlength }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-minlength" class="form-control" name="module_hotsearch_minlength" value="{{ module_hotsearch_minlength }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-image-width"><span data-toggle="tooltip" title="" data-original-title="{{ help_image }}">{{ entry_image_width }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-image-width" class="form-control" name="module_hotsearch_image_width" value="{{ module_hotsearch_image_width }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-image-height"><span data-toggle="tooltip" title="" data-original-title="{{ help_image }}">{{ entry_image_height }}</span></label>
+                <div class="col-sm-5">
+                  <input type="text" id="input-image-height" class="form-control" name="module_hotsearch_image_height" value="{{ module_hotsearch_image_height }}">
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-about">
+              <p>{{ version }}</p>
+              <p>{{ about_module }}</p>
+              <div class="panel panel-default">
+                <div class="panel-heading">{{ entry_support }}</div>
+                <div class="panel-body">
+                  <script src="https://yastatic.net/q/forms-frontend-ext/_/embed.js"></script><iframe
+                    src="https://forms.yandex.ru/u/5d2c8cbd6b6a500283b57573/?iframe=1" frameborder="0"
+                    name="ya-form-5d2c8cbd6b6a500283b57573" width="650"></iframe>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

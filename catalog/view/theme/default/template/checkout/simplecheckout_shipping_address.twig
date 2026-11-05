@@ -1,0 +1,65 @@
+<div class="simplecheckout-block checkout__inner" id="simplecheckout_shipping_address" {{ hide ? 'data-hide="true"' : '' }} {{ display_error and has_error ? 'data-error="true"' : '' }}>
+  {% if display_header %}
+    <div class="checkout-heading panel-heading">{{ text_checkout_shipping_address }}</div>
+  {% endif %}
+  <div class="simplecheckout-block-content">
+    {% for row in rows %}
+      {{ row }}
+    {% endfor %}
+    {% for row in hidden_rows %}
+      {{ row }}
+    {% endfor %}
+	
+	{% if wantselect %}
+	<script>
+	
+//	select = '<select class="form-control" name="" id="shipping_address_city_select" data-theme="bootstrap"><option value="Львів">Львів</option><option value="Івано-Франківськ">Івано-Франківськ</option><option value="Ясиня">Ясиня</option></select><div class="dropdown-arrow"></div>';
+	select = '<select class="form-control" name="" id="shipping_address_city_select" data-theme="bootstrap"><option value="Львів">Львів</option></select><div class="dropdown-arrow"></div>';	
+	$(select).insertBefore($('.row-shipping_address_city input'));
+
+	$('.row-shipping_address_city input').hide();
+	
+	$('#shipping_address_city').val($('#shipping_address_city_select').val()).trigger('change');
+	
+	$('body').on('change', '#shipping_address_city_select', function(){
+		$('#shipping_address_city').val($('#shipping_address_city_select').val()).trigger('change');
+	});
+	
+	if ($('#shipping_address_city').val()){
+		var val = text = $('#shipping_address_city').val();
+		$("#shipping_address_city_select option[value=" + val + "]").attr('selected', 'true').text(text);
+		
+		if ($('#shipping_address_city').val() != $('#shipping_address_city_select').val()) {
+			$('#shipping_address_city').val('Львів');
+		}
+	}
+	
+	
+/*	
+	$('.row-shipping_address_ya>div>label').hide();
+	
+	if ($("#shipping_address_ya").prop('checked')) {
+		// console.log(1);
+		$('.row-shipping_address_receiver_phone').hide();
+		$('.row-shipping_address_pib').hide();
+	} else {
+	// console.log(0);
+	}
+*/	
+	</script>
+	{% endif %}
+	<script>
+
+	$('.row-shipping_address_ya>div>label').hide();
+
+	$('.row-customer_callme>div>label').hide();
+
+	if ($("#shipping_address_ya").prop('checked')) {
+		// console.log(1);
+		$('.row-shipping_address_receiver_phone').hide();
+		$('.row-shipping_address_pib').hide();
+	}
+	
+	</script>
+  </div>
+</div>

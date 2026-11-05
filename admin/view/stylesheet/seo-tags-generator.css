@@ -1,0 +1,339 @@
+/*.heading-title {
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+	background: none !important;
+}*/
+
+.is-error {
+	border: 1px solid red;
+}
+
+#module-work-area hr {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+#module-work-area .form-group {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#module-work-area .option-selector .control-label {
+  padding-top: 0;
+}
+
+
+
+/* options */
+
+.option-selector {
+  padding: 1px 0 5px 0 !important;
+}
+
+.option-status {
+  margin-bottom: 10px;
+}
+
+.option-status .control-label {
+  padding-top: 9px !important;
+}
+
+#module-work-area .tab-pane {
+  margin-top: 15px;
+}
+
+
+
+/* fieldset */
+
+.box {
+  margin-bottom: 20px;
+}
+
+.box-title{
+  padding: 10px;
+  background: #f2f2f2;
+  color: #555;
+}
+
+.essence-title {
+	margin-top: 10px;
+}
+
+
+/* formula-row */
+.formula-row {
+  margin: 0;
+  margin-bottom: 20px;
+  border: 1px dashed #ccc ;
+}
+
+/* выравниваем и кнопку добавления formula-row */
+.row-button-add {
+  margin: 0;
+}
+
+
+.formula-row_group {
+  padding-top: 10px;
+  margin: 0; /*reset grid*/
+  margin-bottom: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.formula-row_group .col-sm-12 {
+  margin: 0;
+  padding: 0 !important; /*reset grid*/
+}
+
+.formula-row_group h4 {
+
+}
+
+.formula-row_group .form-group + .form-group {
+  border-top: none;
+  border-bottom: none;
+}
+
+
+/* input style */
+.formula-row .form-control{
+  background: #f1f1f1;
+  font-weight: 600;
+  /*font-weight: bold;*/
+}
+
+
+/* vars */
+.vars-item {
+  margin-bottom: 7px;
+}
+.vars-item:first-child {
+  margin-top: 4px;
+}
+
+.var {
+  display: inline-block;
+  line-height: 1;
+  font-style: italic;
+  color: #5f426e;
+  background: #bda3cc;
+  padding: 2px 5px 3px 5px;
+  border-radius: 13px;
+	margin-right: 2px;
+  margin-bottom: 4px;
+}
+
+.var:hover {
+  cursor: pointer;
+  color: #500a74;
+  background: #ad8ebe;
+}
+
+/*
+.var-alias {
+  color: #9876aa;
+  background: pink;
+}
+*/
+
+.vars-notice {
+
+}
+
+.var-warning {
+  color: #906107;
+  background: #fdc83a;
+}
+
+.var-warning:hover {
+  color: #906107;
+  background: #e0ae28;
+}
+
+.var_mod-city-by-shop {
+  color: #906107;
+  background: #fdc83a;
+}
+
+.var_mod-city-by-shop:hover {
+  color: #906107;
+  background: #e0ae28;
+}
+
+.var_mod-synonyms {
+  color: #906107;
+  background: #fdc83a;
+}
+
+.var_mod-synonyms:hover {
+  color: #906107;
+  background: #e0ae28;
+}
+
+.var_custom-variables {
+  color: #888;
+  background: #ddd;
+}
+
+.var_custom-variables:hover {
+  color: #555;
+  background: #ccc;
+}
+
+
+
+
+/* Categories List
+============================================ */
+
+.categories-selector ul {
+	padding: 0;
+}
+
+.categories-selector ul li {
+	list-style: none;
+	border-left: 1px solid red;
+	padding-left: 7px;
+	margin-left: 11px;
+}
+
+.categories-selector ul ul {
+	padding-left: 26px;
+	padding-bottom: 5px;
+}
+
+.categories-selector input[type="checkbox"] {
+	margin-right: 7px;
+	margin-left: -7px;
+}
+
+.li-space {
+	display: inline-block;
+	width: 24px;
+	font-size: 15px;
+	font-weight: bold;
+	border-radius: 2px;
+	line-height: 1;
+	padding: 3px 0 3px 0;
+	margin-right: 10px;
+}
+
+.li-space.toggle-item {
+	text-align: center;
+}
+.li-space.toggle-item:hover {
+	cursor: pointer;
+	background: #ccc;
+}
+
+.categories-selector ul li label {
+	height: 20px;
+}
+
+.category-item_1 > label {
+	text-transform: uppercase;
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.category-item_2 > label {
+	font-weight: 700;
+	font-size: 13px;
+}
+
+.category-item_3 label {
+	font-weight: normal;
+	font-style: italic;
+}
+
+.categories-selector label._inactive {
+	color: #9f9f9f;
+}
+
+a:hover {
+	cursor: pointer;
+}
+
+.all-subcategories-selector {
+	width: 13px;
+	margin-left: 7px;
+	margin-right: 7px;
+	padding: 2px;
+}
+
+.all-subcategories-selector:hover {
+	background: #ccc;
+	cursor: pointer;
+}
+
+
+/*Attributes*/
+.attributes-row {
+  margin: 0;
+  margin-bottom: 15px;
+  border: 1px dashed #ccc;
+	padding-bottom: 15px;
+}
+
+
+/* Category Page
+============================================ */
+.category-stg-box {
+	border: 1px dashed #ccc;
+	padding: 15px;
+	margin-top: 15px;
+}
+
+#stg-formulas .form-control {
+	background: #f1f1f1;
+	font-weight: 600;
+	/*font-weight: bold;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,43 @@
+<div class="home__inner text-content">
+  {% if heading_title %}
+  <h2>{{ heading_title }}</h2>
+  {% endif %}
+  
+  {% if hidden %}
+	<style>
+		.toggle-content {
+			word-break: break-word;
+			display: -webkit-box;
+			overflow: hidden;
+			-webkit-box-orient: vertical;
+			white-space: normal;
+			-webkit-line-clamp: 5;
+		}
+		.toggle-content.is-show {
+			display: block !important;
+		}
+	</style>
+	<div class="toggle-content">{{ html }}</div>
+	<button type="button" class="js-text-more-btn js-text-more button-light-blue button-light-blue--with-icon" data-text="{{ text_zhornuty }}" style="width: 200px;margin-top: 20px;">{{ text_detali }}</button>
+	
+	<script>
+	// let flag = true;
+	$(function(){
+		$('.js-text-more').click(function(){
+			let d_t = $(this).attr('data-text'),
+					t = $(this).text();
+
+			$(this).text(d_t).attr('data-text', t);
+			toogleDiv();
+		})
+	})
+	function toogleDiv(size){
+			$('.toggle-content').toggleClass('is-show');
+	}
+	</script>
+  
+  {% else %}
+	{{ html }}
+  {% endif %}
+
+</div>

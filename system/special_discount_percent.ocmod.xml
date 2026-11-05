@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<code>Set discount or special price by percent!</code>
+	<name>Set discount or special price by percent!</name>
+	<version>2.1</version>
+
+	<file path="admin/model/catalog/product.php">
+		<operation>
+			<search><![CDATA[, price = '" . (float)$product_discount['price']]]></search>
+			<add position="replace"><![CDATA[, price_percent = '" . (float)$product_discount['price_percent'] . "', price = '" . (float)$product_discount['price']]]>
+			</add>
+		</operation>
+	</file>
+	
+	<file path="admin/view/template/catalog/product_form.twig">
+
+		<operation>
+			<search><![CDATA[<td class="text-right"><input type="text" name="product_discount[{{ discount_row }}][price]" value="{{ product_discount.price }}" placeholder="{{ entry_price }}" class="form-control"/></td>]]></search>
+			<add position="replace"><![CDATA[
+			<td class="text-right"><div class="form-inline"><input type="text" name="product_discount[{{ discount_row }}][price_percent]" id="precent_d_{{ discount_row }}" onkeyup="fun(this); changeDiscount({{ discount_row }});" style="width:100px" class="form-control">% <input type="text" name="product_discount[{{ discount_row }}][price]" value="{{ product_discount['price'] }}" placeholder="{{ entry_price }}" class="form-control price_d" onkeyup="fun(this); changePercentDisc({{ discount_row }});"/></div></td>]]>
+			</add>
+		</operation>
+		
+		<operation>
+			<search><![CDATA[name="price" ]]></search>
+			<add position="replace"><![CDATA[
+			name="price" onkeyup="changeDiscounts();"]]>
+			</add>
+		</operation>
+
+		<operation>
+			<search><![CDATA[html += '  <td class="text-right"><input type="text" name="product_discount[' + discount_row + '][price]" value="" placeholder="{{ entry_price }}" class="form-control" /></td>';]]></search>
+			<add position="replace"><![CDATA[
+html += '  <td class="text-right"><div class="form-inline">';
+html += '  <input type="text" name="product_discount[' + discount_row + '][price_percent]" id="precent_d_' + discount_row + '" onkeyup="fun(this); changeDiscount(' + discount_row + ');" style="width:100px" class="form-control">% ';
+html += '  <input type="text" name="product_discount[' + discount_row + '][price]" placeholder="{{ entry_price }}" class="form-control price_s" onkeyup="changePercentDisc(' + discount_row + ');"/>';
+html += '  </div></td>';
+			]]>
+			</add>
+		</operation>
+	
+		<operation>
+			<search><![CDATA[{{ footer }}]]></search>
+			<add position="before"><![CDATA[
+<script><!--
+	$( document ).ready(function() {
+
+		var price = parseFloat($("input[name=price]").val());
+		if (price >0.0001 && price != "") { 
+			// DISABLE IF PRICE IS 0!!!
+			//discount
+			$('.price_d').each(function(index,data) {
+				var discount_price = $('input[name^="product_discount['+index+'][price]"]').val();
+				var recalculate = 100-(discount_price/price*100);
+				$('#precent_d_'+index).val(recalculate);
+			});	
+		}			   		
+	});
+	function fun(input) {
+	   input.value = input.value.replace(/[,]/g, ".");
+	}
+	//Discount
+	function changeDiscount(row_id){
+
+		var price = parseFloat($("input[name=price]").val());
+		var precent = $('#precent_d_'+row_id).val();
+		if (precent <= 100 || $.isNumeric(precent) == true){
+			var recalculated =  parseFloat(price - ( price * precent / 100 )).toFixed(0);
+			$('input[name^="product_discount['+row_id+'][price]"]').val(recalculated);
+		}else{
+			$('input[name^="product_discount['+row_id+'][price]"]').val(0);
+		}
+	}
+
+	function changePercentDisc(row_id){
+		var price = parseFloat($("input[name=price]").val());
+
+		var special =  parseFloat($('input[name^="product_discount['+row_id+'][price]"]').val());
+		if (special <= price || $.isNumeric(special) == true){
+			var discount_precent = 100-(special/price*100);
+			$('#precent_d_'+row_id).val(discount_precent);
+		}else{
+			$('#precent_s_'+row_id).val("");
+		}
+	}
+	
+	function changeDiscounts(){
+		var count = $('#discount tbody').children().length;
+		console.log(count); // Выведет количество детей.
+		
+		for(var i = 0; i < count; i++) {
+			changeDiscount(i);
+		}
+		
+	}
+//--></script>]]>
+			</add>
+		</operation>
+	</file>
+	
+	<file path="system/library/cart/cart.php">
+		<operation>
+			<search><![CDATA[SELECT price FROM " . DB_PREFIX . "product_discount]]></search>
+			<add position="replace"><![CDATA[SELECT price, price_percent FROM " . DB_PREFIX . "product_discount]]>
+			</add>
+		</operation>
+		<operation>
+			<search><![CDATA[if ($product_discount_query->num_rows) {]]></search>
+			<add position="before"><![CDATA[$discount_reward_percent = 0;]]>
+			</add>
+		</operation>
+		<operation>
+			<search><![CDATA[if ($product_discount_query->num_rows) {]]></search>
+			<add position="after"><![CDATA[$discount_reward_percent = $product_discount_query->row['price_percent'];]]>
+			</add>
+		</operation>
+		<operation>
+			<search><![CDATA[$reward * $cart['quantity']]]></search>
+			<add position="replace"><![CDATA[$discount_reward_percent?(round(($reward - ($discount_reward_percent*$reward/100)) * $cart['quantity'])):$reward * $cart['quantity']]]>
+			</add>
+		</operation>
+	</file>
+	
+</modification>

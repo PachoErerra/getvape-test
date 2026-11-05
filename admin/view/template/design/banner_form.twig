@@ -1,0 +1,426 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-banner" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-banner" class="form-horizontal">
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if error_name %}
+              <div class="text-danger">{{ error_name }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                {% if status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <br />
+          <ul class="nav nav-tabs" id="language">
+            {% for language in languages %}
+            <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="tab-content" >
+            {% set image_row = 0 %}
+            {% for language in languages %}
+            <div class="tab-pane" id="language{{ language.language_id }}">
+              <table id="images{{ language.language_id }}" class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left">{{ entry_title }}</td>
+                    <td class="text-left">{{ entry_link }}</td> 
+					<td class="text-left">Нова вкладка</td>
+					<td class="text-left" {% if banner_id != 10 %} style="display: none;" {% endif %}>Тип</td>
+                    <td class="text-center">{{ entry_image }} (desktop)</td>
+                    <td>{{ entry_image }} (mobile)</td>
+                    <td class="text-right">{{ entry_sort_order }}</td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody id="filter-value-list">
+                  {% if banner_images[language.language_id] %}
+                  {% for banner_image in banner_images[language.language_id] %}
+                  <tr id="image-row{{ image_row }}" class="list-group-item2">
+				<!--    <input type="hidden" name="banner_image[{{ language.language_id }}][{{ image_row }}][color]" value="{{ banner_image.color }}" /> -->
+					
+                    <td class="text-left"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][title]" value="{{ banner_image.title }}" placeholder="{{ entry_title }}" class="form-control" />
+                      {% if error_banner_image[language.language_id][image_row] %}
+                      <div class="text-danger">{{ error_banner_image[language.language_id][image_row] }}</div>
+                      {% endif %}</td>
+                    <td class="text-left" style="width: 30%;"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][link]" value="{{ banner_image.link }}" placeholder="{{ entry_link }}" class="form-control" /></td>
+                      <td class="text-center">
+                          <div class="checkbox">
+                              <label>
+                                  {% if banner_image.newtab %}
+                                      <input type="checkbox"
+                                             name="banner_image[{{ language.language_id }}][{{ image_row }}][newtab]"
+                                             value="1" checked="checked" id="input-tab"/>
+                                  {% else %}
+                                      <input type="checkbox"
+                                             name="banner_image[{{ language.language_id }}][{{ image_row }}][newtab]"
+                                             value="1" id="input-tab"/>
+                                  {% endif %}
+                                  &nbsp; </label>
+                          </div>
+                      </td>
+
+                      <td class="text-center" {% if banner_id != 10 %} style="display: none;" {% endif %}>
+                          <div class="radio">
+                              <label>
+                                  <input type="radio"
+                                         name="banner_image[{{ language.language_id }}][{{ image_row }}][full_width]"
+                                         value="25" {% if banner_image.full_width == '25' %}checked="checked"{% endif %}/> 25%
+                              </label><br>
+                              <label>
+                                  <input type="radio"
+                                         name="banner_image[{{ language.language_id }}][{{ image_row }}][full_width]"
+                                         value="50" {% if banner_image.full_width == '50' %}checked="checked"{% endif %}/> 50%
+                              </label><br>
+                              <label>
+                                  <input type="radio"
+                                         name="banner_image[{{ language.language_id }}][{{ image_row }}][full_width]"
+                                         value="100" {% if banner_image.full_width == '100' %}checked="checked"{% endif %}/> 100%
+                              </label>
+                          </div>
+                      </td>
+                    <td class="text-center"><a href="" id="thumb-image{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ banner_image.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                      <input type="hidden" name="banner_image[{{ language.language_id }}][{{ image_row }}][image]" value="{{ banner_image.image }}" id="input-image{{ image_row }}" />
+					  </td>
+					  
+                    <td class="text-center"><a href="" id="thumb-image_mob{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ banner_image.thumb_mob }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                      <input type="hidden" name="banner_image[{{ language.language_id }}][{{ image_row }}][image_mob]" value="{{ banner_image.image_mob }}" id="input-image_mob{{ image_row }}" />
+					  
+
+					  </td>
+					  
+                    <td class="text-right" style="width: 10%;"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][sort_order]" value="{{ banner_image.sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control" /></td>
+                    <td class="text-left"><button type="button" onclick="$('#image-row{{ image_row }}, .tooltip').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                  </tr>
+                  {% set image_row = image_row + 1 %}
+                  {% endfor %}
+                  {% endif %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="6"></td>
+                    <td class="text-left"><button type="button" onclick="addImage('{{ language.language_id }}');" data-toggle="tooltip" title="{{ button_banner_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            {% endfor %}
+			
+			
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+<!--
+<script id="template-filter-row" type="text/x-handlebars-template">
+<li class="list-group-item2 list-group-item2-info">
+  <input type="hidden" name="filter_value[{row}][value_id]" value="" />
+  <input type="hidden" name="filter_value[{row}][image]" value="" id="value-image-add-{row}" />
+  <input type="hidden" name="filter_value[{row}][color]" value="" />
+
+  <div class="row">
+    <div class="col-sm-1">
+      <input type="number" name="filter_value[{row}][sort_order]" value="" class="form-control" placeholder="{{ entry_sort_order }}" />
+    </div>
+    <div class="col-sm-9">
+      {% for language in languages %}
+      <div class="input-group">
+        <span class="input-group-addon"><img src="{{ language.image }}" title="{{ language.name }}" /></span>
+        <input type="text" class="form-control" name="filter_value[{row}][description][{{ language.language_id }}][name]" value="" />
+      </div>                 
+      {% endfor %}                  
+    </div>
+    <div class="col-sm-2 text-right">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default color-handler{color}" title="{{ text_select_color }}"><i class="fa fa-fw fa-eyedropper"></i></button>
+        <button type="button" class="btn btn-default image-handler{image}" title="{{ text_browse_image }}" id="value-image-add-thumb-{row}"><img src="{{ no_image }}" alt="" /><i class="fa fa-fw fa-picture-o"></i></button>
+        <button type="button" class="btn btn-default" onclick="removeFilterValue(this);"><i class="fa fa-fw fa-times text-danger"></i></button>
+      </div>
+    </div>                                        
+  </div> 
+</li>
+</script>
+<script>
+
+
+
+var
+  colorboxHTML = '',
+  colors = [
+    '','f00', 'ff0', '0f0', '0ff', '00f', 'f0f', 'fff', 
+    'ebebeb', 'e1e1e1', 'd7d7d7', 'cccccc', 'c2c2c2', 'b7b7b7', 'acacac', 'a0a0a0', '959595', 'ee1d24', 'fff100', '00a650', '00aeef', '2f3192', 
+    'ed008c', '898989', '7d7d7d', '707070', '626262', '555', '464646', '363636', '262626', '111', '000', 'f7977a', 'fbad82', 'fdc68c', 'fff799', 
+    'c6df9c', 'a4d49d', '81ca9d', '7bcdc9', '6ccff7', '7ca6d8', '8293ca', '8881be', 'a286bd', 'bc8cbf', 'f49bc1', 'f5999d', 'f16c4d', 'f68e54', 
+    'fbaf5a', 'fff467', 'acd372', '7dc473', '39b778', '16bcb4', '00bff3', '438ccb', '5573b7', '5e5ca7', '855fa8', 'a763a9', 'ef6ea8', 'f16d7e', 
+    'ee1d24', 'f16522', 'f7941d', 'fff100', '8fc63d', '37b44a', '00a650', '00a99e', '00aeef', '0072bc', '0054a5', '2f3192', '652c91', '91278f', 
+    'ed008c', 'ee105a', '9d0a0f', 'a1410d', 'a36209', 'aba000', '588528', '197b30', '007236', '00736a', '0076a4', '004a80', '003370', '1d1363', 
+    '450e61', '62055f', '9e005c', '9d0039', '790000', '7b3000', '7c4900', '827a00', '3e6617', '045f20', '005824', '005951', '005b7e', '003562', 
+    '002056', '0c004b', '30004a', '4b0048', '7a0045', '7a0026'
+  ];
+
+colorboxHTML += '<div class="ocf-colorbox">';
+
+for (var i = 0; i < colors.length; i++) {
+  colorboxHTML += '<a href="#' + colors[i] + '" style="background-color: #' + colors[i] + ';"></a>';
+}
+
+colorboxHTML += '</div>';
+
+var 
+
+filterValueRow = {{ image_row }},
+
+addFilterValue = function(before) {
+  var 
+    html = '',
+    color = '',
+    image = '',
+  
+  html = $('#template-filter-row').html().replace(/{row}/g, filterValueRow).replace(/{color}/g, color).replace(/{image}/g, image);
+  
+  if (before) {
+    $('#filter-value-list').prepend(html);
+  } else {
+    $('#filter-value-list').append(html);
+  }
+  
+  filterValueRow++;
+},
+
+removeFilterValue = function(btn) {
+  $(btn).closest('.list-group-item2').remove();
+},
+
+showColorBox = function($btn) {
+  if ($btn.hasClass('disabled')) {
+    return;
+  }
+  
+  function showPopover() {
+    $btn.popover({
+      html: true,
+      placement: 'left',
+      container: $btn.closest('tr.list-group-item2'),
+      trigger: 'manual',
+      content: colorboxHTML,
+    }).popover('show');  
+  }
+
+  if ($('.popover').length) {
+    $('[aria-describedby="' + $('.popover').attr('id') + '"]').popover('hide').one('hidden.bs.popover', showPopover);
+  } else {
+    showPopover();
+  }
+},
+
+setValueColor = function($color) {
+  var color = $color.attr('href').substr(1), $valueRow = $color.closest('tr.list-group-item2');
+
+  $valueRow.find('input[name$="[color]"]').val(color);
+  
+  $valueRow.find('.color-handler').css('background', '#' + color);
+  if (color == '') {
+	$valueRow.find('.color-handler').css('background', '#fff');
+  }
+  
+  $('.popover.fade').hide().remove();
+  return false;
+},
+
+showImageExplorer = function($btn) {
+  if ($btn.hasClass('disabled')) {
+    return;
+  }
+
+  function showPopover() { 
+    $btn.popover({
+      html: true,
+      placement: 'left',
+      container: $valueRow,
+      trigger: 'manual',
+      content: function() {
+        return '<button type="button" id="button-image" class="btn btn-primary"><i class="fa fa-pencil"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+      }
+    }).popover('show');
+  }
+  
+  if ($('.popover').length) {
+    $('[aria-describedby="' + $('.popover').attr('id') + '"]').popover('hide').one('hidden.bs.popover', showPopover);
+  } else {
+    showPopover();
+  }
+
+  var $valueRow = $btn.closest('li.list-group-item2');
+
+  $(document).off('.image-manager').on('click.image-manager', '#button-image', function() {
+    $('#modal-image').remove();
+
+    $.ajax({
+      url: ocfilter.link('common/filemanager', { target: $valueRow.find('input[name$="[image]"]').attr('id'), thumb: $btn.attr('id') }),
+      dataType: 'html',
+      beforeSend: function() {
+        $('#button-image').prop('disabled', true).find('i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+      },
+      complete: function() {
+        $('#button-image').prop('disabled', false).find('i').replaceWith('<i class="fa fa-pencil"></i>');
+      },
+      success: function(html) {
+        $('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+
+        $('#modal-image').modal('show');
+      }
+    });
+
+    $btn.popover('hide', function() {
+      $('.popover').remove();
+    });
+  }).on('click.image-manager', '#button-clear', function() {
+    $valueRow.find('input[name$="[image]"]').val('');
+
+    $btn.popover('hide', function() {
+      $('.popover').remove();
+    }).find('img').attr('src', '{{ no_image }}');
+  });
+};
+
+$(function() {
+  $('#filter-value-list').on('click', function(e) {
+    if ($(e.target).closest('button.color-handler').length) {
+      return showColorBox($(e.target).closest('button.color-handler'));
+	  
+    }
+  
+    if ($(e.target).closest('button.image-handler').length) {
+      return showImageExplorer($(e.target).closest('button.image-handler'));
+    }
+    
+    if ($(e.target).parent('.ocf-colorbox').length) {
+      e.preventDefault();
+    
+      return setValueColor($(e.target));
+    }    
+  });
+
+  $('input[name="color"]').on('change', function() {
+    $('.color-handler').toggleClass('disabled', !($(this).val() && $(this).prop('checked')));
+  });
+
+  $('input[name="image"]').on('change', function() {
+    $('.image-handler').toggleClass('disabled', !($(this).val() && $(this).prop('checked')));
+  });
+});
+</script>
+  -->
+  
+  <script type="text/javascript"><!--
+var image_row = {{ image_row }};
+
+function addImage(language_id) {
+	html  = '<tr id="image-row' + image_row + '">';
+    html += '  <td class="text-left"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][title]" value="" placeholder="{{ entry_title }}" class="form-control" /></td>';	
+	html += '  <td class="text-left" style="width: 30%;"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][link]" value="" placeholder="{{ entry_link }}" class="form-control" /></td>';	
+	
+	
+	html += '  <td class="text-center"><div class="checkbox"><label><input type="checkbox" name="banner_image[' + language_id + '][' + image_row + '][newtab]" value="1" /></label></div></td>';
+
+  html += '  <td class="text-center">'
+    + '    <div class="radio">'
+    + '      <label><input type="radio" name="banner_image[' + language_id + '][' + image_row + '][full_width]" value="25" checked> 25%</label><br>'
+    + '      <label><input type="radio" name="banner_image[' + language_id + '][' + image_row + '][full_width]" value="50" /> 50%</label><br>'
+    + '      <label><input type="radio" name="banner_image[' + language_id + '][' + image_row + '][full_width]" value="100" /> 100%</label>'
+    + '    </div>'
+    + '  </td>';
+
+	html += '  <td class="text-center"><a href="" id="thumb-image' + image_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="banner_image[' + language_id + '][' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
+	html += '  <td class="text-center"><a href="" id="thumb-image_mob' + image_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="banner_image[' + language_id + '][' + image_row + '][image_mob]" value="" id="input-image_mob' + image_row + '" /></td>';
+	html += '  <td class="text-right" style="width: 10%;"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][sort_order]" value="" placeholder="{{ entry_sort_order }}" class="form-control" /></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + ', .tooltip\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+	
+	$('#images' + language_id + ' tbody').append(html);
+	
+	image_row++;
+}
+//--></script> 
+  <script type="text/javascript"><!--
+$('#language a:first').tab('show');
+//--></script> 
+</div>
+<style>
+.ocf-colorbox {
+	width: 256px;
+	margin: -10px -15px;
+}
+
+.ocf-colorbox a {
+	display: block;
+	float: left;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	z-index: 1;
+}
+
+.ocf-colorbox a:hover {
+	z-index: 2;
+}
+
+.ocf-colorbox a:after {
+	content: "";
+	background-color: inherit;
+	position: absolute;
+	display: none;
+	width: 60px;
+	height: 60px;
+	right: 100%;
+	bottom: 100%;
+	box-shadow: -2px -1px 20px rgba(0,0,0,0.4);
+}
+
+.ocf-colorbox a:hover:after {
+	display: block;
+}
+</style>
+{{ footer }} 

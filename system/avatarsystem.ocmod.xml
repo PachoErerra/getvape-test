@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+
+  <name>avatar-system</name>
+  <code>avatar-system</code>
+  <version>1.1.0</version>
+  <author>stealth</author>
+  <link></link>
+
+  <file path="catalog/controller/account/edit.php">
+  <operation>
+			<search index="0"><![CDATA[$this->load->model('account/custom_field');]]></search>
+			<add position="before"><![CDATA[
+      if (isset($this->request->post['avatar'])) {
+			$data['avatar'] = $this->request->post['avatar'];
+		} elseif (!empty($customer_info) && !empty($customer_info['avatar'])) {
+			$data['avatar'] = $customer_info['avatar'];
+		} else {
+			$data['avatar'] = '';
+		}
+    if (is_file(DIR_IMAGE . $this->config->get('avatarsystem_avatarimage'))) {
+			$data['davatarimage'] = 'image/' . $this->config->get('avatarsystem_avatarimage');
+		} else {
+			$data['davatarimage'] = '';
+		}
+      ]]></add>
+		</operation>  
+  </file>
+  <file path="catalog/controller/account/account.php">
+  <operation>
+			<search index="0"><![CDATA[$data['discount'] = $customer_info['discount'];]]></search>
+			<add position="after"><![CDATA[
+      $data['avatar'] = (!empty($customer_info['avatar'])) ? html_entity_decode($customer_info['avatar'], ENT_QUOTES, 'UTF-8') : '';
+      ]]></add>
+		</operation>  
+  </file>
+  <file path="catalog/controller/extension/module/account.php">
+  <operation>
+			<search index="0"><![CDATA[$data['recurring'] = $this->url->link('account/recurring', '', true);]]></search>
+			<add position="after"><![CDATA[
+      $data['avatar'] = '';
+      if ($this->customer->isLogged()) {
+        if (empty($customer_info)) {
+          $this->load->model('account/customer');
+          $customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
+        }
+        if (!empty($customer_info['avatar'])) {
+          $data['avatar'] = html_entity_decode($customer_info['avatar'], ENT_QUOTES, 'UTF-8');
+        }
+      }
+      if (is_file(DIR_IMAGE . $this->config->get('avatarsystem_avatarimage'))) {
+			$data['davatarimage'] = 'image/' . $this->config->get('avatarsystem_avatarimage');
+		  } else {
+			$data['davatarimage'] = '';
+		  }
+      ]]></add>
+		</operation>  
+  </file>
+  <file path="catalog/model/account/customer.php">
+  <operation>
+			<search index="0"><![CDATA[$this->db->query("UPDATE " . DB_PREFIX . "customer SET firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "',]]></search>
+			<add position="replace"><![CDATA[$this->db->query("UPDATE " . DB_PREFIX . "customer SET firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "', avatar = '" . $this->db->escape(isset($data['avatar']) ? $data['avatar'] : '') . "',]]></add>
+		</operation>  
+  </file>
+  <file path="catalog/view/theme/*/template/extension/module/account.twig">
+  <operation>
+			<search index="0"><![CDATA[{{ aname }}]]></search>
+			<add position="replace"><![CDATA[
+								  {% if avatar %}
+								  <img src="{{ avatar }}" style="" alt="{{name}}" />
+								  {% else %}
+								  {{ aname }}
+								  {% endif %}
+			]]></add>
+		</operation>  
+  </file>
+  <!--
+  <file path="catalog/view/theme/*/template/account/account.tpl">
+  <operation>
+			<search index="0"><![CDATA[<h2><?php echo $text_my_account; ?></h2>]]></search>
+			<add position="before"><![CDATA[<div class="avatara" style="width: <?php echo $avatarwidth; ?>px; padding: 0px;"><?php if ($avatar) { ?><img id="avatarka" src="<?php echo $avatar; ?>" style="width: <?php echo $avatarwidth; ?>px; height: <?php echo $avatarheight; ?>px; padding: <?php echo $avatarpadding; ?>px;" alt="AVATAR" /><?php } else { ?><img id="avatarka" src="<?php echo $davatarimage; ?>" style="width: <?php echo $avatarwidth; ?>px; height: <?php echo $avatarheight; ?>px; padding: <?php echo $avatarpadding; ?>px;" alt="AVATAR" /><?php } ?></div>]]></add>
+		</operation>  
+  </file>
+  -->
+  <file path="catalog/view/theme/*/template/account/edit.twig">
+  <operation>
+			<search index="0"><![CDATA[{% for custom_field in custom_fields %}]]></search>
+			<add position="before"><![CDATA[
+			
+                        <div class="profile__inner" style="display: block;">
+                            <div class="profile__inner-title mb-2">Фото профілю</div>
+
+                            <div class="profile__avatar d-flex align-items-sm-center flex-row">
+                                <div class="profile__avatar-img avatara">
+								  {% if avatar %}
+								  <img id="avatarka" src="{{ avatar }}" style="" alt="{{name}}" />
+								  {% else %}
+								  {{ aname }}
+								  {% endif %}
+                                </div>
+                                <div class="profile__avatar-info">
+                                    <div class="profile__action d-flex align-items-center">
+                                        <button class="profile__action-change btn btn-secondary" type="button" id="button-upload" >
+                                            Оновити фото профілю
+                                        </button>
+										<input type="hidden" name="avatar" value="{{ avatar }}" id="input-avatar" />
+                                        <button class="profile__action-remove d-flex align-items-center justify-content-center" type="button"{% if not avatar %} style="display: none;" {% endif %}> 
+                                            <svg class="base-icon-size" width="24" height="24" viewBox="0 0 24 24">
+                                                <use href="#icon-trash"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="profile__file-size">
+                                        Файли JPEG або PNG не більше 8 МБ
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+      ]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[{{ footer }}]]></search>
+			<add position="before"><![CDATA[
+      <!-- enej -->
+<script type="text/javascript"><!--
+$('.profile__action-remove').on('click', function() {
+ $('.avatara').html('{{ aname }}');
+ $('#input-avatar').val('');
+ $(this).hide();
+});
+$('button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+	
+	$('#form-upload').remove();
+	
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" accept="image/*" /></form>');
+	
+	$('#form-upload input[name=\'file\']').trigger('click');
+	
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+			
+			$.ajax({
+				url: 'index.php?route=tool/avatarupload',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+					
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+					
+					if (json['success']) {
+//						alert(json['success']);
+						$('.profile__action-remove').show();
+						$(node).parent().find('input').attr('value', json['code']);
+						$(node).parent().parent().parent().find('.avatara').replaceWith('<div class="profile__avatar-img avatara"><img id="avatarka" src="' + json['code'] + '"  style="width: 80px; height: 80px;"/></div>');
+						$('.button-light-blue.button-light-blue--border-radius-min.button-light-blue--center-text-bold').trigger('click');
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+//--></script>
+<!-- enej -->  
+      ]]></add>
+		</operation>  
+  </file> 
+  <file path="system/library/cart/customer.php">
+  <operation>
+			<search index="0"><![CDATA[private $address_id;]]></search>
+			<add position="after"><![CDATA[private $avatar;]]></add>
+		</operation>
+    <operation>
+			<search index="0"><![CDATA[$this->referal = $customer_query->row['referal'];
+
+				$this->db->query("UPDATE " . DB_PREFIX . "customer SET language_id = '" . (int)$this->config->get('config_language_id') . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int)$this->customer_id . "'");]]></search>
+			<add position="before"><![CDATA[$this->avatar = isset($customer_query->row['avatar']) ? $customer_query->row['avatar'] : '';
+]]></add>
+		</operation>
+    <operation>
+			<search index="0"><![CDATA[$this->referal = $customer_query->row['referal'];
+		
+			$this->db->query("UPDATE " . DB_PREFIX . "customer SET language_id = '" . (int)$this->config->get('config_language_id') . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int)$this->customer_id . "'");]]></search>
+			<add position="before"><![CDATA[$this->avatar = isset($customer_query->row['avatar']) ? $customer_query->row['avatar'] : '';
+]]></add>
+		</operation>
+    <operation>
+			<search index="0"><![CDATA[$this->address_id = '';]]></search>
+			<add position="after"><![CDATA[$this->avatar = '';]]></add>
+		</operation>
+    <operation>
+			<search index="0"><![CDATA[public function getEmail() {]]></search>
+			<add position="before"><![CDATA[
+      public function getAvatar() {
+		return $this->avatar;
+	}
+      ]]></add>
+		</operation>  
+  </file>  
+</modification>  

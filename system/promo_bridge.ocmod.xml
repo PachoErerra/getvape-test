@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Promo Bridge</name>
+    <code>promo_bridge</code>
+    <version>4.0</version>
+    <author>stealth</author>
+    <link>#</link>
+  <file path="admin/controller/common/column_left.php">
+    <operation>
+      <search><![CDATA[if ($this->user->hasPermission('access', 'catalog/filter'))]]></search>
+      <add position="before"><![CDATA[
+        $catalog[] = array(
+          'name'     => 'Promo',
+          'href'     => $this->url->link('catalog/promo', 'user_token=' . $this->session->data['user_token'], true),
+          'children' => array()
+        );
+      ]]></add>
+    </operation>
+  </file>
+    <file path="system/library/seopro.php">
+        <operation>
+            <search><![CDATA[if(!in_array($url[0], ['category_id', 'product_id', 'manufacturer_id', 'information_id', 'article_id', 'blog_category_id'])) {]]></search>
+            <add position="replace"><![CDATA[
+                if(!in_array($url[0], ['category_id', 'product_id', 'manufacturer_id', 'information_id', 'article_id', 'blog_category_id', 'promo_id'])) {
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$this->request->get['route'] = 'product/manufacturer/info';]]></search>
+            <add position="after"><![CDATA[
+        } elseif (isset($this->request->get['promo_id'])) {
+            $this->request->get['route'] = 'product/promo/info';
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[case 'product/category':]]></search>
+            <add position="before"><![CDATA[
+                case 'product/promo/info':
+                    if (isset($data['promo_id'])) {
+                        unset($data['route']);
+                    }
+                    break;
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[case 'category_id':]]></search>
+            <add position="before"><![CDATA[
+                case 'promo_id':
+                    $promo_id = (int)$value;
+                    $queries[] = 'promo_id=' . $promo_id;
+                    $postfix = true;
+                    unset($data[$key]);
+                    break;
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/model/catalog/product.php">
+        <operation>
+            <search><![CDATA[WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";]]></search>
+            <add position="after"><![CDATA[
+        if (!empty($data['filter_promo_id'])) {
+            $this->load->model('catalog/promo');
+            $promo_product_ids = $this->model_catalog_promo->getPromoProductIds($data['filter_promo_id']);
+            if ($promo_product_ids) {
+                $sql .= " AND p.product_id IN (" . implode(',', $promo_product_ids) . ")";
+            } else {
+                $sql .= " AND p.product_id = -1";
+            }
+        }
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/extension/module/ocfilter.php">
+        <operation>
+            <search><![CDATA[$url = '';]]></search>
+            <add position="after"><![CDATA[
+        if (isset($this->request->get['promo_id'])) {
+            $url .= '&promo_id=' . (int)$this->request->get['promo_id'];
+        }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$data['link'] = str_replace('&amp;', '&', $this->ocfilter->seo->link());]]></search>
+            <add position="after"><![CDATA[
+        if (isset($this->request->get['promo_id'])) {
+            $data['link'] .= (strpos($data['link'], '?') === false ? '?' : '&') . 'promo_id=' . (int)$this->request->get['promo_id'];
+        }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$json['href'] = str_replace('&amp;', '&', $this->ocfilter->seo->link($this->ocfilter->seo->getParams()));]]></search>
+            <add position="after"><![CDATA[
+        if (isset($this->request->get['promo_id'])) {
+            $json['href'] .= (strpos($json['href'], '?') === false ? '?' : '&') . 'promo_id=' . (int)$this->request->get['promo_id'];
+        }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$total_products = $this->model_catalog_product->getTotalProducts($filter_data);]]></search>
+            <add position="before"><![CDATA[
+        if (isset($this->request->get['promo_id'])) {
+            $filter_data['filter_promo_id'] = (int)$this->request->get['promo_id'];
+        }
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/model/extension/module/ocfilter.php" error="skip">
+        <operation>
+            <search><![CDATA[$query = $this->db->query($sql);]]></search>
+            <add position="before"><![CDATA[
+        if (isset($this->request->get['promo_id']) && is_string($sql) && stripos($sql, 'product p') !== false && stripos($sql, 'p.product_id IN') === false) {
+            $this->load->model('catalog/promo');
+            $promo_product_ids = $this->model_catalog_promo->getPromoProductIds((int)$this->request->get['promo_id']);
+            $promo_cond = $promo_product_ids ? " p.product_id IN (" . implode(',', array_map('intval', $promo_product_ids)) . ") " : " p.product_id = -1 ";
+            
+            // Нейтрализуем "category_id = 0", из-за которого прячется ползунок цены
+            $sql = str_replace("p2c.category_id = '0'", "1=1", $sql);
+            $sql = str_replace("p2c.category_id = 0", "1=1", $sql);
+            
+            // Хирургически вставляем наше условие, не ломая структуру SQL
+            if (stripos($sql, 'WHERE') !== false) {
+                $sql = preg_replace('/WHERE/i', 'WHERE ' . $promo_cond . ' AND ', $sql, 1);
+            } else {
+                if (preg_match('/(GROUP BY|ORDER BY|LIMIT)/i', $sql, $matches, PREG_OFFSET_CAPTURE)) {
+                    $sql = substr_replace($sql, ' WHERE ' . $promo_cond . ' ', $matches[0][1], 0);
+                } else {
+                    $sql .= ' WHERE ' . $promo_cond;
+                }
+            }
+        }
+            ]]></add>
+        </operation>
+
+        <operation>
+            <search><![CDATA[$query = $this->ocfilter->query($sql);]]></search>
+            <add position="before"><![CDATA[
+        if (isset($this->request->get['promo_id']) && is_string($sql) && stripos($sql, 'product p') !== false && stripos($sql, 'p.product_id IN') === false) {
+            $this->load->model('catalog/promo');
+            $promo_product_ids = $this->model_catalog_promo->getPromoProductIds((int)$this->request->get['promo_id']);
+            $promo_cond = $promo_product_ids ? " p.product_id IN (" . implode(',', array_map('intval', $promo_product_ids)) . ") " : " p.product_id = -1 ";
+            
+            $sql = str_replace("p2c.category_id = '0'", "1=1", $sql);
+            $sql = str_replace("p2c.category_id = 0", "1=1", $sql);
+            
+            if (stripos($sql, 'WHERE') !== false) {
+                $sql = preg_replace('/WHERE/i', 'WHERE ' . $promo_cond . ' AND ', $sql, 1);
+            } else {
+                if (preg_match('/(GROUP BY|ORDER BY|LIMIT)/i', $sql, $matches, PREG_OFFSET_CAPTURE)) {
+                    $sql = substr_replace($sql, ' WHERE ' . $promo_cond . ' ', $matches[0][1], 0);
+                } else {
+                    $sql .= ' WHERE ' . $promo_cond;
+                }
+            }
+        }
+            ]]></add>
+        </operation>
+
+        <operation>
+            <search><![CDATA[$cached = !$this->ocfilter->params->hasSlider();]]></search>
+            <add position="after"><![CDATA[
+        if (isset($this->request->get['promo_id'])) {
+            $cached = false;
+        }
+            ]]></add>
+        </operation>
+    </file>
+
+</modification>

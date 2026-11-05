@@ -1,0 +1,21 @@
+
+<form id="hotsearch" class="header__search liveform">
+  <input type="search" name="hotsearch" value="{{ search }}" placeholder="{{ text_search }}" class="form-control input-lg" />
+  <button>{{ text_button_search }}</button>
+</form>
+<script src="catalog/view/javascript/hotsearch/hotsearch.js"></script>
+<script>
+  const hotStyle = document.createElement('link');
+  hotStyle.setAttribute('href', 'catalog/view/javascript/hotsearch/hotsearch.css');
+  hotStyle.setAttribute('rel', 'stylesheet');
+  document.head.appendChild(hotStyle);
+</script>
+<script>
+  HotSearch({
+    {% for name, value in options %}
+      {% if value %}
+        {{ name }}: {{ value }},
+      {% endif %}
+    {% endfor %}
+  });
+</script>

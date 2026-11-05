@@ -1,0 +1,15 @@
+<div class="home__inner text-content">
+  <div class="home__inner">
+              <div class="h3">{{ text_pidpysuytes_ta_otrymuyte_znyzhku }}</div>
+              <a href="{{ instagram }}" target="_blank" aria-label="instagram" rel="nofollow" class="home__instagram">
+                  <span class="home__instagram-title">@{{instagramtext}}</span>
+              </a>
+              <div class="home__instagram-items">
+			  {% for banner in banners %}
+                <a {% if banner.link %}href="{{ banner.link }}" {% if banner.newtab %} target="blank" aria-label="instagram" rel="nofollow" {% endif %}{% else %}role="button"{% endif %} class="home__instagram-item">
+                  <img src="{{ banner.image }}" alt="{{ banner.title }}">
+                </a>
+			  {% endfor %}
+              </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Happy hour</name>
+  <code>HH</code>
+  <version>1.1.0</version>
+  <author>stealth</author>
+  <link></link>
+
+   <file path="admin/controller/setting/setting.php">
+    <operation error="skip">
+      <search><![CDATA[if (isset($this->request->post['config_search_tag'])) {]]></search>
+      <add position="before"><![CDATA[
+		if (isset($this->request->post['config_hh_freedelivery_start'])) {
+			$data['config_hh_freedelivery_start'] = $this->request->post['config_hh_freedelivery_start'];
+		} else {
+			$data['config_hh_freedelivery_start'] = $this->config->get('config_hh_freedelivery_start');
+		}
+		if (isset($this->request->post['config_hh_freedelivery_end'])) {
+			$data['config_hh_freedelivery_end'] = $this->request->post['config_hh_freedelivery_end'];
+		} else {
+			$data['config_hh_freedelivery_end'] = $this->config->get('config_hh_freedelivery_end');
+		}
+		if (isset($this->request->post['config_hh_freedelivery_on'])) {
+			$data['config_hh_freedelivery_on'] = $this->request->post['config_hh_freedelivery_on'];
+		} else {
+			$data['config_hh_freedelivery_on'] = $this->config->get('config_hh_freedelivery_on');
+		}
+	  ]]></add>
+    </operation>
+  </file> 
+  <file path="admin/view/template/setting/setting.twig">
+    <operation error="skip">
+      <search><![CDATA[<li><a href="#tab-seopro" data-toggle="tab">{{ tab_seopro }}</a></li>]]></search>
+      <add position="after"><![CDATA[
+	  <li><a href="#tab-hh" data-toggle="tab">Щасливі години</a></li>
+	  ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[<div class="tab-pane" id="tab-seopro">]]></search>
+      <add position="before"><![CDATA[
+			<div class="tab-pane" id="tab-hh">
+			<fieldset>
+			<legend>Безкоштовна доставка</legend>
+				  <div class="form-group">
+					<label class="col-sm-2 control-label" for="input-logo">Начало</label>
+						<div class="col-sm-2"> 
+						<div class="input-group datetime">
+							<input type="text" name="config_hh_freedelivery_start" value="{{ config_hh_freedelivery_start }}" data-date-format="YYYY-MM-DD HH:mm" id="hh_freedelivery_start" class="form-control" />
+							<span class="input-group-btn">
+							<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+							</span>
+						</div>
+						</div>
+						<label class="col-sm-2 control-label" for="input-logo">Конец</label>
+						<div class="col-sm-2"> 
+						<div class="input-group datetime">
+							<input type="text" name="config_hh_freedelivery_end" value="{{ config_hh_freedelivery_end }}" data-date-format="YYYY-MM-DD HH:mm" id="hh_freedelivery_end" class="form-control" />
+							<span class="input-group-btn">
+							<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+							</span>
+						</div>
+						</div>						
+
+                  <label class="col-sm-2 control-label">Включить</label>
+                  <div class="col-sm-2">
+                    <label class="radio-inline"> {% if config_hh_freedelivery_on %}
+                      <input type="radio" name="config_hh_freedelivery_on" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="config_hh_freedelivery_on" value="1" />
+                      {{ text_yes }}
+                      {% endif %} </label>
+                    <label class="radio-inline"> {% if not config_hh_freedelivery_on %}
+                      <input type="radio" name="config_hh_freedelivery_on" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="config_hh_freedelivery_on" value="0" />
+                      {{ text_no }}
+                      {% endif %} </label>
+                  </div>
+				  
+				  </div>
+				  <div class="form-group">
+				  </div>
+    <script type="text/javascript"><!--
+        $('.date').datetimepicker({
+            language: '{{ datepicker }}',
+            pickTime: false
+        });
+
+        $('.time').datetimepicker({
+            language: '{{ datepicker }}',
+            pickDate: false
+        });
+
+        $('.datetime').datetimepicker({
+            language: '{{ datepicker }}',
+            pickDate: true,
+            pickTime: true
+        });
+        //--></script>	
+			</fieldset>
+			</div>
+	  ]]></add>
+    </operation>
+  </file> 
+</modification>

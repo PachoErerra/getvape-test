@@ -1,0 +1,12 @@
+{{ text_im_ya }} {{ name }}
+{{ text_prizvyshche }} {{ last_name }}
+{{ text_telefon }} {{ phone }}
+{{ text_data_narodzhennya }} {{ date }}
+
+{% for question in questions %}
+{{ question.question|trim }}
+{{ question.answer }}
+	
+{% endfor %}
+
+{{ text_ip }} {{ ip }}

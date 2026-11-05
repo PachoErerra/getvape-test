@@ -1,0 +1,40 @@
+{% if product['product_id'] %}
+fbq('track', 'ViewContent', {
+	content_ids: ['{{ product['product_id'] }}'],
+	content_type: 'product',
+	value: {{ product['price']|number_format(2, '.', '') }},
+	currency: '{{ product['currency'] }}'
+});
+{% endif %}
+{% if checkout %}
+fbq('track', 'InitiateCheckout', {
+	content_type: 'product',
+	value: {{ checkout['price']|number_format(2, '.', '') }},
+	currency: '{{ checkout['currency'] }}',
+	contents: [
+	{% for product in checkout['products'] %}
+	{
+		'id': '{{ product['product_id'] }}', 
+		'quantity': {{ product['quantity'] }}, 
+		'item_price': {{ product['price']|number_format(2, '.', '') }}
+	},
+	{% endfor %}
+	]
+});
+{% endif %}
+{% if order %}
+fbq('track', 'Purchase', {
+	content_type: 'product',
+	value: {{ order['price']|number_format(2, '.', '') }},
+	currency: '{{ order['currency'] }}',
+	contents: [
+	{% for product in order['products'] %}
+	{
+		'id': '{{ product['product_id'] }}', 
+		'quantity': {{ product['quantity'] }}, 
+		'item_price': {{ product['price']|number_format(2, '.', '') }}
+	},
+	{% endfor %}
+	]
+});
+{% endif %}

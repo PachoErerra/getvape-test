@@ -1,0 +1,349 @@
+<div class="modal modal--wheel" id="wheel-modal" data-style="{{ fortune_style }}" data-type="{{ type }}">
+    <div class="modal__overlay"></div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-lg">
+        <div class="modal__container popup__container">
+
+            {% if fortune_style == 'basic' %}
+                <div class="modal--wheel-pattern modal--wheel-pattern_top">
+                    <svg width="686" height="409" viewBox="0 0 686 409" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_5530_6700)">
+                            <path d="M430.477 110.148C393.97 25.0572 465.047 2.73562 505.149 2.21115C673.393 -22.0195 679.846 158.295 777.105 278.819C854.912 375.238 628.221 414.448 505.149 422C440.156 412.559 263.616 372.406 77.3952 287.315C-108.825 202.224 84.3097 182.84 204.155 183.784C294.806 194.693 466.983 195.238 430.477 110.148Z"
+                                  fill="#4A6EFD" fill-opacity="0.5"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_5530_6700">
+                                <rect width="686" height="409" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="modal--wheel-pattern modal--wheel-pattern_bottom">
+                    <svg width="837" height="243" viewBox="0 0 837 243" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_5530_6686)">
+                            <path d="M381.267 268.252C419.661 341.446 344.909 360.647 302.733 361.098C125.791 381.941 119.004 226.837 16.717 123.163C-65.1127 40.2243 173.299 6.49652 302.733 0C371.086 8.12064 556.755 42.6605 752.603 115.855C948.452 189.049 745.331 205.723 619.29 204.911C523.951 195.527 342.873 195.058 381.267 268.252Z"
+                                  fill="#FD4A86" fill-opacity="0.5"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_5530_6686">
+                                <rect width="837" height="243" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+            {% elseif fortune_style == 'halloween' %}
+                <div class="modal--wheel-pattern modal--wheel-pattern_top">
+                    <svg width="607" height="323" viewBox="0 0 607 323" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M329.507 84.3075C301.563 19.1789 355.969 2.09385 386.665 1.69242C515.447 -16.8538 520.387 121.159 594.833 213.409C653.836 286.522 484.078 316.657 389.315 322.832C387.522 322.949 385.831 322.882 384.055 322.611C332.322 314.72 199.362 283.934 59.242 219.912C-83.3001 154.783 64.5346 139.946 156.27 140.669C225.659 149.019 357.451 149.436 329.507 84.3075Z"
+                              fill="url(#paint0_linear_3775_7846)"/>
+                        <defs>
+                            <linearGradient id="paint0_linear_3775_7846" x1="303.5" y1="0" x2="303.5" y2="323"
+                                            gradientUnits="userSpaceOnUse">
+                                <stop offset="0.488862" stop-color="#FFCE16"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="modal--wheel-pattern modal--wheel-pattern_bottom">
+                    <svg width="834" height="363" viewBox="0 0 834 363" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.5"
+                              d="M381.267 268.186C419.661 341.38 344.909 360.58 302.733 361.032C125.791 381.875 119.004 226.77 16.717 123.097C-64.7043 40.5718 170.927 6.76804 300.787 0.0328979C302.11 -0.0357056 303.323 0.00253296 304.638 0.163025C374.483 8.68921 558.546 43.2634 752.603 115.788C948.452 188.982 745.331 205.657 619.29 204.845C523.951 195.461 342.873 194.991 381.267 268.186Z"
+                              fill="#FF7400"/>
+                    </svg>
+                </div>
+
+                <div class="modal--wheel-pattern modal--wheel-pattern_spider">
+                    <img src="catalog/view/theme/default/image/wheel/halloween-bat.png"
+                         class="modal--wheel-pattern_spider-bat" alt="{{ text_khellouyin_kazhan }}" loading="lazy">
+                    <img src="catalog/view/theme/default/image/wheel/spider-web.png"
+                         class="modal--wheel-pattern_spider-web" alt="web" loading="lazy">
+                    <img src="catalog/view/theme/default/image/wheel/halloween-spider.png"
+                         class="modal--wheel-pattern_spider-spider" alt="{{ text_khellouyin_pavuk }}" loading="lazy">
+                </div>
+            {% endif %}
+
+            <div class="modal__hide js-modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use href="#icon-cross"></use>
+                </svg>
+            </div>
+
+            <div class="fortune d-flex flex-lg-row flex-column">
+                <div class="fortune__info">
+                    <div class="fortune__info-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="138" height="39" viewBox="0 0 138 39"
+                             fill="none">
+                            <path d="M40.8738 19.3246V19.4557C40.8404 19.6348 40.8011 19.8095 40.7554 19.9794C40.4469 21.1376 39.8622 22.0854 39.0021 22.8224C38.0151 23.6681 36.8402 24.0901 35.4765 24.0901C34.1122 24.0901 33.0966 23.6529 32.4295 22.7784C31.7911 21.904 31.5731 20.7532 31.7767 19.3246C31.9795 17.8971 32.5887 16.7448 33.6048 15.8707C34.5911 14.9962 35.7661 14.5586 37.1305 14.5586C38.5235 14.5586 39.5532 14.9962 40.2208 15.8707C40.859 16.7069 41.0861 17.7973 40.9016 19.1401C40.8929 19.2009 40.8838 19.2624 40.8738 19.3246ZM42.7892 8.39426L42.3539 10.7986C41.1351 8.7876 39.1326 7.78196 36.347 7.78196C33.213 7.78196 30.5865 8.88994 28.4686 11.1048C26.3208 13.2909 25.015 15.9292 24.5511 19.0184C24.0287 22.196 24.5074 24.9646 25.9875 27.3257C27.5254 29.6865 29.832 30.8672 32.9083 30.8672C35.4331 30.8672 37.551 30.0951 39.2631 28.5499L38.9587 30.2552H46.1842L50.0146 8.39426H42.7892Z"
+                                  fill="currentColor"/>
+                            <path d="M67.51 19.3251C67.2776 20.7831 66.6755 21.9418 65.7036 22.801C64.7312 23.6609 63.5491 24.0906 62.1562 24.0906C60.8211 24.0906 59.8056 23.6686 59.1092 22.823C58.413 21.9779 58.166 20.8554 58.3692 19.4562L58.4564 19.1504C58.7459 17.7512 59.3847 16.6362 60.3713 15.8054C61.3579 14.9748 62.5188 14.5592 63.8536 14.5592C65.2173 14.5592 66.2329 14.9897 66.9008 15.8493C67.5679 16.7092 67.7711 17.8682 67.51 19.3251ZM73.0815 11.3676C71.4854 8.978 69.1926 7.78251 66.2042 7.78251C63.7082 7.78251 61.6483 8.58467 60.0231 10.1873L60.3279 8.39481H53.1025L47.7485 39H54.9741L56.9329 27.7635C58.2387 29.8334 60.3132 30.8677 63.1572 30.8677C66.2329 30.8677 68.7866 29.804 70.8181 27.676C72.9073 25.5193 74.2131 22.8817 74.7356 19.7624C75.2579 16.5562 74.7063 13.7581 73.0815 11.3676"
+                                  fill="currentColor"/>
+                            <path d="M94.6441 20.4322C94.4854 21.258 93.9286 21.901 93.2452 22.1304C93.2115 22.3254 92.9969 23.4867 92.1962 24.0713C91.4381 24.6251 90.4619 24.4375 89.7484 23.5861C89.6744 23.7273 88.784 25.3664 87.3005 25.2846C86.2245 25.2252 85.5369 24.2987 85.3772 24.0713C84.7857 24.622 84.0178 24.6194 83.454 24.0713C82.9558 23.5874 82.6884 22.7474 82.7547 21.8879C81.8777 21.7807 81.2107 20.81 81.1811 19.7044C81.1562 18.7864 81.574 17.9058 82.2299 17.521C81.8327 17.1281 81.8111 16.3985 82.0553 16.065C82.2508 15.7977 82.6309 15.7663 82.9293 16.065C82.7116 15.2139 83.0745 14.3154 83.6289 14.1242C84.1136 13.957 84.663 14.359 84.8527 15.0946C84.8719 14.3638 85.1319 13.6988 85.5521 13.3964C86.1572 12.9616 87.0355 13.3214 87.4754 14.3668C88.2371 13.0761 89.3942 12.7632 90.0979 13.3964C90.6546 13.8975 90.7723 14.85 90.7973 15.0946C91.5006 14.6733 92.2807 14.8841 92.7207 15.5799C93.1469 16.2539 93.0843 17.1159 93.0706 17.2784C94.2428 17.7109 94.8756 19.2263 94.6441 20.4322ZM96.5417 10.7207C94.2889 8.47914 91.441 7.36919 87.9982 7.36919C84.5551 7.36919 81.7072 8.50077 79.4544 10.7423C77.2017 12.9839 76.0752 15.7801 76.0752 19.1321C76.0752 22.4836 77.2017 25.2802 79.4544 27.5214C81.7072 29.7629 84.5551 30.8945 87.9982 30.8945V30.8732C91.441 30.8732 94.2889 29.7418 96.5417 27.5001C98.7944 25.2586 99.9209 22.4623 99.9209 19.1104C99.9209 15.759 98.7944 12.9622 96.5417 10.7207"
+                                  fill="currentColor"/>
+                            <path d="M112.5 8.20523C111.322 8.79655 110.394 9.70171 109.737 10.8995V7.97035H102.766V30.2578H109.737V20.95C109.737 18.1962 110.29 16.2747 111.416 15.186C112.542 14.0973 114.285 13.7557 116.665 14.1612V7.60754C115.072 7.41526 113.69 7.60754 112.5 8.20523Z"
+                                  fill="currentColor"/>
+                            <path d="M137.49 20.7758C137.15 20.0075 136.64 19.3885 135.96 18.8976C135.28 18.4063 134.6 18.022 133.919 17.7234C133.239 17.4244 132.389 17.1257 131.369 16.8479L126.247 15.4176C125.397 15.1189 124.972 14.6706 124.972 14.0942C124.972 13.6883 125.206 13.3683 125.673 13.1123C126.141 12.8557 126.694 12.7277 127.331 12.7277C129.01 12.7277 130.349 13.4322 131.348 14.8199L137.447 13.0693C136.725 11.3187 135.471 9.9314 133.665 8.90655C131.858 7.8817 129.775 7.36944 127.395 7.36944C124.866 7.36944 122.698 8.03137 120.891 9.3549C119.085 10.6784 118.171 12.3223 118.171 14.2648C118.171 17.275 120.041 19.3456 123.782 20.4772L129.095 22.0568C130.477 22.4626 131.178 23.039 131.178 23.7648C131.178 24.2129 130.923 24.5973 130.413 24.9173C129.903 25.2376 129.223 25.4086 128.394 25.4086C127.14 25.4086 126.056 25.1096 125.163 24.5119C124.271 23.9141 123.633 23.1241 123.25 22.1635L117.045 23.9996C117.619 25.8996 118.936 27.5218 120.977 28.8882C123.017 30.2546 125.397 30.9375 128.139 30.9375L128.096 30.8736C131.008 30.8736 133.388 30.1692 135.237 28.7814C137.086 27.3937 138 25.6218 138 23.4657C138 22.4413 137.83 21.5445 137.49 20.7758Z"
+                                  fill="currentColor"/>
+                            <path d="M42.7864 8.39685L42.3511 10.8012L40.899 19.1427L40.7526 19.982L39.2604 28.5525L38.9561 30.2578H46.1815L50.0119 8.39685H42.7864Z"
+                                  fill="currentColor"/>
+                            <g opacity="0.800003">
+                                <path d="M13.4501 30.6055H4.13526L0 5.31939e-05H8.09615L10.055 21.5113L19.5003 5.31939e-05H28.2928L13.4501 30.6055Z"
+                                      fill="currentColor"/>
+                            </g>
+                            <path d="M19.4998 5.31939e-05L5.99707 30.5781L13.4495 30.6055L28.2922 5.31939e-05H19.4998Z"
+                                  fill="currentColor"/>
+                        </svg>
+
+                        {% if fortune_style == 'halloween' %}
+                            <div class="fortune__info-logo-halloween">
+                                <img src="catalog/view/theme/default/image/wheel/halloween-pumpkin-small.png"
+                                     alt="{{ text_khellouyin_harbuz }}" loading="lazy">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if customer_twisted %}
+                        {% if type == 'regular' %}
+                            {% set days = 15 %}
+                        {% else %}
+                            {% set days = 0 %}
+                        {% endif %}
+                        {% set winTimestampMs = (date().timestamp + days * 24 * 60 * 60) * 1000 %}
+                        {% set winTimestampMs = (customer_twisted + days * 24 * 60 * 60) * 1000 %}
+
+                        <div class="countdown">
+                            <div class="countdown__title d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v=#icon-alert-cart"></use>
+                                </svg>
+                                {{ text_nastupna_sproba_dostupna_cherez }}
+                            </div>
+
+                            <div class="countdown__items d-flex" data-deadline="{{ winTimestampMs }}">
+                                <div class="countdown__item">
+                                    <span class="countdown__item-value days" style="width: auto;"></span>
+                                    <span class="countdown__item-text js-text-day">{{ text_dniv }}</span>
+                                </div>
+                                <div class="countdown__item">
+                                    <span class="countdown__item-value hours"></span>
+                                    <span class="countdown__item-text">{{ text_hod }}</span>
+                                </div>
+
+                                <div class="countdown__item">
+                                    <span class="countdown__item-value minutes"></span>
+                                    <span class="countdown__item-text">{{ text_khv }}</span>
+                                </div>
+
+                                <div class="countdown__item">
+                                    <span class="countdown__item-value seconds"></span>
+                                    <span class="countdown__item-text">{{ text_sek }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fortune__info-content">
+                            <!--div class="fortune__info-title fortune__info-title_small">{{ text_vy_vzhe_krutyly_koleso_sohodni }}
+                                <br>
+                                <b>{{ text_prykhodte_zavtra }}</b>
+                            </div-->
+                            <div class="fortune__info-title modal__title">
+                                <span>{{ text_kruty }} <br> {{ text_koleso }} <br> {{ text_ta_vyhravay }}</span>
+                                <b>{{ text_pryzy }}</b>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="fortune__info-content" id="fortune__info-content">
+                            <div class="fortune__info-title modal__title">
+
+                                {% if fortune_style == 'halloween' %}
+                                    <img class="fortune__info-title-hat"
+                                         src="catalog/view/theme/default/image/wheel/halloween-hat.png"
+                                         alt="{{ text_kruty_koleso_ta_vyhravay_pryzy }}" loading="lazy">
+                                {% endif %}
+                                <span>{{ text_kruty }} <br> {{ text_koleso }} <br> {{ text_ta_vyhravay }}</span>
+                                <b>{{ text_pryzy }}</b>
+                            </div>
+
+                            <div class="fortune__info-action">
+                                <button type="button" id="spinWheel"
+                                        class="fortune__info-action-btn button-light-blue"
+                                        {% if customer_isLogged %}
+                                            onClick="spin();"
+                                        {% else %}
+                                            onClick="showLoginModal();"
+                                        {% endif %}
+                                >
+                                    {{ text_krutyty_koleso }}
+                                </button>
+                            </div>
+
+                            {% if fortune_style == 'halloween' %}
+                                <div class="fortune__info-pumpkin">
+                                    <img src="catalog/view/theme/default/image/wheel/halloween-pumpkin.png"
+                                         alt="{{ text_khellouyin_harbuz }}" loading="lazy">
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="fortune__info-loader" id="fortune__info-loader">
+                            <svg class="dots-spinner" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                 viewBox="0 0 24 24">
+                                <circle cx="4" cy="12" r="3" fill="currentColor">
+                                    <animate id="svgSpinners3DotsBounce0" attributeName="cy"
+                                             begin="0;svgSpinners3DotsBounce1.end+0.25s" calcMode="spline"
+                                             dur="0.6s"
+                                             keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"></animate>
+                                </circle>
+                                <circle cx="12" cy="12" r="3" fill="currentColor">
+                                    <animate attributeName="cy" begin="svgSpinners3DotsBounce0.begin+0.1s"
+                                             calcMode="spline"
+                                             dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33"
+                                             values="12;6;12"></animate>
+                                </circle>
+                                <circle cx="20" cy="12" r="3" fill="currentColor">
+                                    <animate id="svgSpinners3DotsBounce1" attributeName="cy"
+                                             begin="svgSpinners3DotsBounce0.begin+0.2s" calcMode="spline" dur="0.6s"
+                                             keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"></animate>
+                                </circle>
+                            </svg>
+                        </div>
+
+                        <div class="fortune__prize" id="fortune__prize">
+                            <div class="fortune__info-text fortune__info-text_top">{{ text_vy_vyhraly }}</div>
+                            <div class="fortune__info-title fortune__info-title_small modal__title js-fortune__prize-title"></div>
+                            <div class="fortune__info-text js-fortune__prize-text"></div>
+
+
+                            <div class="fortune__prize-block" style="display: none;">
+                                <span class="fortune__prize-text js-fortune__prize-code"
+                                      id="fortune__prize-code"></span>
+
+                                <button type="button" class="fortune__prize-copy" onclick="copyContent()">
+                                    <svg width="22" height="22" viewBox="0 0 16 16">
+                                        <use id="fortune__prize-copy-icon" href="#icon-clipboard"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+
+                <div class="fortune__inner">
+                    <div class="fortune__canvas">
+                        <div class="fortune__canvas-angle">
+                            <svg width="72" height="62" viewBox="0 0 72 62" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M70.8514 0.710938L35.9797 61.1712L1.0957 0.710938H70.8514Z"
+                                      fill="url(#paint0_linear_3535_6611)" stroke="#DFBA20" stroke-width="0.354204"
+                                      stroke-miterlimit="10"/>
+                                <defs>
+                                    <linearGradient id="paint0_linear_3535_6611" x1="51.067" y1="30.9472"
+                                                    x2="-18.6887"
+                                                    y2="30.9472" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#F8C447"/>
+                                        <stop offset="0.07" stop-color="#F8C549"/>
+                                        <stop offset="0.12" stop-color="#F8CA51"/>
+                                        <stop offset="0.15" stop-color="#F8D260"/>
+                                        <stop offset="0.18" stop-color="#F8DE74"/>
+                                        <stop offset="0.21" stop-color="#F8ED8E"/>
+                                        <stop offset="0.22" stop-color="#F9F092"/>
+                                        <stop offset="0.37" stop-color="#F8C447"/>
+                                        <stop offset="0.49" stop-color="#DE9F39"/>
+                                        <stop offset="0.65" stop-color="#C17529"/>
+                                        <stop offset="0.79" stop-color="#AB561E"/>
+                                        <stop offset="0.91" stop-color="#9E4317"/>
+                                        <stop offset="1" stop-color="#9A3D15"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+
+                        </div>
+
+                        <div class="fortune__container">
+                            <div id="wheel" style="position: relative;z-index: 3;"></div>
+
+                            <div class="fortune__canvas-dots">
+                                <div class="fortune__canvas-dot"></div>
+                                <div class="fortune__canvas-dot"></div>
+                                <div class="fortune__canvas-dot"></div>
+                                <div class="fortune__canvas-dot"></div>
+                                <div class="fortune__canvas-dot"></div>
+                                <div class="fortune__canvas-dot"></div>
+                                <div class="fortune__canvas-dot"></div>
+                                <div class="fortune__canvas-dot"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <!--button class="btn btn-primary checkwin">{{ text_proveryt_vozmozhnost_yhr }}</button-->
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% if current_route not in ['checkout/simplecheckout', 'product/product'] and not fortune_hidden %}
+    <div class="btn-wheel-action-wrap d-flex align-items-start">
+        
+        <button class="btn-wheel-action" type="button" aria-label="{{ text_koleso_fortuny }}">
+            {% if fortune_style == 'basic' %}
+                <img src="catalog/view/theme/default/image/wheel/btn-wheel-action.png" loading="lazy"
+                     alt="{{ text_koleso_fortuny }}">
+            {% elseif fortune_style == 'halloween' %}
+                <img src="catalog/view/theme/default/image/wheel/btn-wheel-action-halloween.png" loading="lazy"
+                     alt="{{ text_koleso_fortuny }}">
+            {% endif %}
+        </button>
+
+        <button type="button"
+                class="js-btn-wheel-action-hide btn-wheel-action-hide d-flex align-items-center justify-content-center"
+                aria-label="Закрити">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <use href="#icon-cross"></use>
+            </svg>
+        </button>
+    </div>
+
+{% endif %}
+
+<script src="catalog/view/javascript/nts-wheel/nts-wheel.min.js?v={{ date().timestamp }}" data-cfasync="false"></script>
+<!-- END WHEEL -->
+
+
+<script type="text/javascript">
+  $(".checkwin").click(function () {
+    let win = $(this).attr('data-id');
+
+    // console.log(win);
+
+    $.ajax({
+      type: 'POST',
+      url: 'index.php?route=extension/module/fortune/checkwin',
+      dataType: 'json',
+      data: '',
+      success: function (json) {
+        console.log(json)
+        if (json['success']) {
+          console.log(json['success'])
+        }
+        if (json['error']) {
+          console.log(json['error'])
+        }
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+    return false;
+
+  });
+</script>
+
+

@@ -1,0 +1,441 @@
+<div id="cart" class="modal modal--basket">
+    <div class="modal__overlay"></div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-md">
+        <div class="modal__container">
+
+            <div class="modal__head d-flex align-items-center justify-content-between">
+                <div class="modal__title color-black h2">{{ text_koshyk }}</div>
+
+                <button class="modal__hide js-modal-close modal__hide_static d-flex align-items-center justify-content-center"
+                        aria-label="modal-close">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <use href="#icon-cross"></use>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="cartbody">
+                {% if products or vouchers or vapors_punch_gifts %}
+                    <div class="modal__items">
+                        {% for product in products %}
+                            <div class="modal__item">
+                                <div class="modal__item-inner d-flex align-md-items-center justify-content-between flex-column flex-md-row">
+                                    <div class="modal__item-lside d-flex align-items-center">
+
+                                        <button type="button"
+                                                class="modal__item-remove d-flex align-items-center justify-content-center"
+                                                onclick="cart.remove('{{ product.cart_id }}');">
+                                            <svg width="18" height="18" viewBox="0 0 24 24">
+                                                <use href="#icon-cross"></use>
+                                            </svg>
+                                        </button>
+
+
+                                        <div class="modal__item-photo d-flex align-items-center justify-content-center">
+                                            <img src="{{ product.thumb }}" alt="{{ product.name }}"
+                                                 title="{{ product.name }}" loading="lazy">
+                                        </div>
+
+
+                                        <div class="modal__item-info">
+										
+                                            <a {% if not product.gift_teaser %}href="{{ product.href }}"{% endif %} class="modal__item-name">{{ product.name }}</a>
+
+                                            {% if product.option %}
+                                                {% for option in product.option %}
+                                                    - <small>{{ option.name }}: {{ option.value }}</small>.
+												{% endfor %}
+                                            {% endif %}
+                                            {% if product.reward %}
+                                                <div class="modal__item-reward d-flex align-items-center">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                                        <use href="#icon-gift"></use>
+                                                    </svg>
+                                                    <span>{{ text_keshbek }} {{ product.reward }}</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="modal__item-rside d-flex align-items-center justify-content-between">
+                                        <div class="modal__item-quantity">
+                                            <button type="button" class="btn-minus"
+                                                    onclick="cart.stepQty(this, -1);">
+                                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                                    <use href="#icon-minus"></use>
+                                                </svg>
+                                            </button>
+                                            <input type="text" name="quantity" class="field-number"
+                                                   value="{{ product.quantity }}"
+                                                   data-cart-id="{{ product.cart_id }}"
+                                                   data-prev-qty="{{ product.quantity }}"
+                                                   data-max-qty="{{ product.max_quantity }}"
+                                                   data-error-max="{{ error_quantity_max }}"
+                                                   inputmode="numeric"
+                                                   onchange="cart.applyQty(this);"
+                                                   onkeydown="if (event.key === 'Enter') { event.preventDefault(); this.blur(); }"/>
+                                            <button type="button" class="btn-plus"
+                                                    onclick="cart.stepQty(this, 1);">
+                                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                                    <use href="#icon-plus"></use>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal__item-prices d-flex flex-column align-items-end">
+                                            {% if not product.special %}
+                                                <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                            {% else %}
+                                                <s>{{ product.special }}</s>
+                                                <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                            {% endif %}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+								
+								{% if product.option and product.product_id in sol_products %}
+                                <div class="modal__total-coupon modal__total-coupon--pink d-flex flex-column flex-sm-row align-items-center justify-content-between">
+                                    <div class="modal__total-coupon-left d-flex align-items-center">
+                                        <svg class="sprite-icon">
+                                            <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                        </svg>
+                                        <div>{{ text_ne_vystachaye_komponentiv_dlya_samozamisu }} <strong>
+										{% if product.option|length == 2 %}
+										{{ text_buster_mitsnosti_hlitseryn }}
+										{% endif %}
+										{% if product.option|length == 1 %}
+											{{ product.option|first.name }}
+										{% endif %}
+										</strong></div>
+                                    </div>
+
+
+                                    <a href="{{ product.href }}" class="modal__total-coupon-action d-flex align-items-center">
+                                        <svg class="sprite-icon">
+                                            <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-cart"></use>
+                                        </svg>
+                                        {{ text_dodaty }}
+                                    </a>
+                                </div>
+								{% endif %}
+                            </div>
+
+                            {% if product.vapors_punch_gifts %}
+                                {% for gift in product.vapors_punch_gifts %}
+                                    <div class="modal__item modal__item--gift" data-vapors-punch-slot="{{ gift.slot_index }}" data-parent-cart-id="{{ gift.parent_cart_id }}">
+                                        <div class="modal__item-inner d-flex align-md-items-center justify-content-between flex-column flex-md-row">
+                                            <div class="modal__item-lside d-flex align-items-center">
+                                                <span class="modal__item-remove modal__item-remove--spacer d-flex align-items-center justify-content-center" aria-hidden="true">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24"></svg>
+                                                </span>
+
+                                                <div class="modal__item-photo d-flex align-items-center justify-content-center">
+                                                    <img src="{{ gift.thumb }}" alt="{{ gift.name }}" title="{{ gift.name }}" loading="lazy">
+                                                </div>
+
+                                                <div class="modal__item-info">
+                                                    <span class="modal__item-name">{{ gift.name }}</span>
+                                                    <div class="modal__item-reward modal__item-reward--gift d-flex align-items-center">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20">
+                                                            <use href="#icon-gift"></use>
+                                                        </svg>
+                                                        <span>Подарунок</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal__item-rside modal__item-rside--gift d-flex align-items-center justify-content-between">
+                                                <div class="custom-dropdown-img custom-dropdown-img--gift{% if gift.invalid %} custom-dropdown-img--invalid{% endif %}">
+                                                    <div class="dropdown-header">
+                                                        {% if gift.selected %}
+                                                            <img src="{{ gift.selected.thumb }}" alt="{{ gift.selected.label }}">
+                                                            <span>{{ gift.selected.label }}</span>
+                                                        {% else %}
+                                                            <span>Оберіть смак</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <ul class="dropdown-list">
+                                                        {% for option in gift.options %}
+                                                            <li data-value="{{ option.product_id }}" data-slot="{{ gift.slot_index }}" class="js-vapors-punch-option{% if gift.product_id == option.product_id %} selected{% endif %}">
+                                                                <img src="{{ option.thumb }}" alt="{{ option.label }}">
+                                                                <span>{{ option.label }}</span>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+
+                                                <div class="modal__item-prices modal__item-prices--gift d-flex flex-column align-items-end">
+                                                    <strong>0 <small>₴</small></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if shipping_coupon %}
+                        <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-sm-center justify-content-between">
+                            <div class="modal__total-coupon-left d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                </svg>
+                                <div>{{ shipping_coupon }}</div>
+                            </div>
+
+                        </div>
+                    {% endif %}
+
+                    {% if free_cartrige_add %}
+                        <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-center justify-content-between">
+                            <div class="modal__total-coupon-left d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                </svg>
+                                <div>{{ free_cartrige_add }}</div>
+                            </div>
+
+                            <a href="/kartridj-1271/" class="modal__total-coupon-action d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-cart"></use>
+                                </svg>
+                                {{ text_obraty_kartrydzh }}
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if add1 %}
+                        <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-center justify-content-between">
+                            <div class="modal__total-coupon-left d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                </svg>
+                                <div>{{ add1 }}</div>
+                            </div>
+
+                            <a href="/nabori-solov-3013/" class="modal__total-coupon-action d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-cart"></use>
+                                </svg>
+                                {{ text_obraty_ridynu }}
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if add2 %}
+                        <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-center justify-content-between">
+                            <div class="modal__total-coupon-left d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                </svg>
+                                <div>{{ add2 }}</div>
+                            </div>
+
+                            <a href="/nabori-solov-3013/" class="modal__total-coupon-action d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-cart"></use>
+                                </svg>
+                                {{ text_obraty_ridynu }}
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if coupon_gift_addmore %}
+                        <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-center justify-content-between">
+                            <div class="modal__total-coupon-left d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                </svg>
+                                <div>{{ coupon_gift_addmore }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+					
+                    {% for total in totals %}
+                        {% if total.code == 'coupon' %}
+                            <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-sm-center justify-content-between"
+                            >
+                                <div class="modal__total-coupon-left d-flex align-items-center">
+                                    <svg class="sprite-icon">
+                                        <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                    </svg>
+                                    <span>{{ total.title }}</span> <span class="modal__total-coupon-total">{{ total.text|replace({' ₴': ' <small>₴</small>'}) }}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if total.code == 'custom_specials' %}
+                            <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-sm-center justify-content-between"
+                            >
+                                <div class="modal__total-coupon-left cart-discount__action-left d-flex align-items-start">
+                                    <svg class="sprite-icon cart-discount__action-info">
+                                        <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                    </svg>
+
+                                    <div class="cart-discount__action d-flex flex-column">{{ total.title }}</div>
+
+                                    <div class="modal__total-coupon-total cart-discount__action-total d-flex align-items-center">
+                                        <button type="button" class="cart-discount__action-toggle d-flex align-items-center" aria-label="{{ text_detalnishe }}">
+                                            {{ text_detalnishe }}
+                                            <svg class="sprite-icon">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-angle-down"></use>
+                                            </svg>
+                                        </button>
+
+                                        <span>{{ total.text|replace({' ₴': ' <small>₴</small>'}) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="modal__total d-flex flex-column flex-md-row-reverse align-items-md-center justify-content-between">
+                        <div class="modal__total-info d-flex align-items-center justify-content-between">
+                            <div class="modal__total-info-title d-block d-md-none">{{ text_do_splaty }}</div>
+
+
+                            <div class="modal__total-info-price d-flex flex-column">
+                                {% for total in totals %}
+                                    {% if loop.last %}
+                                        <strong class="modal__total-price">{{ total.text|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if total_special %}<s>{{ total_special+totalcart}} ₴</s>{% endif %}
+                            </div>
+
+                            <div class="modal__total-info-sale d-flex flex-column align-items-start">
+                                {% if total_special %}
+                                    <div class="modal__total-info-sale-label" style="background-color: var(--pink);">
+                                    {{ text_znyzhka }} {{ (total_special)|round(2, 'common') }} ₴</div>{% endif %}
+                                {% if total_reward %}
+                                    <div class="modal__total-info-sale-label" style="background-color: var(--blue);">
+                                    {{ text_keshbek_1 }} {{ total_reward }} ₴</div>{% endif %}
+                            </div>
+
+                        </div>
+
+                        <div class="modal__total-left d-flex flex-column flex-md-row-reverse">
+                            <a href="{{ checkout }}" class="btn btn-primary btn-xl js-vapors-punch-checkout">{{ text_checkout }}</a>
+                            <button class="btn btn-gray btn-xl js-modal-close" type="button">{{ text_prodovzhyty_pokupky }}</button>
+                        </div>
+
+                    </div>
+
+                    <div class="modal__delivery d-flex flex-column flex-md-row align-items-md-center">
+                        <div class="modal__delivery-info">
+                            <div class="modal__delivery-title">{{ delivery_title }}</div>
+                            <ul class="modal__delivery-list">
+                                <li class="modal__delivery-list-item">
+                                    <svg class="modal__delivery-check{% if delivery_reached_post %} modal__delivery-check--done{% endif %}" width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M4.44596 7.03563L11.5708 0.240535C11.739 0.0801783 11.9351 0 12.1593 0C12.3835 0 12.5797 0.0801783 12.7478 0.240535C12.9159 0.400891 13 0.591448 13 0.812205C13 1.03296 12.9159 1.22325 12.7478 1.38307L5.03445 8.75946C4.86631 8.91982 4.67015 9 4.44596 9C4.22178 9 4.02562 8.91982 3.85748 8.75946L0.242507 5.3118C0.074369 5.15145 -0.00633752 4.96116 0.000388011 4.74094C0.00711354 4.52071 0.0948255 4.33016 0.263524 4.16926C0.432223 4.00837 0.632028 3.9282 0.862937 3.92873C1.09385 3.92926 1.29337 4.00944 1.46151 4.16926L4.44596 7.03563Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="modal__delivery-list-text">{{ text_delivery_nova_poshta }} <span class="modal__delivery-list-note">({{ text_delivery_from }} {{ free_post|round(0, 'common') }} ₴)</span></span>
+                                </li>
+                                <li class="modal__delivery-list-item">
+                                    <svg class="modal__delivery-check{% if delivery_reached_boy %} modal__delivery-check--done{% endif %}" width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M4.44596 7.03563L11.5708 0.240535C11.739 0.0801783 11.9351 0 12.1593 0C12.3835 0 12.5797 0.0801783 12.7478 0.240535C12.9159 0.400891 13 0.591448 13 0.812205C13 1.03296 12.9159 1.22325 12.7478 1.38307L5.03445 8.75946C4.86631 8.91982 4.67015 9 4.44596 9C4.22178 9 4.02562 8.91982 3.85748 8.75946L0.242507 5.3118C0.074369 5.15145 -0.00633752 4.96116 0.000388011 4.74094C0.00711354 4.52071 0.0948255 4.33016 0.263524 4.16926C0.432223 4.00837 0.632028 3.9282 0.862937 3.92873C1.09385 3.92926 1.29337 4.00944 1.46151 4.16926L4.44596 7.03563Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="modal__delivery-list-text">{{ text_delivery_courier }} <span class="modal__delivery-list-note">({{ text_delivery_from }} {{ free_boy|round(0, 'common') }} ₴)</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal__delivery-progress">
+                            <div class="modal__delivery-bar">
+                                <div class="modal__delivery-bar-track">
+                                    <div class="modal__delivery-bar-fill" style="width: {{ delivery_progress }}%"></div>
+                                </div>
+                                <span class="modal__delivery-bar-mark modal__delivery-bar-mark--start{% if delivery_amount_current > 0 or delivery_reached_post %} is-active{% endif %}"></span>
+                                <span class="modal__delivery-bar-mark modal__delivery-bar-mark--mid{% if delivery_reached_post %} is-active{% endif %}" style="left: {{ delivery_mid_percent }}%"></span>
+                                <span class="modal__delivery-bar-mark modal__delivery-bar-mark--end{% if delivery_reached_boy %} is-active{% endif %}"></span>
+                            </div>
+                            <div class="modal__delivery-amount">{{ delivery_amount_current }} / {{ delivery_amount_target }} ₴</div>
+                            <div class="modal__delivery-hint">{{ delivery_hint }}</div>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="modal__empty d-flex align-sm-items-center flex-column-reverse flex-sm-row">
+                        <div class="modal__empty-content">
+                            <div class="modal__empty-title">{{ text_empty }}</div>
+                            <div class="modal__empty-text">{{ text_dodavayte_v_koshyk_tovary_yaki }}</div>
+                            <div class="modal__empty-action">
+                                <a href="/populyarni-tovary/" class="btn btn-primary btn-xl">{{ text_za_pokupkamy }}</a>
+                            </div>
+                        </div>
+                        <div class="modal__empty-img">
+                            <img src="/catalog/view/theme/default/image/cart-empty.jpg" alt="{{ text_empty }}">
+                        </div>
+
+                    </div>
+                    {% if coupon_gift_addmore %}
+                        <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-center justify-content-between">
+                            <div class="modal__total-coupon-left d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                </svg>
+                                <div>{{ coupon_gift_addmore }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if featured_products %}
+                <div class="modal__additional {% if products or vouchers %} {% else %} modal__additional_mb {% endif %}">
+                    <div class="modal__additional-head d-flex align-items-center justify-content-between">
+                        <div class="modal__additional-title">{{ text_rekomendovani_tovary }}</div>
+
+                        <div class="modal__additional-actions swiper-actions d-flex align-items-center">
+                            <div class="swiper-nts swiper-button-prev"></div>
+                            <div class="swiper-nts swiper-button-next"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal__additional-slider swiper js-product-basket">
+                        <div class="swiper-wrapper">
+
+                            {% for product in featured_products %}
+                                <div class="swiper-slide modal__additional-item">
+                                    <div class="d-flex align-items-center modal__additional-item-flex">
+                                        <div class="modal__additional-item-img d-flex align-items-center justify-content-center">
+                                            <img src="{{ product.thumb }}"
+                                                 alt="{{ product.name }}">
+                                        </div>
+                                        <div class="modal__additional-item-content">
+                                            <a href="{{ product.href }}"
+                                               class="modal__additional-item-name">{{ product.name }}</a>
+
+                                            <div class="modal__additional-item-bottom d-flex align-items-center justify-content-between">
+                                                <div class="modal__additional-item-prices">
+                                                    {% if not product.special %}
+                                                        <b>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</b>
+                                                    {% else %}
+                                                        <s>{{ product.price }}</s>
+                                                        <b>{{ product.special|replace({' ₴': ' <small>₴</small>'}) }}</b>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="modal__additional-item-action">
+                                                    <button type="button" aria-label="{{ text_u_koshyk }}"
+                                                            class="btn btn-primary btn-sm"
+                                                            onclick="cart.add('{{ product.product_id }}');">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20">
+                                                            <use href="#icon-cart"></use>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+
+                        </div>
+
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

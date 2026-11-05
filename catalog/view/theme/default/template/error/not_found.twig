@@ -1,0 +1,30 @@
+{{ header }}
+<div id="error-not-found" class="container">
+<div class="home__content">
+  <h1 class="h1 color-black">{{ heading_title }}</h1>
+        <div class="breadcrumbs">
+		{% for breadcrumb in breadcrumbs %}
+			{% if loop.last %}
+				<span>{{ breadcrumb.text }}</span>
+			{% else %}
+				<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+			{% endif %}
+		{% endfor %}
+        </div>
+  <div class="row">
+    <div id="content" class="card__content" style="width: 100%;">
+			  <div class="profile__inners" style="margin-top: 0;">
+				  <div class="profile__faq">
+					  <p>{{ text_error }}</p>
+				  </div>
+			  </div>
+      {{ content_bottom }}
+	  
+	  {{ featured }}
+	  
+	  </div>
+    {{ column_right }}
+  </div>
+</div>
+</div>
+{{ footer }}

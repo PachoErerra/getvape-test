@@ -1,0 +1,139 @@
+<modification>
+    <name>продвинутые иконки</name>
+	<version>1.1.0</version>
+	<link>https://fringe.com.ua</link>
+	<author>Stealth</author>
+	<code>icons</code>
+	
+
+	<!--Контролер Основные страницы-->
+	<file path="catalog/controller/product/*.php">
+		<operation error="skip">
+			<search><![CDATA[$data['products'] = array();]]></search>
+			<add position="before"><![CDATA[				
+		if ($this->customer->isLogged()) {
+			$this->load->model('account/wishlist');
+			$data['wishlistdata'] = $this->model_account_wishlist->getWishlistProducts();
+		} else {
+			$wishlist = isset($_COOKIE['cookieWishlist']) ? json_decode($_COOKIE['cookieWishlist'],1) : [];
+			$data['wishlistdata'] = array_unique($wishlist);
+		}
+
+		$data['comparedata'] = isset($this->session->data['compare']) ? $this->session->data['compare'] : array();
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[$data['column_left'] = ]]></search>
+			<add position="before"><![CDATA[				
+$this->document->setTitle(isset($this->request->get['page']) && $this->request->get['page'] >=2?$this->document->getTitle().' - сторінка '.(int)$this->request->get['page']:$this->document->getTitle());
+$this->document->setDescription(isset($this->request->get['page']) && $this->request->get['page'] >=2?$this->document->getDescription().' - сторінка '.(int)$this->request->get['page']:$this->document->getDescription());
+$data['heading_title'] = (isset($this->request->get['page']) && $this->request->get['page'] >=2?$data['heading_title'].' - сторінка '.(int)$this->request->get['page']:$data['heading_title']);	
+			]]></add>
+		</operation>		
+	</file>
+	<file path="catalog/controller/blog/*.php">
+		<operation error="skip">
+			<search><![CDATA[$data['column_left'] = ]]></search>
+			<add position="before"><![CDATA[				
+$this->document->setTitle(isset($this->request->get['page']) && $this->request->get['page'] >=2?$this->document->getTitle().' - сторінка '.(int)$this->request->get['page']:$this->document->getTitle());
+$this->document->setDescription(isset($this->request->get['page']) && $this->request->get['page'] >=2?$this->document->getDescription().' - сторінка '.(int)$this->request->get['page']:$this->document->getDescription());
+$data['heading_title'] = (isset($this->request->get['page']) && $this->request->get['page'] >=2?$data['heading_title'].' - сторінка '.(int)$this->request->get['page']:$data['heading_title']);	
+			]]></add>
+		</operation>		
+	</file>
+	<file path="catalog/controller/{extension/module,module}/{latest*,uni_five_in_one*,special*,bestseller*,popular,product_tab,ajax_viewed,uni_viewed,uni_tabs}.php">
+		<operation error="skip">
+			<search><![CDATA[$data['products'] = array();]]></search>
+			<add position="before"><![CDATA[				
+		if ($this->customer->isLogged()) {
+			$this->load->model('account/wishlist');
+			$data['wishlistdata'] = $this->model_account_wishlist->getWishlistProducts();
+		} else {
+			$wishlist = isset($_COOKIE['cookieWishlist']) ? json_decode($_COOKIE['cookieWishlist'],1) : [];
+			$data['wishlistdata'] = array_unique($wishlist);
+		}
+
+		$data['comparedata'] = isset($this->session->data['compare']) ? $this->session->data['compare'] : array();
+			]]></add>
+		</operation>
+	</file>
+	<!--Шаблон Основные страницы-->
+	<file path="catalog/view/theme/*/template/*/{category,search,manufacturer_info,special,product,article}.twig">
+		<operation error="skip">
+			<search><![CDATA[class="product__favorites"]]></search>
+			<add position="replace"><![CDATA[
+			class="product__favorites{% if product.product_id in wishlistdata %} is-active{% endif %}"
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[class="product__comparison"]]></search>
+			<add position="replace"><![CDATA[
+			class="product__comparison{% if product.product_id in comparedata %} is-active{% endif %}"
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[wishlist.add('{{ product.product_id }}');]]></search>
+			<add position="replace"><![CDATA[
+			wishlist.{% if product.product_id in wishlistdata %}remove{% else %}add{% endif %}('{{ product.product_id }}');
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[compare.add('{{ product.product_id }}');]]></search>
+			<add position="replace"><![CDATA[
+			compare.{% if product.product_id in comparedata %}remove{% else %}add{% endif %}('{{ product.product_id }}');
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/view/theme/*/template/extension/module/{featured*,latest*,special*,uni_five_in_one*,bestseller*,popular,product_tab,ajax_viewed_product,uni_viewed,uni_tabs}.twig">
+		<operation error="skip">
+			<search><![CDATA[class="product__favorites"]]></search>
+			<add position="replace"><![CDATA[
+			class="product__favorites{% if product.product_id in wishlistdata %} is-active{% endif %}"
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[class="product__comparison"]]></search>
+			<add position="replace"><![CDATA[
+			class="product__comparison{% if product.product_id in comparedata %} is-active{% endif %}"
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[wishlist.add('{{ product.product_id }}');]]></search>
+			<add position="replace"><![CDATA[
+			wishlist.{% if product.product_id in wishlistdata %}remove{% else %}add{% endif %}('{{ product.product_id }}');
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[compare.add('{{ product.product_id }}');]]></search>
+			<add position="replace"><![CDATA[
+			compare.{% if product.product_id in comparedata %}remove{% else %}add{% endif %}('{{ product.product_id }}');
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/view/theme/*/template/*/product.twig">
+		<operation error="skip">
+			<search><![CDATA[class="card__rside-box-favorites"]]></search>
+			<add position="replace"><![CDATA[
+			class="card__rside-box-favorites{% if product_id in wishlistdata %} is-active{% endif %}"
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[class="card__rside-box-comparison"]]></search>
+			<add position="replace"><![CDATA[
+			class="card__rside-box-comparison{% if product_id in comparedata %} is-active{% endif %}"
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[wishlist.add('{{ product_id }}');]]></search>
+			<add position="replace"><![CDATA[
+			wishlist.{% if product_id in wishlistdata %}remove{% else %}add{% endif %}('{{ product_id }}');
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[compare.add('{{ product_id }}');]]></search>
+			<add position="replace"><![CDATA[
+			compare.{% if product_id in comparedata %}remove{% else %}add{% endif %}('{{ product_id }}');
+			]]></add>
+		</operation>
+	</file>
+</modification>

@@ -1,0 +1,239 @@
+{{ header }}
+<div id="information-contact" class="container">
+
+    <div class="contacts__content">{{ column_left }}{{ content_top }}
+
+
+        <div class="contacts__inners">
+            <div class="contacts__inner">
+                <div class="h3">{{ heading_title }}</div>
+
+                <div class="contacts__lists d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between flex-wrap">
+                    <ul class="contacts__items contacts__items--gap-lg d-flex flex-column flex-md-row align-items-md-center flex-wrap">
+                        <li class="contacts__item contacts__link phone-link">
+                            <div class="contacts__item-phones d-flex flex-column flex-sm-row">
+                                <a href="tel:{{ telephone|replace({'(': "", ")" : "", " " : "", "-" : ""}) }}"
+                                   class="binct-phone-number-1">{{ telephone }}</a>
+
+                                <a href="tel:+380637812233"
+                                   class="">
+                                    +38 (063) 781-22-33
+                                </a>
+
+                                <a href="tel:+380630714486"
+                                   class="">
+                                    +38 (063) 071-44-86
+                                </a>
+                            </div>
+                        </li>
+                        <li class="contacts__item">
+                            <a href="mailto:{{ storeemail }}" class="contacts__link email-link">{{ storeemail }}</a>
+                        </li>
+                    </ul>
+
+                    <ul class="contacts__items d-flex align-items-center">
+
+                        {% if tiktok %}
+                            <li class="contacts__item contacts__item--social contacts__item--social-tiktok">
+                                <a href="{{ tiktok }}" target="_blank" class="contacts__link tiktok-link"
+                                   aria-label="TikTok"></a>
+                            </li>
+                        {% endif %}
+                        {% if instagram %}
+                            <li class="contacts__item contacts__item--social">
+                                <a href="{{ instagram }}" target="_blank"
+                                   class="contacts__link instagram-link" aria-label="Instagram"></a>
+                            </li>
+                        {% endif %}
+                        {% if youtube %}
+                            <li class="contacts__item contacts__item--social">
+                                <a href="{{ youtube }}" target="_blank"
+                                   aria-label="Youtube"
+                                   class="contacts__link youtube-link"></a>
+                            </li>
+                        {% endif %}
+                        {% if telegram %}
+                            <li class="contacts__item contacts__item--social">
+                                <a href="{{ telegram }}" target="_blank"
+                                   aria-label="Telegram"
+                                   class="contacts__link telegram-link"></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            {% if 0 %}
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" class="contacts__inner">
+                    <div class="h3">{{ text_contact }}</div>
+                    <div class="contacts__fields">
+                        <div class="contacts__field field">
+                            <input type="text" name="name" value="{{ name }}"
+                                   placeholder="{{ entry_name }}" {% if error_name %} class="error" {% endif %}>
+                            {% if error_name and 0 %}
+                                <div class="text-danger">{{ error_name }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="contacts__field field">
+                            <input type="tel" name="phone" value="{{ phone }}"
+                                   class="phone-mask {% if error_phone %} error {% endif %}"
+                                   placeholder="{{ text_telephone }}">
+                            {% if error_phone and 0 %}
+                                <div class="text-danger">{{ error_phone }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="contacts__field">
+                            <button type="submit"
+                                    class="btn btn-primary btn-full btn-xl">
+                                {{ text_send }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+
+        <div class="contacts__stores">
+            <div class="h3">{{ text_nashi_fizychni_mahazyny }}</div>
+            <div class="contacts__stores-items">
+                {% for key, warehouse in warehouses %}
+                    {% if key != 'hide' and key !='' %}
+                        {% if key != 'count' %}
+                            <div class="contacts__store">
+                                <div class="contacts__store-header">{{ key }}</div>
+                                <div class="contacts__store-body">
+                                    <div class="contacts__store-items">
+                                        {% for shop in warehouse %}
+                                            <div class="contacts__store-item">
+                                                <div class="contacts__store-item-inners">
+                                                    <div class="contacts__store-item-inner">
+                                                        <div class="p md font-semibold">{{ shop.address|nl2br }}</div>
+                                                        <div class="p md color-grey font-semibold m-top-5">{{ shop.open|nl2br }}</div>
+                                                    </div>
+                                                    <div class="contacts__store-item-inner">
+                                                        <div class="p md font-semibold">{{ shop.telephone }}</div>
+                                                    </div>
+                                                    <div class="contacts__store-item-inner">
+                                                        <a href="{{ shop.geocode }}" target="_blank" rel="nofollow"
+                                                           class="a-link font-semibold">{{ text_pokazaty_na_karti }}</a>
+                                                    </div>
+                                                    <div class="contacts__store-item-inner">
+                                                        {% if shop.thumb %}
+                                                            <img src="{{ shop.thumb }}"
+                                                                 loading="lazy"
+                                                                 class="contacts__store-item-img"
+                                                                 alt="{{ shop.address|nl2br }}">
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {% if 0 %}
+        <div id="content" class="">
+            <h3>{{ text_location }}</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        {% if image %}
+                            <div class="col-sm-3"><img src="{{ image }}" alt="{{ store }}" title="{{ store }}"
+                                                       class="img-thumbnail"/></div>
+                        {% endif %}
+                        <div class="col-sm-3"><strong>{{ store }}</strong><br/>
+                            <address>
+                                {{ address }}
+                            </address>
+                            {% if geocode %}
+                                <a href="https://maps.google.com/maps?q={{ geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15"
+                                   target="_blank" class="btn btn-info"><i
+                                            class="fa fa-map-marker"></i> {{ button_map }}</a>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-sm-3">
+                            {% if open %}
+                                <strong>{{ text_open }}</strong><br/>
+                                {{ open }}<br/>
+                                <br/>
+                            {% endif %}
+                            {% if comment %}
+                                <strong>{{ text_comment }}</strong><br/>
+                                {{ comment }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if locations %}
+                <h3>{{ text_store }}</h3>
+                <div class="panel-group" id="accordion">
+                    {% for location in locations %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#collapse-location{{ location.location_id }}"
+                                                           class="accordion-toggle" data-toggle="collapse"
+                                                           data-parent="#accordion">{{ location.name }} <i
+                                                class="fa fa-caret-down"></i></a></h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="collapse-location{{ location.location_id }}">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        {% if location.image %}
+                                            <div class="col-sm-3"><img src="{{ location.image }}"
+                                                                       alt="{{ location.name }}"
+                                                                       title="{{ location.name }}"
+                                                                       class="img-thumbnail"/></div>
+                                        {% endif %}
+                                        <div class="col-sm-3"><strong>{{ location.name }}</strong><br/>
+                                            <address>
+                                                {{ location.address }}
+                                            </address>
+                                            {% if location.geocode %}
+                                                <a href="https://maps.google.com/maps?q={{ location.geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15"
+                                                   target="_blank" class="btn btn-info"><i
+                                                            class="fa fa-map-marker"></i> {{ button_map }}</a>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-3"><strong>{{ text_telephone }}</strong><br>
+                                            {{ location.telephone }}<br/>
+                                            <br/>
+                                            {% if location.fax %}
+                                                <strong>{{ text_fax }}</strong><br>
+                                                {{ location.fax }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-3">
+                                            {% if location.open %}
+                                                <strong>{{ text_open }}</strong><br/>
+                                                {{ location.open }}<br/>
+                                                <br/>
+                                            {% endif %}
+                                            {% if location.comment %}
+                                                <strong>{{ text_comment }}</strong><br/>
+                                                {{ location.comment }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endif %}
+
+            {{ content_bottom }}</div>
+        {{ column_right }}</div>
+</div>
+
+
+{{ footer }}

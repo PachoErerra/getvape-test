@@ -1,0 +1,329 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-promo" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-promo" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">Общие</a></li>
+            <li><a href="#tab-links" data-toggle="tab">Связи и Скидки</a></li>
+            <li><a href="#tab-data" data-toggle="tab">Данные</a></li>
+          </ul>
+          
+          <div class="tab-content">
+            <!-- Вкладка Общие -->
+            <div class="tab-pane active" id="tab-general">
+              <ul class="nav nav-tabs" id="language">
+                {% for language in languages %}
+                <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-title{{ language.language_id }}">{{ entry_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="promo_description[{{ language.language_id }}][title]" value="{{ promo_description[language.language_id] ? promo_description[language.language_id].title }}" placeholder="{{ entry_title }}" id="input-title{{ language.language_id }}" class="form-control" />
+                      {% if error_title[language.language_id] %}
+                      <div class="text-danger">{{ error_title[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-meta-title{{ language.language_id }}">{{ entry_meta_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="promo_description[{{ language.language_id }}][meta_title]" value="{{ promo_description[language.language_id] ? promo_description[language.language_id].meta_title }}" placeholder="{{ entry_meta_title }}" id="input-meta-title{{ language.language_id }}" class="form-control" />
+                      {% if error_meta_title[language.language_id] %}
+                      <div class="text-danger">{{ error_meta_title[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-meta-description{{ language.language_id }}">{{ entry_meta_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="promo_description[{{ language.language_id }}][meta_description]" rows="5" placeholder="{{ entry_meta_description }}" id="input-meta-description{{ language.language_id }}" class="form-control">{{ promo_description[language.language_id] ? promo_description[language.language_id].meta_description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-meta-keyword{{ language.language_id }}">{{ entry_meta_keyword }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="promo_description[{{ language.language_id }}][meta_keyword]" rows="5" placeholder="{{ entry_meta_keyword }}" id="input-meta-keyword{{ language.language_id }}" class="form-control">{{ promo_description[language.language_id] ? promo_description[language.language_id].meta_keyword }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language.language_id }}">{{ entry_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="promo_description[{{ language.language_id }}][description]" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ promo_description[language.language_id] ? promo_description[language.language_id].description }}</textarea>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Вкладка Связи (Товары, Категории, Производители) -->
+            <div class="tab-pane" id="tab-links">
+              
+              <!-- Производители -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-manufacturer"><span data-toggle="tooltip" title="{{ help_manufacturer }}">{{ entry_manufacturer }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="manufacturer_name" value="" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control" />
+                  <div id="promo-manufacturer" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for promo_manufacturer in promo_manufacturers %}
+                    <div id="promo-manufacturer{{ promo_manufacturer.manufacturer_id }}"><i class="fa fa-minus-circle"></i> {{ promo_manufacturer.name }}
+                      <input type="hidden" name="promo_manufacturer[{{ promo_manufacturer.manufacturer_id }}][discount]" value="{{ promo_manufacturer.discount }}" size="3" style="margin-left:10px;" />
+                      <input type="hidden" name="promo_manufacturer[{{ promo_manufacturer.manufacturer_id }}][manufacturer_id]" value="{{ promo_manufacturer.manufacturer_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Категории -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-category"><span data-toggle="tooltip" title="{{ help_category }}">{{ entry_category }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="category_name" value="" placeholder="{{ entry_category }}" id="input-category" class="form-control" />
+                  <div id="promo-category" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for promo_category in promo_categories %}
+                    <div id="promo-category{{ promo_category.category_id }}"><i class="fa fa-minus-circle"></i> {{ promo_category.name }}
+                      <input type="hidden" name="promo_category[{{ promo_category.category_id }}][discount]" value="{{ promo_category.discount }}" size="3" style="margin-left:10px;" /> 
+                      <input type="hidden" name="promo_category[{{ promo_category.category_id }}][category_id]" value="{{ promo_category.category_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Товары -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-product"><span data-toggle="tooltip" title="{{ help_product }}">{{ entry_product }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="product_name" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+                  <div id="promo-product" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for promo_product in promo_products %}
+                    <div id="promo-product{{ promo_product.product_id }}"><i class="fa fa-minus-circle"></i> {{ promo_product.name }}
+                      <input type="hidden" name="promo_product[{{ promo_product.product_id }}][discount]" value="{{ promo_product.discount }}" size="3" style="margin-left:10px;" /> 
+                      <input type="hidden" name="promo_product[{{ promo_product.product_id }}][product_id]" value="{{ promo_product.product_id }}" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Вкладка Данные -->
+            <div class="tab-pane" id="tab-data">
+				<div class="form-group">
+				  <label class="col-sm-2 control-label">SEO URL</label>
+				  <div class="col-sm-10">
+					<div class="table-responsive">
+					  <table class="table table-bordered table-hover">
+						<thead>
+						  <tr>
+							<td class="text-left" style="width: 200px;">Магазины</td>
+							<td class="text-left">SEO URL</td>
+						  </tr>
+						</thead>
+						<tbody>
+						{% for store in stores %}
+						  <tr>
+							<td class="text-left">{{ store.name }}</td>
+							<td class="text-left">
+							  {% for language in languages %}
+							  <div class="input-group">
+								<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input type="text" name="promo_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{{ promo_seo_url[store.store_id][language.language_id] }}" placeholder="SEO URL" class="form-control" />
+							  </div>
+							  {% endfor %}
+							</td>
+						  </tr>
+						{% endfor %}
+						</tbody>
+					  </table>
+					</div>
+				  </div>
+				</div>
+               <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+                </div>
+              </div>
+			<div class="form-group">
+			  <label class="col-sm-2 control-label">Индексация</label>
+			  <div class="col-sm-10">
+				<select name="noindex" class="form-control">
+				  {% if noindex %}
+				  <option value="1" selected="selected">Нет (noindex, follow)</option>
+				  <option value="0">Да (index, follow)</option>
+				  {% else %}
+				  <option value="1">Нет (noindex, follow)</option>
+				  <option value="0" selected="selected">Да (index, follow)</option>
+				  {% endif %}
+				</select>
+			  </div>
+			</div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="status" id="input-status" class="form-control">
+                    {% if status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+  <link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+  
+  <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+  
+  <script type="text/javascript"><!--
+$('#language a:first').tab('show');
+
+// Производители
+$('input[name=\'manufacturer_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['manufacturer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'manufacturer_name\']').val('');
+
+		$('#promo-manufacturer' + item['value']).remove();
+
+		html  = '<div id="promo-manufacturer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'];
+        html += '  <input type="hidden" name="promo_manufacturer[' + item['value'] + '][discount]" value="0" size="3" style="margin-left:10px;" /> ';
+        html += '  <input type="hidden" name="promo_manufacturer[' + item['value'] + '][manufacturer_id]" value="' + item['value'] + '" />';
+        html += '</div>';
+
+		$('#promo-manufacturer').append(html);
+	}
+});
+
+$('#promo-manufacturer').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Категории
+$('input[name=\'category_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'category_name\']').val('');
+
+		$('#promo-category' + item['value']).remove();
+
+		html  = '<div id="promo-category' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'];
+        html += '  <input type="hidden" name="promo_category[' + item['value'] + '][discount]" value="0" size="3" style="margin-left:10px;" />';
+        html += '  <input type="hidden" name="promo_category[' + item['value'] + '][category_id]" value="' + item['value'] + '" />';
+        html += '</div>';
+
+		$('#promo-category').append(html);
+	}
+});
+
+$('#promo-category').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Товары
+$('input[name=\'product_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'product_name\']').val('');
+		
+		$('#promo-product' + item['value']).remove();
+		
+		html  = '<div id="promo-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'];
+        html += '  <input type="hidden" name="promo_product[' + item['value'] + '][discount]" value="0" size="3" style="margin-left:10px;" /> ';
+        html += '  <input type="hidden" name="promo_product[' + item['value'] + '][product_id]" value="' + item['value'] + '" />';
+        html += '</div>';
+		
+		$('#promo-product').append(html);
+	}
+});
+
+$('#promo-product').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+//--></script>
+</div>
+{{ footer }}

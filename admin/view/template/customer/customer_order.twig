@@ -1,0 +1,35 @@
+<p class="text-muted">{{ orders_summary }}</p>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <td class="text-left">{{ column_order_id }}</td>
+        <td class="text-left">{{ column_date_added }}</td>
+        <td class="text-left">{{ column_order_status }}</td>
+        <td class="text-right">{{ column_total }}</td>
+        <td class="text-right">{{ column_action }}</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% if orders %}
+      {% for order in orders %}
+      <tr>
+        <td class="text-left">{{ order.order_id }}</td>
+        <td class="text-left">{{ order.date_added }}</td>
+        <td class="text-left">{{ order.order_status }}</td>
+        <td class="text-right">{{ order.total }}</td>
+        <td class="text-right"><a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info btn-xs" target="_blank"><i class="fa fa-eye"></i></a></td>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td class="text-center" colspan="5">{{ text_no_results }}</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+</div>

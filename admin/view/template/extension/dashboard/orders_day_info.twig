@@ -1,0 +1,281 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-line-chart"></i> {{ heading_title }}</h3>
+  </div>
+  <div class="panel-body">
+    <p class="text-muted" style="margin-top:0;">{{ text_subtitle }}</p>
+    <div class="orders-day-filters form-inline" style="margin-bottom:15px;">
+      <div class="btn-group orders-day-presets" role="group">
+        <button type="button" class="btn btn-default active" data-range="today">{{ text_today }}</button>
+        <button type="button" class="btn btn-default" data-range="yesterday">{{ text_yesterday }}</button>
+        <button type="button" class="btn btn-default" data-range="week">{{ text_week }}</button>
+        <button type="button" class="btn btn-default" data-range="month">{{ text_month }}</button>
+      </div>
+      <span class="orders-day-sep hidden-xs">{{ text_custom }}:</span>
+      <div class="input-group date" style="width:140px;">
+        <input type="text" name="orders_day_start" value="" placeholder="{{ text_date_start }}" data-date-format="YYYY-MM-DD" id="orders-day-start" class="form-control" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
+      <div class="input-group date" style="width:140px;">
+        <input type="text" name="orders_day_end" value="" placeholder="{{ text_date_end }}" data-date-format="YYYY-MM-DD" id="orders-day-end" class="form-control" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
+      <button type="button" id="orders-day-apply" class="btn btn-primary">{{ text_filter }}</button>
+      <span id="orders-day-period" class="label label-default" style="margin-left:8px;"></span>
+      <span id="orders-day-total" class="label label-primary" style="margin-left:4px;"></span>
+    </div>
+    <div class="orders-day-chart-wrap">
+      <div class="orders-day-y-label">{{ text_yaxis }}</div>
+					<div id="chart-orders-day" style="width: 100%; height: 460px;"></div>
+      <div class="orders-day-x-label">{{ text_xaxis }}</div>
+    </div>
+  </div>
+</div>
+<style type="text/css">
+.orders-day-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.orders-day-sep {
+  color: #777;
+  margin-left: 4px;
+}
+.orders-day-chart-wrap {
+  position: relative;
+  padding: 0 8px 28px 18px;
+}
+.orders-day-y-label {
+  position: absolute;
+  left: -6px;
+  top: 45%;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+.orders-day-x-label {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
+}
+#chart-orders-day .flot-x-axis .flot-tick-label {
+  white-space: nowrap !important;
+  transform: translate(-22px, 36px) rotate(-90deg);
+  transform-origin: center top;
+  font-size: 12px !important;
+  font-weight: 600;
+  line-height: 1.1 !important;
+  color: #333;
+}
+#tooltip-orders-day {
+  position: absolute;
+  display: none;
+  border: 1px solid #f3c6dc;
+  padding: 8px 12px;
+  background: #fff;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  font-size: 12px;
+  z-index: 1000;
+  pointer-events: none;
+  white-space: nowrap;
+}
+#tooltip-orders-day .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e91e8c;
+  margin-right: 6px;
+}
+</style>
+<script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.js"></script>
+<script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.resize.min.js"></script>
+<script type="text/javascript"><!--
+(function() {
+	var currentRange = 'today';
+
+	$('.orders-day-filters .date').datetimepicker({
+		pickTime: false,
+		format: 'YYYY-MM-DD'
+	});
+
+	function loadOrdersDayChart(range, dateStart, dateEnd) {
+		var url = 'index.php?route=extension/dashboard/orders_day/chart&user_token={{ user_token }}&range=' + encodeURIComponent(range);
+
+		if (range === 'custom') {
+			url += '&date_start=' + encodeURIComponent(dateStart || '') + '&date_end=' + encodeURIComponent(dateEnd || '');
+		}
+
+		$.ajax({
+			type: 'get',
+			url: url,
+			dataType: 'json',
+			success: function(json) {
+				if (typeof json['order'] == 'undefined') {
+					return false;
+				}
+
+				$('#orders-day-period').text('{{ text_period }}: ' + json['period_label']);
+				$('#orders-day-total').text('{{ text_total }}: ' + json['total'] + ' ' + json['text_orders']);
+
+				if (json['date_start']) {
+					$('#orders-day-start').val(json['date_start']);
+				}
+
+				if (json['date_end']) {
+					$('#orders-day-end').val(json['date_end']);
+				}
+
+				var maxY = 50;
+				var i;
+
+				for (i = 0; i < json['order']['data'].length; i++) {
+					if (json['order']['data'][i][1] > maxY) {
+						maxY = Math.ceil(json['order']['data'][i][1] / 5) * 5;
+					}
+				}
+
+				var option = {
+					shadowSize: 0,
+					colors: ['#e91e8c'],
+					series: {
+						lines: {
+							show: true,
+							fill: true,
+							fillColor: {
+								colors: [
+									{ opacity: 0.35 },
+									{ opacity: 0.05 }
+								]
+							},
+							lineWidth: 2
+						},
+						points: {
+							show: true,
+							radius: 3,
+							fill: true,
+							fillColor: '#e91e8c',
+							lineWidth: 1
+						}
+					},
+					grid: {
+						hoverable: true,
+						clickable: true,
+						borderWidth: 1,
+						borderColor: '#e5e5e5',
+						backgroundColor: '#ffffff',
+						markings: function(axes) {
+							var markings = [];
+							var y;
+
+							for (y = axes.yaxis.min; y < axes.yaxis.max; y += 5) {
+								markings.push({
+									yaxis: { from: y, to: y },
+									color: '#f0f0f0'
+								});
+							}
+
+							return markings;
+						}
+					},
+					xaxis: {
+						ticks: json['xaxis'],
+						tickLength: 0,
+						min: -0.5,
+						max: 47.5,
+						labelHeight: 110
+					},
+					yaxis: {
+						min: 0,
+						max: maxY,
+						tickSize: 5,
+						tickDecimals: 0,
+						tickLength: 0
+					},
+					legend: {
+						show: false
+					}
+				};
+
+				$.plot('#chart-orders-day', [json['order']], option);
+
+				function slotToTimeRange(slot) {
+					var hour = Math.floor(slot / 2);
+					var h = (hour < 10 ? '0' : '') + hour;
+
+					if (slot % 2 === 0) {
+						return { start: h + ':00:00', end: h + ':30:59' };
+					}
+
+					return { start: h + ':31:00', end: h + ':59:59' };
+				}
+
+				$('#chart-orders-day').off('plothover plotclick').on('plothover', function(event, pos, item) {
+					if (item) {
+						var slot = Math.round(item.datapoint[0]);
+						var value = item.datapoint[1];
+						var label = json['labels'][slot] || '';
+
+						if (!$('#tooltip-orders-day').length) {
+							$('<div id="tooltip-orders-day"></div>').appendTo('body');
+						}
+
+						$('#tooltip-orders-day').html('<span class="dot"></span><strong>' + label + '</strong><br>' + value + ' ' + json['text_orders'] + '<br><span style="color:#888;font-size:11px;">{{ text_click_orders }}</span>').css({
+							top: item.pageY - 70,
+							left: item.pageX + 12
+						}).fadeIn(80);
+
+						$('#chart-orders-day').css('cursor', 'pointer');
+					} else {
+						$('#tooltip-orders-day').hide();
+						$('#chart-orders-day').css('cursor', 'auto');
+					}
+				}).on('plotclick', function(event, pos, item) {
+					if (!item) {
+						return;
+					}
+
+					var slot = Math.round(item.datapoint[0]);
+					var timeRange = slotToTimeRange(slot);
+					var orderUrl = '{{ order_list|replace({"&amp;": "&"}) }}';
+
+					orderUrl += '&filter_date_added_start=' + encodeURIComponent(json['date_start']);
+					orderUrl += '&filter_date_added_end=' + encodeURIComponent(json['date_end']);
+					orderUrl += '&filter_time_start=' + encodeURIComponent(timeRange.start);
+					orderUrl += '&filter_time_end=' + encodeURIComponent(timeRange.end);
+
+					window.open(orderUrl, '_blank');
+				});
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	}
+
+	$('.orders-day-presets button').on('click', function() {
+		$('.orders-day-presets button').removeClass('active');
+		$(this).addClass('active');
+		currentRange = $(this).data('range');
+		loadOrdersDayChart(currentRange);
+	});
+
+	$('#orders-day-apply').on('click', function() {
+		$('.orders-day-presets button').removeClass('active');
+		currentRange = 'custom';
+		loadOrdersDayChart('custom', $('#orders-day-start').val(), $('#orders-day-end').val());
+	});
+
+	loadOrdersDayChart('today');
+})();
+//--></script>

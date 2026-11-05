@@ -1,0 +1,30 @@
+<?php
+// Auto-generated
+$_['text_vsi_vakansiyi'] = 'Все вакансии';
+$_['text_vidhuknutysya'] = 'Откликнуться';
+$_['text_podilytysya_vakansiyeyu'] = 'Поделиться вакансии';
+$_['text_https_telegram_me_share_url'] = 'Вакансия ';
+$_['text_my_proponuyemo'] = 'Мы предлагаем';
+$_['text_svyata_ta_tymbildinhy'] = 'Праздники и тимбилдинг';
+$_['text_navchannya_ta_rozvytok'] = 'Обучение и развитие';
+$_['text_viddalena_robota'] = 'Удаленная работа';
+$_['text_robota_v_ofisi'] = 'Работа в офисе';
+$_['text_yak_do_nas_potrapyty'] = 'Как к нам попасть';
+$_['text_vidhuk'] = 'отзыв';
+$_['text_vidhukuysya_na_odnu_abo_kilka'] = 'Отзывайся на одну или несколько вакансий, только не забудь прикрепить резюме или портфолио. Если мы подойдём друг к другу, наш рекрутер пообщается с тобой по телефону, а затем пригласит на интервью.';
+$_['text_interv_yu'] = 'Интервью';
+$_['text_na_onlayn_abo_offlayn_zustrichi'] = 'На онлайн или оффлайн-встрече мы расспросим тебя об опыте, проектах, профессиональных и личных планах. Ответим на твои вопросы о компании, задачах и команде. Иногда перед и во время интервью мы просим сделать задачу: кейс или презентацию.';
+$_['text_rishennya'] = 'Решение';
+$_['text_my_obov_yazkovo_skazhemo_u'] = 'Мы обязательно скажем, в какой срок вернемся к тебе с обратной связью.';
+$_['text_ofer'] = 'Офер';
+$_['text_yakshcho_vse_proyshlo_uspishno_my'] = 'Если все прошло успешно, мы пришлем тебе предложение о работе.';
+$_['text_nashi_vakansiyi'] = 'Наши вакансии';
+$_['text_vidhuk_na_vakansiyu'] = 'Отзыв на вакансию';
+$_['text_vashe_im_ya'] = 'Ваше имя';
+$_['text_vashe_prizvyshche'] = 'Ваша фамилия';
+$_['text_nomer_telefonu'] = 'Номер телефона';
+$_['text_data_narodzhennya'] = 'Дата рождения';
+$_['text_zachekayte'] = 'Подождите..';
+$_['text_zavantazhte_rezyume_pdf_abo_ms'] = 'Загрузите резюме PDF или MS Word (не обязательно)';
+$_['text_dali'] = 'Дали';
+$_['text_nazad'] = 'Обратно';

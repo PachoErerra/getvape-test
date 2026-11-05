@@ -1,0 +1,146 @@
+<div class="form-group {% if required %}required{% endif %} row-{{id}} checkout__tabs-field {% if id in ['shipping_address_ya', 'shipping_address_city', 'shipping_address_address_1', 'shipping_address_poshtomat_address_1', 'shipping_address_address_2', 'shipping_address_address_3'] %}w100{% else %}w33{% endif %}" {% if id == 'customer_fax' and value and value != '1970-01-01' %} style="display:none" {% endif %}>
+<div class="field">
+    <label class="control-label {{page == 'checkout' ? 'col-sm-4' : 'col-sm-2' }}" for="{{id}}">
+        {{label}}{% if required %}<span style="color: red;">*</span> {% endif %}
+    </label>
+    <div class="{{page == 'checkout' ? 'col-sm-8' : 'col-sm-10'}} field-rel">
+      {% if type == 'select' or type == 'select2' %}
+        <select class="form-control" name="{{ name }}" id="{{ id }}" {{ bootstrap ? 'data-theme="bootstrap"' : '' }} {{ type == 'select2' ? 'data-type="select2"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : ''}}>
+          {% for info in values %}
+            <option value="{{ info['id'] | escape }}" {{ value == info['id'] ? 'selected="selected"' : '' }}>{{ info['text'] }}</option>
+          {% endfor %}
+        </select>
+		<div class="dropdown-arrow"></div>
+      {% elseif type == 'radio' %}
+        <div>
+        {% for info in values %}
+          <div class="radio">
+              <input type="radio" name="{{ name }}" id="{{ id }}_{{ info['id'] }}" value="{{ info['id'] | escape }}" {{ value == info['id'] ? 'checked="checked"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : '' }}>
+            <label {{ value == info['id'] ? 'class="is-checked"' : '' }} for="{{ id }}_{{ info['id'] }}">
+                {% if info['id'] == 'telephone' %}
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 0C21.7314 0 28 6.2685 28 14C28 21.7316 21.7315 28 14 28C6.26859 28 0 21.7315 0 14C0 6.26859 6.26763 0 14 0Z" fill="currentColor"/>
+                        <path d="M9.29228 8.40231C9.07545 8.37056 8.85429 8.41421 8.66579 8.52597H8.64946C8.21197 8.78263 7.81764 9.10579 7.48165 9.48612C7.20165 9.80928 7.04999 10.1359 7.01032 10.4509C6.98699 10.6376 7.00332 10.8266 7.05816 11.0051L7.07916 11.0168C7.39415 11.9419 7.80481 12.8321 8.30647 13.6697C8.9536 14.8461 9.74958 15.9342 10.6748 16.9071L10.7028 16.9468L10.7471 16.9795L10.7739 17.011L10.8066 17.039C11.783 17.9668 12.8737 18.7666 14.0522 19.4189C15.3997 20.1528 16.2175 20.4992 16.7086 20.6439V20.6509C16.8521 20.6952 16.9828 20.7151 17.1146 20.7151C17.5331 20.6851 17.9293 20.5149 18.2393 20.2321C18.6184 19.8961 18.9393 19.5006 19.1889 19.0608V19.0526C19.4234 18.6093 19.3441 18.1916 19.0058 17.9081C18.3268 17.3136 17.5918 16.7862 16.8113 16.3332C16.2886 16.0497 15.7578 16.2212 15.5432 16.5082L15.0847 17.0868C14.849 17.3738 14.422 17.3341 14.422 17.3341L14.4104 17.3411C11.2242 16.528 10.3738 13.3022 10.3738 13.3022C10.3738 13.3022 10.3341 12.8636 10.6293 12.6396L11.2032 12.1776C11.4786 11.9536 11.6699 11.4239 11.3747 10.9013C10.9228 10.1213 10.3965 9.38676 9.80327 8.70797C9.67351 8.54858 9.49178 8.43995 9.28995 8.40114M14.6763 7C14.5216 7 14.3733 7.06146 14.2639 7.17085C14.1545 7.28025 14.093 7.42862 14.093 7.58332C14.093 7.73803 14.1545 7.8864 14.2639 7.99579C14.3733 8.10519 14.5216 8.16664 14.6763 8.16664C16.151 8.16664 17.376 8.64847 18.3454 9.57245C18.8436 10.0776 19.2321 10.6761 19.4864 11.3318C19.7419 11.9886 19.8586 12.6897 19.8282 13.392C19.8217 13.5468 19.877 13.6977 19.9818 13.8117C20.0866 13.9257 20.2324 13.9934 20.3871 13.9999C20.5418 14.0064 20.6927 13.9511 20.8067 13.8463C20.9207 13.7415 20.9884 13.5958 20.9949 13.441C21.0297 12.5772 20.8863 11.7155 20.5737 10.9094C20.2597 10.0993 19.7815 9.36288 19.1691 8.74647L19.1574 8.7348C17.9546 7.58566 16.4333 7 14.6763 7Z" fill="white"/>
+                        <path d="M14.6356 8.91914C14.4809 8.91914 14.3325 8.98059 14.2231 9.08999C14.1137 9.19938 14.0522 9.34775 14.0522 9.50246C14.0522 9.65716 14.1137 9.80553 14.2231 9.91493C14.3325 10.0243 14.4809 10.0858 14.6356 10.0858H14.6554C15.7194 10.1616 16.494 10.5163 17.0365 11.0984C17.593 11.6981 17.8812 12.4436 17.859 13.3652C17.8554 13.5199 17.9135 13.6697 18.0204 13.7816C18.1272 13.8935 18.2742 13.9584 18.4289 13.962C18.5836 13.9655 18.7334 13.9075 18.8453 13.8006C18.9572 13.6937 19.0221 13.5468 19.0257 13.392C19.0537 12.1822 18.664 11.1381 17.8917 10.3051V10.3028C17.1019 9.45579 16.018 9.0078 14.7137 8.9203L14.6939 8.91797L14.6356 8.91914Z" fill="white"/>
+                        <path d="M14.6136 10.8694C14.5355 10.8626 14.4569 10.8715 14.3823 10.8957C14.3078 10.9198 14.2389 10.9588 14.1797 11.0102C14.1206 11.0616 14.0724 11.1244 14.038 11.1948C14.0037 11.2653 13.9839 11.3419 13.9798 11.4202C13.9757 11.4984 13.9874 11.5767 14.0143 11.6503C14.0411 11.724 14.0825 11.7914 14.136 11.8487C14.1895 11.906 14.254 11.9519 14.3256 11.9837C14.3973 12.0155 14.4746 12.0325 14.5529 12.0338C15.0406 12.0594 15.3521 12.2064 15.5481 12.4036C15.7452 12.6019 15.8922 12.9204 15.9191 13.4186C15.9205 13.4968 15.9377 13.574 15.9696 13.6455C16.0016 13.717 16.0476 13.7814 16.1049 13.8347C16.1622 13.888 16.2296 13.9293 16.3032 13.956C16.3768 13.9827 16.455 13.9944 16.5332 13.9902C16.6114 13.9861 16.688 13.9662 16.7583 13.9319C16.8287 13.8975 16.8914 13.8493 16.9427 13.7902C16.9941 13.7311 17.033 13.6622 17.0571 13.5878C17.0813 13.5133 17.0902 13.4347 17.0834 13.3567C17.0461 12.6567 16.8267 12.0384 16.3776 11.5834C15.9261 11.1284 15.3113 10.9068 14.6136 10.8694Z" fill="white"/>
+                    </svg>
+
+                {% elseif info['id'] =='telegram' %}
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 0C21.7314 0 28 6.2685 28 14C28 21.7316 21.7315 28 14 28C6.26859 28 0 21.7315 0 14C0 6.26859 6.26763 0 14 0Z" fill="currentColor"/>
+                        <path d="M19.3071 8.92698L8.44745 13.1146C7.70632 13.4123 7.71061 13.8258 8.31147 14.0101L11.0996 14.8799L17.5504 10.8098C17.8554 10.6242 18.1341 10.7241 17.9051 10.9274L12.6786 15.6443H12.6774L12.6786 15.6449L12.4863 18.5187C12.768 18.5187 12.8924 18.3895 13.0504 18.237L14.4046 16.9201L17.2215 19.0008C17.7409 19.2868 18.1139 19.1398 18.2432 18.52L20.0923 9.8053C20.2816 9.04642 19.8026 8.7028 19.3071 8.92698Z" fill="white"/>
+                    </svg>
+                {% elseif info['id'] =='viber' %}
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 0C21.7314 0 28 6.2685 28 14C28 21.7316 21.7315 28 14 28C6.26859 28 0 21.7315 0 14C0 6.26859 6.26763 0 14 0Z" fill="currentColor"/>
+                        <path d="M9.29228 8.40231C9.07545 8.37056 8.85429 8.41421 8.66579 8.52597H8.64946C8.21197 8.78263 7.81764 9.10579 7.48165 9.48612C7.20165 9.80928 7.04999 10.1359 7.01032 10.4509C6.98699 10.6376 7.00332 10.8266 7.05816 11.0051L7.07916 11.0168C7.39415 11.9419 7.80481 12.8321 8.30647 13.6697C8.9536 14.8461 9.74958 15.9342 10.6748 16.9071L10.7028 16.9468L10.7471 16.9795L10.7739 17.011L10.8066 17.039C11.783 17.9668 12.8737 18.7666 14.0522 19.4189C15.3997 20.1528 16.2175 20.4992 16.7086 20.6439V20.6509C16.8521 20.6952 16.9828 20.7151 17.1146 20.7151C17.5331 20.6851 17.9293 20.5149 18.2393 20.2321C18.6184 19.8961 18.9393 19.5006 19.1889 19.0608V19.0526C19.4234 18.6093 19.3441 18.1916 19.0058 17.9081C18.3268 17.3136 17.5918 16.7862 16.8113 16.3332C16.2886 16.0497 15.7578 16.2212 15.5432 16.5082L15.0847 17.0868C14.849 17.3738 14.422 17.3341 14.422 17.3341L14.4104 17.3411C11.2242 16.528 10.3738 13.3022 10.3738 13.3022C10.3738 13.3022 10.3341 12.8636 10.6293 12.6396L11.2032 12.1776C11.4786 11.9536 11.6699 11.4239 11.3747 10.9013C10.9228 10.1213 10.3965 9.38676 9.80327 8.70797C9.67351 8.54858 9.49178 8.43995 9.28995 8.40114M14.6763 7C14.5216 7 14.3733 7.06146 14.2639 7.17085C14.1545 7.28025 14.093 7.42862 14.093 7.58332C14.093 7.73803 14.1545 7.8864 14.2639 7.99579C14.3733 8.10519 14.5216 8.16664 14.6763 8.16664C16.151 8.16664 17.376 8.64847 18.3454 9.57245C18.8436 10.0776 19.2321 10.6761 19.4864 11.3318C19.7419 11.9886 19.8586 12.6897 19.8282 13.392C19.8217 13.5468 19.877 13.6977 19.9818 13.8117C20.0866 13.9257 20.2324 13.9934 20.3871 13.9999C20.5418 14.0064 20.6927 13.9511 20.8067 13.8463C20.9207 13.7415 20.9884 13.5958 20.9949 13.441C21.0297 12.5772 20.8863 11.7155 20.5737 10.9094C20.2597 10.0993 19.7815 9.36288 19.1691 8.74647L19.1574 8.7348C17.9546 7.58566 16.4333 7 14.6763 7Z" fill="white"/>
+                        <path d="M14.6356 8.91914C14.4809 8.91914 14.3325 8.98059 14.2231 9.08999C14.1137 9.19938 14.0522 9.34775 14.0522 9.50246C14.0522 9.65716 14.1137 9.80553 14.2231 9.91493C14.3325 10.0243 14.4809 10.0858 14.6356 10.0858H14.6554C15.7194 10.1616 16.494 10.5163 17.0365 11.0984C17.593 11.6981 17.8812 12.4436 17.859 13.3652C17.8554 13.5199 17.9135 13.6697 18.0204 13.7816C18.1272 13.8935 18.2742 13.9584 18.4289 13.962C18.5836 13.9655 18.7334 13.9075 18.8453 13.8006C18.9572 13.6937 19.0221 13.5468 19.0257 13.392C19.0537 12.1822 18.664 11.1381 17.8917 10.3051V10.3028C17.1019 9.45579 16.018 9.0078 14.7137 8.9203L14.6939 8.91797L14.6356 8.91914Z" fill="white"/>
+                        <path d="M14.6136 10.8694C14.5355 10.8626 14.4569 10.8715 14.3823 10.8957C14.3078 10.9198 14.2389 10.9588 14.1797 11.0102C14.1206 11.0616 14.0724 11.1244 14.038 11.1948C14.0037 11.2653 13.9839 11.3419 13.9798 11.4202C13.9757 11.4984 13.9874 11.5767 14.0143 11.6503C14.0411 11.724 14.0825 11.7914 14.136 11.8487C14.1895 11.906 14.254 11.9519 14.3256 11.9837C14.3973 12.0155 14.4746 12.0325 14.5529 12.0338C15.0406 12.0594 15.3521 12.2064 15.5481 12.4036C15.7452 12.6019 15.8922 12.9204 15.9191 13.4186C15.9205 13.4968 15.9377 13.574 15.9696 13.6455C16.0016 13.717 16.0476 13.7814 16.1049 13.8347C16.1622 13.888 16.2296 13.9293 16.3032 13.956C16.3768 13.9827 16.455 13.9944 16.5332 13.9902C16.6114 13.9861 16.688 13.9662 16.7583 13.9319C16.8287 13.8975 16.8914 13.8493 16.9427 13.7902C16.9941 13.7311 17.033 13.6622 17.0571 13.5878C17.0813 13.5133 17.0902 13.4347 17.0834 13.3567C17.0461 12.6567 16.8267 12.0384 16.3776 11.5834C15.9261 11.1284 15.3113 10.9068 14.6136 10.8694Z" fill="white"/>
+                    </svg>
+                {% endif %}
+                {{ info['text'] }}</label>
+          </div>
+        {% endfor %}
+        </div>
+      {% elseif type == 'checkbox' %}
+        <div>
+        {% for info in values %}
+          <div class="checkbox">
+            <label class="checkbox"><input type="checkbox" class="checkbox-recipient" name="{{ name }}[]" id="{{ id }}_{{ info['id'] }}" value="{{ info['id'] | escape }}" {{ info['id'] in value ? 'checked="checked"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : ''}}>{{ info['text'] }}</label>
+          </div>
+        {% endfor %}
+        </div>
+      {% elseif type == 'switcher' %}
+        <div>
+          <div class="checkbox">
+            <label class="checkbox"><input type="checkbox" class="checkbox-recipient" name="{{ name }}" id="{{ id }}" data-unchecked-value="0" value="1" {{ value == '1' ? 'checked="checked"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : ''}}><span class="checkbox__mark"></span><span class="checkbox__title">{{ placeholder }}{% if id=='customer_callme' %}<span>{{ text_zamovlennya_bude_opratsovane_ta_vidpravlene }}</span>{% endif %}</span></label>
+          </div>
+        </div>
+      {% elseif type == 'textarea' %}
+        <textarea class="form-control" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}" {{ reload ? 'data-onchange="reloadAll"' : ''}}>{{ value }}</textarea>
+      {% elseif type == 'captcha' %}
+        {% if site_key %}
+          <script src="https://www.google.com/recaptcha/api.js?hl={{ lang }}&onload=recaptchaInit&render=explicit" type="text/javascript" async defer></script>
+          <input type="hidden" name="{{ name }}" id="{{ id }}" value="{{ value }}">
+          <script type="text/javascript">
+            function recaptchaCallback(value) {
+              $('#{{ id }}').val(value).trigger('change');
+            }
+            function recaptchaInit(){
+              grecaptcha.render('simple-recaptcha');
+            }
+          </script>
+          <div id="simple-recaptcha" data-sitekey="{{ site_key }}" data-callback="recaptchaCallback"></div>
+        {% else %}
+          <input type="text" class="form-control" name="{{ name }}" id="{{ id }}" value="" placeholder="{{ placeholder }}" {{ reload ? 'data-onchange="reloadAll"' : ''}}>
+          <div class="simple-captcha-container"><img src="index.php?{{ additional_path }}route=common/simple_connector/captcha&t={{ time }}" alt="" id="captcha" /></div>
+        {% endif %}
+      {% elseif type == 'file' %}
+        <input type="button" value="{{ button_upload }}" data-file="{{ id }}" class="button form-control">
+        <div id="text_{{ id }}" style="margin-top:3px;max-width:200px;">{{ filename }}</div>
+        <input type="hidden" name="{{ name }}" id="{{ id }}" value="{{ value }}">
+      {% elseif type == 'date' %}
+        <div class="input-group date">
+          <input class="form-control" type="text" data-type="date" name="{{ name }}" id="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {{ attrs }} {{ reload ? 'data-onchange="reloadAll"' : ''}}>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+      {% elseif type == 'time' %}
+      <div class="input-group time">
+        <input class="form-control" type="text" data-type="time" name="{{ name }}" id="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {{ attrs }} {{ reload ? 'data-onchange="reloadAll"' : ''}}>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default"><i class="fa fa-clock-o"></i></button>
+        </span>
+      </div>
+      {% elseif type == 'datetime' %}
+      <div class="input-group datetime">
+        <input class="form-control" type="text" data-type="datetime" name="{{ name }}" id="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {{ attrs }} {{ reload ? 'data-onchange="reloadAll"' : ''}}>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
+      {% else %}
+        <input  class="form-control{% if id == 'customer_fax' %} datepicker{% endif %}" {% if id == 'customer_fax' %} readonly{% endif %} type="{{ type }}" name="{{ name }}" id="{{ id }}" {{ type == 'password' ? 'data-validate-on="keyup"' : '' }} value="{{ value }}" placeholder="{{ id == 'customer_1' ? '@username' : placeholder }}" {{ attrs }}  {% if logged and id == 'customer_telephone' %}disabled{% endif %}>
+
+
+
+			{% if id == 'customer_telephone' or id == 'customer_sms' %}
+			{% if not logged %}
+				<button class="btn-arrow" id="button-{{ id }}"></button>
+			{% endif %}
+			{% endif %}
+	  {% endif %}
+      {% if rules is not empty %}
+        <div class="simplecheckout-rule-group" data-for="{{ id }}">
+          {% for rule in rules %}
+            <div {{ rule['display'] and not rule['passed'] ? '' : 'style="display:none;"' }} data-for="{{ id }}" data-for-type="{{ type }}"  data-rule="{{ rule['id'] }}" class="simplecheckout-error-text simplecheckout-rule" {{ rule['attrs'] }}>
+                {% if id == 'customer_1' and 'error_custom_field' in rule['text'] %}
+                    {% if lang == 'ru' or lang == 'ru-ru' %}
+                        Укажите ник в Telegram латиницей (@username)
+                    {% else %}
+                        Вкажіть нік у Telegram латиницею (@username)
+                    {% endif %}
+                {% else %}
+                    {{ rule['text'] }}
+                {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if description %}
+        <div class="simplecheckout-tooltip" data-for="{{ id }}">{{ description }}</div>
+      {% endif %}
+    </div>
+ </div>
+ <script>
+   $('input[name=\'customer[callme]\']').parent().click(function() {
+    if ($(this).find('input').attr('checked')) {
+		$(this).find('input').prop("checked", false);
+		$(this).find('input').removeAttr("checked");
+		$(this).toggleClass("is-checked");
+		$(this).find('input').val(0);
+    }
+  });
+ </script>
+</div>

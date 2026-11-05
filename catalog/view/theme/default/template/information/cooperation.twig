@@ -1,0 +1,67 @@
+{{ header }}
+<div class="page-container">
+    <div class="container">
+
+        {{ content_top }}
+
+        <div class="breadcrumbs">
+            {% for breadcrumb in breadcrumbs %}
+                {% if loop.last %}
+                    <span>{{ breadcrumb.text }}</span>
+                {% else %}
+                    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <h1 class="h1 color-black">{{ heading_title }}</h1>
+
+        <div class="cooperation d-grid">
+            <div class="cooperation__item">
+                <div class="cooperation__item-title">{{ text_postachalnykam }}</div>
+                <div class="cooperation__item-content">
+                    <ul>
+                        <li><a href="tel:+380630265904" class="contacts__link phone-link">+380 63 026 59 04</a></li>
+                    </ul>
+                </div>
+                <div class="cooperation__item-action">
+                    <a href="https://t.me/vaporspurchase" class="btn btn-primary" target="_blank" rel="nofollow">{{ text_napysaty_v_telegram }}</a>
+                </div>
+            </div>
+
+            <div class="cooperation__item">
+                <div class="cooperation__item-title">{{ text_reklama }}</div>
+                <div class="cooperation__item-content">
+                    <ul>
+                        <li><a href="tel:+380630265904" class="contacts__link phone-link">+380 63 026 59 04</a></li>
+                        <li><a href="mailto:vapors.sup@gmail.com" class="contacts__link email-link">vapors.sup@gmail.com</a></li>
+                    </ul>
+                </div>
+                <div class="cooperation__item-action">
+                    <a href="https://t.me/vaporsmarketing" class="btn btn-primary" target="_blank" rel="nofollow">{{ text_napysaty_v_telegram }}</a>
+                </div>
+            </div>
+
+            <div class="cooperation__item">
+                <div class="cooperation__item-title">{{ text_zaproponuvaty_prymishchennya }}</div>
+                <div class="cooperation__item-content">
+                    <ul>
+                        <li><a href="tel:+380630265904" class="contacts__link phone-link">+380 63 026 59 04</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cooperation__item">
+                <div class="cooperation__item-title">{{ text_franshyza }}</div>
+                <div class="cooperation__item-action">
+                    <a href="https://docs.google.com/forms/d/1f41J8t0Snp2OU62I86Eg1nH1riWUGhWvT_zwEtmNIMU/edit"
+                       class="btn btn-primary" target="_blank" rel="nofollow">{{ text_vidpravyty_zapyt }}</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{{ footer }}

@@ -1,0 +1,141 @@
+{{ header }}
+<div id="product-category" class="container">
+	<div class="home__content">
+
+        <div class="breadcrumbs">		
+		{% for breadcrumb in breadcrumbs %}
+			{% if loop.last %}
+				<span>{{ breadcrumb.text }}</span>
+			{% else %}
+				<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+			{% endif %}
+		{% endfor %}
+        </div>
+
+		<h1 class="h2 color-black">{{ heading_title }}</h1>
+
+		{% if products %}
+        <div class="home__string">
+          <div class=""></div>
+          <div class="home__string-flex">
+            <p class="p font-medium">{{ text_sort }}</p>
+          <div class="custom-dropdown">
+              {% for sorts in sorts %}
+				  {% if sorts.value == '%s-%s'|format(sort, order) %}
+				  <div class="dropdown-header">
+					<div class="selected-option">{{ sorts.text }}</div>
+					<div class="dropdown-arrow"></div>
+				  </div>
+				  {% endif %}
+			  {% endfor %}  
+			  <ul class="dropdown-options">
+			  {% for sorts in sorts %}
+              {% if sorts.value == '%s-%s'|format(sort, order) %}	
+				<li class="selected"  data-value="{{ sorts.href }}"  onclick="location = $(this).attr('data-value');">{{ sorts.text }}</li>			  
+              {% else %}
+                <li class="selected"  data-value="{{ sorts.href }}"  onclick="location = $(this).attr('data-value');">{{ sorts.text }}</li>
+              {% endif %}
+              {% endfor %}
+			  </ul>
+          </div>
+          </div>
+        </div>
+		{% endif %}
+  <div class="home__holder">
+    <div id="content" class="card__content" style="width: 100%;">
+
+      {% if products %}
+
+
+		<div class="card__inners">
+			<div class="">
+				<div class="products loadmore five-items-in-line">
+				{% for product in products %}
+				  <div class="product{% if product.quantity <= 0 %} outofstock{% endif %}">
+					<div class="product__wrapper">
+					 <div class="product__top">
+					 <div class="product__top_col">
+					   <a role="button" class="product__favorites" onclick="wishlist.add('{{ product.product_id }}');">
+						 <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_1419_17638)"><path d="M11.8707 1.54916C9.70172 1.54916 8.32573 3.96713 8.00007 3.96713C7.71536 3.96713 6.39561 1.54916 4.12929 1.54916C1.92493 1.54916 0.125024 3.36715 0.00719777 5.56847C-0.0592394 6.81201 0.341574 7.75825 0.906569 8.61555C2.03507 10.3282 6.96964 14.4508 8.00729 14.4508C9.06735 14.4508 13.9574 10.343 15.0934 8.61559C15.6596 7.75447 16.0592 6.81205 15.9928 5.56852C15.875 3.36715 14.0752 1.54916 11.8707 1.54916Z" fill="#9AC9D6"/></g></svg>
+					   </a>
+
+						 <a role="button" class="product__comparison" onclick="compare.add('{{ product.product_id }}');">
+							 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+								 <path d="M11.9995 3L15.9995 3C16.5527 3 16.9995 3.4469 16.9995 4C16.9995 4.5531 16.5527 5 15.9995 5L12.4497 5C12.2871 5.80627 11.7339 6.47192 10.9995 6.79065L10.9995 16L15.9995 16C16.5527 16 16.9995 16.4469 16.9995 17C16.9995 17.5531 16.5527 18 15.9995 18L9.99951 18L3.99951 18C3.44678 18 2.99951 17.5531 2.99951 17C2.99951 16.4469 3.44678 16 3.99951 16L8.99951 16L8.99951 6.79065C8.26514 6.46875 7.7124 5.8031 7.5498 5L3.99951 5C3.44678 5 2.99951 4.5531 2.99951 4C2.99951 3.4469 3.44678 3 3.99951 3L7.99951 3C8.45605 2.3938 9.18115 2 9.99951 2C10.8184 2 11.5435 2.3938 11.9995 3ZM13.7373 12L18.2622 12L15.9995 8.11877L13.7373 12ZM15.9995 15C14.0342 15 12.3999 13.9375 12.062 12.5344C11.981 12.1907 12.0933 11.8375 12.2715 11.5312L15.2466 6.43127C15.4028 6.16248 15.6904 6 15.9995 6C16.3091 6 16.5967 6.16565 16.7529 6.43127L19.728 11.5312C19.9058 11.8375 20.0186 12.1907 19.937 12.5344C19.5996 13.9375 17.9653 15 15.9995 15ZM3.9624 8.11877L1.69971 12L6.22803 12L3.9624 8.11877ZM0.027832 12.5344C-0.0532227 12.1907 0.059082 11.8375 0.237305 11.5312L3.2124 6.43127C3.36865 6.16248 3.65576 6 3.96533 6C4.2749 6 4.56201 6.16565 4.71826 6.43127L7.69336 11.5312C7.87158 11.8375 7.98389 12.1907 7.90283 12.5344C7.56201 13.9375 5.92773 15 3.9624 15C1.99658 15 0.365234 13.9375 0.027832 12.5344Z" fill="#9AC9D6"></path>
+							 </svg>
+						 </a>
+					 </div>
+					   <div class="product__labels-wrapper">
+					   {% if product.isnew %}<div class="product__info bg-light-blue">{{ text_novynka }}</div>{% endif %}
+					   {% if product.special %}<div class="product__info bg-pink">{{ product.economy }}</div>{% endif %}
+                                                        {% if product.quantity_shop <= 0 and product.quantity >  0%}
+                                                            <div class="product__info bg-pink-300 order-manager">
+                                                            {{ text_zamovlyay_u_menedzhera }}</div>{% endif %}
+					   </div>
+					 </div>
+					 <a href="{{ product.href }}" class="product__image">
+					   <img src="{{ product.thumb }}" data-old-src="{{ product.thumb }}" loading="lazy" alt="{{ product.name }}" title="{{ product.name }}">
+					 </a>
+					 <a href="{{ product.href }}" class="product__name">{{ product.name }}</a>
+					 {% if product.manufacturer %}<div class="product__manufacturer">{{ text_vyrobnyk }} {{ product.manufacturer }}</div>{% endif %}
+					 <div class="product__bottom">
+					   <div class="product__prices">
+						  {% if not product.special %}
+						  <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+						  {% else %}
+						  <span>{{ product.price }}</span>
+						  <strong>{{ product.special|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+						  {% endif %}
+						  {% if product.tax %}
+						  <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+						  {% endif %}
+					   </div>
+					   <a href="javascript:void(0);" class="product__add-cart icon-cart" aria-label="cart" onclick="cart.add('{{ product.product_id }}');"></a>
+					 </div>	 
+					 {% if product.products_related %}
+					 <div class="product__inner">
+					 {% for key,item in product.products_related %}
+					   <div class="product__inner-title">{{ key }}:</div>
+					   <ul class="product__inner-items">
+						 {% for product1 in item %}
+						 <li class="product__inner-item">
+						   <a href="{{ product1.href }}" data-img-lg="{{ product1.bigthumb }}"> 
+							 <img src="{{ product1.thumb }}" loading="lazy" alt="{{ product1.name }}">
+							 <span class="product__inner-item-drop">{{ product1.name }}</span>
+						   </a>
+						 </li>
+						 {% endfor %}  
+					   </ul>
+					 {% endfor %}  
+					 </div>	 
+					 {% endif %}
+					</div>
+				  </div>
+				{% endfor %}
+				</div>
+			</div>
+			<div class="pagination-wrapper">
+				{{ pagination }}
+				<div class="col-sm-6 text-right" hidden>{{ results }}</div>
+			</div>
+
+		</div>
+
+
+
+      {% endif %}
+	  
+
+      {% if not products %}
+	  <div class="profile__inners" style="margin-top: 0;">
+		  <div class="profile__faq">
+			  <p>{{ text_empty }}</p>
+		  </div>
+	  </div>
+      {% endif %}   
+      {{ content_bottom }}</div>
+
+    {{ column_right }}</div>
+	</div>
+</div>
+{{ footer }} 

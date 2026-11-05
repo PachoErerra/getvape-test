@@ -1,0 +1,69 @@
+window.dataLayer = window.dataLayer || [];
+
+{% if product['product_id'] %}
+dataLayer.push({
+	'event': 'view_item',
+	'ecommerce': {
+		'items': [{
+			'item_id': '{{ product['product_id'] }}',
+			'item_name': '{{ product['name'] }}',
+			'price': '{{ product['price']|number_format(2, '.', '') }}',
+			'currency': '{{ product['currency'] }}'
+		}]
+	}
+});
+{% endif %}
+{% if checkout_cart %}
+dataLayer.push({
+    'event': 'view_cart',
+	'ecommerce': {
+		'items': [
+		{% for product in checkout_cart['products'] %}
+		{
+			'item_id': '{{ product['product_id'] }}',
+			'item_name': '{{ product['name'] }}',
+			'price': '{{ product['price']|number_format(2, '.', '') }}',
+			'currency': '{{ checkout_cart['currency'] }}'
+		},
+		{% endfor %}
+		]
+	}
+});
+{% endif %}
+{% if checkout %}
+dataLayer.push({
+    'event': 'begin_checkout',
+	'ecommerce': {
+		'items': [
+		{% for product in checkout['products'] %}
+		{
+			'item_id': '{{ product['product_id'] }}',
+			'item_name': '{{ product['name'] }}',
+			'price': '{{ product['price']|number_format(2, '.', '') }}',
+			'currency': '{{ checkout['currency'] }}'
+		},
+		{% endfor %}
+		]
+	}
+});
+{% endif %}
+{% if order %}
+dataLayer.push({
+    'event': 'purchase',
+	'ecommerce': {
+		'value': '{{ order['price']|number_format(2, '.', '') }}',
+		'currency': '{{ order['currency'] }}',
+		'transaction_id': '{{ order['order_id'] }}',
+		'items': [
+		{% for product in order['products'] %}
+		{
+			'item_id': '{{ product['product_id'] }}',
+			'item_name': '{{ product['name'] }}',
+			'price': '{{ product['price']|number_format(2, '.', '') }}',
+			'currency': '{{ order['currency'] }}'
+		},
+		{% endfor %}
+		]
+	}
+});
+{% endif %}

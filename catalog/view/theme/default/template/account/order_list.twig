@@ -1,0 +1,98 @@
+{{ header }}
+<div id="account-order" class="container">
+
+    <div class="profile__content">
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+
+        <div class="profile__holder">
+            <div class="profile__lside">
+                <h1 class="h2 color-black profile__title">{{ heading_title }}</h1>
+                {% if orders %}
+                    <div class="profile__orders">
+                        {% for order in orders %}
+                            <div class="profile__order">
+                                <div class="profile__order-info bg-light-blue" style="{% if order.b_color %}background-color:#{{ order.b_color }};{% endif %}{% if order.t_color %}color:#{{ order.t_color }}{% endif %}">{{ order.status }} </div>
+                                <div class="profile__order-title">{{ column_order_id }}{{ order.order_id }}</div>
+                                <div class="p color-grey font-medium">{{ order.date_added }}</div>
+                                <div class="profile__order-items">
+                                    {% for product in order.products_data %}
+                                        <div class="profile__order-item">
+                                            <div class="profile__order-item-photo">
+                                                <img src="{{ product.image }}" alt="">
+                                            </div>
+                                            <div class="profile__order-item-description">
+                                                <div class="p font-medium">{{ product.name }}</div>
+                                                {% if product.option %}
+                                                    {% for option in product.option %}
+                                                        <p>- {{ option.name }}: {{ option.value }}</p> {% endfor %}
+                                                {% endif %}
+                                                <div class="p font-medium">{{ product.quantity }}{{ column_quantity }}</div>
+                                                <div class="p md font-semibold">{{ product.price }}</div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="profile__order-bottom">
+                                    {% for total in order.ordertotals %}
+                                        <div class="profile__order-bottom-line" style="gap: 10px">
+                                            {% if loop.last %}
+                                                <div class="h4 font-semibold">{{ total.title }}</div>
+                                                <div class="h4 font-semibold" >{{ total.text }}</div>
+                                            {% else %}
+                                                <div class="p font-medium">{{ total.title }}</div>
+                                                <div class="p font-medium" style="white-space: nowrap">{{ total.text }}</div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                {% if order.rewardtotal %}
+                                <div class="profile__order-bottom" style="margin-top: 0;">
+                                    <div class="profile__order-bottom-line" style="margin-top: 10px;">
+                                        <div class="p font-medium">{{ text_narakhovano_bonusiv }}</div>
+                                        <div class="p font-medium" style="white-space: nowrap">{{ order.rewardtotal }} ₴</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+								
+								{% if order.reorder %} <a href="{{ order.reorder }}" title="{{ button_reorder }}" class="reorder button-light-blue button-light-blue--border-radius-min">{{ button_reorder }}</a>
+
+                                <small style="width: 100%; margin-top: 8px;display: block;" class="showpink">{{ text_budut_dodani_tovary_yaki_ye }}</small>
+                                {% endif %}
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {{ pagination }}
+                {% else %}
+                    <div class="profile__inners">
+                        <div class="profile__inner">
+                            <p>{{ text_empty }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            {{ column_right }}
+        </div>
+
+    </div>
+
+</div>
+
+{{ footer }}
+{% if error_warning %}
+<input type="hidden" class="js-open-toast">
+
+
+<script>
+$(document).ready(function() {
+$('.toast').addClass('toast-danger');
+$('.toast .p').text('{{ error_warning }}');
+$(".js-open-toast").trigger('click');
+});
+</script>
+  {% endif %}

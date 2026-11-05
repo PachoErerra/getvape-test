@@ -1,0 +1,76 @@
+<div class="home__inner">
+    <div class="home__inner-top m-bottom-40">
+        <div class="h3">{{ heading_title }}</div>
+        <a href="{{ blog }}" class="link-with-arrow">
+            {{ text_dyvytysya_vsi }}
+            <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 9L5 5L1 1" stroke="currentColor"/>
+            </svg>
+        </a>
+    </div>
+
+    <div class="news__block">
+        <div id="latest-slider" class="swiper latest-slider slider-pretty-nav">
+            <div class="swiper-wrapper">
+                {% for article in articles %}
+                    <div class="swiper-slide col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="item">
+
+                            {% if article.imageLg %}
+                                <a href="{{ article.href }}" aria-label="{{ article.name }}" class="item__img">
+                                    <img src="{{ article.imageLg }}" loading="lazy" alt="{{ article.name }}">
+                                </a>
+                            {% endif %}
+
+                            <div class="item__date d-flex align-items-center">
+                                <svg class="sprite-icon" width="20" height="20">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-calendar"></use>
+                                </svg>
+
+                                <span>{{ article.date_added }}</span>
+                            </div>
+
+                            <a class="item__title h4 font-medium" href="{{ article.href }}">{{ article.name }}</a>
+
+                            <div class="item__read">
+                                <a href="{{ article.href }}" class="link-with-arrow">
+                                    {{ text_chytaty_zapys }}
+                                    <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 9L5 5L1 1" stroke="currentColor"/>
+                                    </svg>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="swiper-button swiper-button-next"></div>
+            <div class="swiper-button swiper-button-prev"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+    let swiper = new Swiper("#latest-slider", {
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev"
+        },
+        // spaceBetween: 20,
+        slidesPerView: 'auto',
+        autoplay: {
+            delay: 5500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        loop: true
+    });
+
+</script>

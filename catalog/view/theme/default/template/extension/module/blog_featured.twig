@@ -1,0 +1,50 @@
+<div class="home__inner">
+    <div class="home__inner-top m-bottom-40">
+        <div class="h3">{{ heading_title }}</div>
+        <a href="{{ blog }}" class="link-with-arrow">
+            {{ text_dyvytysya_vsi }}
+            <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 9L5 5L1 1" stroke="currentColor"/>
+            </svg>
+        </a>
+    </div>
+    <div class="news__block">
+        <div class="row flex-wrap">
+            {% for article in articles %}
+                <div class="col col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <div class="item">
+
+                        {% if article.imageLg %}
+                            <a href="{{ article.href }}" aria-label="{{ article.name }}" class="item__img">
+                                <img src="{{ article.imageLg }}" loading="lazy" alt="{{ article.name }}">
+                            </a>
+                        {% endif %}
+
+                        <div class="item__date d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M15.8333 3.33301H4.16667C3.24619 3.33301 2.5 4.0792 2.5 4.99967V16.6663C2.5 17.5868 3.24619 18.333 4.16667 18.333H15.8333C16.7538 18.333 17.5 17.5868 17.5 16.6663V4.99967C17.5 4.0792 16.7538 3.33301 15.8333 3.33301Z" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M13.334 1.66699V5.00033" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6.66602 1.66699V5.00033" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2.5 8.33301H17.5" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>{{ article.date_added }}</span>
+                        </div>
+
+                        <a class="item__title h4 font-medium" href="{{ article.href }}">{{ article.name }}</a>
+
+                        <div class="item__read">
+                            <a href="{{ article.href }}" class="link-with-arrow">
+                                {{ text_chytaty_zapys }}
+                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 9L5 5L1 1" stroke="currentColor"/>
+                                </svg>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

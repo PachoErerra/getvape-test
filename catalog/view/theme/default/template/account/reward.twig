@@ -1,0 +1,51 @@
+{{ header }}
+
+
+
+    <div class="container">
+      <div class="profile__content">
+        <div class="profile__holder">
+          <div class="profile__lside">
+            <h1 class="h2 color-black profile__title">{{ heading_title }}</h1>
+            <div class="profile__bonuses">
+              <div class="profile__bonuses-top">
+                <div class="profile__bonuses-sum">
+                  <strong>{{ total }}</strong>
+                  
+                </div>
+                <div class="p font-medium">{{ text_bonusiv_zakripleno_za_vashym_nomerom }}
+                </div>
+              </div>
+              {% if total > 0 %}
+              <a href="{{ continue }}"
+                 class="button-light-blue button-light-blue--border-radius-min button-light-blue--center-text-bold">{{ text_vykorystaty_bonusy }}</a>
+              {% endif %}
+              <div class="p color-grey profile__bonuses-bottom">{{ text_vy_mozhete_chastkovo_abo_povnistyu }}
+              </div>
+            </div>
+            <div class="profile__faq">
+              <h4 class="h4 font-semibold">{{ text_chasti_zapytannya }}</h4>
+              <div class="contacts__stores-items">
+                <div class="contacts__store">
+                  <div class="contacts__store-header">{{ text_yak_pratsyuye_nasha_bonusna_prohrama }}</div>
+                  <div class="contacts__store-body text-content">
+                    <div class="p">
+                      <p>{{ text_pry_oformlenni_zamovlennya_tobi_narakhuyetsya }}</p>
+
+                      <p>{{ text_napryklad_ty_oformyv_zamovlennya_na }}</p>
+
+                      <p>{{ text_yakshcho_ty_khochesh_diznatys_skilky }} <a href="https://qrfy.com/p/MzYsFNn9ft" rel="nofollow" target="_blank">https://qrfy.com/p/MzYsFNn9ft</a> {{ text_nomer_telefonu_za_yakym_bulo }}</p>
+
+                      <p>{{ text_bonusy_narakhovuyutsya_avtomatychno_systemoyu_ta }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+		  {{ column_right }}
+        </div>
+
+      </div>
+    </div>
+{{ footer }}

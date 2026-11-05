@@ -1,0 +1,241 @@
+<div class="row">
+  <div id="filter-report" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="control-label" for="input-customer">{{ entry_customer }}</label>
+          <input type="text" name="filter_customer" value="{{ filter_customer }}" placeholder="{{ entry_customer }}" id="input-customer" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-telephone">{{ entry_telephone }}</label>
+          <input type="text" name="filter_telephone" value="{{ filter_telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-date-start">{{ entry_date_start }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_start" value="{{ filter_date_start }}" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-date-end">{{ entry_date_end }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_end" value="{{ filter_date_end }}" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" id="input-date-end" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-status">{{ entry_order_status }}</label>
+          <select name="filter_order_status_id" id="input-status" class="form-control">
+            <option value="0">{{ text_all_status }}</option>
+            {% for order_status in order_statuses %}
+            {% if order_status.order_status_id == filter_order_status_id %}
+            <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+            {% else %}
+            <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-orders-bucket">{{ entry_orders_bucket }}</label>
+          <select name="filter_orders_bucket" id="input-orders-bucket" class="form-control">
+            <option value="0">{{ text_all_buckets }}</option>
+            <option value="1"{% if filter_orders_bucket == 1 %} selected="selected"{% endif %}>{{ text_bucket_1 }}</option>
+            <option value="2"{% if filter_orders_bucket == 2 %} selected="selected"{% endif %}>{{ text_bucket_2 }}</option>
+            <option value="3"{% if filter_orders_bucket == 3 %} selected="selected"{% endif %}>{{ text_bucket_3 }}</option>
+            <option value="4"{% if filter_orders_bucket == 4 %} selected="selected"{% endif %}>{{ text_bucket_4 }}</option>
+            <option value="5"{% if filter_orders_bucket == 5 %} selected="selected"{% endif %}>{{ text_bucket_5_plus }}</option>
+          </select>
+        </div>
+        <div class="form-group text-right">
+          <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+          <button type="button" id="button-export" class="btn btn-danger"><i class="fa fa-download"></i> {{ button_export }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 col-md-pull-3 col-sm-12">
+    <div class="row">
+      {% for bucket in distribution %}
+      <div class="col-sm-2 col-xs-6" style="margin-bottom:15px;">
+        <a href="{{ bucket.filter }}" class="thumbnail text-center" style="margin-bottom:0;{% if bucket.active %}border-color:#337ab7;background:#f5f9ff;{% endif %}">
+          <h3 style="margin:8px 0 4px;">{{ bucket.count }}</h3>
+          <div><small>{{ bucket.label }}</small></div>
+        </a>
+      </div>
+      {% endfor %}
+      <div class="col-sm-2 col-xs-6" style="margin-bottom:15px;">
+        <a href="{{ clear_bucket_url }}" class="thumbnail text-center" style="margin-bottom:0;{% if filter_orders_bucket == 0 %}border-color:#337ab7;background:#f5f9ff;{% endif %}">
+          <h3 style="margin:8px 0 4px;"><i class="fa fa-users"></i></h3>
+          <div><small>{{ text_all_buckets }}</small></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-repeat"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="text-left">{{ column_customer }}</td>
+                <td class="text-left">{{ column_email }}</td>
+                <td class="text-right">{{ column_orders }}</td>
+                <td class="text-right">{{ column_products }}</td>
+                <td class="text-right">{{ column_total }}</td>
+                <td class="text-left">{{ column_order_statuses }}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if customers %}
+            {% for customer in customers %}
+            <tr>
+              <td class="text-left"><a href="{{ customer.edit }}">{{ customer.customer }}</a><br><small>{{ customer.telephone }}</small></td>
+              <td class="text-left">{{ customer.email }}</td>
+              <td class="text-right"><strong>{{ customer.orders }}</strong></td>
+              <td class="text-right">{{ customer.products }}</td>
+              <td class="text-right">{{ customer.total }}</td>
+              <td class="text-left">
+                {% if customer.order_statuses %}
+                {% for status in customer.order_statuses %}
+                <div>{{ status.name }}: <strong>{{ status.count }}</strong></div>
+                {% endfor %}
+                {% else %}
+                —
+                {% endif %}
+              </td>
+              <td class="text-right">
+                <a href="{{ customer.orders_view }}" data-toggle="tooltip" title="{{ button_view_orders }}" class="btn btn-info btn-sm"><i class="fa fa-shopping-cart"></i></a>
+                <a href="{{ customer.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="7">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = '';
+
+	var filter_customer = $('input[name=\'filter_customer\']').val();
+	if (filter_customer) {
+		url += '&filter_customer=' + encodeURIComponent(filter_customer);
+	}
+
+	var filter_telephone = $('input[name=\'filter_telephone\']').val();
+	if (filter_telephone) {
+		url += '&filter_telephone=' + encodeURIComponent(filter_telephone);
+	}
+
+	var filter_date_start = $('input[name=\'filter_date_start\']').val();
+	if (filter_date_start) {
+		url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
+	}
+
+	var filter_date_end = $('input[name=\'filter_date_end\']').val();
+	if (filter_date_end) {
+		url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+	}
+
+	var filter_order_status_id = $('select[name=\'filter_order_status_id\']').val();
+	if (filter_order_status_id != 0) {
+		url += '&filter_order_status_id=' + encodeURIComponent(filter_order_status_id);
+	}
+
+	var filter_orders_bucket = $('select[name=\'filter_orders_bucket\']').val();
+	if (filter_orders_bucket != 0) {
+		url += '&filter_orders_bucket=' + encodeURIComponent(filter_orders_bucket);
+	}
+
+	location = 'index.php?route=report/report&code=customer_repeat_order&user_token={{ user_token }}' + url;
+});
+
+$('#button-export').on('click', function() {
+	var url = '';
+
+	var filter_customer = $('input[name=\'filter_customer\']').val();
+	if (filter_customer) {
+		url += '&filter_customer=' + encodeURIComponent(filter_customer);
+	}
+
+	var filter_telephone = $('input[name=\'filter_telephone\']').val();
+	if (filter_telephone) {
+		url += '&filter_telephone=' + encodeURIComponent(filter_telephone);
+	}
+
+	var filter_date_start = $('input[name=\'filter_date_start\']').val();
+	if (filter_date_start) {
+		url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
+	}
+
+	var filter_date_end = $('input[name=\'filter_date_end\']').val();
+	if (filter_date_end) {
+		url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+	}
+
+	var filter_order_status_id = $('select[name=\'filter_order_status_id\']').val();
+	if (filter_order_status_id != 0) {
+		url += '&filter_order_status_id=' + encodeURIComponent(filter_order_status_id);
+	}
+
+	var filter_orders_bucket = $('select[name=\'filter_orders_bucket\']').val();
+	if (filter_orders_bucket != 0) {
+		url += '&filter_orders_bucket=' + encodeURIComponent(filter_orders_bucket);
+	}
+
+	url += '&export=1';
+
+	location = 'index.php?route=report/report&code=customer_repeat_order&user_token={{ user_token }}' + url;
+});
+//--></script>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+//--></script>
+<script type="text/javascript"><!--
+$('input[name=\'filter_customer\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['customer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_customer\']').val(item['label']);
+	}
+});
+//--></script>
+ 

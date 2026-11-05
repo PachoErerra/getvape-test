@@ -1,0 +1,315 @@
+{{ header }}
+<div id="product-category" class="container">
+
+
+    {% if dom.dueDate|date('Y-m-d H:i') < bfstart %}
+        <style>
+          .bf-brands .home__inner {
+            margin-top: 0;
+          }
+        </style>
+
+        <div class="home__content d-flex flex-column align-items-center">
+            <div class="bf">
+                <div class="h2 color-black bf__title">{{ heading_title }}</div>
+                <div class="bf__sub-title">{{ text_tovary_dostupni_cherez }}</div>
+                <script type="text/javascript">
+                  let clock,
+                    futureDate = new Date('{{ bfstart }}'),
+                    currentDate = new Date(),
+                    diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+
+                  clock = $('.clock').FlipClock(diff, {
+                    clockFace: 'HourlyCounter',
+                    language: 'ua',
+                    autoStart: true,
+                    countdown: true,
+                    callbacks: {
+                      stop: function () {
+                        // $('.message').html('Черная пятница началась!');
+                        $('.home__content').show();
+                      }
+                    }
+                  });
+                </script>
+                <div class="clock d-flex justify-content-center"></div>
+                <div class="bf__sub-title">{{ text_pershi_100_zamovlen_na_sayti }}</div>
+                <div class="bf__info">
+                    {{ text_na_kozhnomu_mahazyni_pershi_5 }}
+                </div>
+            </div>
+
+            <div class="bf-brands" style="margin-top: 30px;width: 100%;">
+                {{ content_top }}
+                
+                <div class="profile__inners">
+                    <div class="profile__faq">
+                        {{ content_bottom }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="contacts__stores" style="width: 100%;margin-top: 30px;">
+                <div class="h3">{{ text_rozklad_roboty_mahazyniv_pid_chas }}</div>
+                <div class="contacts__stores-items">
+                    {% for key, warehouse in warehouses %}
+                        {% if key != 'hide' and key !='' %}
+                            {% if key != 'count' %}
+                                <div class="contacts__store">
+                                    <div class="contacts__store-header">{{ key }}</div>
+                                    <div class="contacts__store-body">
+                                        <div class="contacts__store-items">
+                                            {% for shop in warehouse %}
+                                                <div class="contacts__store-item">
+                                                    <div class="contacts__store-item-inners">
+                                                        <div class="contacts__store-item-inner">
+                                                            <div class="p md font-semibold">{{ shop.address|nl2br }}</div>
+                                                            <div class="p md color-grey font-semibold m-top-5">
+                                                                {{ shop.openBF|nl2br }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="contacts__store-item-inner">
+                                                            <div class="p md font-semibold">{{ shop.telephone }}</div>
+                                                        </div>
+                                                        <div class="contacts__store-item-inner">
+                                                            <a href="{{ shop.geocode }}" target="_blank" rel="nofollow"
+                                                               class="a-link font-semibold">{{ text_pokazaty_na_karti }}</a>
+                                                        </div>
+                                                        <div class="contacts__store-item-inner">
+                                                            {% if shop.image %}
+                                                                <img src="image/{{ shop.image }}"
+                                                                     class="contacts__store-item-img"
+                                                                     alt="{{ shop.address|nl2br }}">
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
+    {% endif %}
+    {% if (dom.dueDate|date('Y-m-d H:i') < bfend) and (dom.dueDate|date('Y-m-d H:i') > bfstart) %}
+        <!--div class="message">{{ text_skoro_zakonchytsya }}</div>
+	<script type="text/javascript">
+				var clock;
+				var futureDate  = new Date('{{ bfend }}');
+				var currentDate = new Date();
+				var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+				clock = $('.clock').FlipClock(diff, {	
+		        clockFace: 'DailyCounter',
+				language: 'ua',
+		        autoStart: true,
+				countdown: true,
+		        callbacks: {
+		        	stop: function() {
+		        		$('.message').html('Черная пятница закончилась!');
+						$('.home__content').hide();
+		        	}
+		        }
+		    });
+	</script-->
+    {% endif %}
+
+
+    <div class="home__content"
+	
+	{% if not bfmenu %}style="display:none"{% endif %}
+	
+         {% if (dom.dueDate|date('Y-m-d H:i') < bfstart) or (dom.dueDate|date('Y-m-d H:i') > bfend) %}style="display:none"{% endif %}>
+
+        <h1 class="h2 color-black">{{ heading_title }}</h1>
+
+        <div class="breadcrumbs">
+            {% for breadcrumb in breadcrumbs %}
+                {% if loop.last %}
+                    <span>{{ breadcrumb.text }}</span>
+                {% else %}
+                    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="home__string home__string-filters">
+
+
+            <div class="home__filter" data-ocf="mobile" aria-label="{{ button_ocfilter_mobile }}">{{ text_filtr }}</div>
+
+            <div class="home__string-flex">
+                <p class="p font-medium">{{ text_sort }}</p>
+                <div class="custom-dropdown">
+                    {% for sorts in sorts %}
+                        {% if sorts.value == '%s-%s'|format(sort, order) %}
+                            <div class="dropdown-header">
+                                <div class="selected-option">{{ sorts.text }}</div>
+                                <div class="dropdown-arrow"></div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <ul class="dropdown-options">
+                        {% for sorts in sorts %}
+                            {% if sorts.value == '%s-%s'|format(sort, order) %}
+                                <li class="selected" data-value="{{ sorts.href }}"
+                                    onclick="location = $(this).attr('data-value');">{{ sorts.text }}</li>
+                            {% else %}
+                                <li class="selected" data-value="{{ sorts.href }}"
+                                    onclick="location = $(this).attr('data-value');">{{ sorts.text }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="home__holder {% if column_left %}m-top{% endif %}">
+            {% if column_left %}
+                <div class="home__sidebar sidebar-filter">
+                    <!--div class="home__sidebar-close"></div-->
+                    {{ column_left }}
+                </div>
+            {% endif %}
+            <div id="content" class="{% if column_left %}home__body{% else %}card__content{% endif %}">
+
+                {% if products %}
+
+
+                    <div class="home__inner m-top-0">
+                        <div class="home__products">
+                            <div class="products loadmore {% if column_left %}four-items-in-line{% else %}five-items-in-line{% endif %}">
+                                {% for product in products %}
+                                    <div class="product{% if product.quantity <= 0 %} outofstock{% endif %}">
+                                        <div class="product__wrapper">
+                                            <div class="product__top">
+                                                <div class="product__labels-wrapper">
+                                                    {% if product.isnew %}
+                                                        <div class="product__info bg-light-blue">{{ text_novynka }}
+                                                        </div>{% endif %}
+                                                    {% if product.special %}<div class="product__info bg-pink">{{ product.economy }}</div>{% endif %}
+                                                    {% if product.quantity_shop <= 0 and product.quantity >  0 %}
+                                                        <!--div class="product__info bg-pink-300 order-manager">
+                                                            {{ text_zamovlyay_u_menedzhera }}
+                                                        </div-->{% endif %}
+                                                </div>
+
+                                                <div class="product__sub-action">
+                                                    <button type="button" aria-label="wishlist" class="product__sub-action-btn product__favorites"
+                                                            onclick="wishlist.add('{{ product.product_id }}');">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20">
+                                                            <use href="#icon-fav"></use>
+                                                        </svg>
+                                                    </button>
+
+                                                    <button type="button" aria-label="compare" class="product__sub-action-btn product__comparison"
+                                                            onclick="compare.add('{{ product.product_id }}');">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20">
+                                                            <use href="#icon-compare"></use>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <a href="{{ product.href }}" class="product__image"
+                                               aria-label="{{ product.name }}">
+                                                <img src="{{ product.thumb }}" data-old-src="{{ product.thumb }}"
+                                                     alt="{{ product.name }}" title="{{ product.name }}">
+                                            </a>
+                                            <a href="{{ product.href }}" class="product__name">{{ product.name }}</a>
+                                            <div class="product__rating d-flex align-items-center">
+                                                <div class="rating__stars">
+                                                    <div class="rating__stars-current" style="width:{{ product.rating * 20 }}%;"></div>
+                                                </div>
+
+                                                <div class="rating__stars-count">{{ product.reviews }}</div>
+                                            </div>
+                                            <div class="product__bottom d-flex align-items-center justify-content-between">
+                                                <div class="product__prices">
+                                                    <div class="product__prices-cashback">{{ text_keshbek }} {{ product.reward }}₴</div>
+													{% if not product.special %}
+                                                        <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                                    {% else %}
+                                                        <span>{{ product.price }}</span>
+                                                        <strong>{{ product.special|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                                    {% endif %}
+                                                    {% if product.tax %}
+                                                        <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                                                    {% endif %}
+                                                </div>
+                                                <button type="button" class="product__add-cart btn btn-primary"
+                                                   aria-label="{{ text_u_koshyk }}"
+                                                   onclick="cart.add('{{ product.product_id }}');">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                                        <use href="#icon-cart"></use>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            {% if product.products_related %}
+                                                <div class="product__inner">
+                                                    {% for key,item in product.products_related %}
+                                                        <div class="product__inner-title">{{ key }}:</div>
+                                                        <ul class="product__inner-items">
+                                                            {% for product1 in item %}
+                                                                <li class="product__inner-item">
+                                                                    <a href="{{ product1.href }}"
+                                                                       data-img-lg="{{ product1.bigthumb }}">
+                                                                        <img src="{{ product1.thumb }}"
+                                                                             alt="{{ product1.name }}">
+                                                                        <span class="product__inner-item-drop">{{ product1.name }}</span>
+                                                                    </a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="pagination-wrapper">
+                            {{ pagination }}
+                            <div class="col-sm-6 text-right">{{ results }}</div>
+                        </div>
+
+                    </div>
+
+
+                {% endif %}
+
+
+
+
+                {% if not categories and not products %}
+                    <div class="home__inner">
+                        <p>{{ text_empty }}</p>
+                        <div class="buttons">
+                            <div class="pull-right"><a href="{{ continue }}"
+                                                       class="btn btn-primary">{{ button_continue }}</a></div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+
+                {% if description %}
+                    <div class="home__inner">
+                        {{ description }}
+                    </div>
+                {% endif %}
+                </div>
+
+            {{ column_right }}</div>
+
+    </div>
+</div>
+{{ footer }} 

@@ -1,0 +1,73 @@
+{{ header }}
+<div id="information-information" class="container">
+    <div class="home__content">
+        <div class="profile__holder">
+            <div id="content" class="profile__lside">{{ content_top }}
+                <div class="breadcrumbs">
+                    {% for breadcrumb in breadcrumbs %}
+                        {% if loop.last %}
+                            <span>{{ breadcrumb.text }}</span>
+                        {% else %}
+                            <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <h1 class="h1 color-black">{{ heading_title }}</h1>
+
+                {% if categories %}
+                    <div class="news__category d-flex flex-wrap">
+                        {% for category in categories %}
+                            <a href="{{ category.href }}" class="news__category-item d-inline-flex align-items-center">
+                                {% if category.image %}
+                                    <img src="{{ category.image }}" alt=" {{ category.name }}" loading="lazy">
+                                {% endif %}
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="profile__inners news__block">
+                    <div class="row flex-wrap products loadmore">
+                        {% for article in articles %}
+                            <div class="col col-lg-3 col-md-4 col-sm-6 col-xs-12 product">
+                                <div class="item">
+                                    {% if article.imageLg %}
+                                        <a href="{{ article.href }}" aria-label="{{ article.name }}" class="item__img">
+                                            <img src="{{ article.imageLg }}" loading="lazy" alt="{{ article.name }}">
+                                        </a>
+                                    {% endif %}
+
+                                    <div class="item__date d-flex align-items-center">
+                                        <svg class="sprite-icon" width="20" height="20">
+                                            <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-calendar"></use>
+                                        </svg>
+                                        <span>{{ article.date_added }}</span>
+                                    </div>
+                                    <a class="item__title h4 font-medium"
+                                       href="{{ article.href }}">{{ article.name }}</a>
+                                    <div class="item__read">
+                                        <a href="{{ article.href }}" class="link-with-arrow">
+                                            {{ text_chytaty_zapys }}
+                                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M1 9L5 5L1 1" stroke="currentColor"/>
+                                            </svg>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="pagination-wrapper">
+                    {{ pagination }}
+                </div>
+
+                {{ content_bottom }}</div>{{ column_right }}
+        </div>
+    </div>
+</div>
+{{ footer }}

@@ -1,0 +1,120 @@
+{{ header }}
+<div id="account-order" class="container">
+
+    <div class="profile__content">
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        <div class="profile__holder">
+            <div class="profile__lside">
+                <h1 class="h2 color-black profile__title">{{heading_title}}</h1>
+                <p class="p color-black profile__referral-desc">
+                    {{heading_subtitle}}
+                </p>
+
+
+                <div class="profile__inners">
+
+
+                    <div class="profile__inner profile__referral-box d-flex flex-column">
+                        <div class="code-top__inputs d-flex flex-wrap flex-column flex-sm-row">
+                            <div class="code-top__input">
+                                <div class="code-title">{{ text_aktyvatsiy_tvoyeyi_referalky }}</div>
+                                <div class="code-item code-item--sm">{{ transaction_total }}</div>
+                            </div>
+
+                            <div class="code-top__input">
+                                <div class="code-title">{{ text_bonusiv_narakhovano }}</div>
+                                <div class="code-item code-item--sm">{{ transaction_summ }}</div>
+                            </div>
+                        </div>
+
+                        <div class="code-item d-flex flex-column align-items-start">
+
+                            <div class="code-badge code-badge--active">{{ text_otrymay_50_hrn }}</div>
+
+                            <div class="code-title">{{ text_referalne_posylannya }}</div>
+
+                            <div class="code-box d-flex align-items-center justify-content-between js-code-parent">
+                                <span class="code-value js-input-code">{{ code }}</span>
+                                <button class="code-copy js-copy-code">
+                                    <svg width="22" height="22" viewBox="0 0 16 16">
+                                        <use id="fortune__prize-copy-icon" href="#icon-clipboard"></use>
+                                    </svg>
+                                </button>
+                            </div>
+
+
+                            <div class="profile__referral-share">
+                                <div class="profile__referral-share-title">{{ text_podilys_posylannyam }}</div>
+
+                                <ul class="profile__referral-share-list">
+                                    <li>
+                                        <a href="https://telegram.me/share/url?url={{ code|url_encode }}&text={{ heading_subtitle|url_encode }}"
+                                           class="profile__referral-share-btn profile__referral-share-btn--telegram"
+                                           target="_blank"
+                                           rel="nofollow"
+                                           aria-label="Telegram"
+                                           title="Telegram">
+                                            <svg class="sprite-icon">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-telegram"></use>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.facebook.com/sharer.php?u={{ code|url_encode }}&t={{ heading_subtitle|url_encode }}"
+                                           class="profile__referral-share-btn profile__referral-share-btn--facebook"
+                                           target="_blank"
+                                           rel="nofollow"
+                                           aria-label="Facebook" title="Facebook">
+                                            <svg class="sprite-icon">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-facebook"></use>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="viber://forward?text={{ code|url_encode }}%20{{ heading_subtitle|url_encode }}"
+                                           class="profile__referral-share-btn profile__referral-share-btn--viber"
+                                           target="_blank"
+                                           rel="nofollow"
+                                           aria-label="Viber"
+                                           title="Viber">
+                                            <svg class="sprite-icon">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-viber"></use>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{ column_right }}
+        </div>
+
+    </div>
+
+</div>
+
+
+{{ footer }}
+
+{% if error_warning %}
+    <input type="hidden" class="js-open-toast">
+
+
+    <script>
+      $(document).ready(function () {
+        $('.toast').addClass('toast-danger');
+        $('.toast .p').text('{{ error_warning }}');
+        $(".js-open-toast").trigger('click');
+      });
+    </script>
+{% endif %}

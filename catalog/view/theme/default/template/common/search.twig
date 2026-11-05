@@ -1,0 +1,260 @@
+<div class="header__search-wrapper">
+    <div class="header__search">
+        <input type="search" name="search" id="input_search" placeholder="{{ text_search }}" value="{{ search }}"{% if search_placeholders %} data-placeholder-phrases="{{ search_placeholders_json|e('html_attr') }}"{% endif %}>
+        {% if search_placeholders and not search %}
+        <span class="header__search-typed" aria-hidden="true"></span>
+        {% endif %}
+        <button class="js-search-btn">{{ text_button_search }}</button>
+
+        <div class="header__search-close">{{ text_zakryty }}</div>
+    </div>
+</div>
+{% if search_placeholders and not search %}
+<style>
+.header__search-typed {
+  position: absolute;
+  left: 0;
+  right: 120px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 60px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  color: #000;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 1;
+}
+.header__search-typed.is-hidden {
+  display: none;
+}
+@media only screen and (max-width: 599px) {
+  .header__search-typed {
+    padding-left: 40px;
+    right: 5px;
+  }
+}
+.header__search.is-typing input::-webkit-input-placeholder { color: transparent; }
+.header__search.is-typing input::-moz-placeholder { color: transparent; }
+.header__search.is-typing input:-ms-input-placeholder { color: transparent; }
+.header__search.is-typing input:-moz-placeholder { color: transparent; }
+.header__search.is-typing input::placeholder { color: transparent; }
+</style>
+<script>
+(function () {
+	var input = document.getElementById('input_search');
+	var typed = document.querySelector('.header__search-typed');
+	var searchBox = input && input.closest ? input.closest('.header__search') : null;
+	if (!input || !typed || !searchBox) return;
+
+	var phrases;
+	try {
+		phrases = JSON.parse(input.getAttribute('data-placeholder-phrases') || '[]');
+	} catch (e) {
+		return;
+	}
+	if (!phrases || !phrases.length) return;
+
+	var phraseIndex = 0;
+	var charIndex = 0;
+	var deleting = false;
+	var paused = false;
+	var timer = null;
+	var typeDelay = 90;
+	var deleteDelay = 50;
+	var holdDelay = 1400;
+	var emptyDelay = 400;
+
+	function clearTimer() {
+		if (timer) {
+			clearTimeout(timer);
+			timer = null;
+		}
+	}
+
+	function schedule(fn, delay) {
+		clearTimer();
+		timer = setTimeout(fn, delay);
+	}
+
+	function showTyped() {
+		typed.classList.remove('is-hidden');
+		searchBox.classList.add('is-typing');
+	}
+
+	function hideTyped() {
+		typed.classList.add('is-hidden');
+		typed.textContent = '';
+		searchBox.classList.remove('is-typing');
+	}
+
+	function tick() {
+		if (paused || document.activeElement === input || input.value) {
+			return;
+		}
+
+		showTyped();
+		var phrase = phrases[phraseIndex];
+
+		if (!deleting) {
+			charIndex++;
+			typed.textContent = phrase.slice(0, charIndex);
+			if (charIndex >= phrase.length) {
+				deleting = true;
+				schedule(tick, holdDelay);
+				return;
+			}
+			schedule(tick, typeDelay);
+			return;
+		}
+
+		charIndex--;
+		typed.textContent = phrase.slice(0, Math.max(charIndex, 0));
+		if (charIndex <= 0) {
+			deleting = false;
+			phraseIndex = (phraseIndex + 1) % phrases.length;
+			schedule(tick, emptyDelay);
+			return;
+		}
+		schedule(tick, deleteDelay);
+	}
+
+	function pause() {
+		paused = true;
+		clearTimer();
+		hideTyped();
+	}
+
+	function resume() {
+		if (input.value) {
+			hideTyped();
+			return;
+		}
+		paused = false;
+		charIndex = 0;
+		deleting = false;
+		showTyped();
+		typed.textContent = '';
+		schedule(tick, emptyDelay);
+	}
+
+	input.addEventListener('focus', pause);
+	input.addEventListener('blur', resume);
+	input.addEventListener('input', function () {
+		if (input.value) {
+			pause();
+		} else if (document.activeElement !== input) {
+			resume();
+		}
+	});
+
+	showTyped();
+	schedule(tick, 600);
+})();
+</script>
+{% endif %}
+
+<div class="search--overlay"></div>
+
+<!--
+		<link rel="stylesheet" type="text/css" href="catalog/view/theme/default/stylesheet/live_search.css" />
+						<script type="text/javascript">
+					var live_search = {
+						selector: '.header__search',
+						text_no_matches: 'Нічого не знайдено',
+						delay: 400
+					}
+
+					$(document).ready(function() {
+						var html = '';
+						html += '<div id="live-search">';
+						html += '	<ul>';
+						html += '	</ul>';
+						html += '<div class="result-text"></div>';
+						html += '</div>';
+
+						$(live_search.selector + ' button').after(html);
+						$('.header__search input[name=\'search\']').autocomplete({
+							'source': function(request, response) {
+								if ($(live_search.selector + ' input[type=\'search\']').val() == '') {
+									$('#live-search').css('display','none');
+								}
+								else{
+									var html = '';
+									html += '<li style="text-align: center;height:10px;">';
+									html +=	'<img class="loading" src="catalog/view/theme/default/image/loading.gif" />';
+									html +=	'</li>';
+									$('#live-search ul').html(html);
+									$('#live-search').css('display','block');
+								}
+								var filter_name = $(live_search.selector + ' input[type=\'search\']').val();
+
+								if (filter_name.length>0) {
+									$.ajax({
+										url: 'index.php?route=product/live_search&filter_name=' +  encodeURIComponent(request),
+										dataType: 'json',
+										success: function(result) {
+											var products = result.products;
+											$('#live-search ul li').remove();
+											$('.result-text').html('');
+											if (!$.isEmptyObject(products)) {
+												var show_image = 1;
+												var show_price = 1;
+												var show_description = 1;
+												$('.result-text').html('<a href="index.php?route=product/search&search='+filter_name+'" style="display:block;">показати всі результати ('+result.total+')</a>');
+
+												$.each(products, function(index,product) {
+													var html = '';
+
+													html += '<li>';
+													html += '<a href="' + product.url + '" title="' + product.name + '">';
+													if(product.image && show_image){
+														html += '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.76486 2.78811C5.40558 3.57282 4.43318 4.84008 4.02698 6.35614C3.6207 7.8722 3.82928 9.45582 4.61399 10.8151C5.66066 12.6278 7.61225 13.754 9.7074 13.754C10.3689 13.754 11.0253 13.6401 11.6476 13.4216L14.2909 18L16.1757 16.9118L13.5328 12.3342C14.4255 11.5704 15.0682 10.5573 15.3789 9.39784C15.7851 7.88178 15.5766 6.29825 14.7918 4.93889C13.7453 3.12614 11.7936 2 9.69852 2C8.67232 2 7.65787 2.27248 6.76486 2.78811ZM12.9071 6.02707C13.4012 6.88291 13.5325 7.88004 13.2767 8.8346C13.021 9.78915 12.4087 10.587 11.5529 11.0811C10.9903 11.4059 10.3521 11.5776 9.7074 11.5776C8.38739 11.5776 7.15791 10.8685 6.49882 9.72691C6.0047 8.87107 5.87342 7.87403 6.12927 6.91939C6.38504 5.96483 6.9973 5.16697 7.85313 4.67276C8.4156 4.34805 9.05379 4.17637 9.69852 4.17637C11.0186 4.17637 12.248 4.88552 12.9071 6.02707Z" fill="black"/></svg>';
+													}
+													html += '	<div class="product-name">' + product.name ;
+													html += '</div>';
+													html += '<span style="clear:both"></span>';
+													html += '</a>';
+													html += '</li>';
+													$('#live-search ul').append(html);
+												});
+											} else {
+												var html = '';
+												html += '<li style="text-align: center;height:10px;">';
+												html +=	live_search.text_no_matches;
+												html +=	'</li>';
+
+												$('#live-search ul').html(html);
+											}
+											$('#live-search ul li').css('height',live_search.height);
+											$('#live-search').css('display','block');
+											return false;
+										}
+									});
+								}
+							},
+							'select': function(product) {
+								$('input[name=\'search\']').val(product.name);
+							}
+						});
+
+						$(document).bind( "mouseup touchend", function(e){
+						  var container = $('#live-search');
+						  if (!container.is(e.target) && container.has(e.target).length === 0)
+						  {
+						    container.hide();
+						  }
+						});
+
+						$('body').delegate('.result-text', 'click', function () {
+                            $('#live-search').css('display','none');
+						});
+					});
+				</script>
+-->
+

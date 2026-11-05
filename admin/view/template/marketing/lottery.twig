@@ -1,0 +1,328 @@
+{{ header }}{{ column_left }}
+<div id="content">
+<div class="page-header">
+  <div class="container-fluid">
+    <div class="pull-right">
+
+	</div>
+    <h1>Таємна нагорода</h1>
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %}
+      <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<div class="container-fluid">{% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  <div class="row">
+    <div id="filter-order" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+        </div>
+        <div class="panel-body">
+			<div class="form-group">
+              <label class="control-label">Приз</label>
+              <div id="input-prize">
+				{% for prize in prizes %}
+				<div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="filter_prize" value="{{ prize.value }}" {% if prize.value in filter_prize %}checked="checked"{% endif %}>
+                       {{ prize.label }}
+                    </label>
+                </div>
+				{% endfor %}
+             </div>
+			</div>
+
+            <div class="form-group">
+              <label class="control-label" for="input-date-added">Період виграшу</label>
+              <div class="input-group datetime">
+                <input type="text" name="filter_date_added_start" value="{{ filter_date_added_start }}" placeholder="З" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added-start" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+              <div class="input-group datetime">
+                <input type="text" name="filter_date_added_end" value="{{ filter_date_added_end }}" placeholder="По" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added-end" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+            </div>
+
+          <div class="form-group">
+            <label class="control-label" for="input-customer">{{ entry_customer }}</label>
+            <input type="text" name="filter_customer" value="{{ filter_customer }}" placeholder="{{ entry_customer }}" id="input-customer" class="form-control" />
+          </div>
+
+
+
+          <div class="form-group text-right">
+            <button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9 col-md-pull-3 col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-list"></i> Список виграшів</h3>
+        </div>
+        <div class="panel-body">
+          <div class="alert alert-info" style="margin-bottom: 15px;">
+            <strong>{{ totals_text }}</strong>
+          </div>
+          <form method="post" action="" enctype="multipart/form-data" id="form-order">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                    <td class="text-left">{% if sort == 'telephone' %} <a href="{{ sort_telephone }}" class="{{ order|lower }}">{{ column_customer }}</a> {% else %} <a href="{{ sort_telephone }}">{{ column_customer }}</a> {% endif %}</td>
+                    <td class="text-left">{% if sort == 'prize' %} <a href="{{ sort_prize }}" class="{{ order|lower }}">Приз</a> {% else %} <a href="{{ sort_prize }}">Приз</a> {% endif %}</td>
+					<td class="text-left">Сума</td>
+                    <td class="text-left">{% if sort == 'date_added' %} <a href="{{ sort_date_added }}" class="{{ order|lower }}">Дата виграшу</a> {% else %} <a href="{{ sort_date_added }}">Дата виграшу</a> {% endif %}</td>
+                  </tr>
+                </thead>
+                <tbody>
+                
+                {% if orders %}
+                {% for order in orders %}
+                <tr {% if order.used %}style="background:#b6ffb6"{% endif %}{% if order.overdue and not order.used %}style="color:red"{% endif %}{% if not order.prize_type or order.prize_type == 'none' %}style="background:#fff3cd"{% endif %}>
+                  <td class="text-center"> {% if order.bp_id in selected %}
+                    <input type="checkbox" name="selected[]" value="{{ order.bp_id }}" checked="checked" />
+                    {% else %}
+                    <input type="checkbox" name="selected[]" value="{{ order.bp_id }}" />
+                    {% endif %}
+					</td>
+                  <td class="text-left">{{ order.customer }}</td>
+                  <td class="text-left">{{ order.prize }}</td>
+				  <td class="text-left">{{ order.code }}</td>
+                  <td class="text-left">{{ order.date_added }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                </tr>
+                {% endif %}
+                  </tbody>
+                
+              </table>
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-sm-6 text-left">{{ pagination }}</div>
+            <div class="col-sm-6 text-right">{{ results }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	url = '';
+
+	var filter_order_id = $('input[name=\'filter_order_id\']').val();
+
+	if (filter_order_id) {
+		url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+	}
+
+	var filter_customer = $('input[name=\'filter_customer\']').val();
+
+	if (filter_customer) {
+		url += '&filter_customer=' + encodeURIComponent(filter_customer);
+	}
+	
+	var filter_used = $('input[name=\'filter_used\']');
+	
+    if (filter_used.prop('checked')) {
+        url += '&filter_used=1';
+    }
+	
+	var filter_overdue = $('input[name=\'filter_overdue\']');
+	
+    if (filter_overdue.prop('checked')) {
+        url += '&filter_overdue=1';
+    }
+	
+	var filter_active = $('input[name=\'filter_active\']');
+	
+    if (filter_active.prop('checked')) {
+        url += '&filter_active=1';
+    }
+/*	
+{% for prize,key in prizes %}
+	var filter_prize_{{ prize }} = $('input[name=\'filter_prize_{{ prize }}\']');
+
+	if (filter_prize_{{ prize }} !== '') {
+		url += '&filter_prize_{{ prize }}=' + encodeURIComponent(filter_prize_{{ prize }});
+	}
+	
+            if (filter_prize_{{ prize }}.prop('checked')) {
+                url += '&filter_prize=' + encodeURIComponent(filter_prize_{{ prize }}.val());
+            }
+	
+	
+{% endfor %}
+*/
+
+var arr=$('input[name=\'filter_prize\']:checkbox:checked').map(function() {return this.value;}).get();
+      
+if (arr.length) {
+url += '&filter_prize=' + encodeURIComponent(JSON.stringify(arr));
+}
+
+/*
+            var filter_sub_category = $('input[name=\'filter_sub_category\']');
+            if (filter_sub_category.prop('checked')) {
+                url += '&filter_sub_category';
+            }
+*/
+
+
+	var filter_date_added_start = $('input[name=\'filter_date_added_start\']').val();
+
+	if (filter_date_added_start) {
+		url += '&filter_date_added_start=' + encodeURIComponent(filter_date_added_start);
+	}
+
+	var filter_date_added_end = $('input[name=\'filter_date_added_end\']').val();
+
+	if (filter_date_added_end) {
+		url += '&filter_date_added_end=' + encodeURIComponent(filter_date_added_end);
+	}
+
+	var filter_date_used_start = $('input[name=\'filter_date_used_start\']').val();
+
+	if (filter_date_used_start) {
+		url += '&filter_date_used_start=' + encodeURIComponent(filter_date_used_start);
+	}
+
+	var filter_date_used_end = $('input[name=\'filter_date_used_end\']').val();
+
+	if (filter_date_used_end) {
+		url += '&filter_date_used_end=' + encodeURIComponent(filter_date_used_end);
+	}
+	
+	var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
+
+	if (filter_date_modified) {
+		url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
+	}
+
+	location = 'index.php?route=marketing/lottery&user_token={{ user_token }}' + url;
+});
+//--></script> 
+  <script type="text/javascript"><!--
+$('input[name=\'filter_customer\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_telephone=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['telephone'],
+						value: item['customer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_customer\']').val(item['label']);
+	}
+});
+//--></script> 
+  <script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() {
+	$('#button-shipping, #button-invoice').prop('disabled', true);
+
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-invoice').prop('disabled', false);
+	}
+
+	for (i = 0; i < selected.length; i++) {
+		if ($(selected[i]).parent().find('input[name^=\'shipping_code\']').val()) {
+			$('#button-shipping').prop('disabled', false);
+
+			break;
+		}
+	}
+});
+
+$('#button-shipping, #button-invoice').prop('disabled', true);
+
+$('input[name^=\'selected\']:first').trigger('change');
+
+// IE and Edge fix!
+$('#button-shipping, #button-invoice').on('click', function(e) {
+	$('#form-order').attr('action', this.getAttribute('formAction'));
+});
+
+$('#form-order li:last-child a').on('click', function(e) {
+	e.preventDefault();
+	
+	var element = this;
+	
+	if (confirm('{{ text_confirm }}')) {
+		$.ajax({
+			url: '{{ catalog }}index.php?route=api/order/delete&api_token={{ api_token }}&store_id={{ store_id }}&order_id=' + $(element).attr('href'),
+			dataType: 'json',
+			beforeSend: function() {
+				$(element).parent().parent().parent().find('button').button('loading');
+			},
+			complete: function() {
+				$(element).parent().parent().parent().find('button').button('reset');
+			},
+			success: function(json) {
+				$('.alert-dismissible').remove();
+	
+				if (json['error']) {
+					$('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+	
+				if (json['success']) {
+					location = '{{ delete }}';
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	}
+});
+//--></script> 
+  <script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+  <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+  <script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+        $('.datetime').datetimepicker({
+            language: '{{ datepicker }}',
+            pickDate: true,
+            pickTime: true
+        });
+$('#filter-order').on('keydown', function(e) {
+  if (e.keyCode == 13) {
+      $('#button-filter').trigger('click')
+  }
+});
+//--></script></div>
+{{ footer }} 

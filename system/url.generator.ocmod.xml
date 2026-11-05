@@ -1,0 +1,979 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>SEO URL GENERATOR PRO by Serge Tkach</name>
+  <code>SEOURLGeneratorBySergeTkach</code>
+  <version>3.5.9 Test (for ocStore 3.0.3.7)</version>
+  <author>&lt;a href=&quot;https://bit.ly/3DxoNVL&quot; &gt;Serge Tkach&lt;/a&gt;</author>
+  <link>http://sergetkach.com/</link>
+  
+
+  
+   <!-- OCSTORE BLOG
+  ========================================================================== -->
+  
+  <!-- SEO URL Generator -->
+	<file path="admin/model/extension/module/seo_url_generator.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $array_custom_tabs = array();
+      ]]></search>
+      <add position="after"><![CDATA[
+		$array_custom_tabs['blog_category'] = array(
+			'title' => 'ocStore :: Категории блога',
+			'table' => 'blog_category',
+			'primary_key' => 'blog_category_id',
+			'query_key' => 'blog_category_id',
+			'name_field' => 'name',
+		);
+        
+		$array_custom_tabs['article'] = array(
+			'title' => 'ocStore :: Статьи блога',
+			'table' => 'article',
+			'primary_key' => 'article_id',
+			'query_key' => 'article_id',
+			'name_field' => 'name',
+		);
+]]></add>
+    </operation>
+    <operation error="skip">>
+      <search><![CDATA[// Example for customization . end]]></search>
+      <add position="before"><![CDATA[		// ocStore :: Категории блога
+		if ('blog_category' == $essence) {
+			$sql = "SELECT blog_category_id FROM " . DB_PREFIX . "blog_category ORDER BY blog_category_id ASC LIMIT " . (int)$limits['first_element'] . "," . (int)$limits['limit_n'];
+		}
+		
+		if ('article' == $essence) {
+			$sql = "SELECT article_id FROM " . DB_PREFIX . "article ORDER BY article_id ASC LIMIT " . (int)$limits['first_element'] . "," . (int)$limits['limit_n'];
+		}]]></add>
+    </operation>
+     <operation error="skip">>
+      <search><![CDATA[$sql = "SELECT `language_id`, `$column_name` FROM `" . DB_PREFIX . $essence . "_description` WHERE `" . $primary_key . "` = '" . (int)$essence_id . "'";]]></search>
+      <add position="before"><![CDATA[		// ocStore :: Категории блога
+		if ('blog_category' == $essence || 'article' == $essence) {
+			$column_name = 'name';
+		}
+]]></add>
+    </operation> 
+	</file>
+  
+  <!-- Blog Category -->
+	<file path="admin/controller/blog/category.php">
+    <operation>
+      <search><![CDATA[
+        if (isset($this->request->post['category_seo_url'])) {
+      ]]></search>
+      <add position="before"><![CDATA[		// SEO URL Generator PRO . begin
+		$data['module_seo_url_generator_status'] = $this->config->get('module_seo_url_generator_status');
+
+		$data['module_seo_url_generator_language'] = $this->config->get('module_seo_url_generator_language');
+
+		$data['blog_category_id'] = isset($this->request->get['blog_category_id']) ? $this->request->get['blog_category_id'] : false;
+		
+		$this->load->language('extension/module/seo_url_generator');
+		
+		$this->load->model('extension/module/seo_url_generator');
+		
+		$data['sug_button_generate'] = $this->language->get('sug_button_generate');
+		$data['sug_text_redirects'] = $this->language->get('sug_text_redirects');
+		$data['sug_help_redirects'] = $this->language->get('sug_help_redirects');
+		$data['sug_button_add_redirect'] = $this->language->get('sug_button_add_redirect');
+		$data['sug_button_delete_redirect'] = $this->language->get('sug_button_delete_redirect');		
+		$data['sug_confirm_title'] = $this->language->get('sug_confirm_title');
+		$data['sug_confirm_body'] = $this->language->get('sug_confirm_body');
+		$data['sug_confirm_btn_yes'] = $this->language->get('sug_confirm_btn_yes');
+		$data['sug_confirm_btn_no'] = $this->language->get('sug_confirm_btn_no');
+		$data['sug_redirects_error_title'] = $this->language->get('sug_redirects_error_title');
+		$data['sug_redirects_error_empty'] = $this->language->get('sug_redirects_error_empty');
+		$data['sug_redirects_error_slash'] = $this->language->get('sug_redirects_error_slash');
+		$data['sug_redirects_error_protocol'] = $this->language->get('sug_redirects_error_protocol');
+		$data['sug_redirects_error_html'] = $this->language->get('sug_redirects_error_html');
+		$data['sug_redirects_error_common'] = $this->language->get('sug_redirects_error_common');
+		
+		$this->load->language('blog/category'); // for heading_title no conflict
+		
+		if (isset($this->request->get['blog_category_id'])) {
+			if (isset($this->request->post['seo_url_generator_redirects'])) {
+				$data['redirects'] = $this->request->post['seo_url_generator_redirects'];
+			} else {
+				$data['redirects'] = $this->model_extension_module_seo_url_generator->getRedirects('blog_category_id', $this->request->get['blog_category_id']);
+			}
+		} else {
+			$data['redirects'] = array();
+		}
+		
+		// For TWIG
+		$data['url_redirects_rows'] = array();
+
+		foreach ($data['stores'] as $store) {
+			foreach ($data['languages'] as $language) {
+				$data['url_redirects_rows'][$store['store_id']][$language['language_id']] = false;
+			}
+		}
+		// SEO URL Generator PRO . end
+]]></add>
+    </operation>
+    <!-- Error Define -->
+    <operation>
+      <search><![CDATA[
+        if (isset($this->error['keyword'])) {
+      ]]></search>
+      <add position="before"><![CDATA[    // SEO URL Generator PRO . begin
+		if (isset($this->error['seo_url_generator_redirects'])) {
+			$data['error_seo_url_generator_redirects'] = $this->error['seo_url_generator_redirects'];
+		} else {
+			$data['error_seo_url_generator_redirects'] = array();
+		}
+		// SEO URL Generator PRO . end
+]]></add>
+    </operation>
+    <!-- Error Validate -->
+    <operation>
+      <search><![CDATA[
+        if ($this->request->post['category_seo_url']) {
+      ]]></search>
+      <add position="before"><![CDATA[    // SEO URL Generator PRO . begin
+		if (isset($this->request->post['seo_url_generator_redirects'])) {
+			foreach ($this->request->post['seo_url_generator_redirects'] as $store_id => $store) {
+				foreach ($store as $language_id => $redirects) {
+					foreach ($redirects as $index => $redirect) {
+						if (false !== strpos($redirect, '/') || false !== strpos($redirect, 'http') || false !== strpos($redirect, '.html') || empty(trim($redirect))) {
+							$this->error['seo_url_generator_redirects'][$store_id][$language_id][$index] = $this->language->get('sug_redirects_error_validate');
+						}
+					}
+				}
+			}
+		}    
+		// SEO URL Generator PRO . end
+]]></add>
+    </operation>
+	</file>
+	<file path="admin/model/blog/category.php">
+    <operation>
+      <search index="0"><![CDATA[
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "seo_url` WHERE query = 'blog_category_id=
+      ]]></search>
+      <add position="before"><![CDATA[
+		/* SEO URL Generator . begin
+		------------------------------------------------------------------------- */	
+		$this->load->model('extension/module/seo_url_generator');
+
+		$sug_log = new StdeLog('seo_url_generator');
+		$sug_log->setDebug($this->config->get('module_seo_url_generator_debug'));
+
+		$sug_log->write(2, 'model/blog/category.php :: editCategory() is called');
+
+		if (isset($data['seo_url_generator_redirects'])) {
+			$sug_log->write(3, $data['seo_url_generator_redirects'], 'model/blog/category.php :: editCategory() : $data["seo_url_generator_redirects"]');
+		} else {
+			$sug_log->write(1, 'model/blog/category.php :: editCategory() : NO $data["seo_url_generator_redirects"]');
+		}
+		
+		if (isset($data['seo_url_generator_front_works'])) {
+			$sug_front_ok = true;
+			$sug_log->write(3, 'ISSET', 'model/blog/category.php :: editCategory() : $data["seo_url_generator_front_works"]');
+		} else {
+			$sug_front_ok = false;
+			$sug_log->write(1, 'NULL', 'model/blog/category.php :: editCategory() : $data["seo_url_generator_front_works"]');
+		}
+		
+		if ($sug_front_ok) {
+			foreach ($data['category_seo_url'] as $store_id => $store) {
+				foreach ($store as $language_id => $url) {
+					$sug_log->write(4, 'model/blog/category.php :: editCategory() : sug_redirects BEGIN for store_id (' . $store_id . ') -- language_id (' . $language_id . ')');
+
+					// Удаляем все существующие редиректы из базы для данной сущности - на фронте предупреждение было выдано, чтобы не убирали из формы
+					$this->db->query("DELETE FROM " . DB_PREFIX . "seo_url_generator_redirects WHERE query = 'blog_category_id=" . (int) $blog_category_id . "' AND `store_id` = '" . (int) $store_id . "' AND `language_id` = '" . (int) $language_id . "'");
+
+					// Обрабатываем редиректы из формы - все управление редиректами у пользователя на фронте!
+					if (isset($data['seo_url_generator_redirects'][$store_id][$language_id]) && count($data['seo_url_generator_redirects'][$store_id][$language_id]) > 0) {
+						$data['seo_url_generator_redirects'][$store_id][$language_id] = array_unique($data['seo_url_generator_redirects'][$store_id][$language_id]); // на всякий случай...
+
+						foreach ($data['seo_url_generator_redirects'][$store_id][$language_id] as $redirect) {
+							$this->db->query("INSERT INTO " . DB_PREFIX . "seo_url_generator_redirects SET store_id = '" . (int) $store_id . "', language_id = '" . (int) $language_id . "', seo_url_old = '" . $this->db->escape($redirect) . "', seo_url_actual = '" . $this->db->escape($data['category_seo_url'][$store_id][$language_id]) . "', query = 'blog_category_id=" . (int) $blog_category_id . "'");
+						}
+					}
+				}
+			}
+		}
+		/* SEO URL Generator . end
+		------------------------------------------------------------------------- */
+]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        $this->db->query("DELETE FROM " . DB_PREFIX . "category WHERE blog_category_id = '" . (int)$blog_category_id . "'");
+			]]></search>
+      <add position="after"><![CDATA[		// SEO URL Generator . begin
+		$this->db->query("DELETE FROM " . DB_PREFIX . "seo_url_generator_redirects WHERE query = 'blog_category_id=" . (int)$blog_category_id . "'");
+		// SEO URL Generator . end]]></add>
+    </operation>
+	</file>  
+	<file path="admin/view/template/blog/category_form.twig">
+		<operation>
+      <search><![CDATA[
+        <input type="text" name="category_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if category_seo_url[store.store_id][language.language_id] %}{{ category_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control" />
+			]]></search>
+      <add position="replace"><![CDATA[<input type="text" name="category_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if category_seo_url[store.store_id][language.language_id] %}{{ category_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control" id="input-seo-url-{{ store.store_id }}-{{ language.language_id }}" data-seo-url-was="{% if category_seo_url[store.store_id][language.language_id] %}{{ category_seo_url[store.store_id][language.language_id] }}{% endif %}"/>{% if blog_category_id %}<span class="input-group-btn"><button id="generateUrlOnEdit-{{ store.store_id }}-{{ language.language_id }}" class="generateUrlOnEdit btn btn-success" data-store-id="{{ store.store_id }}" data-language-id="{{ language.language_id }}" data-source-language-id="{{ module_seo_url_generator_language[language.language_id] }}"><i class="fa fa-refresh"></i> {{ sug_button_generate }}</button></span>{% endif %}]]></add>
+    </operation>
+		<operation>
+			<search><![CDATA[
+				{{ footer }}
+			]]></search>
+			<add position="before"><![CDATA[
+<!-- SEO URL Generator . Begin
+============================================================================ -->
+{% if (module_seo_url_generator_status is defined and module_seo_url_generator_status) %}
+<script type="text/javascript">
+  $('#tab-seo .text-left .input-group').css('margin-bottom', '10px');
+
+  $.each($('#tab-seo .text-left'), function () {      
+    $(this).children('.input-group:last').css('margin-bottom', 'initial');
+  });
+
+  {% if (not blog_category_id) %}
+        
+    {# Q?#}
+    {# Надо разграничивать, если от одного языка или от разных. Вроде если даже от одного, все равно функция отрабатывает, если прописать 
+ее 2 раза... #}
+    {% for language in languages %}
+    $('#input-name' + {{ module_seo_url_generator_language[language.language_id] }}).change(function(){ generateUrlOnAdd(); });
+    {% endfor %}
+
+    function generateUrlOnAdd() {
+      let a_lang_data = {
+        name: {}
+      };
+      
+      {% for language in languages %}
+      a_lang_data['name'][{{ language.language_id }}] = $('#input-name' + {{ module_seo_url_generator_language[language.language_id] }}).val();
+      {% endfor %}
+            
+      data = {
+        a_lang_data     : a_lang_data,
+        primary_key     : 'blog_category_id',
+        essence         : 'blog_category',
+        essence_id      : ''
+      };
+
+      // is different from edit
+      $.ajax({
+        url: 'index.php?route=extension/module/seo_url_generator/generateSeoUrlByAjax4All&user_token={{ user_token }}',
+        dataType: 'json',
+        data: data,
+        method : 'POST',
+        beforeSend: function() {},
+        success: function(response, textStatus, jqXHR) {
+          // success ajax query
+          if(response.result != 'error') {
+            setTimeout(function() {      
+              $.each(response.result, function (store_id, store) {
+                $.each(store, function (language_id, value) {
+                  if ('' !== value) {
+                    $('input[name="category_seo_url[' + store_id +'][' + language_id + ']"]').val(value);
+                  }
+                });
+              });
+            }, 100);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // Error ajax query
+          console.log('AJAX query Error: ' + textStatus);
+        },
+        complete: function() {},
+      });
+    }
+
+  {% else %}   
+
+    var storeId = false;      
+    var languageId = false;
+    
+    // enque redirects .generateUrlOnEdit firstly
+    var url_redirects_rows = {};
+    
+    {% for store in stores %}
+    url_redirects_rows[{{ store.store_id }}] = {};
+    
+    {% for language in languages %}
+    url_redirects_rows[{{ store.store_id }}][{{ language.language_id }}] = 0;
+    
+    {% endfor %}
+    {% endfor %}
+    
+    {% for store in stores %}
+    {% for language in languages %}
+   
+      var html = '';
+      html += '<div class="form-group">';
+      html += '<label class="col-sm-2 control-label">{{ sug_text_redirects }}</label>';
+      html += '<!-- category-redirects . begin -->';
+      html += '<div class="col-sm-10">';
+      html += '<div class="alert alert-info alert-sm">{{ sug_help_redirects }}</div>';
+      html += '<div id="seo_url_generator_redirects-{{ store.store_id }}-{{ language.language_id }}">';
+      
+      {% for key, redirect in redirects[store['store_id']][language['language_id']] %}
+      {% if redirects[store['store_id']][language['language_id']][key] %}
+      html += '<div id="redirect-row-{{ store.store_id }}-{{ language.language_id }}-' + url_redirects_rows[{{ store.store_id }}][{{ language.language_id }}] + '" class="row redirect-row" style="margin: 10px 0;"><input type="text" name="seo_url_generator_redirects[{{ store.store_id }}][{{ language.language_id }}][{{ key }}]" value="{{ redirects[store['store_id']][language['language_id']][key] }}" class="form-control input-sm col-xs-10" style="width: 100%; width: calc(100% - 120px); {% if error_seo_url_generator_redirects[store['store_id']][language['language_id']][key] is defined %}border-color: red;{% endif %}"/><div class="col-xs-1"><i class="pull-left fa fa-close text-danger deleteRedirect" style="cursor: pointer;" data-toggle="tooltip" title="{{ sug_button_delete_redirect }}"></i></div></div>';
+      url_redirects_rows[{{ store.store_id }}][{{ language.language_id }}]++;
+      {% endif %}
+      {% endfor %}	
+      html += '</div>';
+      html += '<!-- /category-redirects . end -->';
+      html += '<button id="addNewRedirect-{{ store.store_id }}-{{ language.language_id }}" class="addNewRedirect btn btn-warning btn-sm" data-store-id="{{ store.store_id }}" data-language-id="{{ language.language_id }}" data-source-language-id="{{ module_seo_url_generator_language[language.language_id] }}"><i class="fa fa-plus"></i> {{ sug_button_add_redirect }}</button>';
+      html += '</div>';
+      html += '</div>';
+      
+      <!-- Front works properly mark -->
+      html += '<input type="hidden" name="seo_url_generator_front_works" />';
+      
+      //console.log('#generateUrlOnEdit-' + {{ store.store_id }} + '-' + {{ language.language_id }});
+      //console.debug(html);
+      
+      $('#generateUrlOnEdit-' + {{ store.store_id }} + '-' + {{ language.language_id }}).parent().parent().after(html);
+            
+    {% endfor %}
+    {% endfor %}
+    
+    $('.addNewRedirect').click(function(e) {
+      e.preventDefault();
+      
+      var store_id = $(this).data('store-id');
+      var language_id =  $(this).data('language-id');
+      
+      console.log('$(this).data("store-id") : ' + $(this).data('store-id'));
+      console.log('$(this).data("language-id") : ' + $(this).data('language-id'));
+      console.log('#seo_url_generator_redirects-" + store_id + "-" + language_id : #seo_url_generator_redirects-' + store_id + '-' + language_id);
+
+      $('#seo_url_generator_redirects-' + store_id + '-' + language_id).append('<div id="redirect-row-' + '-' + store_id + '-' + language_id + '-' + url_redirects_rows[store_id][language_id] + '" class="row redirect-row recent" style="margin: 10px 0;"><input type="text" name="seo_url_generator_redirects[' + store_id + '][' + language_id + '][]" value="" class="form-control input-sm col-xs-10" style="width: 100%; width: calc(100% - 120px);" /><div class="col-xs-1"><i class="pull-left fa fa-close text-danger deleteRedirect" style="cursor: pointer;" data-toggle="tooltip" title="{{ sug_button_delete_redirect }}"></i></div></div>');
+
+      url_redirects_rows[store_id][language_id]++;
+    });
+
+    $('body').on('click', '.deleteRedirect', function(e) {
+      e.preventDefault();		
+      $('#sug-btn-confirm').attr('data-target', '#' + $(this).parent().parent('.redirect-row').attr('id'));		
+      $('#sug-confirm').modal('toggle');    
+    });
+
+    $('body').on('click', '#sug-btn-confirm', function(e) {
+      e.preventDefault();		
+      $($(this).attr('data-target')).remove();		
+      $('#sug-confirm').modal('toggle');
+    });
+
+    
+    // SEO URL Generation by button click
+  
+    thisButton = false;
+    
+    $('.generateUrlOnEdit').click(function(e) {
+      e.preventDefault();
+      
+      storeId = $(this).data('store-id');      
+      languageId = $(this).data('language-id');
+      sourceLanguageId = $(this).data('source-language-id'); 
+      thisButton = $(this);
+            
+      data = {
+        store_id        : storeId,
+        language_id     : languageId,
+        name            : $('#input-name' + sourceLanguageId).val(),
+        primary_key     : 'blog_category_id',
+        essence         : 'blog_category',
+        essence_id      : {{ blog_category_id }}
+      };     
+
+      getSeoUrl(data);
+    });
+    
+    // is different from add
+    function getSeoUrl(data) {
+      $.ajax({
+        url: 'index.php?route=extension/module/seo_url_generator/generateSeoUrlByAjax4One&user_token={{ user_token }}',
+        dataType: 'json',
+        data: data,
+        method : 'POST',
+        beforeSend: function() {
+          thisButton.css('opacity', '0.5');
+        },
+        success: function(response, textStatus, jqXHR) {
+          // success ajax query
+          if('' != response.result && 'error' != response.result) {            
+            console.log('$("#input-seo-url-" + storeId + "-" + languageId).val() : ' + $('#input-seo-url-' + storeId + '-' + languageId).val());
+            console.log('response.result : ' + response.result);
+            
+            if ('' != $('#input-seo-url-' + storeId + '-' + languageId).val().trim() && $('#input-seo-url-' + storeId + '-' + languageId).val() != response.result) {    
+              $('#seo_url_generator_redirects-' + storeId + '-' + languageId).append('<div id="redirect-row-' + '-' + storeId + '-' + languageId + '-' + url_redirects_rows[storeId][languageId] + '" class="row redirect-row recent" style="margin: 10px 0;"><input type="text" name="seo_url_generator_redirects[' + storeId + '][' + languageId + '][]" value="' + $('#input-seo-url-' + storeId + '-' + languageId).data('seo-url-was') + '" class="form-control input-sm col-xs-10" style="width: 100%; width: calc(100% - 120px);" /><div class="col-xs-1"><i class="pull-left fa fa-close text-danger deleteRedirect" style="cursor: pointer;" data-toggle="tooltip" title="{{ sug_button_delete_redirect }}"></i></div></div>');
+
+              url_redirects_rows[storeId][languageId]++;
+            }
+            
+            setTimeout(function() {
+              $('#input-seo-url-' + storeId + '-' + languageId).val(response.result);
+            }, 100);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // Error ajax query
+          console.log('AJAX query Error: ' + textStatus);
+        },
+        complete: function() {
+          thisButton.css('opacity', '1');
+        },
+      });
+    }
+
+  {% endif %}  
+
+  // Prevent incorrect SEO URL!
+	var inputBorderColorInitial = false;
+	
+	$('body').on('change', '.redirect-row input', function(e) {
+		if (!inputBorderColorInitial) {
+			inputBorderColorInitial = $(this).css('border-color');
+		}
+		
+		// reset previous errors
+		$(this).css('border-color', inputBorderColorInitial);
+		
+		$('#sug-error-body').html('');
+		
+		let hasError = false;
+		
+		// Check inputed data		
+		if ($(this).val().trim() == '') {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-danger"><b>{{ sug_redirects_error_empty }}</b></p>');
+		}
+
+		if ($(this).val().includes('/')) {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-danger"><b>{{ sug_redirects_error_slash }}</b></p>');
+		}
+		
+		if ($(this).val().includes('http')) {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-danger"><b>{{ sug_redirects_error_protocol }}</b></p>');
+		}
+		
+		if ($(this).val().includes('.html')) {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-warning"><b>{{ sug_redirects_error_html }}</b></p>');
+		}
+		
+		if (hasError) {
+			$(this).css('border-color', 'red');
+			
+			$('#sug-error-body').append('<p class="alert alert-info"><i class="fa fa-info-circle" style="font-size: 1.5em;">&nbsp;</i>  {{ sug_redirects_error_common }}</p>');
+			
+			$('#sug-error').modal('toggle');
+		}
+		
+    console.log('hasError : ' + hasError);
+    console.log($(this).val());
+		
+  });
+	
+</script>
+
+<!-- Confirm Modal -->
+<div class="modal fade" id="sug-confirm" tabindex="-1" role="dialog" aria-labelledby="sug-confirm" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-warning" id="sug-confirm-title"><i class="fa fa-exclamation-triangle">&nbsp;</i> <b>{{ sug_confirm_title }}</b></h4>
+			</div>
+			<div class="modal-body">
+				{{ sug_confirm_body }}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger sug-btn-confirm" id="sug-btn-confirm" data-target=""><i class="fa fa-trash">&nbsp;</i> {{ sug_confirm_btn_yes }}</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">{{ sug_confirm_btn_no }}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="sug-error" tabindex="-1" role="dialog" aria-labelledby="sug-error" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-danger" id="sug-error-title"><i class="fa fa-exclamation-triangle">&nbsp;</i> <b>{{ sug_redirects_error_title }}</b></h4>
+			</div>
+			<div class="modal-body" id="sug-error-body"></div>
+		</div>
+	</div>
+</div>
+{% endif %}
+<!-- /SEO URL Generator . End
+============================================================================ -->
+]]></add>
+		</operation>
+	</file> 
+
+
+  <!-- Blog Article -->
+	<file path="admin/controller/blog/article.php">
+    <operation>
+      <search><![CDATA[
+        if (isset($this->request->post['article_seo_url'])) {
+      ]]></search>
+      <add position="before"><![CDATA[		// SEO URL Generator PRO . begin
+		$data['module_seo_url_generator_status'] = $this->config->get('module_seo_url_generator_status');
+
+		$data['module_seo_url_generator_language'] = $this->config->get('module_seo_url_generator_language');
+
+		$data['article_id'] = isset($this->request->get['article_id']) ? $this->request->get['article_id'] : false;
+		
+		$this->load->language('extension/module/seo_url_generator');
+
+		$this->load->model('extension/module/seo_url_generator');
+		
+		$data['sug_button_generate'] = $this->language->get('sug_button_generate');
+		$data['sug_text_redirects'] = $this->language->get('sug_text_redirects');
+		$data['sug_help_redirects'] = $this->language->get('sug_help_redirects');
+		$data['sug_button_add_redirect'] = $this->language->get('sug_button_add_redirect');
+		$data['sug_button_delete_redirect'] = $this->language->get('sug_button_delete_redirect');		
+		$data['sug_confirm_title'] = $this->language->get('sug_confirm_title');
+		$data['sug_confirm_body'] = $this->language->get('sug_confirm_body');
+		$data['sug_confirm_btn_yes'] = $this->language->get('sug_confirm_btn_yes');
+		$data['sug_confirm_btn_no'] = $this->language->get('sug_confirm_btn_no');
+		$data['sug_redirects_error_title'] = $this->language->get('sug_redirects_error_title');
+		$data['sug_redirects_error_empty'] = $this->language->get('sug_redirects_error_empty');
+		$data['sug_redirects_error_slash'] = $this->language->get('sug_redirects_error_slash');
+		$data['sug_redirects_error_protocol'] = $this->language->get('sug_redirects_error_protocol');
+		$data['sug_redirects_error_html'] = $this->language->get('sug_redirects_error_html');
+		$data['sug_redirects_error_common'] = $this->language->get('sug_redirects_error_common');
+		
+		$this->load->language('model/blog/article.php'); // for heading_title no conflict
+		
+		if (isset($this->request->get['article_id'])) {
+			if (isset($this->request->post['seo_url_generator_redirects'])) {
+				$data['redirects'] = $this->request->post['seo_url_generator_redirects'];
+			} else {
+				$data['redirects'] = $this->model_extension_module_seo_url_generator->getRedirects('article_id', $this->request->get['article_id']);
+			}
+		} else {
+			$data['redirects'] = array();
+		}
+		
+		// For TWIG
+		$data['url_redirects_rows'] = array();
+
+		foreach ($data['stores'] as $store) {
+			foreach ($data['languages'] as $language) {
+				$data['url_redirects_rows'][$store['store_id']][$language['language_id']] = false;
+			}
+		}
+		// SEO URL Generator PRO . end
+]]></add>
+    </operation>
+    <!-- Error Define -->
+    <operation>
+      <search><![CDATA[
+        if (isset($this->error['keyword'])) {
+      ]]></search>
+      <add position="before"><![CDATA[    // SEO URL Generator PRO . begin
+		if (isset($this->error['seo_url_generator_redirects'])) {
+			$data['error_seo_url_generator_redirects'] = $this->error['seo_url_generator_redirects'];
+		} else {
+			$data['error_seo_url_generator_redirects'] = array();
+		}
+		// SEO URL Generator PRO . end
+]]></add>
+    </operation>
+    <!-- Error Validate -->
+    <operation>
+      <search><![CDATA[
+        if ($this->request->post['article_seo_url']) {
+      ]]></search>
+      <add position="before"><![CDATA[    // SEO URL Generator PRO . begin
+		if (isset($this->request->post['seo_url_generator_redirects'])) {
+			foreach ($this->request->post['seo_url_generator_redirects'] as $store_id => $store) {
+				foreach ($store as $language_id => $redirects) {
+					foreach ($redirects as $index => $redirect) {
+						if (false !== strpos($redirect, '/') || false !== strpos($redirect, 'http') || false !== strpos($redirect, '.html') || empty(trim($redirect))) {
+					$this->error['seo_url_generator_redirects'][$store_id][$language_id][$index] = $this->language->get('sug_redirects_error_validate');
+						}
+					}
+				}
+			}
+		}    
+		// SEO URL Generator PRO . end
+]]></add>
+    </operation>
+	</file>
+	<file path="admin/model/blog/article.php">
+    <operation>
+      <search index="0"><![CDATA[
+        $this->db->query("DELETE FROM " . DB_PREFIX . "seo_url WHERE query = 'article_id=
+      ]]></search>
+      <add position="before"><![CDATA[
+
+		/* SEO URL Generator . begin
+		------------------------------------------------------------------------- */	
+		$this->load->model('extension/module/seo_url_generator');
+
+		$sug_log = new StdeLog('seo_url_generator');
+		$sug_log->setDebug($this->config->get('module_seo_url_generator_debug'));
+
+		$sug_log->write(2, 'model/blog/article.php :: editArticle() is called');
+
+		if (isset($data['seo_url_generator_redirects'])) {
+			$sug_log->write(3, $data['seo_url_generator_redirects'], 'model/blog/article.php :: editArticle() : $data["seo_url_generator_redirects"]');
+		} else {
+			$sug_log->write(1, 'model/blog/article.php :: editArticle() : NO $data["seo_url_generator_redirects"]');
+		}
+		
+		if (isset($data['seo_url_generator_front_works'])) {
+			$sug_front_ok = true;
+			$sug_log->write(3, 'ISSET', 'model/blog/article.php :: editArticle() : $data["seo_url_generator_front_works"]');
+		} else {
+			$sug_front_ok = false;
+			$sug_log->write(1, 'NULL', 'model/blog/article.php :: editArticle() : $data["seo_url_generator_front_works"]');
+		}
+		
+		if ($sug_front_ok) {
+			foreach ($data['article_seo_url'] as $store_id => $store) {
+				foreach ($store as $language_id => $url) {
+					$sug_log->write(4, 'model/blog/article.php :: editArticle() : sug_redirects BEGIN for store_id (' . $store_id . ') -- language_id (' . $language_id . ')');
+
+					// Удаляем все существующие редиректы из базы для данной сущности - на фронте предупреждение было выдано, чтобы не убирали из формы
+					$this->db->query("DELETE FROM " . DB_PREFIX . "seo_url_generator_redirects WHERE query = 'article_id=" . (int) $article_id . "' AND `store_id` = '" . (int) $store_id . "' AND `language_id` = '" . (int) $language_id . "'");
+
+					// Обрабатываем редиректы из формы - все управление редиректами у пользователя на фронте!
+					if (isset($data['seo_url_generator_redirects'][$store_id][$language_id]) && count($data['seo_url_generator_redirects'][$store_id][$language_id]) > 0) {
+						$data['seo_url_generator_redirects'][$store_id][$language_id] = array_unique($data['seo_url_generator_redirects'][$store_id][$language_id]); // на всякий случай...
+
+						foreach ($data['seo_url_generator_redirects'][$store_id][$language_id] as $redirect) {
+							$this->db->query("INSERT INTO " . DB_PREFIX . "seo_url_generator_redirects SET store_id = '" . (int) $store_id . "', language_id = '" . (int) $language_id . "', seo_url_old = '" . $this->db->escape($redirect) . "', seo_url_actual = '" . $this->db->escape($data['article_seo_url'][$store_id][$language_id]) . "', query = 'article_id=" . (int) $article_id . "'");
+						}
+					}
+				}
+			}
+		}
+		/* SEO URL Generator . end
+		------------------------------------------------------------------------- */
+]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        $this->db->query("DELETE FROM " . DB_PREFIX . "article WHERE article_id = '" . (int)$article_id . "'");
+			]]></search>
+      <add position="after"><![CDATA[		// SEO URL Generator . begin
+		$this->db->query("DELETE FROM " . DB_PREFIX . "seo_url_generator_redirects WHERE query = 'article_id=" . (int)$article_id . "'");
+		// SEO URL Generator . end]]></add>
+    </operation>
+	</file>
+	<file path="admin/view/template/blog/article_form.twig">
+    <operation>
+      <search><![CDATA[
+        <input type="text" name="article_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if article_seo_url[store.store_id][language.language_id] %}{{ article_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control" />
+			]]></search>
+      <add position="replace"><![CDATA[<input type="text" name="article_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if article_seo_url[store.store_id][language.language_id] %}{{ article_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control" id="input-seo-url-{{ store.store_id }}-{{ language.language_id }}" data-seo-url-was="{% if article_seo_url[store.store_id][language.language_id] %}{{ article_seo_url[store.store_id][language.language_id] }}{% endif %}"/>{% if article_id %}<span class="input-group-btn"><button id="generateUrlOnEdit-{{ store.store_id }}-{{ language.language_id }}" class="generateUrlOnEdit btn btn-success" data-store-id="{{ store.store_id }}" data-language-id="{{ language.language_id }}" data-source-language-id="{{ module_seo_url_generator_language[language.language_id] }}"><i class="fa fa-refresh"></i> {{ sug_button_generate }}</button></span>{% endif %}]]></add>
+    </operation>
+		<operation>
+			<search><![CDATA[
+				{{ footer }}
+			]]></search>
+			<add position="before"><![CDATA[
+<!-- SEO URL Generator . Begin
+============================================================================ -->
+{% if (module_seo_url_generator_status is defined and module_seo_url_generator_status) %}
+<script type="text/javascript">
+  $('#tab-seo .text-left .input-group').css('margin-bottom', '10px');
+
+  $.each($('#tab-seo .text-left'), function () {      
+    $(this).children('.input-group:last').css('margin-bottom', 'initial');
+  });
+
+  {% if (not article_id) %}
+        
+    {# Q?#}
+    {# Надо разграничивать, если от одного языка или от разных. Вроде если даже от одного, все равно функция отрабатывает, если прописать 
+ее 2 раза... #}
+    {% for language in languages %}
+    $('#input-name' + {{ module_seo_url_generator_language[language.language_id] }}).change(function(){ generateUrlOnAdd(); });
+    {% endfor %}
+
+    function generateUrlOnAdd() {
+      let a_lang_data = {
+        name: {}
+      };
+      
+      {% for language in languages %}
+      a_lang_data['name'][{{ language.language_id }}] = $('#input-name' + {{ module_seo_url_generator_language[language.language_id] }}).val();
+      {% endfor %}
+            
+      data = {
+        a_lang_data     : a_lang_data,
+        primary_key     : 'article_id',
+        essence         : 'article',
+        essence_id      : ''
+      };
+
+      // is different from edit
+      $.ajax({
+        url: 'index.php?route=extension/module/seo_url_generator/generateSeoUrlByAjax4All&user_token={{ user_token }}',
+        dataType: 'json',
+        data: data,
+        method : 'POST',
+        beforeSend: function() {},
+        success: function(response, textStatus, jqXHR) {
+          // success ajax query
+          if(response.result != 'error') {
+            setTimeout(function() {      
+              $.each(response.result, function (store_id, store) {
+                $.each(store, function (language_id, value) {
+                  if ('' !== value) {
+                    $('input[name="article_seo_url[' + store_id +'][' + language_id + ']"]').val(value);
+                  }
+                });
+              });
+            }, 100);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // Error ajax query
+          console.log('AJAX query Error: ' + textStatus);
+        },
+        complete: function() {},
+      });
+    }
+
+  {% else %}   
+
+    var storeId = false;      
+    var languageId = false;
+    
+    // enque redirects .generateUrlOnEdit firstly
+    var url_redirects_rows = {};
+    
+    {% for store in stores %}
+    url_redirects_rows[{{ store.store_id }}] = {};
+    
+    {% for language in languages %}
+    url_redirects_rows[{{ store.store_id }}][{{ language.language_id }}] = 0;
+    
+    {% endfor %}
+    {% endfor %}
+    
+    {% for store in stores %}
+    {% for language in languages %}
+   
+      var html = '';
+      html += '<div class="form-group">';
+      html += '<label class="col-sm-2 control-label">{{ sug_text_redirects }}</label>';
+      html += '<!-- article-redirects . begin -->';
+      html += '<div class="col-sm-10">';
+      html += '<div class="alert alert-info alert-sm">{{ sug_help_redirects }}</div>';
+      html += '<div id="seo_url_generator_redirects-{{ store.store_id }}-{{ language.language_id }}">';
+      
+      {% for key, redirect in redirects[store['store_id']][language['language_id']] %}
+      {% if redirects[store['store_id']][language['language_id']][key] %}
+      html += '<div id="redirect-row-{{ store.store_id }}-{{ language.language_id }}-' + url_redirects_rows[{{ store.store_id }}][{{ language.language_id }}] + '" class="row redirect-row" style="margin: 10px 0;"><input type="text" name="seo_url_generator_redirects[{{ store.store_id }}][{{ language.language_id }}][{{ key }}]" value="{{ redirects[store['store_id']][language['language_id']][key] }}" class="form-control input-sm col-xs-10" style="width: 100%; width: calc(100% - 120px); {% if error_seo_url_generator_redirects[store['store_id']][language['language_id']][key] is defined %}border-color: red;{% endif %}"/><div class="col-xs-1"><i class="pull-left fa fa-close text-danger deleteRedirect" style="cursor: pointer;" data-toggle="tooltip" title="{{ sug_button_delete_redirect }}"></i></div></div>';
+      url_redirects_rows[{{ store.store_id }}][{{ language.language_id }}]++;
+      {% endif %}
+      {% endfor %}	
+      html += '</div>';
+      html += '<!-- /article-redirects . end -->';
+      html += '<button id="addNewRedirect-{{ store.store_id }}-{{ language.language_id }}" class="addNewRedirect btn btn-warning btn-sm" data-store-id="{{ store.store_id }}" data-language-id="{{ language.language_id }}" data-source-language-id="{{ module_seo_url_generator_language[language.language_id] }}"><i class="fa fa-plus"></i> {{ sug_button_add_redirect }}</button>';
+      html += '</div>';
+      html += '</div>';
+      
+      <!-- Front works properly mark -->
+      html += '<input type="hidden" name="seo_url_generator_front_works" />';
+      
+      //console.log('#generateUrlOnEdit-' + {{ store.store_id }} + '-' + {{ language.language_id }});
+      //console.debug(html);
+      
+      $('#generateUrlOnEdit-' + {{ store.store_id }} + '-' + {{ language.language_id }}).parent().parent().after(html);
+            
+    {% endfor %}
+    {% endfor %}
+    
+    $('.addNewRedirect').click(function(e) {
+      e.preventDefault();
+      
+      var store_id = $(this).data('store-id');
+      var language_id =  $(this).data('language-id');
+      
+      console.log('$(this).data("store-id") : ' + $(this).data('store-id'));
+      console.log('$(this).data("language-id") : ' + $(this).data('language-id'));
+      console.log('#seo_url_generator_redirects-" + store_id + "-" + language_id : #seo_url_generator_redirects-' + store_id + '-' + language_id);
+
+      $('#seo_url_generator_redirects-' + store_id + '-' + language_id).append('<div id="redirect-row-' + '-' + store_id + '-' + language_id + '-' + url_redirects_rows[store_id][language_id] + '" class="row redirect-row recent" style="margin: 10px 0;"><input type="text" name="seo_url_generator_redirects[' + store_id + '][' + language_id + '][]" value="" class="form-control input-sm col-xs-10" style="width: 100%; width: calc(100% - 120px);" /><div class="col-xs-1"><i class="pull-left fa fa-close text-danger deleteRedirect" style="cursor: pointer;" data-toggle="tooltip" title="{{ sug_button_delete_redirect }}"></i></div></div>');
+
+      url_redirects_rows[store_id][language_id]++;
+    });
+
+    $('body').on('click', '.deleteRedirect', function(e) {
+      e.preventDefault();
+      $('#sug-btn-confirm').attr('data-target', '#' + $(this).parent().parent('.redirect-row').attr('id'));		
+      $('#sug-confirm').modal('toggle');    
+    });
+
+    $('body').on('click', '#sug-btn-confirm', function(e) {
+      e.preventDefault();		
+      $($(this).attr('data-target')).remove();		
+      $('#sug-confirm').modal('toggle');
+    });
+    
+    
+    // SEO URL Generation by button click
+  
+    thisButton = false;
+    
+    $('.generateUrlOnEdit').click(function(e) {
+      e.preventDefault();
+      
+      storeId = $(this).data('store-id');      
+      languageId = $(this).data('language-id');
+      sourceLanguageId = $(this).data('source-language-id'); 
+      thisButton = $(this);
+            
+      data = {
+        store_id        : storeId,
+        language_id     : languageId,
+        name            : $('#input-name' + sourceLanguageId).val(),
+        primary_key     : 'article_id',
+        essence         : 'article',
+        essence_id      : {{ article_id }}
+      };     
+
+      getSeoUrl(data);
+    });
+    
+    // is different from add
+    function getSeoUrl(data) {
+      $.ajax({
+        url: 'index.php?route=extension/module/seo_url_generator/generateSeoUrlByAjax4One&user_token={{ user_token }}',
+        dataType: 'json',
+        data: data,
+        method : 'POST',
+        beforeSend: function() {
+          thisButton.css('opacity', '0.5');
+        },
+        success: function(response, textStatus, jqXHR) {
+          // success ajax query
+          if('' != response.result && 'error' != response.result) {            
+            console.log('$("#input-seo-url-" + storeId + "-" + languageId).val() : ' + $('#input-seo-url-' + storeId + '-' + languageId).val());
+            console.log('response.result : ' + response.result);
+            
+            if ('' != $('#input-seo-url-' + storeId + '-' + languageId).val().trim() && $('#input-seo-url-' + storeId + '-' + languageId).val() != response.result) {    
+              $('#seo_url_generator_redirects-' + storeId + '-' + languageId).append('<div id="redirect-row-' + '-' + storeId + '-' + languageId + '-' + url_redirects_rows[storeId][languageId] + '" class="row redirect-row recent" style="margin: 10px 0;"><input type="text" name="seo_url_generator_redirects[' + storeId + '][' + languageId + '][]" value="' + $('#input-seo-url-' + storeId + '-' + languageId).data('seo-url-was') + '" class="form-control input-sm col-xs-10" style="width: 100%; width: calc(100% - 120px);" /><div class="col-xs-1"><i class="pull-left fa fa-close text-danger deleteRedirect" style="cursor: pointer;" data-toggle="tooltip" title="{{ sug_button_delete_redirect }}"></i></div></div>');
+
+              url_redirects_rows[storeId][languageId]++;
+            }
+            
+            setTimeout(function() {
+              $('#input-seo-url-' + storeId + '-' + languageId).val(response.result);
+            }, 100);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // Error ajax query
+          console.log('AJAX query Error: ' + textStatus);
+        },
+        complete: function() {
+          thisButton.css('opacity', '1');
+        },
+      });
+    }
+
+  {% endif %}  
+
+  // Prevent incorrect SEO URL!
+	var inputBorderColorInitial = false;
+	
+	$('body').on('change', '.redirect-row input', function(e) {
+		if (!inputBorderColorInitial) {
+			inputBorderColorInitial = $(this).css('border-color');
+		}
+		
+		// reset previous errors
+		$(this).css('border-color', inputBorderColorInitial);
+		
+		$('#sug-error-body').html('');
+		
+		let hasError = false;
+		
+		// Check inputed data		
+		if ($(this).val().trim() == '') {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-danger"><b>{{ sug_redirects_error_empty }}</b></p>');
+		}
+
+		if ($(this).val().includes('/')) {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-danger"><b>{{ sug_redirects_error_slash }}</b></p>');
+		}
+		
+		if ($(this).val().includes('http')) {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-danger"><b>{{ sug_redirects_error_protocol }}</b></p>');
+		}
+		
+		if ($(this).val().includes('.html')) {
+			hasError = true;
+			$('#sug-error-body').append('<p class="text-warning"><b>{{ sug_redirects_error_html }}</b></p>');
+		}
+		
+		if (hasError) {
+			$(this).css('border-color', 'red');
+			
+			$('#sug-error-body').append('<p class="alert alert-info"><i class="fa fa-info-circle" style="font-size: 1.5em;">&nbsp;</i>  {{ sug_redirects_error_common }}</p>');
+			
+			$('#sug-error').modal('toggle');
+		}
+		
+    console.log('hasError : ' + hasError);
+    console.log($(this).val());
+		
+  });
+	
+</script>
+
+<!-- Confirm Modal -->
+<div class="modal fade" id="sug-confirm" tabindex="-1" role="dialog" aria-labelledby="sug-confirm" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-warning" id="sug-confirm-title"><i class="fa fa-exclamation-triangle">&nbsp;</i> <b>{{ sug_confirm_title }}</b></h4>
+			</div>
+			<div class="modal-body">
+				{{ sug_confirm_body }}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger sug-btn-confirm" id="sug-btn-confirm" data-target=""><i class="fa fa-trash">&nbsp;</i> {{ sug_confirm_btn_yes }}</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">{{ sug_confirm_btn_no }}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="sug-error" tabindex="-1" role="dialog" aria-labelledby="sug-error" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-danger" id="sug-error-title"><i class="fa fa-exclamation-triangle">&nbsp;</i> <b>{{ sug_redirects_error_title }}</b></h4>
+			</div>
+			<div class="modal-body" id="sug-error-body"></div>
+		</div>
+	</div>
+</div>
+{% endif %}
+<!-- /SEO URL Generator . End
+============================================================================ -->
+]]></add>
+		</operation>
+	</file>
+  
+</modification>

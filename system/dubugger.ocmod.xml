@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+  <name>
+    <![CDATA[Debugger <t style="color:red">(by Digital Elephant)</t>]]>
+  </name>
+  <version>2.2.2</version>
+  <link>digital-elephant.com.ua</link>
+  <author>
+    <![CDATA[<b>digital.elephant.studio@gmail.com</b>]]>
+  </author>
+  <code>digitalElephantFilter</code>
+  <description>
+    <![CDATA[Debug panel. Developer tool]]>
+  </description>
+
+  <file path="system/library/db/mysqli.php">
+    <operation>
+      <search trim="true">
+        <![CDATA[$query = $this->connection->query($sql);]]>
+      </search>
+      <add position="replace" trim="false">
+        <![CDATA[if (defined("IS_DEBUG") && IS_DEBUG) {
+    			global $debugModelQueries;
+
+    			$startTime = microtime(true);
+    			$query = $this->connection->query($sql);
+    			$executeTimeQuery = microtime(true) - $startTime;
+
+    			$debugBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+
+    			$debugModelQueries[] = [
+    				'class' => (!empty($debugBacktrace[2]['class'])) ? $debugBacktrace[2]['class'] : '',
+    				'method' => (!empty($debugBacktrace[2]['function'])) ? $debugBacktrace[2]['function'] : '',
+    				'query' => $sql,
+    				'time'  => $executeTimeQuery,
+    				'file' => (!empty($debugBacktrace[2]['file'])) ? $debugBacktrace[2]['file'] : $debugBacktrace[1]['file'],
+    				'class:method' => (!empty($debugBacktrace[2]['class'])) ? $debugBacktrace[2]['class'] . '->' . $debugBacktrace[2]['function'] : '',
+    			];
+    		} else {
+    			$query = $this->connection->query($sql);
+    		}]]>
+      </add>
+    </operation>
+	</file>
+  <file path="system/engine/action.php">
+	<operation>
+      <search trim="true">
+        <![CDATA[return call_user_func_array(array($controller, $this->method), $args);]]>
+      </search>
+      <add position="replace" trim="false">
+        <![CDATA[if (defined("IS_DEBUG") && IS_DEBUG) {
+  					global $debugControllerActions;
+
+  					$time = microtime(true);
+
+  					$call_func = call_user_func_array(array($controller, $this->method), $args);
+
+  					$debugControllerActions[] = [
+  						'class' => get_class($controller),
+  						'method' => $this->method,
+  						'time' => microtime(true) - $time,
+  					];
+
+  					return $call_func;
+  				} else {
+  					return call_user_func_array(array($controller, $this->method), $args);
+  				}]]>
+      </add>
+    </operation>
+  </file>
+  </modification>

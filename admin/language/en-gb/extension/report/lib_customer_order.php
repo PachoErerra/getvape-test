@@ -1,0 +1,35 @@
+<?php
+// Heading
+$_['heading_title']         = 'NTS - Звіт по замовленням клієнтів';
+
+// Text
+$_['text_extension']        = 'Extensions';
+$_['text_edit']             = 'Edit Customer Orders Report';
+$_['text_success']          = 'Success: You have modified lib customer orders report!';
+$_['text_filter']           = 'Filter';
+$_['button_export']         = 'Export';
+$_['text_all_status']       = 'All Statuses';
+
+
+// Column
+$_['column_customer']       = 'Ім’я покупця';
+$_['column_email']          = 'E-Mail';
+$_['column_customer_group'] = 'Customer Group';
+$_['column_status']         = 'Status';
+$_['column_orders']         = 'No. Orders';
+$_['column_products']       = 'No. Products';
+$_['column_total']          = 'Total';
+$_['column_telephone']      = 'Telephone';
+$_['column_address']        = 'Address';
+$_['column_action']         = 'Action';
+
+// Entry
+$_['entry_date_start']      = 'Date Start';
+$_['entry_date_end']        = 'Date End';
+$_['entry_customer']        = 'Customer';
+$_['entry_status']          = 'Order Status';
+$_['entry_status']          = 'Status';
+$_['entry_sort_order']      = 'Sort Order';
+
+// Error
+$_['error_permission']  = 'Warning: You do not have permission to modify lib customer orders report!';

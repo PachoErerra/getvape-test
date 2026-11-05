@@ -1,0 +1,737 @@
+<modification>
+	<name>GiftTeaser by iSenseLabs</name>
+	<version>2.5.3</version>
+	<link>http://isenselabs.com</link>
+	<author>iSenseLabs</author>
+	<code>isenselabs_giftteaser</code>
+  
+  
+ 	 <file path="catalog/controller/api/cart.php">
+		<operation>
+		  <search><![CDATA[$json['products'][] = array(  ]]></search>
+		  <add position="before"><![CDATA[
+				if (isset($product['gift_teaser']) && $product['gift_teaser'] == false) { 
+					$price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+				} else { 
+					$price = '0';
+				}
+		  ]]></add>
+		</operation>	
+		<operation>
+		  <search regex="true"><![CDATA[~(\$this->cart->add)(\(.+\)?)~]]></search>
+		  <add position="replace"><![CDATA[
+
+				if(isset($product) && isset($product['gift_teaser']) && $product['gift_teaser'] == 'true') {
+					$product['gift_teaser'] = true;
+				} elseif (isset($this->request->post['gift_teaser'])) {
+					$product['gift_teaser'] = $this->request->post['gift_teaser'];
+				} else {
+					$product['gift_teaser'] = false;
+				}
+
+				$this->cart->prepareGiftTeaserArg($product['gift_teaser']);
+				
+				$1$2
+		  ]]></add>
+		</operation>				
+	  </file>
+  
+	 <file path="catalog/controller/checkout/cart.php">
+		<operation>
+		  <search><![CDATA[$json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']), $product_info['name'], $this->url->link('checkout/cart'));]]></search>
+		  <add position="after"><![CDATA[
+			$this->load->model('setting/setting');
+			$giftTeaser = $this->model_setting_setting->getSetting('giftteaser', $this->config->get('config_store_id'));
+			if (empty($giftTeaser['giftteaser']['Enabled']) || $giftTeaser['giftteaser']['Enabled'] == 'no') { } else {
+				$this->load->language('extension/module/giftteaser');
+				$addition = '';
+				 
+					foreach ($this->cart->getProducts() as $key => $val) {
+						if (!empty($val['gift_teaser']) && $val['gift_teaser']==true ) {
+							if (!isset($this->session->data['success_addition'])) {
+								$addition = $this->language->get('gift_added_to_cart');
+							}
+						}
+					}	
+				
+				$json['success'] .= $addition;	
+			 }
+		  ]]></add>
+		</operation>
+		<operation>
+		  <search regex="true"><![CDATA[~(\$this->cart->add)(\(.+\)?)~]]></search>
+		  <add position="replace"><![CDATA[
+			if(isset($this->session->data['cart'])) {
+				$oldCart = $this->session->data['cart']; 
+			}
+			$1$2
+			
+		]]></add>
+		</operation>
+        <operation>
+		  <search><![CDATA[unset($this->session->data['reward']);]]></search>
+		  <add position="after"><![CDATA[$this->checkGifts();]]></add>
+		</operation>
+        <operation>
+          <search><![CDATA[public function remove() {]]></search>
+          <add position="before"><![CDATA[
+		  public function giftTeaserOptions() {
+          $this->language->load('extension/module/giftteaser');
+          $this->load->model('catalog/product');
+          $this->load->model('tool/image');
+          $this->document->addStyle('catalog/view/theme/default/stylesheet/giftteaser.css');
+          $product_info= $this->model_catalog_product->getProduct($this->request->get['product_id']);
+          $product_options = $this->model_catalog_product->getProductOptions($this->request->get['product_id']);
+          if ($product_info['image']) {
+              $image = $this->model_tool_image->resize($product_info['image'], 80, 80);
+              } else {
+                  $image = false;
+              }
+
+              if ($this->config->get('config_review_status')) {
+                  $rating = (int)$product_info['rating'];
+              } else {
+                  $rating = false;
+              }
+
+              $product_options = $this->model_catalog_product->getProductOptions($product_info['product_id']);
+              $data['options'] = array();
+
+              foreach ($product_options as $option) { 
+                  if ($option['type'] == 'select' || $option['type'] == 'radio' || $option['type'] == 'checkbox' || $option['type'] == 'image') { 
+                      $option_value_data = array();
+
+                      foreach ($option['product_option_value'] as $option_value) {
+                          if (!$option_value['subtract'] || ($option_value['quantity'] > 0)) {
+                              if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
+                                  $price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax')));
+                              } else {
+                                  $price = false;
+                              }
+
+                              $option_value_data[] = array(
+                                  'product_option_value_id' => $option_value['product_option_value_id'],
+                                  'option_value_id'         => $option_value['option_value_id'],
+                                  'name'                    => $option_value['name'],
+                                  'image'                   => $this->model_tool_image->resize($option_value['image'], 50, 50),
+                              );
+                          }
+                      }
+
+                      $data['options'][] = array(
+                          'product_option_id' => $option['product_option_id'],
+                          'option_id'         => $option['option_id'],
+                          'name'              => $option['name'],
+                          'type'              => $option['type'],
+                          'option_value'      => $option_value_data,
+                          'required'          => $option['required']
+                      );                  
+                  } elseif ($option['type'] == 'text' || $option['type'] == 'textarea' || $option['type'] == 'file' || $option['type'] == 'date' || $option['type'] == 'datetime' || $option['type'] == 'time') {
+                      $data['options'][] = array(
+                          'product_option_id' => $option['product_option_id'],
+                          'option_id'         => $option['option_id'],
+                          'name'              => $option['name'],
+                          'type'              => $option['type'],
+                          'option_value'      => $option['option_value'],
+                          'required'          => $option['required']
+                      );                      
+                  }
+              }
+          $data['gift'] = array(
+              'product_id' => $product_info['product_id'],
+              'thumb'      => $image,
+              'name'       => $product_info['name'],
+              'rating'     => $rating,
+              'reviews'    => sprintf($this->language->get('text_reviews'), (int)$product_info['reviews']),
+              'href'       => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
+              'options' => $data['options']
+          );
+          $data['text_select'] = $this->language->get('text_select');
+          $data['text_option'] = $this->language->get('text_option');
+          $data['text_option_heading'] =  $this->language->get('gift_added_to_cart');
+          $data['heading_title'] = $this->language->get('heading_title');
+          $data['button_cart'] = $this->language->get('button_cart');
+          $data['Continue'] = $this->language->get('Continue');
+
+          if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
+              $data['data']['giftTeaser'] = str_replace('http', 'https', $this->config->get('giftteaser'));
+          } else {
+              $data['data']['giftTeaser'] = $this->config->get('giftteaser');
+          }
+
+			
+		 $this->response->setOutput($this->load->view('extension/module/giftteaser/giftteaser_options', $data));
+		
+      }
+
+      public function checkGifts() { 
+         	  $this->load->model('extension/module/giftteaser');
+			  $json = $this->model_extension_module_giftteaser->checkGifts();
+				
+              $this->response->setOutput(json_encode($json));   
+          
+      }
+
+      public function GiftAdd() { 
+          $this->language->load('checkout/cart');
+          $json = array();
+          if (isset($this->request->post['product_id'])) {
+              $product_id = $this->request->post['product_id'];
+          } else {
+              $product_id = 0;
+          }
+
+          $this->load->model('catalog/product');
+          $product_info = $this->model_catalog_product->getProduct($product_id);
+
+          if ($product_info) {            
+              if (isset($this->request->post['quantity'])) {
+                  $quantity = $this->request->post['quantity'];
+              } else {
+                  $quantity = 1;
+              }
+
+              if (isset($this->request->post['option'])) {
+                  $option = array_filter($this->request->post['option']);
+              } else {
+                  $option = array();  
+              }
+
+              if (isset($this->request->post['recurring_id'])) {
+                  $recurring_id = $this->request->post['recurring_id'];
+              } else {
+                  $recurring_id = 0;
+              }
+
+              $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
+
+              foreach ($product_options as $product_option) {
+                  if ($product_option['required'] && empty($option[$product_option['product_option_id']])) {
+                      $json['error']['option'][$product_option['product_option_id']] = sprintf($this->language->get('error_required'), $product_option['name']);
+                  }
+              }
+
+             $recurrings = $this->model_catalog_product->getProfiles($product_info['product_id']);
+
+			if ($recurrings) {
+				$recurring_ids = array();
+
+				foreach ($recurrings as $recurring) {
+					$recurring_ids[] = $recurring['recurring_id'];
+				}
+
+				if (!in_array($recurring_id, $recurring_ids)) {
+					$json['error']['recurring'] = $this->language->get('error_recurring_required');
+				}
+			}
+
+              if (!$json) { 
+				  $this->cart->prepareGiftTeaserArg($gift = true);
+
+                  $this->cart->add($this->request->post['product_id'], $quantity, $option, $recurring_id);
+                  $json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
+
+          $this->load->model('extension/module/giftteaser');
+          $this->load->model('setting/setting');
+
+		  $giftTeaser = $this->model_setting_setting->getSetting('giftteaser', $this->config->get('config_store_id'));
+
+          if (empty($giftTeaser['giftteaser']['Enabled']) || $giftTeaser['giftteaser']['Enabled'] == 'no') { } else {
+              $this->load->language('extension/module/giftteaser');
+              $prods = $this->cart->getProducts(); 
+              $addition = '';
+
+              foreach ($prods as $prod) {
+                  if ($prod['gift_teaser']==true && !isset($this->session->data['gift_teaser_success'])) {
+                      $addition = $this->language->get('gift_added_to_cart');
+                      $this->session->data['gift_teaser_success'] = true;
+                  }
+              }
+              if(isset($json['success'])) {
+                  $json['success'] .= $addition;
+              }   
+           }
+                  unset($this->session->data['shipping_method']);
+                  unset($this->session->data['shipping_methods']);
+                  unset($this->session->data['payment_method']);
+                  unset($this->session->data['payment_methods']);
+
+              } else {
+                  $json['redirect'] = str_replace('&amp;', '&', $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']));
+              }
+          }
+
+          $this->response->setOutput(json_encode($json));       
+      }
+        ]]></add>
+      </operation>
+	  </file>
+
+
+  
+<file path="system/library/cart/cart.php">
+	 	<!-- all OC 2.x -->
+	 	<operation>
+		  <search><![CDATA[class Cart {]]></search>
+		  <add position="after"><![CDATA[
+			public function getGiftsSettings($code, $store_id) {
+				$data = array(); 
+		
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "setting WHERE store_id = '" . (int)$store_id . "' AND `code` = '" . $this->db->escape($code) . "'");
+				
+				foreach ($query->rows as $result) {
+					if (!$result['serialized']) {
+						$data[$result['key']] = $result['value'];
+					} else {
+						
+							$data[$result['key']] = json_decode($result['value'], true);
+						
+					}
+				}
+				return $data;
+			}
+	
+			public function updateGifts() {
+				$eligible_gifts = $this->getEligibleGifts();
+				$option_key = 'gift_teaser';
+			
+				foreach ($eligible_gifts as $eligible_gift) {
+					$product_options = $this->db->query("SELECT po.product_id, po.option_value_id as option_index, ovp.name FROM `". DB_PREFIX . "product_option_value` po LEFT JOIN `" . DB_PREFIX . "option_value_description` ovp ON (po.option_value_id = ovp.option_value_id) WHERE po.product_id=".(int)$eligible_gift)->rows;
+					
+					if(!empty($product_options)) {
+						continue;
+					}
+					
+					
+						$gift_teaser_set = $this->db->query("SELECT * FROM " . DB_PREFIX . "cart WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$eligible_gift . "' AND gift_teaser = true")->num_rows;
+ 
+						if ($gift_teaser_set == 0) {
+							$this->db->query("INSERT " . DB_PREFIX . "cart SET api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "', customer_id = '" . (int)$this->customer->getId() . "', session_id = '" . $this->db->escape($this->session->getId()) . "', product_id = '" . (int)$eligible_gift . "', recurring_id = '0', `option` = '[]', quantity = '1',gift_teaser = true, date_added = NOW()");
+						}
+					
+				}
+			}
+	
+			public function removeGifts() {
+				foreach ($this->getProducts() as $key => $val) {
+					if (!empty($val['gift_teaser']) && $val['gift_teaser'] == true) { 
+						if(empty($val['option'])) {
+							
+								if($this->db->query("SELECT * FROM " . DB_PREFIX . "cart WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$val['product_id'] . "' AND gift_teaser = true")->num_rows > 0);
+									$this->db->query("DELETE FROM " . DB_PREFIX . "cart WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id= '". (int)$val['product_id'] . "' AND gift_teaser = true");
+									$this->data = array();
+								}
+							
+						}
+					}
+				}
+		  ]]></add>
+		</operation>
+		<operation>
+		<search><![CDATA[public function getProducts() {]]></search>
+		<add position="before"><![CDATA[
+			public function getEligibleGifts() {
+			
+				$setting = $this->getGiftsSettings('giftteaser', $this->config->get('config_store_id'));
+			  	$eligible_gifts = array();
+				
+			  	if (empty($setting['giftteaser']['Enabled']) || $setting['giftteaser']['Enabled'] == 'no') return $eligible_gifts;
+				
+			  	$this->removeGifts();
+			  	$gifts = $this->getAllGifts();
+			  	//$cart_products = array_map(create_function('$a', 'return $a["product_id"];'), $this->getProducts());
+			  	$cart_products = array_map(function($a) {return $a["product_id"];}, $this->getProducts());
+				if (empty($cart_products)) return $eligible_gifts;
+			  	
+				$products = $this->getProducts();
+if ($gifts) {
+     		 	foreach ($gifts as $gift) {
+					$properties = unserialize($gift['condition_properties']);
+					$to_add = null;
+
+					if((int)$gift['minimum'] > 0) {
+						$to_add_quantity = (int)$gift['minimum'];
+					} else {
+						$to_add_quantity = 1;
+					}
+
+					if(isset($this->session->data['customer_id'])) {
+						$query = $this->db->query("SELECT customer_group_id FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$this->session->data['customer_id'] . "'") ->row;
+						$customer_group_id = $query['customer_group_id'];
+					} else {
+						$customer_group_id = '0';
+					}
+				
+					if(isset($properties['customer_group']) && !empty($properties['customer_group']) && in_array($customer_group_id, $properties['customer_group'])) {
+	
+						if(isset($properties['select_total']) && $properties['select_total'] == 'subtotal') {
+							$cart_total = $this->getSubTotal();
+						} else {
+							$cart_total = $this->getTotal();
+						}
+	
+					  switch ($gift['condition_type']) {
+						case '1' : {
+						  if ((int)$properties['total'] < $cart_total && (int)$properties['total_max'] > $cart_total) {
+							$to_add = $gift['product_id'];
+						  }
+	
+						} break;
+	
+						case '2' : {
+						  if(isset($properties['certain'])) {
+							  $eligible_products = array_intersect($properties['certain'], $cart_products);
+						  }
+						  $add_gift= array();
+						  if(isset($eligible_products)) {
+							  foreach($eligible_products as $eligible_product) {
+								  unset($quantity);
+								  $quantity=array();
+								  foreach($products as $key => $value) {
+									   $exp_key = $value['product_id'];
+									   if($exp_key == $eligible_product){
+										   $quantity[] = $value['quantity'];
+									  }
+								  }
+								  if(count($quantity) > 1 ) {
+									  $quantity = array_sum($quantity);
+								  } else {
+									  $quantity = $quantity[0];
+								  }
+	
+								  if($quantity >= $properties['certain_product_quantity'] ) {
+									  $add_gift[] = 'true';
+								  } else {
+									  $add_gift[] = 'false';
+								  }
+							  } 
+						  }
+						  if (in_array("false", $add_gift)) {
+							  $quantity_reached = false;
+						  } else {
+							  $quantity_reached = true;
+						  }
+	
+						  if (
+							isset($properties['certain']) &&
+							array_values(array_intersect($properties['certain'], $cart_products)) === array_values($properties['certain']) &&
+							$quantity_reached
+						  ) {
+							$to_add = $gift['product_id'];
+						  }
+	
+						} break;
+	
+	
+						case '3' : {
+						  if(isset($properties['some'])) {
+							  $eligible_products = array_intersect($properties['some'], $cart_products);
+						  }
+						  $add_gift= array();
+						  foreach($eligible_products as $eligible_product) {
+							  unset($quantity);
+							  $quantity=array();
+							  foreach($products as $key => $value) {
+									   $exp_key = $value['product_id'];
+									   if($exp_key == $eligible_product){
+										   $quantity[] = $value['quantity'];
+									  }
+								  }
+								  if(count($quantity) > 1 ) {
+									  $quantity = array_sum($quantity);
+								  } else {
+	
+									  $quantity = $quantity[0];
+								  }
+	
+								  if($quantity >= $properties['some_product_quantity'] ) {
+								  $add_gift[] = 'true';
+							  } else {
+								  $add_gift[] = 'false';
+							  }
+						  } 
+						  if (in_array("true", $add_gift)) {
+							  $quantity_reached = true;
+						  } else {
+							  $quantity_reached = false;
+						  }
+						  if (
+							isset($properties['some']) &&
+							count(array_intersect($properties['some'], $cart_products)) &&
+							$quantity_reached 
+						  ) { 
+							$to_add = $gift['product_id'];
+						  }
+	
+						} break; 
+						case '4' : {
+						  if (
+							isset($properties['categories']) &&
+							$this->categoriesHaveProducts($properties['categories'], $cart_products)
+						  ) {
+							$to_add = $gift['product_id'];
+						  }
+						} break;
+						case '5' : {
+						  if (
+							isset($properties['manufacturer']) &&
+							$this->manufacturersHaveProducts($properties['manufacturer'], $cart_products)
+						  ) {
+							$to_add = $gift['product_id'];
+						  }
+						} break;
+					  }
+					}
+					if (
+					  	!empty($this->session->data['gift_teaser_exclude']) && 
+					  	in_array($to_add, $this->session->data['gift_teaser_exclude'])
+					) {
+					  	continue;
+					}
+	
+					if (!empty($to_add)) {
+					  for ($i = 0; $i < $to_add_quantity; $i++) {
+						$eligible_gifts[] = $to_add;
+					  }
+					}
+			  	}
+}
+				return $eligible_gifts;
+			}
+
+			public function restartGifts() {
+			  	unset($this->session->data['gift_teaser_exclude']);
+			  	$this->updateGifts();
+			}
+
+            public function getAllGifts() {
+			/*
+			  	$sql = "SELECT *, gt.description AS description FROM `". DB_PREFIX . "gift_teaser` gt LEFT JOIN `" . DB_PREFIX . "product` p ON (gt.item_id = p.product_id) LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (p.product_id = pd.product_id) WHERE gt.start_date < " . time() . " AND gt.end_date > " . time() ." AND gt.store_id = '" . $this->config->get('config_store_id') . "' AND language_id = '" . $this->config->get('config_language_id') . "' ORDER BY gt.sort_order ASC";
+	
+			  	$result = $this->db->query($sql);
+			  	return $result->rows;
+			*/
+			
+				if ($this->config->get('config_march')) {
+				
+					$rand_key = array_rand($this->config->get('config_march_products'), 1);
+					$gift_product = $this->config->get('config_march_products')[$rand_key];
+
+					$sql = "SELECT * FROM `" . DB_PREFIX . "product` p LEFT JOIN `" . DB_PREFIX . "product_description` pd ON (p.product_id = pd.product_id) WHERE p.product_id = '" . $gift_product . "' AND language_id = '" . $this->config->get('config_language_id') . "' ORDER BY p.sort_order ASC";
+					$result = $this->db->query($sql);
+
+					$gift = $result->rows;
+					$gift[0]['condition_type'] = 1;
+					$gift[0]['condition_properties'] = 'a:6:{s:12:"select_total";s:8:"subtotal";s:5:"total";s:4:"'.$this->config->get('config_march_summ').'";s:9:"total_max";s:13:"9999999999999";s:21:"some_product_quantity";s:1:"1";s:24:"certain_product_quantity";s:1:"1";s:14:"customer_group";a:2:{i:0;s:1:"0";i:1;s:1:"1";}}';
+		
+					return $gift;
+				} else {
+					return false;
+				}
+			
+			}
+			
+			public function categoriesHaveProducts($category_ids, $product_ids) {
+			  	$sql = "SELECT COUNT(*) as count FROM `" . DB_PREFIX . "product_to_category` WHERE category_id IN (" . implode(',', $category_ids) . ") AND product_id IN (" . implode(',', $product_ids) . ")";
+	
+			  	$result = $this->db->query($sql);
+	
+			  	return (int)$result->row['count'] > 0;
+			}
+
+			public function manufacturersHaveProducts($manufacturer_ids, $product_ids) {
+			  	$sql = "SELECT COUNT(*) as count FROM `" . DB_PREFIX . "product` WHERE manufacturer_id IN (" . implode(',', $manufacturer_ids) . ") AND product_id IN (" . implode(',', $product_ids) . ")";
+	
+			  	$result = $this->db->query($sql);
+			  	return (int)$result->row['count'] > 0;
+			}
+ 		]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[$product_data[] = array(]]></search>
+			<add position="before"><![CDATA[
+if ($gift_teaser==true) {
+$reward = 0;
+}	
+			]]></add>
+		</operation>
+		<operation>
+		  	<search regex="true"><![CDATA[~(public function add)(\(.+\)?)( {)~]]></search>
+		  	<add position="replace"><![CDATA[
+				public function prepareGiftTeaserArg($data) {
+               	 	$this->temp_gt_arg = $data;
+                }
+
+                public function consumeGiftTeaserArg() {
+                	if(isset($this->temp_gt_arg)) {
+                		$temp = $this->temp_gt_arg;
+                		unset($this->temp_gt_arg);
+					} else {
+						$temp = 0;
+					}
+                	return $temp;
+                }
+
+    			$1$2$3
+		  	]]></add>
+		</operation>
+		<operation> 
+			<search regex="true"><![CDATA[~(public function add)(\(.+\)?)( {)~]]></search>
+			<add position="after"><![CDATA[
+				$1$2$3
+
+				$gift = $this->consumeGiftTeaserArg();
+			]]></add>
+		</operation>	
+		<operation>
+			  <search><![CDATA['product_id'      => $product_query->row['product_id'],]]></search>
+			  <add position="after"><![CDATA[
+					'gift_teaser' => $gift_teaser,
+			  ]]></add>
+		</operation>
+   		<operation>
+		  <search><![CDATA['price'           => ($price + $option_price),]]></search>
+		  <add position="replace"><![CDATA[
+			'real_price'                     => ($price + $option_price),
+			'price'                     => ($gift_teaser==true) ? '0' : ($price + $option_price),
+		  ]]></add>
+		</operation>
+
+		<!-- Changes for >= OC 2.1.0.1-->
+		<operation error="skip">
+          <search regex="true"><![CDATA[~(\$this->add)(\(.+\)?)~]]></search>
+          <add position="replace"><![CDATA[
+                    if (!empty($cart['gift_teaser']) && ($cart['gift_teaser'] == true || $cart['gift_teaser'] == "true")) {
+                          $this->prepareGiftTeaserArg($gift = true);
+                    } 
+            $1$2
+        ]]></add>
+        </operation>
+		<operation error="skip">
+		  <search><![CDATA['total'           => ($price + $option_price) * $cart['quantity'],]]></search>
+		  <add position="replace"><![CDATA[
+				'total'                     => ($gift_teaser==true) ? '0' : ($price + $option_price) * $cart['quantity'],
+		  ]]></add>
+		</operation>
+		<operation error="skip">
+		  <search><![CDATA['tax_class_id'    => $product_query->row['tax_class_id'],]]></search>
+		  <add position="replace"><![CDATA[
+				'real_tax_class_id'              =>  $product_query->row['tax_class_id'],
+				'tax_class_id'              =>  ($gift_teaser==true) ? '0' : $product_query->row['tax_class_id'],
+		  ]]></add>
+		</operation>
+		<operation error="skip">
+		  <search><![CDATA[if (!$query->row['total']) {]]></search>
+		  <add position="before"><![CDATA[
+		  
+                $gift_column = $this->db->query("SHOW COLUMNS FROM " .DB_PREFIX . "cart LIKE 'gift_teaser'");
+
+                if ($gift_column->num_rows==0) {
+                       $query = $this->db->query("ALTER TABLE " .DB_PREFIX . "cart ADD gift_teaser VARCHAR(5) DEFAULT false AFTER product_id ");
+                }
+				
+				$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "cart WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$product_id . "' AND recurring_id = '" . (int)$recurring_id . "'AND gift_teaser = '" . $gift ."' AND `option` = '" . $this->db->escape(json_encode($option)) . "'");
+
+				if (strpos($_SERVER['REQUEST_URI'], 'checkout/cart/add') == false) {
+					if (isset($gift_teaser) && $gift_teaser == true) {
+						$product_gift = true;
+					}  else {
+                        $product_gift = false;
+					}
+				}
+				
+				if($gift==true) {
+					$product_gift = true;
+				}
+
+		  ]]></add>
+		</operation>
+   		<operation error="skip">
+		  <search><![CDATA[$this->db->query("INSERT " . DB_PREFIX . "cart SET api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "', customer_id = '" . (int)$this->customer->getId() . "', session_id = '" . $this->db->escape($this->session->getId()) . "', product_id = '" . (int)$product_id . "', recurring_id = '" . (int)$recurring_id . "', `option` = '" . $this->db->escape(json_encode($option)) . "', quantity = '" . (int)$quantity . "', date_added = NOW()");]]></search>
+		  <add position="after"><![CDATA[
+				if(isset($product_gift) && $product_gift == true) { 
+					$cart_id = $this->db->getLastId();
+					$this->db->query("UPDATE " . DB_PREFIX . "cart SET gift_teaser = '" . $product_gift . "' WHERE cart_id = '" . (int)$cart_id  . "'");
+				}
+					$this->updateGifts();
+					$this->restartGifts();
+		  ]]></add>
+		</operation> 
+   		<operation error="skip">
+		  <search><![CDATA[$this->db->query("UPDATE " . DB_PREFIX . "cart SET quantity = (quantity + " . (int)$quantity . ") WHERE api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$product_id . "' AND recurring_id = '" . (int)$recurring_id . "' AND `option` = '" . $this->db->escape(json_encode($option)) . "'");]]></search>
+		  <add position="after"><![CDATA[
+				$this->db->query("UPDATE " . DB_PREFIX . "cart SET quantity = 1 WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$product_id . "' AND recurring_id = '" . (int)$recurring_id . "' AND `option` = '" . $this->db->escape(json_encode($option)) . "' AND gift_teaser=true");
+				$this->updateGifts();
+				$this->restartGifts();
+		  ]]></add>
+		</operation>
+		
+   		<operation error="skip">
+		  <search><![CDATA[$this->db->query("INSERT INTO " . DB_PREFIX . "cart SET api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "', customer_id = '" . (int)$this->customer->getId() . "', session_id = '" . $this->db->escape($this->session->getId()) . "', product_id = '" . (int)$product_id . "', recurring_id = '" . (int)$recurring_id . "', `option` = '" . $this->db->escape(json_encode($option)) . "', quantity = '" . (int)$quantity . "', date_added = NOW()");]]></search>
+		  <add position="after"><![CDATA[
+				$this->updateGifts();
+				$this->restartGifts();
+		  ]]></add>
+		</operation>
+		
+       <operation error="skip">
+		  <search><![CDATA[$this->db->query("UPDATE " . DB_PREFIX . "cart SET quantity = '" . (int)$quantity . "' WHERE cart_id = '" . (int)$cart_id . "' AND api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "'");]]></search>
+		  <add position="after"><![CDATA[
+			$this->updateGifts();
+		  ]]></add>
+		</operation>
+        <operation error="skip">
+		  <search><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "cart WHERE cart_id = '" . (int)$cart_id . "' AND api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "'");]]></search>
+		  <add position="after"><![CDATA[
+			$this->updateGifts();
+		  ]]></add>
+		</operation>        
+        <operation error="skip">
+		  <search><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "cart WHERE api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "'");]]></search>
+		  <add position="before"><![CDATA[
+			$this->updateGifts();
+		  ]]></add>
+		</operation>
+		<operation error="skip">
+		  <search><![CDATA[public function remove($cart_id) {]]></search>
+		  <add position="after"><![CDATA[
+			
+			$removed_product = $this->db->query("SELECT * FROM ". DB_PREFIX. "cart WHERE cart_id= '".$cart_id."'")->row;
+	
+			  if (empty($this->session->data['gift_teaser_exclude'])) {
+				$this->session->data['gift_teaser_exclude'] = array();
+			  }
+	
+			  if (!in_array($removed_product['product_id'], $this->session->data['gift_teaser_exclude']) && !empty($removed_product['gift_teaser']) && $removed_product['gift_teaser'] == 'true') {
+				$this->session->data['gift_teaser_exclude'][] = $removed_product['product_id'];
+			  }
+		  ]]></add>
+		</operation>
+    	<operation error="skip">
+          <search><![CDATA[if ($product_query->num_rows && ($cart['quantity'] > 0)) {]]></search>
+          <add position="before"><![CDATA[
+                // GiftTeaser
+                       if (!empty($cart['gift_teaser']) && ($cart['gift_teaser'] == true || $cart['gift_teaser'] == "true")) {
+                          $gift_teaser = true;
+                      } else {
+                          $gift_teaser = false;
+                      } 
+          ]]></add>
+        </operation>
+		<operation error="skip">
+		  <search index="0"><![CDATA[return $product_data;]]></search>
+		  <add position="before"><![CDATA[
+			$setting = $this->getGiftsSettings('giftteaser', $this->config->get('config_store_id'));
+			if (!empty($setting['giftteaser']['FreeGiftLabel'][$this->config->get('config_language_id')])) {
+			  $free_gift = $setting['giftteaser']['FreeGiftLabel'][$this->config->get('config_language_id')];
+			} else {
+			  $free_gift = '';
+			}
+	
+			foreach ($product_data as &$product) {
+			  $product['name'] = !empty($free_gift) && !empty($product['gift_teaser']) && stripos($product['name'], $free_gift) === false ? $product['name'] . ' (' . trim($free_gift) . ')' : $product['name'];
+			}
+		  ]]></add>
+		</operation>
+	</file>
+</modification>

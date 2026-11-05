@@ -1,0 +1,199 @@
+<div class="row">
+  <div id="filter-report" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="control-label" for="input-date-start">{{ entry_date_start }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_start" value="{{ filter_date_start }}" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-date-end">{{ entry_date_end }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_end" value="{{ filter_date_end }}" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" id="input-date-end" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-manager">{{ entry_manager }}</label>
+          <select name="filter_user_id" id="input-manager" class="form-control">
+            <option value="">{{ text_all_managers }}</option>
+            <option value="0"{% if filter_user_id == '0' %} selected="selected"{% endif %}>{{ text_unknown_manager }}</option>
+            {% for manager in filter_managers %}
+            <option value="{{ manager.user_id }}"{% if filter_user_id == (manager.user_id ~ '') %} selected="selected"{% endif %}>{{ manager.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <a href="{{ preset_today }}" class="btn btn-default btn-block">{{ text_preset_today }}</a>
+          <a href="{{ preset_week }}" class="btn btn-default btn-block">{{ text_preset_week }}</a>
+          <a href="{{ preset_month }}" class="btn btn-default btn-block">{{ text_preset_month }}</a>
+        </div>
+        <div class="form-group text-right">
+          <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+        <p class="help-block">{{ text_period_hint }}</p>
+        <p class="help-block">{{ text_manager_hint }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 col-md-pull-3 col-sm-12">
+    <div class="row">
+      <div class="col-sm-3 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.avg_time }}</h3>
+          <div><small>{{ text_avg_time }}</small></div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.total }}</h3>
+          <div><small>{{ text_orders_count }}</small></div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.min_time }}</h3>
+          <div><small>{{ text_min_time }}</small></div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.max_time }}</h3>
+          <div><small>{{ text_max_time }}</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-trophy"></i> {{ text_managers }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="text-center">{{ column_rank }}</td>
+                <td class="text-left">{{ column_manager }}</td>
+                <td class="text-right">{{ column_orders }}</td>
+                <td class="text-right">{{ column_avg_time }}</td>
+                <td class="text-right">{{ column_min_time }}</td>
+                <td class="text-right">{{ column_max_time }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if managers %}
+            {% for manager in managers %}
+            <tr>
+              <td class="text-center"><strong>{{ manager.rank }}</strong></td>
+              <td class="text-left">{{ manager.manager }}</td>
+              <td class="text-right">{{ manager.orders }}</td>
+              <td class="text-right"><strong>{{ manager.avg_time }}</strong></td>
+              <td class="text-right">{{ manager.min_time }}</td>
+              <td class="text-right">{{ manager.max_time }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="6">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-clock-o"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="text-right">{% if sort == 'order_id' %}<a href="{{ sort_order_id }}" class="{{ order|lower }}">{{ column_order_id }}</a>{% else %}<a href="{{ sort_order_id }}">{{ column_order_id }}</a>{% endif %}</td>
+                <td class="text-left">{% if sort == 'customer' %}<a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>{% else %}<a href="{{ sort_customer }}">{{ column_customer }}</a>{% endif %}</td>
+                <td class="text-left">{% if sort == 'manager' %}<a href="{{ sort_manager }}" class="{{ order|lower }}">{{ column_manager }}</a>{% else %}<a href="{{ sort_manager }}">{{ column_manager }}</a>{% endif %}</td>
+                <td class="text-left">{{ column_payment }}</td>
+                <td class="text-left">{{ column_shipping }}</td>
+                <td class="text-right">{% if sort == 'total' %}<a href="{{ sort_total }}" class="{{ order|lower }}">{{ column_total }}</a>{% else %}<a href="{{ sort_total }}">{{ column_total }}</a>{% endif %}</td>
+                <td class="text-left">{% if sort == 'start_date' %}<a href="{{ sort_start_date }}" class="{{ order|lower }}">{{ column_start }}</a>{% else %}<a href="{{ sort_start_date }}">{{ column_start }}</a>{% endif %}</td>
+                <td class="text-left">{% if sort == 'end_date' %}<a href="{{ sort_end_date }}" class="{{ order|lower }}">{{ column_end }}</a>{% else %}<a href="{{ sort_end_date }}">{{ column_end }}</a>{% endif %}</td>
+                <td class="text-right">{% if sort == 'diff_seconds' %}<a href="{{ sort_duration }}" class="{{ order|lower }}">{{ column_duration }}</a>{% else %}<a href="{{ sort_duration }}">{{ column_duration }}</a>{% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if orders %}
+            {% for order in orders %}
+            <tr>
+              <td class="text-right"><a href="{{ order.view }}">#{{ order.order_id }}</a></td>
+              <td class="text-left">{{ order.customer }}<br><small>{{ order.telephone }}</small></td>
+              <td class="text-left">{{ order.manager }}</td>
+              <td class="text-left">{{ order.payment_method }}</td>
+              <td class="text-left">{{ order.shipping_method }}</td>
+              <td class="text-right">{{ order.total }}</td>
+              <td class="text-left">{{ order.start_date }}</td>
+              <td class="text-left">{{ order.end_date }}</td>
+              <td class="text-right"><strong>{{ order.duration }}</strong></td>
+              <td class="text-right"><a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="10">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=report/report&user_token={{ user_token }}&code=cod_processing_time';
+
+	var filter_date_start = $('input[name=\'filter_date_start\']').val();
+
+	if (filter_date_start) {
+		url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
+	}
+
+	var filter_date_end = $('input[name=\'filter_date_end\']').val();
+
+	if (filter_date_end) {
+		url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+	}
+
+	var filter_user_id = $('select[name=\'filter_user_id\']').val();
+
+	if (filter_user_id !== '') {
+		url += '&filter_user_id=' + encodeURIComponent(filter_user_id);
+	}
+
+	url += '&sort={{ sort }}&order={{ order }}';
+
+	location = url;
+});
+//--></script>

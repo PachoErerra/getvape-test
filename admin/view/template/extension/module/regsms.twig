@@ -1,0 +1,447 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-regsms" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+				<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+			
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-regsms" class="form-horizontal">
+		
+				
+						
+							
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab-connect" data-toggle="tab">{{ tab_connect }}</a></li>
+							<li><a href="#tab-setting" data-toggle="tab">{{ tab_setting }}</a></li>
+							<li><a href="#tab-offer" data-toggle="tab">{{ tab_offer }}</a></li>
+							<li><a href="#tab-history" data-toggle="tab">{{ tab_history }}</a></li>								
+						</ul>
+
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab-connect">
+								
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_regsms_balance }}</label>
+									<div class="col-sm-10">
+										<div id="balance_block">
+											{{ balance }}
+										</div>
+										<a target="_blank" class="add_balance" href="https://sms.regsms.ru/ru/cabinet/pay.html">{{ button_add_balance }}</a>
+										<a target="_blank" class="go_lk" href="https://sms.targetsms.ru/">{{ button_go_lk }}</a>
+									</div>
+									
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-regsms-login">{{ entry_regsms_login }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="module_regsms_login" id="input-regsms-login" class="form-control" value="{{ module_regsms_login }}" placeholder="{{ entry_regsms_login }}" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-regsms-password">{{ entry_regsms_password }}</label>
+									<div class="col-sm-10">
+										<input  type="text" name="module_regsms_password" id="input-regsms-password" class="form-control" value="{{ module_regsms_password }}" placeholder="{{ entry_regsms_password }}" />
+									</div>
+								</div>			
+
+								<div class="form-group {% if senders.error or senders is empty %}{{ 'hidden' }}{% endif %} form-group-regsms-from">
+									<label class="col-sm-2 control-label" for="input-regsms-from">{{ entry_regsms_from }}</label>
+									<div id="from_block" class="col-sm-10">
+										{% if senders.any_originator == 'TRUE' %}
+											<input  type="text" name="module_regsms_from" id="input-regsms-from" class="form-control" value="{{ module_regsms_from }}" />
+										{% else %}
+											<select name="module_regsms_from" id="input-regsms-from" class="form-control">
+											{% for sender in senders.list_originator %}
+
+												{% if sender.state == 'completed' %}
+													<option {% if sender.originator == module_regsms_from %}selected="true"{% endif %} value="{{ sender.originator }}">{{ sender.originator }}</option>
+												{% else %}
+													<option {% if sender.originator == module_regsms_from %}selected="true"{% endif %} disabled value="{{ sender.originator }}">{{ sender.originator }}</option>
+												{% endif %}
+
+											{% endfor %}
+											</select>
+										{% endif %}												
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-regsms-status">{{ entry_regsms_status }}</label>
+									<div class="col-sm-10">
+										<select name="module_regsms_status" id="input-regsms-status" class="form-control">
+											{% if module_regsms_status %}                    
+						                    <option value="1" selected="selected">{{ text_enabled }}</option>
+						                    <option value="0">{{ text_disabled }}</option>		
+						                    {% else %}						                    
+						                    <option value="1">{{ text_enabled }}</option>
+						                    <option value="0" selected="selected">{{ text_disabled }}</option>	
+						                    {% endif %}
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12 text-right">
+										<button type="button" store="" data-loading-text="{{ text_loading }}" class="btn btn-primary button-connect">{{ button_connect }}</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="tab-setting">
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-regsms-text-button">{{ entry_regsms_text_button }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="module_regsms_text_button" id="input-regsms-text-button" class="form-control" value="{{ module_regsms_text_button }}" placeholder="{{ entry_regsms_text_button }}" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-regsms-count-code">{{ entry_regsms_count_code }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="module_regsms_count_code" id="input-regsms-count-code" class="form-control" value="{{ module_regsms_count_code }}" placeholder="{{ entry_regsms_count_code }}" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-regsms-time-session"><span data-toggle="tooltip" title="" data-original-title="{{ help_regsms_time_session }}">{{ entry_regsms_time_session }}</span></label>
+									<div class="col-sm-10">
+										<input type="text" name="module_regsms_time_session" id="input-regsms-time-session" class="form-control" value="{{ module_regsms_time_session }}" placeholder="{{ entry_regsms_time_session }}" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-regsms-text-sms">{{ entry_regsms_text_sms }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="module_regsms_text_sms" id="input-regsms-text-sms" class="form-control" value="{{ module_regsms_text_sms }}" placeholder="{{ entry_regsms_text_sms }}" />
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<div class="form-group">
+										<div class="block_mask_settings">
+											<h4 class="text-center">Маски телефонов</h4> 
+										</div>
+									</div>
+								</div>
+								<table id="masks" class="table table-striped table-bordered table-hover">
+			                        <thead>
+				                        <tr>
+				                            <td class="text-center">Страна</td>
+				                            <td class="text-center">Прописать маску</td>
+				                            <td class="text-center">Placeholder поля</td>
+				                            <td class="text-left">Статус</td>
+				                            <td class="text-center">Иконка страны (30x30)</td>
+				                            <td></td>
+				                        </tr>
+			                        </thead>
+			                        <tbody>
+			                        {% set mask_row = 0 %}
+			                        {% for mask in module_regsms_mask %}							                           
+			                        <tr id="mask-row{{ mask_row }}">
+			                            <td class="text-left">
+			                            	<input type="text" name="module_regsms_mask[{{ mask_row }}][region]" value="{{ mask['region'] }}" placeholder="Страна" class="form-control">
+			                            </td>
+			                            <td class="text-left">
+			                            	<input type="text" name="module_regsms_mask[{{ mask_row }}][mask]" value="{{ mask['mask'] }}" placeholder="Прописать маску" class="form-control">
+			                            </td>
+			                            <td class="text-left">
+			                            	<input type="text" name="module_regsms_mask[{{ mask_row }}][placeholder]" value="{{ mask['placeholder'] }}" placeholder="placeholder поля" class="form-control">
+			                            </td>
+			                            <td class="text-center">
+			                            	<select name="module_regsms_mask[{{ mask_row }}][status]" class="form-control">
+												{% if mask['status'] %}                    
+							                    <option value="1" selected="selected">{{ text_enabled }}</option>
+							                    <option value="0">{{ text_disabled }}</option>		
+							                    {% else %}						                    
+							                    <option value="1">{{ text_enabled }}</option>
+							                    <option value="0" selected="selected">{{ text_disabled }}</option>	
+							                    {% endif %}
+											</select>
+			                            </td>
+			                            <td class="text-center">
+			                            	<a href="" id="thumb-image{{ mask_row }}" data-toggle="image" class="form_icons">
+			                            		<img src="{{ mask['thumb'] }}" alt="" title="" data-placeholder="{{ no_image }}">
+			                            	</a>
+			                                <input type="hidden" name="module_regsms_mask[{{ mask_row }}][image]" value="{{ mask['image'] }}" id="input-image{{ mask_row }}">
+			                            </td>
+
+			                            <td class="text-left">
+			                            	<button type="button" onclick="$('#mask-row{{ mask_row }}, .tooltip').remove();" data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="{{ button_remove }}"><i class="fa fa-minus-circle"></i></button>
+			                            </td>
+			                        </tr>
+			                        {% set mask_row = mask_row + 1 %}
+			                        {% endfor %}
+			                                                                                     
+			                        
+			                        </tbody>
+			                        <tfoot>
+			                        <tr>
+			                            <td colspan="5"></td>
+			                            <td class="text-left"><button type="button" onclick="addMask();" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="{{ button_add }}"><i class="fa fa-plus-circle"></i></button></td>
+			                        </tr>
+
+			                        </tfoot>
+			                    </table>
+							</div>
+		
+							<div class="tab-pane" id="tab-offer">
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-module-regsms-offer">{{ entry_regsms_offer }}</label>
+									<div class="col-sm-10">
+										<textarea name="module_regsms_offer" placeholder="{{ entry_regsms_offer }}" id="input-module-regsms-offer" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_regsms_offer }}</textarea>
+									</div>
+								</div>
+							</div>
+					
+							<div class="tab-pane" id="tab-history">
+								<div class="well">
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="form-group filter-form-group">
+								                <label class="control-label" for="input-date-send-start">{{ entry_date_send_start }}</label>
+								                <div class="input-group date">
+								                	<input type="text" name="filter_date_send_start" value="" placeholder="{{ entry_date_send_start }}" data-date-format="YYYY-MM-DD" id="input-date-send-start" class="form-control" />
+								                	<span class="input-group-btn">
+								                		<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+								                	</span>
+								                </div>
+								            </div>
+								            <button type="button" store="" data-loading-text="{{ text_loading }}" class="btn btn-primary pull-left button-filter"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+
+								        </div>
+								        <div class="col-sm-4">
+								            <div class="form-group filter-form-group">
+								                <label class="control-label" for="input-date-send-stop">{{ entry_date_send_stop }}</label>
+								                <div class="input-group date">
+								                	<input type="text" name="filter_date_send_stop" value="" placeholder="{{ entry_date_send_stop }}" data-date-format="YYYY-MM-DD" id="input-date-send-stop" class="form-control" />
+								                	<span class="input-group-btn">
+								                		<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+								                	</span>
+								                </div>
+								            </div>
+										</div>
+										<div class="col-sm-4">
+								            <div class="form-group filter-form-group">
+								                <label class="control-label" for="input-sms-status">{{ entry_sms_status }}</label>
+								                <div class="input-group">
+								                	<select name="filter_sms_status" id="input-sms-status" class="form-control">
+														<option value=""></option>
+														<option value="deliver">{{ entry_sms_status_deliver }}</option>
+														<option value="partly_deliver">{{ entry_sms_status_partly_deliver }}</option>
+														<option value="expired">{{ entry_sms_status_expired }}</option>
+														<option value="not_deliver">{{ entry_sms_status_not_deliver }}</option>
+														
+													</select>
+								                	
+								                </div>
+								            </div>
+										</div>
+									</div>
+								</div>
+								<div id="table-sms-history" class="table-responsive">
+									<table class="table table-bordered table-hover">
+						            	<thead>
+						                	<tr>
+						                		<td class="text-left">{{ entry_history_sms_id }}</td>
+						                		<td class="text-left">{{ entry_history_sms_sender }}</td>
+						                		<td class="text-left">{{ entry_history_sms_recipient }}</td>
+						                		<td class="text-left">{{ entry_history_sms_text }}</td>
+						                		<td class="text-left status">{{ entry_history_sms_status }}</td>
+						                		<td class="text-left date">{{ entry_history_sms_date }}</td>
+						                	</tr>
+						                </thead>
+						                <tbody>
+						                </tbody>
+						            </table>
+								</div>			
+							</div>
+							<div>
+								<h2>Подробная инструкция по настройке и использованию модуля: <a target="_blank" href="https://targetsms.ru/avtorizatsiya-po-sms-v-opencart" >https://targetsms.ru/avtorizatsiya-po-sms-v-opencart</a></h2>		
+							</div>
+						</div>
+							
+						
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+$(document).on("click", ".button-connect", function (e) {
+	
+	$.ajax({
+	    url: 'index.php?route=extension/module/regsms/connect&user_token={{ token }}',
+	    type: 'post',
+	    data: 'module_regsms_login=' + $('#input-regsms-login').val() + '&module_regsms_password=' + $('#input-regsms-password').val(),
+	    dataType: 'json',
+	    crossDomain: true,
+	    beforeSend: function() {
+	    	$('.button-connect').button('loading');
+	    },
+	    complete: function() {
+	    	$('.button-connect').button('reset');
+	    },
+	    success: function(json) {
+	    	//console.log(json)
+		    $('.success, .warning').remove();
+		    $('.alert-danger, .alert-success').remove();
+
+		    if (json['error']) {
+
+		    	$('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+		    	$('#balance_block').html('0.00 руб.'); 
+		    	$('#from_block').html('<input  type="text" name="module_regsms_from" id="input-regsms-from" class="form-control" value="" />')
+		    	$('.form-group-regsms-from').addClass('hidden');
+
+		    } else {
+
+		    	$('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ text_connect_success }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+		    	if (json['balance']) {
+			    	$('#balance_block').html(json['balance']);    
+			    }
+
+			    if (json['any_originator']) {
+			    	if (json['any_originator'] == 'TRUE') {
+			    		$('#from_block').html('<input  type="text" name="module_regsms_from" id="input-regsms-from" class="form-control" value="" />')
+			    		$('.form-group-regsms-from').removeClass('hidden');
+			    	} else if (json['any_originator'] == 'FALSE') {	    		
+			    		var html = '<select name="module_regsms_from" id="input-regsms-from" class="form-control">';
+			   			$.each(json['list_originator'], function(idx, obj) {
+							if (obj['state'] == 'completed') {
+								html = html + '<option value="' + obj['originator'] + '">' + obj['originator'] + '</option>';
+							} else {
+								html = html + '<option disabled value="' + obj['originator'] + '">' + obj['originator'] + '</option>';
+							}
+						});				
+						html = html + '</select>'
+			    		$('#from_block').html(html);
+			    		$('.form-group-regsms-from').removeClass('hidden');
+			    	}	    	   
+			    }
+		    }
+	    
+
+	    },
+	    error: function(xhr, ajaxOptions, thrownError) {
+	    	alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	    }
+	});
+});
+
+
+
+$(document).on("click", ".button-filter", function (e) {
+	$.ajax({
+	    url: 'index.php?route=extension/module/regsms/getMessages&user_token={{ token }}',
+	    type: 'post',
+	    data: 'module_regsms_login=' + $('#input-regsms-login').val() + '&module_regsms_password=' + $('#input-regsms-password').val() + '&module_regsms_from=' + $('#input-regsms-from').val() + '&date_start=' + $('#input-date-send-start').val() + '&date_stop=' + $('#input-date-send-stop').val() + '&state=' + $('#input-sms-status').val(),
+	    dataType: 'json',
+	    crossDomain: true,
+	    beforeSend: function() {
+	    	$('.button-filter').button('loading');
+	    },
+	    complete: function() {
+	   		$('.button-filter').button('reset');
+	    },
+	    success: function(json) {
+	    	
+		    $('.success, .warning').remove();
+		    $('.alert-danger, .alert-success').remove();
+
+		    if (json['error']) {
+		    	$('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+		    } else {	    	
+		    	$('#table-sms-history>table>tbody').html('');
+		    	if (json['num_stats'] > 0) {
+		    		var html = '';
+		    		$.each(json['stats'], function(idx, obj) {
+		    			html = html + '<tr>';
+		    				html = html + '<td>' + obj['id_sms'] + '</td>';
+		    				html = html + '<td>' + obj['originator'] + '</td>';
+		    				html = html + '<td>' + obj['phone'] + '</td>';
+		    				html = html + '<td>' + obj['text'] + '</td>';
+		    				html = html + '<td>' + obj['status'] + '</td>';
+		    				html = html + '<td>' + obj['time_change_state'] + '</td>';
+		    			html = html + '</tr>';
+		    		});	
+
+		    		$('#table-sms-history>table>tbody').html(html);
+		    	}		    	
+		    } 
+
+	    },
+	    error: function(xhr, ajaxOptions, thrownError) {
+	    	alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	    }
+	});
+});
+
+
+</script>
+
+
+<script type="text/javascript">
+	var mask_row = {{ mask_row }};
+	function addMask() {
+
+		html  = '<tr id="mask-row' + mask_row + '">';
+		html  += '<td class="text-left"><input type="text" name="module_regsms_mask[' + mask_row + '][region]" value="" placeholder="Страна" class="form-control"></td>';
+		html  += '<td class="text-left"><input type="text" name="module_regsms_mask[' + mask_row + '][mask]" value="" placeholder="Прописать маску" class="form-control"></td>';
+		html  += '<td class="text-left"><input type="text" name="module_regsms_mask[' + mask_row + '][placeholder]" value="" placeholder="placeholder поля" class="form-control"></td>';
+		html  += '<td class="text-center"><select name="module_regsms_mask[' + mask_row + '][status]" class="form-control"><option value="1">{{ text_enabled }}</option><option value="0" selected="selected">{{ text_disabled }}</option></select></td>';
+		html  += '<td class="text-center"><a href="" id="thumb-image' + mask_row + '" data-toggle="image" class="form_icons"><img src="{{ no_image }}" alt="" title="" data-placeholder="{{ no_image }}"></a><input type="hidden" name="module_regsms_mask[' + mask_row + '][image]" value="" id="input-image' + mask_row + '"></td>';
+		html  += '<td class="text-left"><button type="button" onclick="$(\'#mask-row' + mask_row + ', .tooltip\').remove();" data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="{{ button_remove }}"><i class="fa fa-minus-circle"></i></button></td>';
+		html += '</tr>';
+
+		$('#masks tbody').append(html);
+		mask_row++;
+
+	}
+</script>
+
+{% if ckeditor %}
+	<script type="text/javascript"><!--
+	ckeditorInit('input-sms-template', '{{ token }}');
+	</script>
+{% else %}
+	<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+	<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+	<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+	<script type="text/javascript"><!--
+	$('#input-sms-template').summernote({
+	height: 150,
+	  lang:'<?php echo $lang; ?>'
+	});
+</script>
+{% endif %}
+
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<script type="text/javascript">
+	$('.date').datetimepicker({
+	language: 'ru',
+	pickTime: false
+});
+</script>
+
+{{ footer }}

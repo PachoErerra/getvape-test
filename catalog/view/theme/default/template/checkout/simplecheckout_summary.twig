@@ -1,0 +1,285 @@
+<div class="checkout__order">
+
+    {% if dont_forget_to_add %}
+        <div class="checkout__order-tabs-nav d-flex">
+            <button type="button" class="checkout__order-tabs-button is-open"
+                    data-open="simplecheckout_summary"><span>{{ text_my_order }}</span></button>
+            <button type="button" class="checkout__order-tabs-button"
+                    data-open="checkout-order-additional"><span>{{ text_dont_forget_to_add }}</span>
+            </button>
+        </div>
+    {% endif %}
+
+    <div class="simplecheckout-block checkout__order-block">
+
+        <div class="checkout__order-tabs-panel is-open"
+             id="simplecheckout_summary" {{ hide ? 'data-hide="true"' : '' }}>
+
+            {% if display_header %}
+                <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 8px;">
+                    <div class="checkout__inner-title">{{ text_summary }}</div>
+
+                    <button class="a-link sm js-open-basket" type="button">{{ text_redahuvaty }}</button>
+                </div>
+            {% endif %}
+
+
+            {% if products %}
+                {% for product in products %}
+                    <div class="modal__item modal__item--checkout">
+                        <div class="modal__item-inner d-flex align-items-start align-items-md-center justify-content-between flex-row">
+                            <div class="modal__item-lside d-flex align-items-center">
+                                <div class="modal__item-photo d-flex align-items-center justify-content-center">
+                                    <img src="{{ product.thumb }}" alt="{{ product.name }}"
+                                         title="{{ product.name }}" loading="lazy">
+                                </div>
+
+                                <div class="modal__item-info">
+                                    <div class="modal__item-name modal__item-name--checkout">{{ product.name }}</div>
+
+                                    {% if product.reward %}
+                                        <div class="modal__item-reward d-flex align-items-center">
+                                            <svg width="20" height="20" viewBox="0 0 20 20">
+                                                <use href="#icon-gift"></use>
+                                            </svg>
+                                            <span>{{ text_keshbek }} {{ product.reward }}</span>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="modal__item-quantity modal__item-quantity--checkout d-md-none">
+                                        {{ product.quantity }} {{ text_sht }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal__item-rside modal__item-rside--checkout d-flex align-items-center justify-content-between"
+                                 style="margin-top: 0;">
+                                <div class="modal__item-quantity modal__item-quantity--checkout d-none d-md-block">
+                                    {{ product.quantity }} {{ text_sht }}
+                                </div>
+
+                                <div class="modal__item-prices d-flex flex-column align-items-end">
+                                    {% if not product.special %}
+                                        <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                    {% else %}
+                                        <s>{{ product.special }}</s>
+                                        <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if product.vapors_punch_gifts %}
+                        {% for gift in product.vapors_punch_gifts %}
+                            <div class="modal__item modal__item--checkout modal__item--gift">
+                                <div class="modal__item-inner d-flex align-items-start align-items-md-center justify-content-between flex-row">
+                                    <div class="modal__item-lside d-flex align-items-center">
+                                        <div class="modal__item-photo d-flex align-items-center justify-content-center">
+                                            <img src="{{ gift.thumb }}" alt="{{ gift.name }}"
+                                                 title="{{ gift.name }}" loading="lazy">
+                                        </div>
+
+                                        <div class="modal__item-info">
+                                            <div class="modal__item-name modal__item-name--checkout">{{ gift.name }}</div>
+                                            <div class="modal__item-reward modal__item-reward--gift d-flex align-items-center">
+                                                <svg width="20" height="20" viewBox="0 0 20 20">
+                                                    <use href="#icon-gift"></use>
+                                                </svg>
+                                                <span>Подарунок</span>
+                                            </div>
+                                            <div class="modal__item-quantity modal__item-quantity--checkout d-md-none">
+                                                {{ gift.quantity }} {{ text_sht }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal__item-rside modal__item-rside--checkout d-flex align-items-center justify-content-between"
+                                         style="margin-top: 0;">
+                                        <div class="modal__item-quantity modal__item-quantity--checkout d-none d-md-block">
+                                            {{ gift.quantity }} {{ text_sht }}
+                                        </div>
+
+                                        <div class="modal__item-prices modal__item-prices--gift d-flex flex-column align-items-end">
+                                            <strong>{{ gift.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="checkout__total">
+                {% if display_totals_block %}
+                    {% for total in totals %}
+                        {% if total['code'] in display_totals and total['code'] != 'total' and total['code'] != 'shipping' %}
+                            <div class="checkout__total-item">
+                                <div class="checkout__total-item-info">{{ total['title'] }}</div>
+                                <div class="checkout__total-item-info">{{ total['text'] }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if freeshipping %}
+                    <div class="checkout__total-item">
+                        <div class="checkout__total-item-info">{{ text_dostavka }}</div>
+                        <div class="checkout__total-item-info ">{{ text_bezkoshtovno }}</div>
+                    </div>
+                {% elseif shipping_cost > 0 %}
+                    <div class="checkout__total-item">
+                        <div class="checkout__total-item-info">{{ text_dostavka }}</div>
+                        <div class="checkout__total-item-info">{{ shipping_cost_text }}</div>
+                    </div>
+                {% else %}
+                    <div class="checkout__total-item">
+                        <div class="checkout__total-item-info">{{ text_dostavka }}</div>
+                        <div class="checkout__total-item-info">{{ text_utochnyuyte_u_menedzhera }}</div>
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="checkout__rside-desk">
+
+                {% if modules['coupon'] is defined %}
+                    {% if coupon_gift_addmore %}
+                        <div class="modal__total-coupon d-flex flex-column flex-sm-row align-items-center justify-content-between"
+                             style="margin:12px 0">
+                            <div class="modal__total-coupon-left d-flex align-items-center">
+                                <svg class="sprite-icon">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-alert-cart"></use>
+                                </svg>
+                                <div>{{ coupon_gift_addmore }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="promo_wrapper">
+                        <div class="checkout__total-item">
+                            <div class="checkout__total-item-info">
+                                {{ text_promokod }}
+                            </div>
+                        </div>
+                        <div class="field field-rel" style="position: relative;">
+                            <input class="form-control" type="text" id="inputcoupon" data-onchange="reloadAll"
+                                   name="coupon"
+                                   value="{{ coupon }}"/></span>
+                            <button class="btn-arrow btn-arrow-pink"></button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if display_totals_block %}
+                {% for total in totals %}
+                    {% if total['code'] == 'total' %}
+                        <div class="checkout__total-item checkout__total-item--lg">
+                            <div class="checkout__total-item-info checkout__total-item-info-total">{{ total['title'] }}</div>
+                            <div class="checkout__total-item-info checkout__total-item-info-price">{{ total['text'] }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="checkout__action">
+                <div class="checkout__action-inner d-flex align-items-md-center flex-column flex-md-row justify-content-between">
+                    {% if display_totals_block %}
+                        <div class="checkout__total-item">
+                            {% for total in totals %}
+                                {% if total['code'] == 'total' %}
+                                    <div class="checkout__total-item-info checkout__total-item-info-total d-md-none">{{ total['title'] }}</div>
+                                    <div class="checkout__total-item-info checkout__total-item-info-price">{{ total['text'] }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <button type="button"
+                            class="btn btn-primary btn-xl"
+                            onclick="event.preventDefault(); var b = document.getElementById('simplecheckout_button_confirm'); if (b && !b.getAttribute('disabled')) { b.click(); } return false;">
+                        {{ text_pidtverdyty_zamovlennya }}
+                    </button>
+                </div>
+            </div>
+
+            <script>
+                $(".js-open-basket").click(function () {
+                    $('.modal--basket').fadeIn(400);
+                    $('body').addClass('is-open-modal');
+                    return false
+                });
+            </script>
+        </div>
+
+        {% if dont_forget_to_add %}
+            <div class="checkout__order-tabs-panel" id="checkout-order-additional">
+                <div class="modal__additional modal__additional--checkout">
+                    <div class="modal__additional-head d-flex align-items-center justify-content-between">
+                        <div class="modal__additional-title">{{ text_recommended_for_you }}</div>
+
+                        <div class="modal__additional-actions checkout__additional-actions swiper-actions d-flex align-items-center">
+                            <div class="swiper-nts swiper-button-prev"></div>
+                            <div class="swiper-nts swiper-button-next"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal__additional-slider swiper js-checkout-additional-slider">
+                        <div class="swiper-wrapper">
+
+                            {% for dont_forget_to_add_group in dont_forget_to_add %}
+
+                                <div class="swiper-slide">
+                                    <div class="checkout__additional-grid">
+                                        {% for dont_forget_to_add_group_item in dont_forget_to_add_group %}
+                                            <div class="modal__additional-item">
+                                                <div class="d-flex align-items-center modal__additional-item-flex">
+                                                    <div class="modal__additional-item-img d-flex align-items-center justify-content-center">
+                                                        <img src="{{ dont_forget_to_add_group_item.thumb }}"
+                                                             alt="{{ dont_forget_to_add_group_item.name }}"
+                                                             title="{{ dont_forget_to_add_group_item.name }}"
+                                                             loading="lazy">
+                                                    </div>
+                                                    <div class="modal__additional-item-content">
+                                                        <a href="{{ dont_forget_to_add_group_item.href }}"
+                                                           class="modal__additional-item-name">{{ dont_forget_to_add_group_item.name }}</a>
+                                                        <div class="modal__additional-item-bottom d-flex align-items-center justify-content-between">
+                                                            <div class="modal__additional-item-prices">
+                                                                {% if not dont_forget_to_add_group_item.special %}
+                                                                    <b>{{ dont_forget_to_add_group_item.price|replace({' ₴': ' <small>₴</small>'}) }}</b>
+                                                                {% else %}
+                                                                    <s>{{ dont_forget_to_add_group_item.special }}</s>
+                                                                    <b>{{ dont_forget_to_add_group_item.price|replace({' ₴': ' <small>₴</small>'}) }}</b>
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="modal__additional-item-action">
+                                                                <button type="button"
+                                                                        aria-label="{{ text_u_koshyk }}"
+                                                                        onclick="cart.add('{{ dont_forget_to_add_group_item.product_id }}',1,false);"
+                                                                        class="btn btn-primary btn-sm">
+                                                                    <svg width="20" height="20"
+                                                                         viewBox="0 0 20 20">
+                                                                        <use href="#icon-cart"></use>
+                                                                    </svg>
+                                                                </button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+

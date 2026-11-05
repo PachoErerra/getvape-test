@@ -1,0 +1,245 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-rule" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_hint }}</div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-rule" class="form-horizontal">
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if error_name %}<div class="text-danger">{{ error_name }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                {% if status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_discount_type }}</label>
+            <div class="col-sm-10">
+              <label class="radio-inline"><input type="radio" name="discount_type" value="percent" {% if discount_type == 'percent' %}checked="checked"{% endif %} /> {{ text_percent }}</label>
+              <label class="radio-inline"><input type="radio" name="discount_type" value="fixed" {% if discount_type == 'fixed' %}checked="checked"{% endif %} /> {{ text_fixed }}</label>
+              <br /><small class="help-block">{{ help_percent }} / {{ help_fixed }}</small>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-discount-value">{{ entry_discount_value }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="discount_value" value="{{ discount_value }}" placeholder="{{ entry_discount_value }}" id="input-discount-value" class="form-control" />
+              {% if error_discount_value %}<div class="text-danger">{{ error_discount_value }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-date-start">{{ entry_date_start }}</label>
+            <div class="col-sm-10">
+              <div class="input-group date">
+                <input type="text" name="date_start" value="{{ date_start }}" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" autocomplete="off" />
+                <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-date-end"><span data-toggle="tooltip" title="{{ help_date_end }}">{{ entry_date_end }}</span></label>
+            <div class="col-sm-10">
+              <div class="input-group date">
+                <input type="text" name="date_end" value="{{ date_end }}" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" id="input-date-end" class="form-control" autocomplete="off" />
+                <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_category }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="category_input" value="" placeholder="{{ entry_category }}" id="input-category" class="form-control" />
+              <div id="rule-category" class="well well-sm" style="height: 120px; overflow: auto;">
+                {% for target in target_categories %}
+                <div id="rule-category{{ target.target_id }}"><i class="fa fa-minus-circle"></i> {{ target.name }}
+                  <input type="hidden" name="target_category[]" value="{{ target.target_id }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_manufacturer }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="manufacturer_input" value="" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control" />
+              <div id="rule-manufacturer" class="well well-sm" style="height: 120px; overflow: auto;">
+                {% for target in target_manufacturers %}
+                <div id="rule-manufacturer{{ target.target_id }}"><i class="fa fa-minus-circle"></i> {{ target.name }}
+                  <input type="hidden" name="target_manufacturer[]" value="{{ target.target_id }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_product }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="product_input" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+              <div id="rule-product" class="well well-sm" style="height: 120px; overflow: auto;">
+                {% for target in target_products %}
+                <div id="rule-product{{ target.target_id }}"><i class="fa fa-minus-circle"></i> {{ target.name }}
+                  <input type="hidden" name="target_product[]" value="{{ target.target_id }}" />
+                </div>
+                {% endfor %}
+              </div>
+              {% if error_target %}<div class="text-danger">{{ error_target }}</div>{% endif %}
+              <small class="help-block">{{ help_target_mixed }}</small>
+            </div>
+          </div>
+        </form>
+        <hr />
+        <div class="text-center">{{ author }} &middot; <a href="{{ author_link }}" target="_blank" rel="noopener">{{ author_link }}</a> &middot; <a href="mailto:{{ author_email }}">{{ author_email }}</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+var today = moment().startOf('day');
+
+$('#input-date-start').closest('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false,
+	minDate: today
+});
+
+$('#input-date-end').closest('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false,
+	minDate: today
+});
+
+$('#input-date-start').closest('.date').on('dp.change', function(e) {
+	var endPicker = $('#input-date-end').closest('.date').data('DateTimePicker');
+
+	if (!endPicker) {
+		return;
+	}
+
+	var minEnd = today.clone();
+
+	if (e.date) {
+		minEnd = e.date.clone().startOf('day');
+
+		if (minEnd.isBefore(today)) {
+			minEnd = today.clone();
+		}
+	}
+
+	endPicker.setMinDate(minEnd);
+});
+
+$('.date').on('click focus', 'input', function() {
+	var picker = $(this).closest('.date').data('DateTimePicker');
+
+	if (picker) {
+		picker.show();
+	}
+});
+
+$('.date').on('dp.show', function() {
+	var picker = $(this).data('DateTimePicker');
+
+	if (!picker || !picker.widget) {
+		return;
+	}
+
+	if (picker.widget.find('.gvz-today').length) {
+		return;
+	}
+
+	var $btn = $('<button type="button" class="btn btn-default btn-block btn-sm gvz-today">{{ button_today }}</button>');
+
+	$btn.on('mousedown', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	$btn.on('click', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		picker.setValue(moment().format('YYYY-MM-DD'));
+		picker.hide();
+	});
+
+	picker.widget.append($('<div style="padding:6px 4px 2px;border-top:1px solid #eee;margin-top:4px;"></div>').append($btn));
+});
+
+function bindTypedAutocomplete(inputName, listId, hiddenName, url, idKey) {
+	$('input[name=\'' + inputName + '\']').autocomplete({
+		'source': function(request, response) {
+			$.ajax({
+				url: url + encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item[idKey]
+						};
+					}));
+				}
+			});
+		},
+		'select': function(item) {
+			$('input[name=\'' + inputName + '\']').val('');
+			$('input[name=\'' + inputName + '\']').nextAll('ul.dropdown-menu').hide().empty();
+			$('#' + listId + item['value']).remove();
+			$('#' + listId).append('<div id="' + listId + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="' + hiddenName + '" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('#' + listId).delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+}
+
+bindTypedAutocomplete('category_input', 'rule-category', 'target_category[]', 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=', 'category_id');
+bindTypedAutocomplete('manufacturer_input', 'rule-manufacturer', 'target_manufacturer[]', 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=', 'manufacturer_id');
+bindTypedAutocomplete('product_input', 'rule-product', 'target_product[]', 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=', 'product_id');
+//--></script>
+{{ footer }}

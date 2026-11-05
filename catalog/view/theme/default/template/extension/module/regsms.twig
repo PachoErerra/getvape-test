@@ -1,0 +1,24 @@
+<div class="h3 font-semibold">{{ text_avtoryzuvatysya }}</div>
+<div class="p color-grey font-medium m-top-20" hidden>{{ text_shchob_zalyshyty_vidhuk_potribno_zdiysnyty }}
+</div>
+<div class="modal__fields">
+    <div class="modal__field">
+        <div class="field">
+            <label>{{ text_nomer_telefonu }}</label>
+            <input type="tel" name="telephone" value="" class="js-phone-input" placeholder="{{ text_vvedit_nomer_telefonu }}"
+                   id="regsms-input-telephone">
+            <input class="selected-country-mask" type="hidden" value="{{ tek_mask }}">
+            <input class="selected-country-placeholder" type="hidden" value="{{ tek_placeholder }}">
+            <div class="info" style="color: #ff0000;margin-top: 5px;font-size: 14px;"></div>
+            <!-- TODO: удалять класс "is-hide" когда телефон был отправлен -->
+            <a role="button" class="a-link sm is-hide">{{ text_vidpravyty_kod_povtorno }}</a>
+        </div>
+    </div>
+
+    <div class="modal__field">
+        <!-- TODO: менять текст у кнопки елефон был отправлен на "Підтвердити" -->
+        <button type="button" disabled
+                class="js-btn-send regsms_send_code button-light-blue button-light-blue--border-radius-min center "
+                data-loading-text="{{ text_regsms_button_loading }}">{{ module_regsms_text_button }}22</button>
+    </div>
+</div>

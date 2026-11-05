@@ -1,0 +1,201 @@
+<div class="row">
+  <div id="filter-report" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="control-label" for="input-date-start">{{ entry_date_start }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_start" value="{{ filter_date_start }}" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-date-end">{{ entry_date_end }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_end" value="{{ filter_date_end }}" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" id="input-date-end" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-referrer">{{ entry_referrer }}</label>
+          <input type="text" name="filter_referrer" value="{{ filter_referrer }}" placeholder="{{ entry_referrer }}" id="input-referrer" class="form-control" />
+        </div>
+        <div class="form-group text-right">
+          <button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 col-md-pull-3 col-sm-12">
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="panel panel-default">
+          <div class="panel-body text-center">
+            <h2 class="text-primary" style="margin:0;">{{ summary.clicks }}</h2>
+            <div>{{ text_total_clicks }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="panel panel-default">
+          <div class="panel-body text-center">
+            <h2 class="text-info" style="margin:0;">{{ summary.bindings }}</h2>
+            <div>{{ text_total_bindings }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="panel panel-default">
+          <div class="panel-body text-center">
+            <h2 class="text-success" style="margin:0;">{{ summary.orders }}</h2>
+            <div>{{ text_total_orders }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="panel panel-default">
+          <div class="panel-body text-center">
+            <h2 class="text-warning" style="margin:0;">{{ summary.orders_pending }}</h2>
+            <div>{{ text_orders_pending }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="panel panel-default">
+          <div class="panel-body text-center">
+            <h2 style="margin:0;color:#5cb85c;">{{ summary.bonuses_paid }}</h2>
+            <div>{{ text_bonuses_paid }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="panel panel-default">
+          <div class="panel-body text-center">
+            <h2 class="text-muted" style="margin:0;">{{ summary.conversion }}%</h2>
+            <div>{{ text_conversion }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-trophy"></i> {{ text_top_referrers }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed">
+            <thead>
+              <tr>
+                <td class="text-left">{{ column_referrer }}</td>
+                <td class="text-right">{{ column_clicks }}</td>
+                <td class="text-right">{{ column_invited }}</td>
+                <td class="text-right">{{ column_converted }}</td>
+                <td class="text-right">{{ column_orders }}</td>
+                <td class="text-right">{{ column_pending }}</td>
+                <td class="text-right">{{ column_bonus }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if top_referrers %}
+            {% for referrer in top_referrers %}
+            <tr>
+              <td class="text-left"><a href="{{ referrer.edit }}">{{ referrer.name }}</a><br><small>{{ referrer.telephone }}</small></td>
+              <td class="text-right">{{ referrer.clicks }}</td>
+              <td class="text-right">{{ referrer.invited_count }}</td>
+              <td class="text-right">{{ referrer.converted_count }}</td>
+              <td class="text-right">{{ referrer.orders_count }}</td> 
+              <td class="text-right">{{ referrer.pending_count }}</td>
+              <td class="text-right">{{ referrer.total_bonus }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="7">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-users"></i> {{ text_referral_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td class="text-left">{{ column_date }}</td>
+                <td class="text-left">{{ column_invited }}</td>
+                <td class="text-left">{{ column_referrer }}</td>
+                <td class="text-center">{{ column_bonus_status }}</td>
+                <td class="text-left">{{ column_order }}</td>
+                <td class="text-left">{{ column_order_status }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if referrals %}
+            {% for referral in referrals %}
+            <tr>
+              <td class="text-left">{{ referral.referal_date }}</td>
+              <td class="text-left"><a href="{{ referral.invited_edit }}">{{ referral.invited_name }}</a><br><small>{{ referral.invited_telephone }}</small></td>
+              <td class="text-left"><a href="{{ referral.referrer_edit }}">{{ referral.referrer_name }}</a><br><small>{{ referral.referrer_telephone }}</small></td>
+              <td class="text-center"><span class="label {{ referral.bonus_class }}">{{ referral.bonus_status }}</span></td>
+              <td class="text-left">{% if referral.order_view %}<a href="{{ referral.order_view }}">#{{ referral.order_id }}</a> ({{ referral.order_date }}){% else %}—{% endif %}</td>
+              <td class="text-left">{{ referral.order_status }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="6">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = '';
+
+	var filter_date_start = $('input[name=\'filter_date_start\']').val();
+	if (filter_date_start) {
+		url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
+	}
+
+	var filter_date_end = $('input[name=\'filter_date_end\']').val();
+	if (filter_date_end) {
+		url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+	}
+
+	var filter_referrer = $('input[name=\'filter_referrer\']').val();
+	if (filter_referrer) {
+		url += '&filter_referrer=' + encodeURIComponent(filter_referrer);
+	}
+
+	location = 'index.php?route=report/report&code=referral&user_token={{ user_token }}' + url;
+});
+//--></script>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+//--></script>
+

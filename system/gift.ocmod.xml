@@ -1,0 +1,17 @@
+<modification>
+	<name>GiftTeaser by iSenseLabs</name>
+	<version>2.5.3</version>
+	<link>http://isenselabs.com</link>
+	<author>iSenseLabs</author>
+	<code>isenselabs_giftteaser</code>
+  
+
+<file path="system/library/cart/cart.php">
+		<!-- Gift price/total logic is baked into system/library/cart/cart.php.
+		     Operations kept with error=skip for legacy; searches intentionally miss current source. -->
+		<operation error="skip">
+			<search><![CDATA[GIFT_TEASER_CART_HOOK_DISABLED]]></search>
+			<add position="replace"><![CDATA[GIFT_TEASER_CART_HOOK_DISABLED]]></add>
+		</operation>
+	</file>
+</modification>

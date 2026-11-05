@@ -1,0 +1,30 @@
+{{ header }}
+<div id="common-success" class="container">
+<div class="profile__content">
+  <div class="profile__holder">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="profile__lside">{{ content_top }}
+	  
+	    <h1 class="h2 color-black">{{ heading_title }}</h1>
+		<div class="profile__inners">
+          <div class="profile__inner">
+             <div class="text-content">
+                 <p>{{ text_reward }}</p>
+                 {{ telegram_text }}
+             </div>
+             <div class="text-content">{{ text_message }}</div>
+          </div>
+        </div>
+		<a href="{{ continue }}" class="button-light-blue button-light-blue--border-radius-min button-light-blue--center-text-bold">{{ button_continue }}</a>
+
+      {{ content_bottom }}</div>{{ column_right }}
+    </div>
+</div>
+</div>
+{{ footer }}

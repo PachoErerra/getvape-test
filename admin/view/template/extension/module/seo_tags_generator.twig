@@ -1,0 +1,1348 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-seo-tags-generator" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+          {#        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>#}
+        <!-- temp! -->
+        <a href="{{ constant('HTTPS_SERVER') }}index.php?route=marketplace/extension&user_token={{ user_token }}&type=module" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% set i = 0 %} <!-- temp! -->
+        {% for breadcrumb in breadcrumbs %}
+          {% if i == 1 %}
+            <li><a href="{{ constant('HTTPS_SERVER') }}index.php?route=marketplace/extension&user_token={{ user_token }}&type=module">{{ breadcrumb['text'] }}</a></li>
+            {% else %}
+            <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+            {% endif %}
+            {% set i = i + 1 %} <!-- temp! -->
+        {% endfor %}
+      </ul>
+    </div>
+  </div><!-- /page-header -->
+  <div class="container-fluid">
+    {% if (error_warning) %}
+      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    {% if (text_success is not empty) %}
+      <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ text_success }}
+      </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h2>
+      </div>
+
+
+
+      <!-- Customization.Begin -->
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-seo-tags-generator" class="form-horizontal">
+
+          <div id="module-work-area" >
+            <fieldset class="box">
+              <h3 class="box-title">{{ fieldset_setting }}</h3>
+
+              <!-- module status -->
+              <div class="form-group option-selector option-status" style="padding-bottom: 0;">
+                <label class="col-sm-2 control-label" for="input-status-mod">{{ entry_status }}:</label>
+                <div class="col-sm-2">
+                  <select name="module_seo_tags_generator_status" id="input-status-mod" class="form-control">
+                    {% if (module_seo_tags_generator_status) %}
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                      <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border-color: #e1e1e1" />
+
+              <!-- generate mode for category -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_category">{{ entry_generate_mode_category }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_category" id="module_seo_tags_generator_generate_mode_category" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_category ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border: none;" />
+
+              <!-- generate mode for category : h1 -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_category_h1">{{ entry_generate_mode_category_h1 }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_category_h1" id="module_seo_tags_generator_generate_mode_category_h1" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_category_h1 ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border: none;" />
+
+              <!-- generate mode for category : text -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_category_text">{{ entry_generate_mode_category_text }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_category_text" id="module_seo_tags_generator_generate_mode_category_text" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_category_text ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border-color: #e1e1e1" />
+
+              <!-- generate mode for product -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_product">{{ entry_generate_mode_product }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_product" id="module_seo_tags_generator_generate_mode_product" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_product ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border: none;" />
+
+              <!-- generate mode for product : h1 -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_product_h1">{{ entry_generate_mode_product_h1 }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_product_h1" id="module_seo_tags_generator_generate_mode_product_h1" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_product_h1 ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border: none;" />
+
+              <!-- generate mode for product : text -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_product_text">{{ entry_generate_mode_product_text }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_product_text" id="module_seo_tags_generator_generate_mode_product_text" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_product_text ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border-color: #e1e1e1" />
+
+              <!-- generate mode for manufacturer -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_manufacturer">{{ entry_generate_mode_manufacturer }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_manufacturer" id="module_seo_tags_generator_generate_mode_manufacturer" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_manufacturer ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border: none;" />
+
+              <!-- generate mode for manufacturer : h1 -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_manufacturer_h1">{{ entry_generate_mode_manufacturer_h1 }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_manufacturer_h1" id="module_seo_tags_generator_generate_mode_manufacturer_h1" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_manufacturer_h1 ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border: none;"
+
+                  <!-- generate mode for manufacturer : text -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_generate_mode_manufacturer_text">{{ entry_generate_mode_manufacturer_text }}:</label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_generate_mode_manufacturer_text" id="module_seo_tags_generator_generate_mode_manufacturer_text" class="form-control">
+                    {% for key,item in a_generate_mode %}
+                      <option value="{{ key }}" {{ key == module_seo_tags_generator_generate_mode_manufacturer_text ? 'selected="selected"' : '' }}>{{ item }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border-color: #e1e1e1" />
+
+              <!-- inheritance -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_inheritance">{{ entry_inheritance }}: <span data-toggle="tooltip" title="{{ entry_inheritance_tooltip }}"></span></label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_inheritance" id="module_seo_tags_generator_inheritance" class="form-control">
+                    {% if (module_seo_tags_generator_inheritance) %}
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                      <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <hr style="border-color: #e1e1e1" />
+
+              <!-- declension -->
+              <div class="form-group option-selector">
+                <label class="col-sm-2 control-label" for="module_seo_tags_generator_declension">{{ entry_declension }}: <span data-toggle="tooltip" title="{{ entry_declension_tooltip }}"></span></label>
+                <div class="col-sm-3">
+                  <select name="module_seo_tags_generator_declension" id="module_seo_tags_generator_declension" class="form-control">
+                    {% if (module_seo_tags_generator_declension) %}s
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                      <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+
+            </fieldset>
+
+
+
+            <!-- FORMULAS . BEGIN -->
+            <div class="box">
+              <h3 class="box-title">{{ fieldset_formula_common }}</h3>
+
+              <!-- category.begin
+              ============================================================================================= -->
+              <fieldset class="row formula-row">
+                <div class="col-sm-12">
+                  <h4 class="essence-title">{{ tab_category }}</h4>
+                  <ul class="nav nav-tabs" id="language-category">
+                    {% for language in languages %}
+                      <li><a href="#language-category{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                        {% endfor %}
+                  </ul>
+                  <div class="tab-content">
+                    {% for language in languages %}
+                      <div class="tab-pane fade" id="language-category{{ language['language_id'] }}">
+
+                        <!-- title -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-category-formula-title-lang{{ language['language_id'] }}">{{ entry_category_title }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-category-formula-title-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_category_title[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_category_title[language['language_id']] is defined ? module_seo_tags_generator_category_title[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-category-formula-title-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[count_products]</span>
+                                  <span class="var">[min_price]</span>
+                                  <span class="var">[max_price]</span>
+                                  <span class="var">&lt;if&gt;( [page_number] > 1 ) [page_number] &lt;/endif&gt;</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['category_title'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['category_title'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- description -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-category-formula-description-lang{{ language['language_id'] }}">{{ entry_category_description }}:</label>
+                          <div class="col-sm-10">
+                            <textarea id="input-category-formula-description-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_category_description[{{ language['language_id'] }}]" class="form-control cursor-tracking" rows="3">{{ module_seo_tags_generator_category_description[language['language_id']] is defined ? module_seo_tags_generator_category_description[language['language_id']] : '' }}</textarea>
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-category-formula-description-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[count_products]</span>
+                                  <span class="var">[min_price]</span>
+                                  <span class="var">[max_price]</span>
+                                  <span class="var">&lt;if&gt;( [page_number] > 1 ) [page_number] &lt;/endif&gt;</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                  <span class="var">[config_telephone]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['category_description'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['category_description'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- keyword -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-category-formula-keyword-lang{{ language['language_id'] }}">{{ entry_category_keyword }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-category-formula-keyword-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_category_keyword[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_category_keyword[language['language_id']] is defined ? module_seo_tags_generator_category_keyword[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-category-formula-keyword-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['category_keyword'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['category_keyword'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- h1 -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-category-formula-h1-lang{{ language['language_id'] }}">{{ entry_category_h1 }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-category-formula-h1-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_category_h1[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_category_h1[language['language_id']] is defined ? module_seo_tags_generator_category_h1[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-category-formula-h1-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[count_products]</span>
+                                  <span class="var">[min_price]</span>
+                                  <span class="var">[max_price]</span>
+                                  <span class="var">&lt;if&gt;( [page_number] > 1 ) [page_number] &lt;/endif&gt;</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['category_h1'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['category_h1'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- text -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-category-formula-text-lang{{ language['language_id'] }}">{{ entry_category_text }}:</label>
+                          <div class="col-sm-10">
+                            <textarea id="input-category-formula-text-lang{{ language['language_id'] }}" name="module_seo_tags_generator_category_text[{{ language['language_id'] }}]" class="form-control cursor-tracking stg-textarea summernote" data-toggle="summernote" data-lang="{{ summernote }}" >{{ module_seo_tags_generator_category_text[language['language_id']] is defined ? module_seo_tags_generator_category_text[language['language_id']] : '' }}</textarea>
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-category-formula-text-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[original_text]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[count_products]</span>
+                                  <span class="var">[min_price]</span>
+                                  <span class="var">[max_price]</span>
+                                  <span class="var">&lt;if&gt;( [page_number] > 1 ) [page_number] &lt;/endif&gt;</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['category_text'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['category_text'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- product.begin
+              ============================================================================================= -->
+              <fieldset class="row formula-row">
+                <div class="col-sm-12">
+                  <h4 class="essence-title">{{ tab_product }}</h4>
+                  <ul class="nav nav-tabs" id="language-product">
+                    {% for language in languages %}
+                      <li><a href="#language-product{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                        {% endfor %}
+                  </ul>
+                  <div class="tab-content">
+                    {% for language in languages %}
+                      <div class="tab-pane fade" id="language-product{{ language['language_id'] }}">
+
+                        <!-- title -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-product-formula-title-lang{{ language['language_id'] }}">{{ entry_product_title }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-product-formula-title-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_product_title[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_product_title[language['language_id']] is defined ? module_seo_tags_generator_product_title[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-product-formula-title-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[product_name]</span>
+                                  {% if (exist_product_h1) %}<span class="var">[static_product_h1]</span>{% endif %}
+                                  <span class="var">[model]</span>
+                                  {% if (exist_model_synonym) %}{% if (exist_model_synonym) %}<span class="var var_mod-synonyms">[model_synonym]</span>{% endif %}{% endif %}
+                                  <span class="var">[sku]</span>
+                                  <span class="var">[upc]</span>
+                                  <span class="var">[ean]</span>
+                                  <span class="var">[jan]</span>
+                                  <span class="var">[isbn]</span>
+                                  <span class="var">[mpn]</span>
+                                  <span class="var">[manufacturer]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                  <span class="var">[price]</span>
+                                  <span class="var">[special]</span>
+                                  <span class="var">[rating]</span>
+                                  <span class="var">[reviews]</span>
+                                  <span class="var">[count_sales]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['product_title'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['product_title'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- description -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-product-formula-description-lang{{ language['language_id'] }}">{{ entry_product_description }}:</label>
+                          <div class="col-sm-10">
+                            <textarea id="input-product-formula-description-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_product_description[{{ language['language_id'] }}]" class="form-control cursor-tracking" rows="3">{{ module_seo_tags_generator_product_description[language['language_id']] is defined ? module_seo_tags_generator_product_description[language['language_id']] : '' }}</textarea>
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-product-formula-description-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[product_name]</span>
+                                  {% if (exist_product_h1) %}<span class="var">[static_product_h1]</span>{% endif %}
+                                  <span class="var">[model]</span>
+                                  {% if (exist_model_synonym) %}<span class="var var_mod-synonyms">[model_synonym]</span>{% endif %}
+                                  <span class="var">[sku]</span>
+                                  <span class="var">[upc]</span>
+                                  <span class="var">[ean]</span>
+                                  <span class="var">[jan]</span>
+                                  <span class="var">[isbn]</span>
+                                  <span class="var">[mpn]</span>
+                                  <span class="var">[manufacturer]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                  <span class="var">[price]</span>
+                                  <span class="var">[special]</span>
+                                  <span class="var">[rating]</span>
+                                  <span class="var">[reviews]</span>
+                                  <span class="var">[count_sales]</span>
+                                </div>
+                                <div class="vars-item var-attributes-container">
+                                  <span class="var var-attributes">[attributes]</span>
+                                  <span class="var var-attribute-index var-attribute-index-1">[attribute index="1"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-2">[attribute index="2"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-3">[attribute index="3"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-4">[attribute index="4"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-5">[attribute index="5"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-6">[attribute index="6"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-7">[attribute index="7"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                  <span class="var">[config_telephone]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['product_description'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['product_description'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- keyword -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-product-formula-keyword-lang{{ language['language_id'] }}">{{ entry_product_keyword }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-product-formula-keyword-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_product_keyword[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_product_keyword[language['language_id']] is defined ? module_seo_tags_generator_product_keyword[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-product-formula-keyword-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[product_name]</span>
+                                  {% if (exist_product_h1) %}<span class="var">[static_product_h1]</span>{% endif %}
+                                  <span class="var">[model]</span>
+                                  {% if (exist_model_synonym) %}<span class="var var_mod-synonyms">[model_synonym]</span>{% endif %}
+                                  <span class="var">[sku]</span>
+                                  <span class="var">[upc]</span>
+                                  <span class="var">[ean]</span>
+                                  <span class="var">[jan]</span>
+                                  <span class="var">[isbn]</span>
+                                  <span class="var">[mpn]</span>
+                                  <span class="var">[manufacturer]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['product_keyword'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['product_keyword'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- h1 -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-product-formula-h1-lang{{ language['language_id'] }}">{{ entry_product_h1 }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-product-formula-h1-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_product_h1[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_product_h1[language['language_id']] is defined ? module_seo_tags_generator_product_h1[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-product-formula-h1-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[product_name]</span>
+                                  {% if (exist_product_h1) %}<span class="var">[static_product_h1]</span>{% endif %}
+                                  <span class="var">[model]</span>
+                                  {% if (exist_model_synonym) %}<span class="var var_mod-synonyms">[model_synonym]</span>{% endif %}
+                                  <span class="var">[sku]</span>
+                                  <span class="var">[upc]</span>
+                                  <span class="var">[ean]</span>
+                                  <span class="var">[jan]</span>
+                                  <span class="var">[isbn]</span>
+                                  <span class="var">[mpn]</span>
+                                  <span class="var">[manufacturer]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                  <span class="var">[price]</span>
+                                  <span class="var">[special]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['product_h1'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['product_h1'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- text -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-product-formula-text-lang{{ language['language_id'] }}">{{ entry_product_text }}:</label>
+                          <div class="col-sm-10">
+                            <textarea id="input-product-formula-text-lang{{ language['language_id'] }}" name="module_seo_tags_generator_product_text[{{ language['language_id'] }}]" class="form-control cursor-tracking stg-textarea summernote" data-toggle="summernote" data-lang="{{ summernote }}" >{{ module_seo_tags_generator_product_text[language['language_id']] is defined ? module_seo_tags_generator_product_text[language['language_id']] : '' }}</textarea>
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-product-formula-description-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[original_text]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[product_name]</span>
+                                  {% if (exist_product_h1) %}<span class="var">[static_product_h1]</span>{% endif %}
+                                  <span class="var">[model]</span>
+                                  {% if (exist_model_synonym) %}<span class="var var_mod-synonyms">[model_synonym]</span>{% endif %}
+                                  <span class="var">[sku]</span>
+                                  <span class="var">[upc]</span>
+                                  <span class="var">[ean]</span>
+                                  <span class="var">[jan]</span>
+                                  <span class="var">[isbn]</span>
+                                  <span class="var">[mpn]</span>
+                                  <span class="var">[manufacturer]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                  <span class="var">[price]</span>
+                                  <span class="var">[special]</span>
+                                  <span class="var">[rating]</span>
+                                  <span class="var">[reviews]</span>
+                                  <span class="var">[count_sales]</span>
+                                </div>
+                                <div class="vars-item var-attributes-container">
+                                  <span class="var var-attributes">[attributes]</span>
+                                  <span class="var var-attribute-index var-attribute-index-1">[attribute index="1"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-2">[attribute index="2"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-3">[attribute index="3"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-4">[attribute index="4"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-5">[attribute index="5"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-6">[attribute index="6"]</span>
+                                  <span class="var var-attribute-index var-attribute-index-7">[attribute index="7"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[category_name]</span>
+                                  {% if (exist_category_h1) %}<span class="var">[static_category_h1]</span>{% endif %}
+                                  {% if (module_seo_tags_generator_declension) %}
+                                    <span class="var">[category_name_singular_nominative]</span>
+                                    <span class="var">[category_name_singular_genitive]</span>
+                                    <span class="var">[category_name_plural_nominative]</span>
+                                    <span class="var">[category_name_plural_genitive]</span>
+                                  {% endif %}
+                                </div>
+                                {% if module_seo_tags_generator_declension is defined %}
+                                  <div class="vars-item">
+                                    <span class="var var-warning">[parent_category_name]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_singular_genitive]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_nominative]</span>
+                                    <span class="var var-warning">[parent_category_name_plural_genitive]</span>
+                                  </div>
+                                {% endif %}
+                                <div class="vars-item">
+                                  <span class="var">[category_level]</span>
+                                  <span class="var">[category_nested]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD]</span>
+                                  <span class="var">[category_nested sort="1"]</span>
+                                  <span class="var">[category_nested SORT_FROM_PARENT_TO_CHILD exclude="1"]</span>
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                  <span class="var">[config_telephone]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['product_text'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['product_text'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- manufacturer.begin
+              ============================================================================================= -->
+              <fieldset class="row formula-row">
+                <div class="col-sm-12">
+                  <h4 class="essence-title">{{ tab_manufacturer }}</h4>
+                  <ul class="nav nav-tabs" id="language-manufacturer">
+                    {% for language in languages %}
+                      <li><a href="#language-manufacturer{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                        {% endfor %}
+                  </ul>
+                  <div class="tab-content">
+                    {% for language in languages %}
+                      <div class="tab-pane fade" id="language-manufacturer{{ language['language_id'] }}">
+
+                        <!-- title -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-manufacturer-formula-title-lang{{ language['language_id'] }}">{{ entry_manufacturer_title }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-manufacturer-formula-title-lang{{ language['language_id'] }}" type="text"
+                                   name="module_seo_tags_generator_manufacturer_title[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_manufacturer_title[language['language_id']] is defined ? module_seo_tags_generator_manufacturer_title[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-manufacturer-formula-title-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[manufacturer_name]</span>
+                                  {% if (exist_manufacturer_h1) %}{% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}{% endif %}
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                  <span class="var">[config_telephone]</span>
+                                  <span class="var">&lt;if&gt;( [page_number] > 1 ) [page_number] &lt;/endif&gt;</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['manufacturer_title'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['manufacturer_title'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- description -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-manufacturer-formula-description-lang{{ language['language_id'] }}">{{ entry_manufacturer_description }}:</label>
+                          <div class="col-sm-10">
+                            <textarea id="input-manufacturer-formula-description-lang{{ language['language_id'] }}" type="text" name="module_seo_tags_generator_manufacturer_description[{{ language['language_id'] }}]" class="form-control cursor-tracking" rows="3">{{ module_seo_tags_generator_manufacturer_description[language['language_id']] is defined ? module_seo_tags_generator_manufacturer_description[language['language_id']] : '' }}</textarea>
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-manufacturer-formula-description-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[manufacturer_name]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                  <span class="var">[config_telephone]</span>
+                                  <span class="var">&lt;if&gt;( [page_number] > 1 ) [page_number] &lt;/endif&gt;</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['manufacturer_description'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['manufacturer_description'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- keyword -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-manufacturer-formula-keyword-lang{{ language['language_id'] }}">{{ entry_manufacturer_keyword }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-manufacturer-formula-keyword-lang{{ language['language_id'] }}" type="text"
+                                   name="module_seo_tags_generator_manufacturer_keyword[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_manufacturer_keyword[language['language_id']] is defined ? module_seo_tags_generator_manufacturer_keyword[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-manufacturer-formula-keyword-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[manufacturer_name]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['manufacturer_keyword'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['manufacturer_keyword'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- h1 -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-manufacturer-formula-h1-lang{{ language['language_id'] }}">{{ entry_manufacturer_h1 }}:</label>
+                          <div class="col-sm-10">
+                            <input id="input-manufacturer-formula-h1-lang{{ language['language_id'] }}" type="text"
+                                   name="module_seo_tags_generator_manufacturer_h1[{{ language['language_id'] }}]" value="{{ module_seo_tags_generator_manufacturer_h1[language['language_id']] is defined ? module_seo_tags_generator_manufacturer_h1[language['language_id']] : '' }}" class="form-control cursor-tracking" />
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-manufacturer-formula-h1-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[manufacturer_name]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                  <span class="var">[config_telephone]</span>
+                                  <span class="var">&lt;if&gt;( [page_number] > 1 ) [page_number] &lt;/endif&gt;</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['manufacturer_h1'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['manufacturer_h1'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- text -->
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-manufacturer-formula-text-lang{{ language['language_id'] }}">{{ entry_manufacturer_text }}:</label>
+                          <div class="col-sm-10">
+                            <textarea id="input-manufacturer-formula-text-lang{{ language['language_id'] }}" name="module_seo_tags_generator_manufacturer_text[{{ language['language_id'] }}]" class="form-control cursor-tracking stg-textarea summernote" data-toggle="summernote" data-lang="{{ summernote }}" >{{ module_seo_tags_generator_manufacturer_text[language['language_id']] is defined ? module_seo_tags_generator_manufacturer_text[language['language_id']] : '' }}</textarea>
+                            <div class="vars-main row">
+                              <div class="col-sm-2">{{ text_available_vars }}: </div>
+                              <div class="col-sm-10 vars-container" data-target="#input-manufacturer-formula-h1-lang{{ language['language_id'] }}">
+                                <div class="vars-item">
+                                  <span class="var">[manufacturer_name]</span>
+                                  {% if (exist_manufacturer_h1) %}<span class="var">[static_manufacturer_h1]</span>{% endif %}
+                                </div>
+                                <div class="vars-item">
+                                  <span class="var">[shop_name]</span>
+                                  <span class="var">[config_telephone]</span>
+                                </div>
+                                <div class="vars-item custom-variables">
+                                  <!-- <span class="var var_custom-variables">[custom]</span> -->
+                                </div>
+                              </div>
+                            </div>
+                            {% if (errors['manufacturer_text'][language['language_id']] is defined) %}
+                              <div class="text-danger">{{ errors['manufacturer_text'][language['language_id']] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+
+
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <!-- FORMULAS . END-->
+
+            <!-- ATTRIBUTES . BEGIN -->
+            <div class="box">
+              <h3 class="box-title">{{ fieldset_attributes_common }}</h3>
+              <fieldset class="row attributes-row">
+                <div class="col-sm-12">
+                  <h4 class="essence-title">{{ attributes_title }}</h4>
+                  <div id="attributes-container">
+                    {% set attribute_row = 1 %}
+                    {% set attribute_index = 1 %}
+                    {% for item in module_seo_tags_generator_attributes %}
+                      <div class="attribute-row row" id="attribute-row-{{ attribute_row }}">
+                        <div class="col-sm-2">[attribute index="<span class="attribute-index">{{ attribute_index }}</span>"]</div>
+                        <div class="col-sm-3">
+                          <select name="module_seo_tags_generator_attributes[{{ attribute_row }}]" class="attributes-selector form-control {{ not item ? 'is-error' : '' }}">
+                            <option value="">{{ text_attribute_select }}</option>
+                            {% for attribute in attributes_exist %}
+                              <option value="{{ attribute['attribute_id'] }}" {{ item == attribute['attribute_id'] ? 'selected="selected"' : '' }} >{{ attribute['name'] }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-sm-2">
+                          <button class="btn btn-danger btn-sm delete-attribute" type="button" data-target="attribute-row-{{ attribute_row }}" data-toggle="tooltip" title="{{ delete_attribute }}"><i class="fa fa-minus-circle"></i></button>
+                        </div>
+                      </div><!-- /attribute-row -->
+                      {% set attribute_row = attribute_row + 1 %}
+                      {% set attribute_index = attribute_index + 1 %}
+                    {% endfor %}
+
+                  </div>
+                  {% if (errors['attributes'] is defined) %}
+                    <div class="attributes-error text-danger">{{ errors['attributes'] }}</div>
+                  {% endif %}
+                  <button class="btn btn-success btn-sm add-new-attribute" type="button" data-toggle="tooltip" title="{{ add_attribute }}">
+                    <i class="fa fa-plus-circle"></i>
+                  </button>
+                </div>
+              </fieldset>
+            </div>
+            <!-- ATTRIBUTES . END-->
+
+          </div><!-- /module-work-area-->
+        </form>
+      </div><!-- /panel-body-->
+      <!-- /Customization.End -->
+
+
+    </div><!-- /panel-default-->
+
+    <div class="copywrite" style="padding: 10px 10px 0 10px; border: 1px dashed #ccc;">
+      <p>
+        &copy; {{ text_author }}: <a href="https://clc.to/2L-mlA" target="_blank">Serge Tkach</a>
+        <br/>
+        {{ text_author_support }}: <a href="https://support.sergetkach.com/" target="_blank">https://support.sergetkach.com/</a>
+      </p>
+    </div>
+
+  </div><!-- /container-fluid-->
+</div><!-- /content-->
+
+
+<!-- js.begin-->
+<script type="text/javascript">
+  $('#language-category a:first').tab('show');
+  $('#language-product a:first').tab('show');
+  $('#language-manufacturer a:first').tab('show');
+
+// init global
+  var cursorPosition = false;
+  var lastIdentifier = false;
+  var hasActiveInput = false;
+
+  $('.cursor-tracking').focus(function () {
+    cursorPosition = caretPosition($(this));
+    lastIdentifier = "#" + $(this).attr('id');
+    hasActiveInput = true;
+  });
+
+//$('.cursor-tracking').focusout(function(){
+//	console.log('focus out : ' + $(this).attr('id'));
+//	hasActiveInput = false;
+//});
+
+  $('.cursor-tracking').keydown(function (e) {
+    if (hasActiveInput) {
+      console.log('keydown():hasActiveInput');
+      cursorPosition = caretPosition($(this));
+      lastIdentifier = "#" + $(this).attr('id');
+      console.log('keyup cursorPosition : ' + cursorPosition);
+    }
+  });
+
+  $('.cursor-tracking').change(function (e) {
+    lastIdentifier = "#" + $(this).attr('id');
+    cursorPosition = caretPosition($(this));
+  });
+
+  $('.var').click(function () {
+    var target = $(this).parent('.vars-item').parent('.vars-container').data('target');
+
+    if (lastIdentifier !== target) {
+      cursorPosition = false;
+    }
+
+    lastIdentifier = target;
+
+    var value = $(target).val();
+    var newElement = $(this).html();
+    newElement = newElement.replace(/&lt;/g, '<', );
+    newElement = newElement.replace(/&gt;/g, '>');
+    var partBeforeCursor = value.slice(0, cursorPosition);
+    var partAfterCursor = value.slice(cursorPosition, value.length);
+
+    if (cursorPosition === false) {
+      if (value.length > 1) {
+        var lastChar = value.slice(-1);
+        if (lastChar != ' ') {
+          value += ' ';
+        }
+      }
+      $(target).val(value + newElement);
+    } else {
+      if (partBeforeCursor.length > 1) {
+        var lastChar = partBeforeCursor.slice(-1);
+        if (lastChar != ' ') {
+          partBeforeCursor += ' ';
+        }
+      }
+      lastChar = partAfterCursor.slice(0, 1);
+      if (lastChar != ' ') {
+        partAfterCursor = ' ' + partAfterCursor;
+      }
+      $(target).val(partBeforeCursor + newElement + partAfterCursor);
+
+      cursorPosition = partBeforeCursor.length + (newElement + ' ').length;
+      console.log('cursorPosition after var insert : ' + cursorPosition);
+    }
+  });
+
+
+
+  /* Caret Position
+   --------------------------------------------------------------------------- */
+// http://qaru.site/questions/42834/get-cursor-position-in-characters-within-a-text-input-field
+  function caretPosition(input) {
+    var start = input[0].selectionStart,
+            end = input[0].selectionEnd,
+            diff = end - start;
+
+    if (start >= 0 && start == end) {
+      // do cursor position actions, example:
+      console.log('Cursor Position: ' + start);
+    } else if (start >= 0) {
+      // do ranged select actions, example:
+      console.log('Cursor Position: ' + start + ' to ' + end + ' (' + diff + ' selected chars)');
+    }
+
+    return start;
+  }
+
+
+
+  /* Attributes
+   -------------------------------------------------------------------------- */
+  var attributesExist = [];
+
+  $.ajax({
+    url: 'index.php?route=extension/module/seo_tags_generator/getAttributeList&user_token={{ user_token }}',
+    type: 'GET',
+    dataType: 'json',
+    success: function (json) {
+      if ('success' === json['status']) {
+        attributesExist = json['data'];
+      } else {
+        console.log('error on attribute selector get attribute list: index.php?route=extension/module/seo_tags_generator/getAttributeList');
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      // Error ajax query
+      console.log('AJAX query Error: ' + textStatus);
+    },
+  });
+
+  $(document).ready(function() {
+    $('select.attributes-selector').select2({
+      placeholder: 'Select attribute',
+      width: '100%',
+      selectOnClose: true,
+    })
+  });
+
+  var attributeRow = {{ attribute_row }};
+
+  $('body').on('click', '.add-new-attribute', function () {
+    console.log('.add-new-attribute click()');
+
+    var html = '';
+
+    html += '<div class="attribute-row row" id="attribute-row-' + attributeRow + '">';
+
+    html += '<div class="col-sm-2">';
+    html += '[attribute index="<span class="attribute-index"> ... </span>"]';
+    html += '</div>';
+
+    html += '<div class="col-sm-3">';
+    html += '<select name="module_seo_tags_generator_attributes[' + attributeRow + ']" class="attributes-selector form-control is-error">';
+    html += '<option value="">{{ text_attribute_select }}</option>';
+
+    for (var key in attributesExist) {
+      html += '<option value="' + attributesExist[key]['attribute_id'] + '">' + attributesExist[key]['name'] + '</option>';
+    }
+
+    html += '</select>';
+    html += '</div>';
+
+    html += '<div class="col-sm-2">';
+    html += '<button class="btn btn-danger btn-sm delete-attribute" type="button" data-target="attribute-row-' + attributeRow + '" data-toggle="tooltip" title="{{ delete_attribute }}"><i class="fa fa-minus-circle"></i></button>';
+    html += '</div>';
+
+    html += '</div><!-- /attribute-row -->';
+
+    $('#attributes-container').append(html);
+    $('select.attributes-selector').select2();
+
+    attributeRow++;
+
+    setTimeout(function () {
+      countAttributeIndex();
+      checkViewAttributeVars();
+    }, 350);
+  });
+
+
+  $('body').on('click', '.delete-attribute', function (e) {
+    $('#' + $(this).data('target')).remove();
+
+    setTimeout(function () {
+      countAttributeIndex();
+      checkViewAttributeVars();
+    }, 100);
+
+  });
+
+
+  function countAttributeIndex() {
+    var n = 1;
+
+    $('.attribute-row .attribute-index').each(function () {
+      $(this).html(n);
+      n++;
+    });
+  }
+
+
+// check vars
+
+  $(function () {
+    checkViewAttributeVars();
+  });
+
+  function checkViewAttributeVars() {
+    console.log('checkViewAttributeVars() is called');
+
+    var n = 1;
+    var existAttributesVars = false;
+
+    $('.var-attribute-index').hide();
+
+    $('.attribute-row .attribute-index').each(function () {
+      existAttributesVars = true;
+
+      $('.var-attribute-index-' + n).show();
+
+      console.log('n :' + n);
+      n++;
+    });
+
+    if (existAttributesVars) {
+      $('.var-attributes-container').show();
+      $('.var-attributes').show();
+    } else {
+      $('.var-attributes-container').hide();
+      $('.var-attributes').hide();
+    }
+  }
+
+
+  $('body').on('change', '.attributes-selector', function () {
+    if ($(this).val() !== '') {
+      $(this).removeClass('is-error');
+    } else {
+      $(this).addClass('is-error');
+    }
+
+    $('.attributes-error.text-danger').hide();
+  });
+
+</script>
+
+<script>
+/* Text Editor
+  -------------------------------------------------------------------------- */
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<!-- /js.end -->
+{{ footer }}
+
+
+
+
+
+

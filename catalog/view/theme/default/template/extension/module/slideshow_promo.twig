@@ -1,0 +1,21 @@
+<div style="display: block; margin-top: 30px;margin-bottom: 30px;">
+    {% for banner in banners %}
+        {% if loop.first %}
+            {% if banner.link %}
+                <a href="{{ banner.link }}" {% if banner.newtab %} target="_blank" rel="nofollow" {% endif %}>
+                    <picture>
+                        <source media="(max-width: 767px)" srcset="{{ banner.image }}">
+                        <img style="max-width: 100%; border-radius: 8px; display: block;"
+                             src="{{ banner.image }}" alt="{{ banner.title }}">
+                    </picture>
+                </a>
+            {% else %}
+                <picture>
+                    <source media="(max-width: 767px)" srcset="{{ banner.image }}">
+                    <img style="max-width: 100%; border-radius: 8px; display: block;"
+                         src="{{ banner.image }}" alt="{{ banner.title }}">
+                </picture>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>

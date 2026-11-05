@@ -1,0 +1,341 @@
+{{ header }}
+<div class="page-container">
+    <div class="container">
+
+        {{ content_top }}
+
+
+        <div class="breadcrumbs">
+            {% for breadcrumb in breadcrumbs %}
+                {% if loop.last %}
+                    <span>{{ breadcrumb.text }}</span>
+                {% else %}
+                    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <h1 class="h1 color-black">{{ heading_title }}</h1>
+
+
+        <div class="reviews page-offset">
+
+            <div class="reviews__head d-flex flex-column flex-md-row">
+                <div class="reviews__total reviews__head-item d-flex">
+                    <div class="reviews__total-graph">
+                        <div class="reviews__total-graph-block">
+                            <svg viewBox="0 0 50 44" width="110" height="110" overflow="hidden"
+                                 x="760.2499987519399" y="53.29999890170711">
+                                <path stroke="#F8F9FA" stroke-width="2" fill="none"
+                                      d="M25.000045776367188,6.084949493408203 A15.915499687194824,15.915499687194824 0 0 1 25.000045776367188,37.915950775146484 A15.915499687194824,15.915499687194824 0 0 1 25.000045776367188,6.084949493408203"
+                                      stroke-dasharray="none"></path>
+                                <path stroke="#4A6EFD" stroke-width="2" fill="none"
+                                      d="M25.001075744628906,6.0849714279174805 A15.915499687194824,15.915499687194824 0 0 1 25.001075744628906,37.91597366333008 A15.915499687194824,15.915499687194824 0 0 1 25.001075744628906,6.0849714279174805 "
+                                      stroke-dasharray="{{ mark * 20 }}"></path>
+                                <text x="25.000000953674316" y="25.643678188323975"
+                                      text-anchor="middle" font-weight="bold" font-size="11">{{ mark }}
+                                </text>
+                            </svg>
+                        </div>
+                        <div class="reviews__total-graph-text text-center">{{ text_na_osnovi }} {{ review_total }}
+                            <br> {{ text_otsinok }}
+                        </div>
+                    </div>
+
+                    <div class="reviews__total-items">
+                        {% for mark, value in mark_data %}
+                            <div class="reviews__total-item d-flex align-items-center">
+                                <div class="reviews__total-item-star d-flex align-items-center">
+                                    <svg width="16" height="16" viewBox="0 0 16 16">
+                                        <use href="#icon-star"></use>
+                                    </svg>
+                                    {{ mark }}
+                                </div>
+                                <div class="reviews__total-item-line">
+                                    <div class="reviews__total-item-line-fill"
+                                         style="width: {{ value }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <div class="reviews__leave reviews__head-item">
+                    <div class="reviews__leave-info">
+                        {% for mark, value in quality_data %}
+                            <div class="reviews__leave-item d-flex align-items-center justify-content-between">
+                                <div class="reviews__leave-item-text">
+                                    {% if mark == 'quality' %}
+                                        {{ text_yakist_tovaru }}
+                                    {% elseif mark == 'delivery' %}
+                                        {{ text_dostavka }}
+                                    {% elseif mark == 'price' %}
+                                        {{ text_tsina }}
+                                    {% elseif mark == 'support' %}
+                                        {{ text_pidtrymka }}
+                                    {% endif %}
+                                </div>
+                                <div class="reviews__leave-item-stars">
+                                    <div class="rating__stars">
+                                        <div class="rating__stars-current" style="width:{{ value }}%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="reviews__leave-action">
+                        {% if logged %}
+                            <button type="button" class="btn btn-xl btn-full btn-primary js-open-modal"
+                                    data-modal="modal_reviews-all">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <use href="#icon-comment"></use>
+                                </svg>
+                                {{ text_zalyshyty_vidhuk }}
+                            </button>
+                        {% else %}
+                            <button type="button" class="regsms_open btn btn-xl btn-full btn-primary">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <use href="#icon-comment"></use>
+                                </svg>
+                                {{ text_zalyshyty_vidhuk }}
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if reviews %}
+                <div class="reviews__items d-flex flex-column">
+                    {% for review in reviews %}
+                        <div class="reviews__item-outer">
+                            <div class="reviews__item">
+                                <div class="reviews__item-head d-flex align-items-center justify-content-between">
+                                    <div class="reviews__item-name">{{ review.author|split(' ')|first }}</div>
+                                    <div class="reviews__item-date d-flex align-items-center">
+                                        <svg class="sprite-icon" width="17" height="17">
+                                            <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-calendar"></use>
+                                        </svg>
+                                        {{ review.date_added }}
+                                    </div>
+                                </div>
+                                <div class="reviews__item-stars">
+                                    <div class="rating__stars">
+                                        <div class="rating__stars-current" style="width:{{ review.rating }}%;"></div>
+                                    </div>
+                                </div>
+                                <div class="reviews__item-content">{{ review.text }}</div>
+                                {% if review.answer %}
+                                    <div class="card__tabs-review-answer" style="padding: 20px;">
+                                        <div class="card__tabs-review-info">
+                                            <div class="card__tabs-review-name align-items-center"
+                                                 style="display: flex;gap: 6px;">
+                                                Vapors team
+                                                <svg class="sprite-icon" style="color: #21b41f;" width="20" height="20">
+                                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-confirmed"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="reviews__item-date d-flex align-items-center">
+                                                <svg class="sprite-icon" width="17" height="17">
+                                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-calendar"></use>
+                                                </svg>
+
+                                                {{ review.date_answered }}
+                                            </div>
+                                        </div>
+                                        <div class="reviews__item-content">
+                                            {{ review.answer }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div hidden>{{ pagination }}</div>
+
+                </div>
+
+                {% if pagination %}
+                    <div class="reviews__show-more reviews__show-more_lg">
+                        <button class="btn btn-primary btn-xl" id="morereviews">
+                            <svg class="sprite-icon" width="24" height="24">
+                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-load"></use>
+                            </svg>
+
+                            {{ text_pokazaty_shche }}
+                        </button>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>{{ text_no_reviews }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="modal modal_reviews-all">
+    <div class="modal__overlay"></div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-sm">
+        <div class="modal__container">
+            <div class="modal__hide js-modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use href="#icon-cross"></use>
+                </svg>
+            </div>
+
+
+            <div class="h2 modal__title color-black">{{ text_zalyshyty_vidhuk }}</div>
+
+            <div class="modal__fields">
+                <form id="form-review" class="modal__fields">
+                    <div class="modal__field">
+                        <div class="field">
+                            <label>{{ text_vashe_im_ya_ta_prizvyshche }}<span class="field-required">*</span></label>
+                            <input type="text" name="name" placeholder="" value="{{ name }}">
+                        </div>
+                    </div>
+                    <div class="modal__field">
+                        <div class="field">
+                            <label>{{ text_komentar }}<span class="field-required">*</span></label>
+                            <textarea name="text" cols="30" rows="10"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal__field">
+                        <div class="modal__field-title">{{ text_otsinit_nash_servis_i_yakist }}</div>
+
+                        <div class="field field--rating">
+                            <label>{{ text_yakist_tovaru }}</label>
+                            <div class="rating">
+                                <input type="radio" id="quality-5" name="quality" value="5"/>
+                                <label for="quality-5"></label>
+                                <input type="radio" id="quality-4" name="quality" value="4"/>
+                                <label for="quality-4"></label>
+                                <input type="radio" id="quality-3" name="quality" value="3"/>
+                                <label for="quality-3"></label>
+                                <input type="radio" id="quality-2" name="quality" value="2"/>
+                                <label for="quality-2"></label>
+                                <input type="radio" id="quality-1" name="quality" value="1"/>
+                                <label for="quality-1"></label>
+                            </div>
+                        </div>
+
+                        <div class="field field--rating">
+                            <label>{{ text_dostavka }}</label>
+                            <div class="rating">
+                                <input type="radio" id="delivery-5" name="delivery" value="5"/>
+                                <label for="delivery-5"></label>
+                                <input type="radio" id="delivery-4" name="delivery" value="4"/>
+                                <label for="delivery-4"></label>
+                                <input type="radio" id="delivery-3" name="delivery" value="3"/>
+                                <label for="delivery-3"></label>
+                                <input type="radio" id="delivery-2" name="delivery" value="2"/>
+                                <label for="delivery-2"></label>
+                                <input type="radio" id="delivery-1" name="delivery" value="1"/>
+                                <label for="delivery-1"></label>
+                            </div>
+                        </div>
+
+
+                        <div class="field field--rating">
+                            <label>{{ text_tsina }}</label>
+                            <div class="rating">
+                                <input type="radio" id="price-5" name="price" value="5"/>
+                                <label for="price-5"></label>
+                                <input type="radio" id="price-4" name="price" value="4"/>
+                                <label for="price-4"></label>
+                                <input type="radio" id="price-3" name="price" value="3"/>
+                                <label for="price-3"></label>
+                                <input type="radio" id="price-2" name="price" value="2"/>
+                                <label for="price-2"></label>
+                                <input type="radio" id="price-1" name="price" value="1"/>
+                                <label for="price-1"></label>
+                            </div>
+                        </div>
+
+                        <div class="field field--rating">
+                            <label>{{ text_pidtrymka }}</label>
+                            <div class="rating">
+                                <input type="radio" id="support-5" name="support" value="5"/>
+                                <label for="support-5"></label>
+                                <input type="radio" id="support-4" name="support" value="4"/>
+                                <label for="support-4"></label>
+                                <input type="radio" id="support-3" name="support" value="3"/>
+                                <label for="support-3"></label>
+                                <input type="radio" id="support-2" name="support" value="2"/>
+                                <label for="support-2"></label>
+                                <input type="radio" id="support-1" name="support" value="1"/>
+                                <label for="support-1"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal__field">
+                        <button type="button" class="btn btn-primary btn-full" id="button-review"
+                                data-loading-text="{{ text_loading }}">{{ text_zalyshyty_vidhuk }}
+                        </button>
+                    </div>
+                    <input type="hidden" class="js-open-toast">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+  $('#morereviews').on('click', function () {
+    var lastProduct = $('.reviews__items');
+    var nextPage = $('.reviews__items ul.pagination li.active').next().find('a:first-child');
+    $.ajax({
+      url: $(nextPage).attr('href'),
+      success: function (data) {
+        $('.pagination').parent().remove();
+        var products = $(data).find('.reviews__items>div');
+        lastProduct.append(products);
+        $('.pagination').html($(data).find('.pagination > *'));
+        nextPage = $('ul.pagination li.active').next().find('a:first-child');
+        if (nextPage.length == 0) {
+          $('body #morereviews').remove();
+        } else {
+          $('#endless .fa-refresh').removeClass('fa-spin');
+        }
+      }
+    });
+    return false;
+  });
+
+  $('#button-review').on('click', function () {
+    $.ajax({
+      url: 'index.php?route=information/reviews/write',
+      type: 'post',
+      dataType: 'json',
+      data: $("#form-review").serialize(),
+      beforeSend: function () {
+        $('#button-review').button('loading');
+        console.log($("#form-review").serialize());
+      },
+      complete: function () {
+        $('#button-review').button('reset');
+      },
+      success: function (json) {
+        $('.alert-dismissible').remove();
+
+        if (json['error']) {
+          $('#button-review').parent().before('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+        }
+
+        if (json['success']) {
+          $(".modal__close").trigger('click');
+          $('.toast .p').text(json['success']);
+          $(".js-open-toast").trigger('click');
+
+          $('input[name=\'name\']').val('');
+          $('textarea[name=\'text\']').val('');
+          $('input[name=\'rating\']:checked').prop('checked', false);
+        }
+      }
+    });
+  });
+</script>
+{{ footer }}

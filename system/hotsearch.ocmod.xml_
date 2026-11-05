@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Hot Search</name>
+  <code>default</code>
+  <version>1.0</version>
+  <author>matroskin92</author>
+  <link>https://matro.site/</link>
+
+  <!-- SEARCH HEADER -->
+  <file path="catalog/controller/common/search.php">
+  	<operation>
+      <search>
+        <![CDATA[
+          return $this->load->view('common/search', $data);
+				]]>
+      </search>
+      <add position="replace">
+				<![CDATA[
+        $hotsearch_status = $this->config->get('module_hotsearch_status');
+        if ($hotsearch_status) {
+
+          $data['options'] = array(
+            'wrapper' => $this->config->get('module_hotsearch_wrapper'),
+            'form' => $this->config->get('module_hotsearch_form'),
+            'sku' => $this->config->get('module_hotsearch_sku'),
+            'model' => $this->config->get('module_hotsearch_model'),
+            'stock' => $this->config->get('module_hotsearch_stock'),
+            'price' => $this->config->get('module_hotsearch_price'),
+            'productCount' => $this->config->get('module_hotsearch_products_count'),
+            'categoriesCount' => $this->config->get('module_hotsearch_categories_count'),
+            'breakpoint' => $this->config->get('module_hotsearch_breakpoint'),
+            'minLength' => $this->config->get('module_hotsearch_minlength')
+          );
+
+          return $this->load->view('extension/module/hotsearch', $data);
+
+        } else {
+          return $this->load->view('common/search', $data);
+        }
+        ]]>
+      </add>
+    </operation>
+  </file>
+
+  <!-- SEARCH PAGE -->
+  <file path="catalog/controller/product/search.php">
+  	<operation>
+      <search>
+        <![CDATA[
+          $product_total = $this->model_catalog_product->getTotalProducts($filter_data);
+				]]>
+      </search>
+      <add position="after">
+				<![CDATA[
+          /*
+        ]]>
+      </add>
+    </operation>
+    <operation>
+      <search>
+        <![CDATA[
+          $results = $this->model_catalog_product->getProducts($filter_data);
+				]]>
+      </search>
+      <add position="after">
+				<![CDATA[
+          */
+
+          $this->load->model('extension/module/hotsearch');
+          $product_total = $this->model_extension_module_hotsearch->getTotalProducts($filter_data);
+			    $results = $this->model_extension_module_hotsearch->getProducts($filter_data);
+
+        ]]>
+      </add>
+    </operation>
+  </file>
+
+</modification>

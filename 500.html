@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Помилка сервера</title>
+<!--	<link rel="stylesheet" href="styles.css">-->
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f9f9f9;
+			color: #333;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			text-align: center;
+			padding: 0 20px; /* добавляем отступы для мобилок */
+		}
+
+		.error-container {
+			max-width: 600px;
+			width: 100%; /* 100% ширины для адаптивности */
+			padding: 20px;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			font-size: 2rem;
+			color: #333;
+			margin-bottom: 1rem;
+		}
+
+		p {
+			font-size: 1rem;
+			color: #555;
+			margin-bottom: 1.5rem;
+		}
+
+		.buttons {
+			margin-bottom: 2rem;
+		}
+
+		.btn {
+			display: inline-block;
+			padding: 12px 24px; /* Увеличили размер кнопок для удобства на мобильных */
+			margin: 10px 0;
+			width: 100%; /* Кнопки на всю ширину для мобильных */
+			background-color: #007BFF;
+			color: #fff;
+			text-decoration: none;
+			border-radius: 5px;
+			font-size: 1.1rem; /* немного увеличили текст на кнопках */
+			transition: background-color 0.3s;
+		}
+
+		.btn:hover {
+			background-color: #0056b3;
+		}
+
+		.contact-info {
+			font-size: 0.9rem;
+			color: #666;
+		}
+
+		.contact-info a {
+			color: #007BFF;
+			text-decoration: none;
+		}
+
+		.contact-info a:hover {
+			text-decoration: underline;
+		}
+
+		/* Адаптивные стили для мобильных устройств */
+		@media (max-width: 768px) {
+			h1 {
+				font-size: 1.75rem; /* немного уменьшим заголовок на мобильных */
+			}
+
+			.btn {
+				font-size: 1rem; /* уменьшим шрифт на кнопках для небольших экранов */
+				padding: 10px 20px; /* немного уменьшим padding кнопок */
+			}
+
+			p {
+				font-size: 0.95rem; /* уменьшим размер текста */
+			}
+		}
+
+	</style>
+</head>
+<body>
+<div class="error-container">
+	<h1>Вибачте, сталася помилка сервера</h1>
+	<p>Ми працюємо над тим, щоб вирішити цю проблему.</p>
+
+	<div class="buttons">
+		<a href="/" class="btn">Повернутися на головну сторінку</a>
+		<a href="javascript:location.reload()" class="btn">Оновити сторінку</a>
+	</div>
+
+	<div class="contact-info">
+		<p>Якщо помилка продовжує з'являтися, зв'яжіться з нами за телефонами:</p>
+		<p><a href="tel:+380730952233">+38 (073) 095-22-33</a></p>
+		<p><a href="tel:+380978663062">+38 (097) 866-30-62</a></p>
+		<p><a href="tel:+380664156145">+38 (066) 415-61-45</a></p>
+	</div>
+</div>
+</body>
+</html>

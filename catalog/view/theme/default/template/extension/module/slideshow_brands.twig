@@ -1,0 +1,15 @@
+<div class="home-partners__slider swiper">
+    <div class="swiper-wrapper">
+        {% for banner in banners %}
+            <div class="swiper-slide">
+                <div class="item">
+                    <a {% if banner.link %}href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow"
+                       {% endif %}{% else %}role="button"{% endif %} class="home-partners__slide">
+                        <img src="{{ banner.image }}" alt="{{ banner.title }}">
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+

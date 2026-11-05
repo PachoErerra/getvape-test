@@ -1,0 +1,35 @@
+<button class="home__button-catalog catalog-main-button js-open-mobile-category">
+    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="16" viewBox="0 0 21 16" fill="none">
+        <path d="M18.7686 0H8.51896C7.47299 0 6.625 0.777322 6.625 1.73613C6.625 2.69493 7.47299 3.47226 8.51896 3.47226H18.7686C19.8146 3.47226 20.6626 2.69493 20.6626 1.73613C20.6626 0.777322 19.8146 0 18.7686 0Z"
+              fill="currentColor"/>
+        <path d="M18.7686 6.12891H8.51896C7.47299 6.12891 6.625 6.90623 6.625 7.86503C6.625 8.82384 7.47299 9.60116 8.51896 9.60116H18.7686C19.8146 9.60116 20.6626 8.82384 20.6626 7.86503C20.6626 6.90623 19.8146 6.12891 18.7686 6.12891Z"
+              fill="currentColor"/>
+        <path d="M18.7686 12.2539H8.51896C7.47299 12.2539 6.625 13.0312 6.625 13.99C6.625 14.9488 7.47299 15.7262 8.51896 15.7262H18.7686C19.8146 15.7262 20.6626 14.9488 20.6626 13.99C20.6626 13.0312 19.8146 12.2539 18.7686 12.2539Z"
+              fill="currentColor"/>
+        <path d="M2.8396 0H2.39396C1.34799 0 0.5 0.777322 0.5 1.73613C0.5 2.69493 1.34799 3.47226 2.39396 3.47226H2.8396C3.88557 3.47226 4.73356 2.69493 4.73356 1.73613C4.73356 0.777322 3.88557 0 2.8396 0Z"
+              fill="currentColor"/>
+        <path d="M2.8396 6.12891H2.39396C1.34799 6.12891 0.5 6.90623 0.5 7.86503C0.5 8.82384 1.34799 9.60116 2.39396 9.60116H2.8396C3.88557 9.60116 4.73356 8.82384 4.73356 7.86503C4.73356 6.90623 3.88557 6.12891 2.8396 6.12891Z"
+              fill="currentColor"/>
+        <path d="M2.8396 12.2539H2.39396C1.34799 12.2539 0.5 13.0312 0.5 13.99C0.5 14.9488 1.34799 15.7262 2.39396 15.7262H2.8396C3.88557 15.7262 4.73356 14.9488 4.73356 13.99C4.73356 13.0312 3.88557 12.2539 2.8396 12.2539Z"
+              fill="currentColor"/>
+    </svg>
+
+    <span>{{ text_katehoriyi_tovariv }}</span>
+</button>
+
+<div class="home__slider swiper">
+    <div class="swiper-wrapper">
+        {% for banner in banners %}
+            <div class="swiper-slide">
+                <a {% if banner.link %}href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow"
+                   {% endif %}{% else %}role="button"{% endif %} class="home__slide">
+                    <img src="{{ banner.image }}" alt="{{ banner.title }}">
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="swiper-nts swiper-button-next icon-arrow-next"></div>
+    <div class="swiper-nts swiper-button-prev icon-arrow-prev"></div>
+</div>
+
+

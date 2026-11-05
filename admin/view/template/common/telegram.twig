@@ -1,0 +1,771 @@
+{{ header }}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+<style>
+    .select2-selection.select2-selection--single {
+        height: 32px;
+    }
+
+</style>
+{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>Telegram</h1>
+            <h3>Всего: {{ count_telegram_users }} | Активных: {{ count_active_telegram_users }}</h3>
+
+
+            {% if  telegram_success %}
+                <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i>
+                    {{ telegram_success }}
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                </div>
+            {% endif %}
+            {% if  telegram_error %}
+                <div class="alert alert-danger alert-dismissible">
+                    {{ telegram_error }}
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+
+                    <li class="{% if active_tab == 1 %} active {% endif %}">
+                        <a href="#send-msg"
+                           data-toggle="tab"
+                           aria-expanded="true">Надіслати повідомлення</a>
+                    </li>
+                    <li class="{% if active_tab == 2 %} active {% endif %}">
+                        <a href="#downloading-users"
+                           data-toggle="tab"
+                           aria-expanded="false">Вивантаження
+                            користувачів</a>
+                    </li>
+                    <li class="{% if active_tab == 3 %} active {% endif %}">
+                        <a href="#sending-messages"
+                           data-toggle="tab"
+                           aria-expanded="false">Розсилка повідомлень (Старі замовлення)</a>
+                    </li>
+                    <li class="{% if active_tab == 4 %} active {% endif %}">
+                        <a href="#order-statuses-messages"
+                           data-toggle="tab"
+                           aria-expanded="false">Повідомлення при зміні статуса замовлення </a>
+                    </li>
+                    <li class="{% if active_tab == 5 %} active {% endif %}">
+                        <a href="#logins"
+                           data-toggle="tab"
+                           aria-expanded="true">Статистика входів</a>
+                    </li>
+                    <li class="{% if active_tab == 8 %} active {% endif %}">
+                        <a href="#api-sends"
+                           data-toggle="tab"
+                           aria-expanded="false">API відправки (1С / бонуси)</a>
+                    </li>
+
+                    <li class="{% if active_tab == 7 %} active {% endif %}">
+                        <a href="#send-after-order"
+                           data-toggle="tab"
+                           aria-expanded="false">Повідомлення при відсутності покупки 3(6) місяці.</a>
+                    </li>
+                    <li class="{% if active_tab == 9 %} active {% endif %}">
+                        <a href="#envelopes"
+                           data-toggle="tab"
+                           aria-expanded="false">Конверти</a>
+                    </li>
+                </ul>
+ 
+                <div class="tab-content">
+                    <div class="tab-pane {% if active_tab == 1 %} active {% endif %}" id="send-msg">
+                        <form action="{{ action }}"
+                              method="post" enctype="multipart/form-data" id="form-recurring" class="form-horizontal">
+                            <input type="hidden" name="action" value="send_msg">
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label">Користувач</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                        <select name="telegram_user[]" multiple="multiple"
+                                                style="width: 100%;"
+                                                class="telegram_user form-control"
+                                                data-autocomplete="{{ autocomplete }}">
+                                        </select>
+                                    </div>
+                                    {% if error_telegram_user %}
+                                        <div class="text-danger">Обов'язкове поле</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="input-price">Повідомлення</label>
+                                <div class="col-sm-10">
+                              <textarea class="form-control" name="text" id="text" cols="117"
+                                        placeholder="Текст повідомлення*" rows="15"></textarea>
+                                    {% if error_text %}
+                                        <div class="text-danger">Обов'язкове поле</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-price">Посилання</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                        <input type="text" id="link" class="form-control" value=""
+                                               placeholder="Текст посилання" name="links[0][name]">
+                                    </div>
+                                    <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                        <input type="text" id="link" value="" class="form-control"
+                                               placeholder="Посилання" name="links[0][link]">
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                        <input type="text" id="link" value="" class="form-control"
+                                               placeholder="Текст посилання" name="links[1][name]">
+                                    </div>
+                                    <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                        <input type="text" id="link" value="" class="form-control"
+                                               placeholder="Посилання" name="links[1][link]">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-price">Файли (Фотографія має бути
+                                    розміром
+                                    не
+                                    більше 10 МБ)</label>
+                                <div class="col-sm-5">
+                                    <div class="col-sm-10"><a href="" id="thumb-image" data-toggle="image"
+                                                              class="img-thumbnail"><img src="{{ thumb }}" alt=""
+                                                                                         title=""
+                                                                                         data-placeholder="{{ placeholder }}"/>Обрати
+                                            зображення</a>
+                                        <input type="hidden" name="image" value="{{ image }}" id="input-image"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="btn-group pull-right">
+                                        <button type="submit" class="btn btn-primary">Надіслати</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane {% if active_tab == 2 %} active {% endif %}" id="downloading-users">
+                        <form action="{{ action }}"
+                              method="post" enctype="multipart/form-data" id="form-recurring" class="form-horizontal">
+                            <input type="hidden" name="action" value="downloading_users">
+                            <div class="form-group ">
+                                <label class="col-sm-2 control-label">Файл</label>
+                                <div class="col-sm-10 " style="padding-top: 9px">
+                                    {% if telegram_users_date_created %}
+                                        Дата генерації файлу : <a
+                                            href="{{ action_download_file }}">{{ telegram_users_date_created }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="btn-group pull-right">
+                                        <button type="submit" class="btn btn-primary">Генерувати</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane {% if active_tab == 3 %} active {% endif %}" id="sending-messages">
+                        <form action="{{ action }}"
+                              method="post" enctype="multipart/form-data" id="form-recurring" class="form-horizontal">
+                            <input type="hidden" name="action" value="sending_messages">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-price">Повідомлення</label>
+                                <div class="col-sm-10">
+                              <textarea class="form-control" name="text" id="text" cols="117"
+                                        placeholder="Текст повідомлення" rows="15">{{ sending_messages }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-price">Дні останнього
+                                    замовлення</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="interval_day_sending_messages"
+                                           id="interval_day_sending_messages"
+                                           value="{{ interval_day_sending_messages }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="btn-group pull-right">
+                                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane {% if active_tab == 4 %} active {% endif %}" id="order-statuses-messages">
+                        <div class="col-sm-2">
+                            <ul class="nav nav-pills nav-stacked" id="address">
+                                <li class="active"><a href="#tab-customer" data-toggle="tab" aria-expanded="true">Загальні</a>
+                                </li>
+                                <li>
+                                    <a class="" href="#tab-np_department" data-toggle="tab" aria-expanded="true">Доставка
+                                        НП Відділення</a>
+                                </li>
+                                <li>
+                                    <a class="" href="#tab-np_poshtomat" data-toggle="tab" aria-expanded="true">Доставка
+                                        НП Почтомат</a>
+                                </li>
+                                <li>
+                                    <a class="" href="#tab-np_courier" data-toggle="tab" aria-expanded="true">Доставка
+                                        НП Кур'єр</a>
+                                </li>
+                                <li>
+                                    <a class="" href="#tab-courier_lviv" data-toggle="tab" aria-expanded="true">Кур'єр
+                                        по Львову</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-10">
+                            <form action="{{ action }}"
+                                  method="post" enctype="multipart/form-data" id="form-recurring"
+                                  class="form-horizontal">
+
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab-customer">
+                                        <div class="alert alert-info">
+                                            [order_id] - Номер замовлення <br>
+                                            [bonus] - Кількість бонусів <br>
+                                        </div>
+                                        <input type="hidden" name="action" value="order_statuses_messages">
+
+                                        <div class="form-group">
+                                            <label for="status_2" class="col-sm-2  control-label">В обробці</label>
+                                            <div class="col-sm-5">
+                                 <textarea class="form-control" name="status_message[2][message]" id="status_2"
+                                           cols="117"
+                                           placeholder="Текст повідомлення"
+                                           rows="6">{{ status_message[2]['message'] ?? null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[2]['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[2][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[2]['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання" name="status_message[2][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_5" class="col-sm-2 control-label">Завершено</label>
+                                            <div class="col-sm-5">
+                                            <textarea class="form-control" name="status_message[5][message]"
+                                                      id="status_5"
+                                                      cols="117" placeholder="Текст повідомлення"
+                                                      rows="6">{{ status_message[5]['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[5]['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[5][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[5]['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання" name="status_message[5][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-np_department">
+                                        <div class="alert alert-info">
+                                            [order_id] - Номер замовлення <br>
+                                            [ttn] - Номер треку<br>
+                                            [departure] - Пункт отримання<br>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_18" class="col-sm-2 control-label">Готовий до
+                                                відправлення</label>
+                                            <div class="col-sm-5">
+                                                <textarea class="form-control"
+                                                          name="status_message[18][np_department][message]"
+                                                          id="status_18"
+                                                          cols="117"
+                                                          placeholder="Текст повідомлення"
+                                                          rows="3">{{ status_message[18]['np_department']['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[18]['np_department']['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[18][np_department][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[18]['np_department']['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання"
+                                                           name="status_message[18][np_department][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_3" class="col-sm-2 control-label">Доставлено</label>
+                                            <div class="col-sm-5">
+                                                <textarea class="form-control"
+                                                          name="status_message[3][np_department][message]"
+                                                          id="status_3"
+                                                          cols="117"
+                                                          placeholder="Текст повідомлення"
+                                                          rows="3">{{ status_message[3]['np_department']['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[3]['np_department']['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[3][np_department][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[3]['np_department']['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання"
+                                                           name="status_message[3][np_department][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-np_poshtomat">
+                                        <div class="alert alert-info">
+                                            [order_id] - Номер замовлення <br>
+                                            [ttn] - Номер треку<br>
+                                            [post_office_addresses] - адреса поштомату<br>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_18" class="col-sm-2 control-label">Готовий до
+                                                відправлення</label>
+                                            <div class="col-sm-5">
+                                                <textarea class="form-control"
+                                                          name="status_message[18][np_poshtomat][message]"
+                                                          id="status_18"
+                                                          cols="117"
+                                                          placeholder="Текст повідомлення"
+                                                          rows="5">{{ status_message[18]['np_poshtomat']['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[18]['np_poshtomat']['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[18][np_poshtomat][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[18]['np_poshtomat']['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання"
+                                                           name="status_message[18][np_poshtomat][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_3" class="col-sm-2 control-label">Доставлено</label>
+                                            <div class="col-sm-5">
+                                                <textarea class="form-control"
+                                                          name="status_message[3][np_poshtomat][message]"
+                                                          id="status_3"
+                                                          cols="117"
+                                                          placeholder="Текст повідомлення"
+                                                          rows="5">{{ status_message[3]['np_poshtomat']['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[3]['np_poshtomat']['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[3][np_poshtomat][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[3]['np_poshtomat']['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання"
+                                                           name="status_message[3][np_poshtomat][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-np_courier">
+                                        <div class="alert alert-info">
+                                            [order_id] - Номер замовлення <br>
+                                            [ttn] - Номер треку<br>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_18" class="col-sm-2 control-label">Готовий до
+                                                відправлення</label>
+                                            <div class="col-sm-5">
+                                                <textarea class="form-control"
+                                                          name="status_message[18][np_courier][message]"
+                                                          id="status_18"
+                                                          cols="117"
+                                                          placeholder="Текст повідомлення"
+                                                          rows="5">{{ status_message[18]['np_courier']['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[18]['np_courier']['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[18][np_courier][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[18]['np_courier']['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання"
+                                                           name="status_message[18][np_courier][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_3" class="col-sm-2 control-label">Доставлено</label>
+                                            <div class="col-sm-5">
+                                                <textarea class="form-control"
+                                                          name="status_message[3][np_courier][message]"
+                                                          id="status_3"
+                                                          cols="117"
+                                                          placeholder="Текст повідомлення"
+                                                          rows="5">{{ status_message[3]['np_courier']['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[3]['np_courier']['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[3][np_courier][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[3]['np_courier']['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання"
+                                                           name="status_message[3][np_courier][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-courier_lviv">
+                                        <div class="alert alert-info">
+                                            [order_id] - Номер замовлення <br>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status_3" class="col-sm-2 control-label">Доставлено</label>
+                                            <div class="col-sm-5">
+                                                <textarea class="form-control"
+                                                          name="status_message[3][courier_lviv][message]"
+                                                          id="status_3"
+                                                          cols="117"
+                                                          placeholder="Текст повідомлення"
+                                                          rows="5">{{ status_message[3]['courier_lviv']['message']??null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link" class="form-control"
+                                                           value="{{ status_message[3]['courier_lviv']['link_name'] ?? null }}"
+                                                           placeholder="Текст посилання"
+                                                           name="status_message[3][courier_lviv][link_name]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ status_message[3]['courier_lviv']['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання"
+                                                           name="status_message[3][courier_lviv][link]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-right">
+                                            <button type="submit" class="btn btn-primary">Зберегти</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane {% if active_tab == 5 %} active {% endif %}" id="logins">
+                        {{ logins }}
+                    </div>
+                    <div class="tab-pane {% if active_tab == 8 %} active {% endif %}" id="api-sends">
+                        {{ api_sends }}
+                    </div>
+                    <div class="tab-pane {% if active_tab == 7 %} active {% endif %}" id="send-after-order">
+                        <div class="col-sm-2">
+                            <ul class="nav nav-pills nav-stacked" id="address">
+{#                                <li class="active">#}
+{#                                    <a href="#tab-after-order" data-toggle="tab" aria-expanded="true">Після#}
+{#                                        покупки</a>#}
+{#                                </li>#}
+                                <li class="active">
+                                    <a href="#tab-after-order-three-moth" data-toggle="tab" aria-expanded="true">3
+                                        місяці без
+                                        покупки</a>
+                                </li>
+                                <li class="">
+                                    <a href="#tab-after-order-six-moth" data-toggle="tab" aria-expanded="true">6
+                                        місяців без покупки</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-10">
+                            <form action="{{ action }}"
+                                  method="post" enctype="multipart/form-data" id="tab-after-order-form"
+                                  class="form-horizontal">
+                                <input type="hidden" name="action" value="after_order">
+
+                                <div class="tab-content">
+{#                                    <div class="tab-pane active" id="tab-after-order">#}
+{#                                        <div class="alert alert-info">#}
+{#                                            [bonus] - Кількість бонусів <br>#}
+{#                                        </div>#}
+{#                                        <input type="hidden" name="action" value="after_order">#}
+{#                                        <div class="form-group">#}
+{#                                            <div class="col-sm-5">#}
+{#                                 <textarea class="form-control" name="after_order[1][message]" id="after_order_1"#}
+{#                                           cols="117"#}
+{#                                           placeholder="Текст повідомлення"#}
+{#                                           rows="6">{{ after_order[1]['message'] ?? null }}</textarea>#}
+{#                                            </div>#}
+{#                                            <div class="col-sm-5">#}
+{#                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">#}
+{#                                                    <input type="text" id="word" class="form-control"#}
+{#                                                           value="{{ after_order[1]['word'] ?? null }}"#}
+{#                                                           placeholder="Слово посилання"#}
+{#                                                           name="after_order[1][word]">#}
+{#                                                </div>#}
+{#                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">#}
+{#                                                    <input type="text" id="word_link"#}
+{#                                                           value="{{ after_order[1]['word_link'] ?? null }}"#}
+{#                                                           class="form-control"#}
+{#                                                           placeholder="Посилання" name="after_order[1][word_link]">#}
+{#                                                </div>#}
+
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+                                    <div class="tab-pane active" id="tab-after-order-three-moth">
+                                        <div class="alert alert-info">
+                                            [bonus]- Кількість бонусів <br>
+                                            [link]- Посилання на сайт <br>
+                                            [manager]- Контакт менеджера <br>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-5">
+                                 <textarea class="form-control" name="after_order[2][message]" id="after_order_2"
+                                           cols="117"
+                                           placeholder="Текст повідомлення"
+                                           rows="10">{{ after_order[2]['message'] ?? null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="word" class="form-control"
+                                                           value="{{ after_order[2]['link'] ?? null }}"
+                                                           placeholder="Посилання на сайт"
+                                                           name="after_order[2][link]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="word_link"
+                                                           value="{{ after_order[2]['manager'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Контакт менеджера"
+                                                           name="after_order[2][manager]">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-after-order-six-moth">
+                                        <div class="alert alert-info">
+                                            [promocode]- Промокод <br>
+                                            [percent]- Процент<br>
+                                            [link]- Посилання на сайт <br>
+                                            [manager]- Контакт менеджера <br>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-5">
+                                 <textarea class="form-control" name="after_order[3][message]" id="after_order_3"
+                                           cols="117"
+                                           placeholder="Текст повідомлення"
+                                           rows="15">{{ after_order[3]['message'] ?? null }}</textarea>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="number" id="percent" class="form-control"
+                                                           value="{{ after_order[3]['percent'] ?? null }}"
+                                                           placeholder="Процент скидки"
+                                                           name="after_order[3][percent]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="link"
+                                                           value="{{ after_order[3]['link'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Посилання на сайт" name="after_order[3][link]">
+                                                </div>
+                                                <div class="input-group" style="width: 100%; margin-bottom: 10px">
+                                                    <input type="text" id="manager"
+                                                           value="{{ after_order[3]['manager'] ?? null }}"
+                                                           class="form-control"
+                                                           placeholder="Контакт менеджера"
+                                                           name="after_order[3][manager]">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-right">
+                                            <button type="submit" class="btn btn-primary">Зберегти</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane {% if active_tab == 9 %} active {% endif %}" id="envelopes">
+                        {{ envelopes_block }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+{{ footer }}
+<script>
+    jQuery(document).ready(function ($) {
+        var tabById = {
+            'send-msg': 1,
+            'downloading-users': 2,
+            'sending-messages': 3,
+            'order-statuses-messages': 4,
+            'logins': 5,
+            'send-after-order': 7,
+            'api-sends': 8,
+            'envelopes': 9
+        };
+        var idByTab = {
+            1: 'send-msg',
+            2: 'downloading-users',
+            3: 'sending-messages',
+            4: 'order-statuses-messages',
+            5: 'logins',
+            7: 'send-after-order',
+            8: 'api-sends',
+            9: 'envelopes'
+        };
+
+        function setTabInUrl(tabId, tabNum) {
+            var url = new URL(window.location.href);
+            url.searchParams.set('active_tab', String(tabNum));
+            url.hash = tabId;
+            history.replaceState(null, '', url.toString());
+        }
+
+        function activateTab(tabId) {
+            var $link = $('.nav-tabs a[href="#' + tabId + '"]');
+            if ($link.length) {
+                $link.tab('show');
+            }
+        }
+
+        var hash = (window.location.hash || '').replace('#', '');
+        if (hash && tabById[hash]) {
+            activateTab(hash);
+            setTabInUrl(hash, tabById[hash]);
+        } else {
+            var activeTab = parseInt(new URL(window.location.href).searchParams.get('active_tab') || '{{ active_tab }}', 10);
+            if (idByTab[activeTab]) {
+                activateTab(idByTab[activeTab]);
+                setTabInUrl(idByTab[activeTab], activeTab);
+            }
+        }
+
+        $('.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var tabId = ($(e.target).attr('href') || '').replace('#', '');
+            if (tabById[tabId]) {
+                setTabInUrl(tabId, tabById[tabId]);
+            }
+        });
+
+        var $select = $('.telegram_user');
+        var autocompleteUrl = $select.data('autocomplete');
+        var presetOptions = [
+            {id: 'all', text: 'ALL (только активные)'},
+            {id: 'order_for_tree_months_or_more', text: '3 и более месяцев не делал заказ'}
+        ];
+
+        $select.select2({
+            placeholder: 'Оберіть користувача (ів) *',
+            minimumInputLength: 0,
+            ajax: {
+                url: autocompleteUrl,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        filter_name: params.term || ''
+                    };
+                },
+                processResults: function (data, params) {
+                    var term = (params.term || '').toLowerCase();
+                    var presets = presetOptions;
+
+                    if (term) {
+                        presets = presetOptions.filter(function (item) {
+                            return item.text.toLowerCase().indexOf(term) !== -1;
+                        });
+                    }
+
+                    return {
+                        results: presets.concat(data || [])
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+</script>

@@ -1,0 +1,60 @@
+{% if reviews %}
+{% if not ajax %}
+                    <div class="article__reviews">
+                        <div class="reviews__items d-flex flex-column">
+{% endif %}
+						{% for review in reviews %}
+                            <div class="reviews__item-outer">
+                                <div class="reviews__item">
+                                    <div class="reviews__item-head d-flex align-items-center justify-content-between">
+                                        <div class="reviews__item-name">{{ review.author }}</div>
+                                        <div class="reviews__item-date d-flex align-items-center">
+                                            <svg class="sprite-icon" width="17" height="17">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v=1739963996#icon-calendar"></use>
+                                            </svg>
+                                            {{ review.date_added }}
+                                        </div>
+                                    </div>
+
+                                    <div class="reviews__item-content">{{ review.text }}</div>
+									{% if review.answer %}
+                                    <div class="card__tabs-review-answer" style="padding: 20px;">
+                                        <div class="card__tabs-review-info">
+                                            <div class="card__tabs-review-name align-items-center"
+                                                 style="display: flex;gap: 6px;">
+                                                Vapors team
+                                                <svg class="sprite-icon" style="color: #21b41f;" width="20" height="20">
+                                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v=1739963996#icon-confirmed"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="reviews__item-date d-flex align-items-center">
+                                                <svg class="sprite-icon" width="17" height="17">
+                                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v=1739963996#icon-calendar"></use>
+                                                </svg>
+                                                {{ review.date_answered }}
+                                            </div>
+                                        </div>
+                                        <div class="reviews__item-content">
+                                            {{ review.answer }}
+                                        </div>
+                                    </div>
+									{% endif %}
+                                </div>
+                            </div>
+						{% endfor %}
+						<div hidden>{{ pagination }}</div>
+						{% if pagination %}
+                            <div class="reviews__show-more">
+                                <button type="button" class="btn btn-primary btn-xl" id="morereviews">
+                                    <svg class="sprite-icon" width="24" height="24">
+                                        <use href="catalog/view/theme/default/image/sprites/sprites.svg?v=1739963996#icon-load"></use>
+                                    </svg>
+                                    {{ text_pokazaty_bilshe_komentariv }}
+                                </button>
+                            </div>
+						{% endif %}
+{% if not ajax %}
+                        </div>
+                    </div>
+{% endif %}
+{% endif %}

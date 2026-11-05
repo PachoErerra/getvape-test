@@ -1,0 +1,29 @@
+<?php
+// Auto-generated
+$_['text_stvoryuy_svoyu_istoriyu_z_vapors'] = 'Створюй свою історію з Vapors! Виглядай як хочеш, думай нестандартно, займайся тим, що любиш, і приєднуйся до нас. У Vapors діє лише одне правило: будь собою!';
+$_['text_dyvytysya_vakansiyi'] = 'Дивитися вакансії';
+$_['text_nemaye_aktyvnykh_vakansiy'] = 'Немає активних вакансій';
+$_['text_my_proponuyemo'] = 'Ми пропонуємо';
+$_['text_svyata_ta_tymbildinhy'] = 'Свята та тимбілдінги';
+$_['text_navchannya_ta_rozvytok'] = 'Навчання та розвиток';
+$_['text_robota_u_druzhnomu_kolektyvi'] = 'Робота у дружньому колективі';
+$_['text_robota_v_ofisi'] = 'Робота в офісі';
+$_['text_yak_do_nas_potrapyty'] = 'Як до нас потрапити';
+$_['text_vidhuk'] = 'Відгук';
+$_['text_vidhukuysya_na_odnu_abo_kilka'] = 'Відгукуйся на одну або кілька вакансій, тільки не забудь прикріпити резюме чи портфоліо. Якщо ми підійдемо один до одного, наш рекрутер поспілкується з тобою по телефону, а потім запросить на інтерв\'ю.';
+$_['text_interv_yu'] = 'Інтерв\'ю';
+$_['text_na_onlayn_abo_offlayn_zustrichi'] = 'На онлайн або оффлайн-зустрічі ми розпитаємо тебе про досвід, проекти, професійні та особисті плани. Відповімо на твої питання про компанію, завдання та команду. Іноді перед чи під час інтерв\'ю ми просимо зробити завдання: кейс чи презентацію.';
+$_['text_rishennya'] = 'Рішення';
+$_['text_my_obov_yazkovo_skazhemo_u'] = 'Ми обов\'язково скажемо, у який термін повернемося до тебе із зворотним зв\'язком.';
+$_['text_ofer'] = 'Офер';
+$_['text_yakshcho_vse_proyshlo_uspishno_my'] = 'Якщо все пройшло успішно, ми надішлемо тобі пропозицію щодо роботи.';
+$_['text_nashi_vakansiyi'] = 'Наші вакансії';
+$_['text_shche'] = 'Ще';
+$_['text_ne_znayshly_pidkhodyashchoyi_vakansiyi'] = 'Не знайшли підходящої вакансії?';
+$_['text_zalyshte_svoye_rezyume_i_my'] = 'Залиште своє резюме і ми зв\'яжемося з вами, коли з\'являться відповідні пропозиції';
+$_['text_zalyshyty_rezyume'] = 'Залишити резюме';
+$_['text_vashe_im_ya'] = 'Ваше ім\'я';
+$_['text_nomer_telefonu'] = 'Номер телефону';
+$_['text_zachekayte'] = 'Зачекайте..';
+$_['text_zavantazhte_rezyume_pdf_abo_ms'] = 'Завантажте резюме PDF або MS Word';
+$_['text_vidhuknutysya'] = 'Відгукнутися';

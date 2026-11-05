@@ -1,0 +1,1337 @@
+{{ header }}
+<div id="common-home" class="container">
+    <div class="home__content">
+        <div class="home__holder align-items-stretch">
+            <div>
+                {{ column_left }}
+            </div>
+            <div class="home__body">
+                {{ content_top }}
+                <ul class="home__categories home__categories--mob"></ul>
+                {{ content_bottom }}
+            </div>
+            {{ column_right }}
+
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Vapors",
+        "url": "https://getvape.com.ua/",
+        "logo": "https://getvape.com.ua/image/catalog/vapors.png",
+        "image": "https://getvape.com.ua/image/catalog/vapors.png",
+        "email": "info@getvape.com.ua",
+        "department": [
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 715-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "просп. Європейського Союзу, 47",
+                    "addressLocality": "Київ",
+                    "addressRegion": "Київська область",
+                    "postalCode": "04208",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.5035509,
+                    "longitude": 30.4164556
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "22:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 715-22-34",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вул. Лугова, 12",
+                    "addressLocality": "Київ",
+                    "addressRegion": "Київська область",
+                    "postalCode": "02000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.505071,
+                    "longitude": 30.4694053
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "22:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 715-22-35",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "площа Українських Героїв, 1",
+                    "addressLocality": "Київ",
+                    "addressRegion": "Київська область",
+                    "postalCode": "02000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.4401259,
+                    "longitude": 30.518533
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:30"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+380636582233",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вул. Степана Бандери, 23",
+                    "addressLocality": "Київ",
+                    "addressRegion": "Київська область",
+                    "postalCode": "02000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.4899079,
+                    "longitude": 24.6943203
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 794-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "площа Міцкевича, 10",
+                    "addressLocality": "Івано-Франківськ",
+                    "addressRegion": "Івано-Франківська область",
+                    "postalCode": "76000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 48.9215932,
+                    "longitude": 24.7115413
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 794-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вул. Північний бульвар, 2а",
+                    "addressLocality": "Івано-Франківськ",
+                    "addressRegion": "Івано-Франківська область",
+                    "postalCode": "76000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 48.9295881,
+                    "longitude": 24.7072146
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday"
+                        ],
+                        "opens": "10:00",
+                        "closes": "21:00"
+                    },
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": "Sunday",
+                        "opens": "11:00",
+                        "closes": "21:00"
+                    }
+                ]
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+380930952233",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Галицька, 201Г",
+                    "addressLocality": "Івано-Франківськ",
+                    "addressRegion": "Івано-Франківська область",
+                    "postalCode": "76008",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 48.9485358,
+                    "longitude": 24.6899833
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 791-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Івана Франка, 5",
+                    "addressLocality": "Богуслав",
+                    "addressRegion": "Київська область",
+                    "postalCode": "09700",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.3774942,
+                    "longitude": 30.3922276
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (067) 744-28-13",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Львівська, 23А",
+                    "addressLocality": "Брюховичі",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79491",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.9046653,
+                    "longitude": 23.960318
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 957-77-37",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "площа Ринок, 20",
+                    "addressLocality": "Дрогобич",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "82100",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.6033824,
+                    "longitude": 23.4438971
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 780-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Володимира Великого, 1",
+                    "addressLocality": "Дрогобич",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "82100",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.3572563,
+                    "longitude": 23.5200255
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 793-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Михайла Грушевського, 5",
+                    "addressLocality": "Житомир",
+                    "addressRegion": "Житомирська область",
+                    "postalCode": "10031",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.2201229,
+                    "longitude": 28.4773465
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 190-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Велика Бердичівська, 23",
+                    "addressLocality": "Житомир",
+                    "addressRegion": "Житомирська область",
+                    "postalCode": "10000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.2528061,
+                    "longitude": 28.6685585
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 071-44-86",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Київська, 60",
+                    "addressLocality": "Житомир",
+                    "addressRegion": "Житомирська область",
+                    "postalCode": "10001",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.2587575,
+                    "longitude": 28.6717221
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 795-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "проспект В'ячеслава Чорновола, 4",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79019",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8480664,
+                    "longitude": 24.0260686
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "22:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 795-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Торгова, 15",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79008",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.845001,
+                    "longitude": 24.0266437
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 795-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Степана Бандери, 89",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8353689,
+                    "longitude": 24.0048564
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 794-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Гетьмана Мазепи, 1Б",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79068",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8624906,
+                    "longitude": 24.007368
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday"
+                        ],
+                        "opens": "10:00",
+                        "closes": "22:00"
+                    },
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": "Sunday",
+                        "opens": "11:00",
+                        "closes": "21:00"
+                    }
+                ]
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 793-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Івана Виговського, 100",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79071",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8124816,
+                    "longitude": 23.9773945
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (096) 340-60-63",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Княгині Ольги, 75",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8327103,
+                    "longitude": 23.9773841
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 787-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "проспект Червоної Калини, 42",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.3774942,
+                    "longitude": 30.3922276
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 791-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "площа Євгена Петрушевича, 5",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8333299,
+                    "longitude": 24.035956
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 791-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Чигиринська, 1",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8702751,
+                    "longitude": 24.0548459
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 714-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Пасічна, 71А",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.823626,
+                    "longitude": 24.0754019
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 396-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Липинського, 71В",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79024",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.865145,
+                    "longitude": 23.9753252
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 701-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Князя Романа, 24",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.84303,
+                    "longitude": 24.0079594
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 695-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Арсенальна, 9",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8414785,
+                    "longitude": 24.0349872
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 851-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Чернівецька, 11",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8380862,
+                    "longitude": 23.9981552
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 548-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Стрийська, 88",
+                    "addressLocality": "Львів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "79000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.8151474,
+                    "longitude": 24.0162481
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 791-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Зелена, 1",
+                    "addressLocality": "Мостиська",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "81300",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.7913661,
+                    "longitude": 23.1535366
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 790-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Богдана Хмельницького, 1",
+                    "addressLocality": "Радехів",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "80201",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.2714375,
+                    "longitude": 24.633965
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 791-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Руська, 2",
+                    "addressLocality": "Самбір",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "81400",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.5172548,
+                    "longitude": 23.1930272
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (063) 061-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Мишуги, 1Б",
+                    "addressLocality": "Сокаль",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "80001",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.4767152,
+                    "longitude": 24.2783467
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 957-77-37",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Майдан Ринок, 2",
+                    "addressLocality": "Стрий",
+                    "addressRegion": "Львівська область",
+                    "postalCode": "82400",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 49.256156,
+                    "longitude": 23.8523599
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday"
+                        ],
+                        "opens": "10:00",
+                        "closes": "21:00"
+                    },
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": "Sunday",
+                        "opens": "11:00",
+                        "closes": "21:00"
+                    }
+                ]
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 796-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Івана Чендея, 31",
+                    "addressLocality": "Ужгород",
+                    "addressRegion": "Закарпатська область",
+                    "postalCode": "88000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 48.8332693,
+                    "longitude": 21.9811213
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 796-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Собранецька, 89",
+                    "addressLocality": "Ужгород",
+                    "addressRegion": "Закарпатська область",
+                    "postalCode": "88000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 48.6330248,
+                    "longitude": 22.2799364
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday"
+                        ],
+                        "opens": "10:00",
+                        "closes": "21:00"
+                    },
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": "Sunday",
+                        "opens": "11:00",
+                        "closes": "21:00"
+                    }
+                ]
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (073) 541-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вул. Героїв 101-ї бригади, 9",
+                    "addressLocality": "Ужгород",
+                    "addressRegion": "Закарпатська область",
+                    "postalCode": "88000",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 48.6076776,
+                    "longitude": 19.8321087
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "21:00"
+                }
+            },
+            {
+                "@type": "Store",
+                "name": "Vapors",
+                "telephone": "+38 (093) 786-22-33",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "вулиця Князя Святослава, 167а",
+                    "addressLocality": "Старі Петрівці",
+                    "addressRegion": "Київська область",
+                    "postalCode": "07353",
+                    "addressCountry": "UA"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 50.6516964,
+                    "longitude": 30.408563
+                },
+                "priceRange": "$$",
+                "openingHoursSpecification": {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday"
+                    ],
+                    "opens": "10:00",
+                    "closes": "20:00"
+                }
+            }
+        ]
+    },
+    "contactPoint": [
+    {
+    "@type": "ContactPoint",
+    "telephone": "0 (800) 338-024",
+    "contactType": "customer service"
+    },
+    {
+    "@type": "ContactPoint",
+    "telephone": "+38 (073) 095-22-33",
+    "contactType": "customer service"
+    },
+    {
+    "@type": "ContactPoint",
+    "telephone": "+38 (063) 026-59-04",
+    "contactType": "customer service"
+    }
+    ],
+    "sameAs": [
+    "https://www.tiktok.com/@vapors44?_t=8js8ISWOnvq&_r=1",
+    "https://www.instagram.com/vapors.ua",
+    "https://t.me/vaporsvapeshop"
+    ]
+    }
+</script>
+
+{{ footer }}

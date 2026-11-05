@@ -1,0 +1,183 @@
+#regsmsModal .modal-header {
+    padding: 15px;
+    border-bottom: none;
+}
+
+#regsmsModal .modal-header .close { */
+    outline: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#regsmsModal .modal-header .modal-title {
+    margin: 0;    
+    line-height: 20px;
+    text-align: center;
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#regsmsModal .modal-footer {
+	padding: 15px;
+    padding-bottom: 20px;
+    padding-top: 0px;
+    text-align: center;
+    border-top: none;
+}
+
+#regsmsModal .modal-footer .regsms_send_code {
+
+    margin: auto;
+    width: 200px;
+    display: block;
+}
+#regsmsModal .select-country {
+    position: relative;
+}
+#regsmsModal .select-country .selected-country {	
+    border-radius: 2px;
+    border: solid 1px #ccc;
+    background-color: #eee;
+    position: relative;
+    cursor: pointer;
+    width: 65px;
+    height: 35px;
+}
+#regsmsModal .select-country .selected-country .selected-country-image {
+    padding: 7px;
+}
+#regsmsModal .select-country .selected-country .selected-country-image .selected-country-img {
+
+}
+#regsmsModal .select-country .selected-country .selected-country-pointer-down {
+	border: solid 5px transparent;
+    border-top: solid 5px #000;
+
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -3px;
+}
+#regsmsModal .select-country.active .selected-country .selected-country-pointer-down {	
+    border: solid 5px transparent !important;
+    border-bottom: solid 5px #000 !important;
+    margin-top: -8px;
+}
+#regsmsModal .select-country .countries-list {
+    width: 65px;
+    border: solid 1px #ccc;
+    border-top: none;
+    list-style: none;
+    position: absolute;
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    overflow: auto;
+
+}
+#regsmsModal .select-country .countries-list li {
+
+}
+#regsmsModal .select-country .countries-list li a {
+    padding: 0px 7px;
+    display: block;
+    border-bottom: solid 1px #ddd;
+    overflow: hidden;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    -o-transition: all 0.25s ease-in-out;
+    -ms-transition: all 0.25s ease-in-out;
+
+}
+#regsmsModal .select-country .countries-list li a:hover { 	
+    background-color: #eee;
+}
+#regsmsModal .select-country .countries-list li img{
+
+}
+#regsmsModal .telephone-block {
+    display: flex;
+}
+#regsmsModal #regsms-input-telephone {
+    width: 100%;
+    /*height: 44px;*/
+    text-align: left !important;
+}
+#regsmsModal #regsms-input-telephone.error, #regsmsModal #regsms-input-smscode.error {
+    border: 1px solid #f00;
+}
+#regsmsModal .form-telephone .info {
+    color: #f00;
+}
+#regsmsModal .offer {
+    color: #000;
+    margin-bottom: 5px;
+}
+#regsmsModal .offer a, #regsmsModal .offer a:hover {
+    color: #337ab7;
+}
+#regsmsModal .text_telephone {
+    color: #000;
+}
+
+#regsmsOfferModal {
+    padding-left: 0 !important;
+}
+#regsmsOfferModal .modal-header {
+    padding: 15px;
+    border-bottom: none;
+}
+
+#regsmsOfferModal .modal-header .close {
+    margin-top: -20px;
+    outline: none;
+}
+
+#regsmsOfferModal .modal-header .modal-title {
+    margin: 0;    
+    line-height: 20px;
+    text-align: center;
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+}
+#regsmsOfferModal .modal-body {
+    color: #666;
+}
+#regsmsModal .modal-body .check_code h5 {
+    color: #333;
+    font-size: 16px;
+    text-align: center;
+
+}
+#regsmsModal .modal-body .check_code .please_enter {
+    color: #333;
+    font-size: 14px;
+    text-align: center;
+
+}
+#regsmsModal .modal-footer.smscode #regsms-input-smscode {
+    width: 200px;
+    display: block;
+    margin: auto;
+    margin-bottom: 2px;
+}
+#regsmsModal .modal-footer.smscode .regsms_auth {
+    width: 200px;
+}
+#regsmsModal .modal-footer.smscode .no_code {    
+    color: #777;
+    cursor: pointer;
+}
+#regsmsModal .modal-footer.smscode #regsms-input-smscode.error {
+    border: 1px solid #f00;
+
+}

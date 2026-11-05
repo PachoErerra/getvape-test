@@ -1,0 +1,9 @@
+            <div class="home__inner">
+              <div class="home__news">
+			   {% for category in categories %}
+                <div class="home__news-item">
+                  <a  href="{{ category.href }}" class="h4 font-medium">{{ category.name }}</a>
+                </div>
+				{% endfor %}
+              </div>
+            </div>

@@ -1,0 +1,20 @@
+<div class="simplecheckout-block checkout__inner" id="simplecheckout_comment">
+    {% if display_header %}
+      <div class="checkout__inner-title" style="    margin-bottom: 10px;">{{ label }}</div>
+    {% endif %}
+    <div class="simplecheckout-block-content field">
+      <textarea class="form-control" name="comment" id="comment" placeholder="{{ placeholder }}" data-reload-payment-form="true">{{ comment }}</textarea>
+    </div>
+</div>
+
+
+<div class="simplecheckout-block checkout__inner">
+    <div class="checkout__privacy">
+        {{ text_pidtverdzhuyuchy_zamovlennya_ya_pryymayu_umovy }}
+
+        <ul class="checkout__privacy-list">
+            <li>{{ text_polozhennya_pro }} <a href="privacy" target="blank" class="a-link sm">{{ text_obrobku_i_zakhyst_personalnykh_danykh }}</a></li>
+            <li><a href="terms" target="blank" class="a-link sm">{{ text_uhody_korystuvacha }}</a></li>
+        </ul>
+    </div>
+</div>

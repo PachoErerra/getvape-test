@@ -1,0 +1,69 @@
+<div class="simplecheckout-block checkout__inner" id="simplecheckout_customer" {{ hide ? 'data-hide="true"' : '' }} {{ display_error and has_error ? 'data-error="true"' : '' }}>
+ 
+<!--
+ {% if display_header or display_login %}
+  <div class="checkout-heading panel-heading"><span>{{ text_checkout_customer }}</span>{% if display_login %}<span class="checkout-heading-button"><a href="javascript:void(0)" data-onclick="openLoginBox">{{ text_checkout_customer_login }}</a></span>{% endif %}</div>
+  {% endif %}
+  <div class="simplecheckout-block-content">
+    {% if display_registered %}
+      <div class="alert alert-success">{{ text_account_created }}</div>
+    {% endif %}
+    {% if display_you_will_registered %}
+      <div class="you-will-be-registered">{{ text_you_will_be_registered }}</div>
+    {% endif %}
+-->	
+		
+                <div class="checkout__inner-title">{{ text_kontaktni_dani }}</div>
+                <div class="checkout__tabs">
+				  {% if not logged %}
+                  <div class="checkout__tabs-buttons">
+                    <div class="checkout__tabs-button is-open" data-open="tab-new-customer">{{ text_ya_novyy_kliyent }}</div>
+                    <div class="checkout__tabs-button" data-open="tab-regular-customer">{{ text_ya_postiynyy_kliyent }}</div>
+                  </div>
+				  {% endif %}
+                  <div class="checkout__tabs-contents">
+                    <div class="checkout__tabs-content tab-new-customer is-open">						
+					{% for row in rows %}
+					  {{ row }}
+					{% endfor %}						
+                    </div>
+					{% if logged %}
+					<script>
+					$('#button-customer_telephone').hide();
+					$('#customer_telephone').attr("readonly", true);
+					if ($('#customer_fax').val() && $('#customer_fax').val() != '1970-01-01') {
+						$('#customer_fax').parent().parent().parent().hide();
+					}
+					</script>
+					{% endif %}				
+					{% if not logged %}
+                    <div class="checkout__tabs-content tab-regular-customer">
+                      <div class="checkout__tabs-fields">
+                        <div class="checkout__tabs-field w50">
+                          <div class="field">
+                            <label>{{ text_nomer_telefonu }}</label>
+                            <div class="field-rel">
+                              <input type="tel" name="" class="phone-mask">
+                              <button class="btn-arrow"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="checkout__tabs-field w50">
+                          <div class="field">
+                            <label>{{ text_kod_iz_sms }}</label>
+							<div class="field-rel">
+								<input type="text">
+								<button class="btn-arrow"></button>
+							</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+					 {% endif %}
+                  </div>
+                </div>
+	
+	
+	
+
+  </div>

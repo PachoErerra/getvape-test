@@ -1,0 +1,207 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <style>
+          .promoted_devopencart {
+            display: flex;
+            background: #e7f1f5;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            padding: 35px;
+            padding-right: 0px;
+            position: relative;
+            overflow: hidden;
+          }
+          .promoted_devopencart .pd_text p {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #05516b;
+          }
+          .promoted_devopencart .pd_text p a {
+            color: #0594c5;
+            font-weight: 700;
+          }
+          .promoted_devopencart .pd_text span a {
+            display: inline-flex;
+            padding: 16px 25px;
+            border-radius: 7px;
+            background: #0594c5;
+            color:#fff;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+          }
+          .promoted_devopencart .pd_banner {
+            position: absolute;
+            right: 50px;
+            bottom: -54px;
+          }
+          .promoted_devopencart .pd_banner a {
+            display: inline-flex;
+          }
+          .promoted_devopencart .pd_banner a img {
+            height: 150px;
+          }
+          @media (max-width: 1000px) {
+            .promoted_devopencart .pd_text p {
+              display: flex;
+              flex-direction: column;
+              font-size: 14px;
+            }
+            .promoted_devopencart .pd_text p a {
+              font-size: 20px;
+            }
+          }
+          @media (max-width: 820px) {
+            .promoted_devopencart {
+              padding: 20px;
+              padding-right: 20px;
+            }
+            .promoted_devopencart .pd_text span a {
+              padding: 10px 15px;
+            }
+            .promoted_devopencart .pd_banner {
+              right: 10px;
+              bottom: -24px;
+            }
+            .promoted_devopencart .pd_banner a img {
+              height: 50px;
+            }
+          }
+          @media (max-width: 450px) {
+            .promoted_devopencart .pd_text p,
+            .promoted_devopencart .pd_text span a {
+              font-size: 12px;
+            }
+            .promoted_devopencart .pd_text p {
+              margin-bottom: 10px;
+            }
+            .promoted_devopencart .pd_text p a {
+              font-size: 16px;
+            }
+            .promoted_devopencart {
+              padding-bottom: 50px;
+            }
+            .promoted_devopencart .pd_banner {
+              left: 50%;
+              right: initial;
+              transform: translate(-50%, 0%);
+            }
+          }
+        </style>
+   
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="module_snowfall_status" id="input-module_snowfall_status" class="form-control">
+                {% if module_snowfall_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_flakeсount">{{ entry_flakeсount }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_flakeсount" value="{{ module_snowfall_flakeсount }}" placeholder="70" id="input-module_snowfall_flakeсount" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_flakecolor">{{ entry_flakecolor }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_flakecolor" value="{{ module_snowfall_flakecolor }}" placeholder="#ffffff" id="input-module_snowfall_flakecolor" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_flakeindex">{{ entry_flakeindex }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_flakeindex" value="{{ module_snowfall_flakeindex }}" placeholder="999999" id="input-module_snowfall_flakeindex" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_minsize">{{ entry_minsize }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_minsize" value="{{ module_snowfall_minsize }}" placeholder="5" id="input-module_snowfall_minsize" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_maxsize">{{ entry_maxsize }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_maxsize" value="{{ module_snowfall_maxsize }}" placeholder="12" id="input-module_snowfall_maxsize" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_minspeed">{{ entry_minspeed }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_minspeed" value="{{ module_snowfall_minspeed }}" placeholder="1.5" id="input-module_snowfall_minspeed" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_maxspeed">{{ entry_maxspeed }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_maxspeed" value="{{ module_snowfall_maxspeed }}" placeholder="3" id="input-module_snowfall_maxspeed" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_round">{{ entry_round }}</label>
+            <div class="col-sm-10">
+              <select name="module_snowfall_round" id="input-module_snowfall_round" class="form-control">
+                {% if module_snowfall_round %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_shadow">{{ entry_shadow }}</label>
+            <div class="col-sm-10">
+              <select name="module_snowfall_shadow" id="input-module_snowfall_shadow" class="form-control">
+                {% if module_snowfall_shadow %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-module_snowfall_collection">{{ entry_collection }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_snowfall_collection" value="{{ module_snowfall_collection }}" placeholder=".element" id="input-module_snowfall_collection" class="form-control" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

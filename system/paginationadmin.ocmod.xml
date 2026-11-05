@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>paginationadmin</name>
+  <code>paginationadmin</code>
+  <version>1.1.0</version>
+  <author>stealth</author>
+  <link></link>
+  
+  <file path="admin/controller/*/*.php">
+    <operation error="skip">
+      <search><![CDATA[$pagination = new Pagination();]]></search>
+      <add position="replace"><![CDATA[
+		$pagination = new Paginationadmin();
+	  ]]></add>
+    </operation>
+  </file> 
+</modification>

@@ -1,0 +1,184 @@
+<div class="modal__fields" style="margin-top: 0;">
+    <form class="telegram_modal_form" method="post">
+
+        <div class="modal-step modal-step-1 is-active" style="margin-top: 0;">
+            <div class="h3 font-semibold modal-step-1-title">{{ text_avtoryzuvatysya }}</div>
+
+            <div class="p color-grey font-medium mb-20" hidden>{{ text_shchob_zalyshyty_vidhuk_potribno_zdiysnyty }}
+            </div>
+
+            <div class="modal__field">
+                <div class="field">
+                    <input type="tel" name="telephone" value="" class="js-phone-input"
+                           placeholder="{{ text_vvedit_nomer_telefonu }}"
+                           id="regsms-input-telephone">
+                    <input class="selected-country-mask" type="hidden" value="{{ tek_mask }}">
+                    <input class="selected-country-placeholder" type="hidden" value="{{ tek_placeholder }}">
+                    <div class="info" style="color: #ff0000;margin-top: 5px;font-size: 14px;"></div>
+                </div>
+            </div>
+
+            <div class="modal__field">
+                <div class="login-rounded d-flex flex-column align-items-center">
+                    <div class="login-rounded-item">
+                        <button class="btn btn-primary nts-btn-login-telegram js-nts-btn-login reset-btn-styles d-flex align-items-center justify-content-center js-btn-send"
+                                type="button"
+                                data-source="telegram_code"
+                                disabled
+                        >
+                            <svg width="24" height="24" viewBox="0 0 18 18">
+                                <use href="#icon-telegram"></use>
+                            </svg>
+                            {{ text_pidtverdyty_u_telegram }}
+                        </button>
+                    </div>
+
+                    <div class="login-rounded-item">
+                        <button class="nts-btn-login-sms js-nts-btn-login reset-btn-styles d-flex align-items-center justify-content-center js-btn-send"
+                                type="button"
+                                data-source="sms"
+                                disabled
+                        >
+                            {{ text_za_dopomogou_sms }}
+                        </button>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-step modal-step-tg-connect"
+             data-bot-link="{{ telegram_bot_link }}"
+             data-text-intro="{{ text_tg_connect_intro }}"
+             data-not-subscribed="{{ text_vy_ne_pidpysalysya_na_bota }}">
+
+            <button type="button"
+                    class="regsms-step-back js-tg-connect-back reset-btn-styles"
+                    aria-label="{{ text_nazad }}">
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M0.000327655 5.66082C-0.00013774 5.56228 0.0190831 5.46464 0.0568615 5.37363C0.0946398 5.28262 0.150216 5.20007 0.220328 5.13082L5.22033 0.130824C5.36623 0.0310992 5.54265 -0.013903 5.71849 0.00375438C5.89433 0.0214118 6.05829 0.100595 6.18144 0.227338C6.3046 0.35408 6.37904 0.520241 6.39164 0.696514C6.40425 0.872788 6.3542 1.04785 6.25033 1.19082L1.81033 5.66082L6.25033 10.1308C6.34172 10.2718 6.38314 10.4393 6.36795 10.6066C6.35276 10.7739 6.28185 10.9313 6.16657 11.0535C6.05129 11.1757 5.89832 11.2557 5.73219 11.2806C5.56605 11.3055 5.39637 11.2739 5.25033 11.1908L0.250328 6.19082C0.174767 6.12416 0.113618 6.04276 0.0706297 5.95163C0.0276409 5.86049 0.00371797 5.76153 0.000327655 5.66082Z" fill="black"/>
+                </svg>
+                <span class="regsms-step-back__label">{{ text_nazad }}</span>
+            </button>
+
+            <div class="h3 font-semibold mb-15">{{ text_tg_connect_title }}</div>
+            <div class="p color-grey font-medium m-top-10 js-tg-connect-intro"></div>
+
+            <ol class="regsms-tg-connect-steps p color-grey font-medium m-top-20">
+                <li>{{ text_tg_connect_step_1 }}</li>
+                <li>{{ text_tg_connect_step_2 }}</li>
+                <li>{{ text_tg_connect_step_3 }}</li>
+            </ol>
+
+            <div class="info js-tg-connect-info" style="color: #ff0000;margin-top: 10px;font-size: 14px;display:none;"></div>
+
+            <div class="modal__field modal__field-action m-top-20">
+                <div class="login-rounded d-flex flex-column align-items-center">
+                    <div class="login-rounded-item w-100">
+                        <a href="{{ telegram_bot_link }}"
+                           class="btn btn-primary nts-btn-login-telegram js-tg-open-bot reset-btn-styles d-flex align-items-center justify-content-center"
+                           target="_blank"
+                           rel="nofollow noopener">
+                            <svg width="24" height="24" viewBox="0 0 18 18">
+                                <use href="#icon-telegram"></use>
+                            </svg>
+                            {{ text_tg_connect_open_bot }}
+                        </a>
+                    </div>
+                    <div class="login-rounded-item w-100">
+                        <button type="button"
+                                class="nts-btn-login-sms js-tg-connect-resend reset-btn-styles"
+                                data-loading-text="{{ text_nadsylannya }}">
+                            {{ text_tg_connect_send_code }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-step modal-step-4" style="margin-top: 0;"
+             data-text-sent="{{ text_sms_code_sent_to_number }}"
+             data-text-back="{{ text_sms_step_back_telegram }}"
+             data-resend-timer="{{ text_vidpravyty_kod_povtorno_cherez_sec }}">
+
+            <button type="button"
+                    class="regsms-step-back js-regsms-step-back reset-btn-styles"
+                    aria-label="{{ text_nazad }}">
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M0.000327655 5.66082C-0.00013774 5.56228 0.0190831 5.46464 0.0568615 5.37363C0.0946398 5.28262 0.150216 5.20007 0.220328 5.13082L5.22033 0.130824C5.36623 0.0310992 5.54265 -0.013903 5.71849 0.00375438C5.89433 0.0214118 6.05829 0.100595 6.18144 0.227338C6.3046 0.35408 6.37904 0.520241 6.39164 0.696514C6.40425 0.872788 6.3542 1.04785 6.25033 1.19082L1.81033 5.66082L6.25033 10.1308C6.34172 10.2718 6.38314 10.4393 6.36795 10.6066C6.35276 10.7739 6.28185 10.9313 6.16657 11.0535C6.05129 11.1757 5.89832 11.2557 5.73219 11.2806C5.56605 11.3055 5.39637 11.2739 5.25033 11.1908L0.250328 6.19082C0.174767 6.12416 0.113618 6.04276 0.0706297 5.95163C0.0276409 5.86049 0.00371797 5.76153 0.000327655 5.66082Z" fill="black"/>
+                </svg>
+                <span class="regsms-step-back__label">{{ text_nazad }}</span>
+            </button>
+
+            <div class="h3 font-semibold">{{ text_kod_pidtverdzhennya_nadislano_na_nomer }}</div>
+            <div class="p color-grey font-medium m-top-20 js-sms-step-line1"></div>
+            <div class="p color-grey font-medium m-top-10 js-sms-step-line2">{{ text_sms_step_back_telegram }}</div>
+            <div class="modal__fields">
+                <div class="modal__field">
+                    <div class="field">
+                        <input class="smscode-telephone" type="hidden" value="">
+                        <input type="text" name="smscode" id="regsms-input-smscode" class=" form-control smscode-code"
+                               placeholder="{{ text_sms_code_placeholder }}"
+                               inputmode="numeric" pattern="[0-9]" maxlength="4" autocomplete="one-time-code">
+                        <div class="info" style="color: #ff0000;margin-top: 5px;font-size: 14px;"></div>
+                        <div class="p color-grey font-medium codetimer">{{ text_vidpravyty_kod_povtorno_mozhno_cherez }}</div>
+                        <a href="javascript:void(0);" class="a-link sm no_code"
+                           style="display:none">{{ text_vidpravyty_kod_povtorno }}</a>
+                    </div>
+                </div>
+                <div class="modal__field modal__field-action">
+                    <button type="button"
+                            class="btn btn-primary nts-btn-login-telegram regsms_auth"
+                            data-loading-text="{{ text_nadsylannya }}"
+                            disabled>{{ text_pidtverdyty }}</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-step modal-tg-success-code">
+
+            <button type="button"
+                    class="regsms-step-back js_edit_number reset-btn-styles"
+                    aria-label="{{ text_nazad }}"
+                    data-message_id="{{ messageId }}"
+                    data-chat_id="{{ chatId }}">
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M0.000327655 5.66082C-0.00013774 5.56228 0.0190831 5.46464 0.0568615 5.37363C0.0946398 5.28262 0.150216 5.20007 0.220328 5.13082L5.22033 0.130824C5.36623 0.0310992 5.54265 -0.013903 5.71849 0.00375438C5.89433 0.0214118 6.05829 0.100595 6.18144 0.227338C6.3046 0.35408 6.37904 0.520241 6.39164 0.696514C6.40425 0.872788 6.3542 1.04785 6.25033 1.19082L1.81033 5.66082L6.25033 10.1308C6.34172 10.2718 6.38314 10.4393 6.36795 10.6066C6.35276 10.7739 6.28185 10.9313 6.16657 11.0535C6.05129 11.1757 5.89832 11.2557 5.73219 11.2806C5.56605 11.3055 5.39637 11.2739 5.25033 11.1908L0.250328 6.19082C0.174767 6.12416 0.113618 6.04276 0.0706297 5.95163C0.0276409 5.86049 0.00371797 5.76153 0.000327655 5.66082Z" fill="black"/>
+                </svg>
+                <span class="regsms-step-back__label">{{ text_nazad }}</span>
+            </button>
+
+            <div class="h3 font-semibold mb-15">{{ text_pidtverdzhennya_vkhodu }}</div>
+            <div class="p color-grey font-medium m-top-20">{{ text_na_vash_telegram_bulo_nadislano_code }} <br>
+                <a href="{{ telegram_bot_link }}"
+                   class="js-tg-bot-link"
+                   style="text-decoration: underline;color: var(--pink)"
+                   target="_blank" rel="nofollow noopener">{{ text_pereyty_u_telegram }}</a>
+            </div>
+
+            <div class="modal__fields">
+                <div class="modal__field">
+                    <div class="field">
+                        <input class="telephone_code-chat_id" type="hidden" value="">
+                        <input class="telephone_code-message_id" type="hidden" value="">
+                        <input type="text" name="telegram_code" id="telegram-input-code"
+                               class=" form-control telgram-code"
+                               placeholder="{{ text_telegram_code_placeholder }}"
+                               inputmode="numeric" pattern="[0-9]" maxlength="4" autocomplete="one-time-code">
+                        <div class="info" style="color: #ff0000;margin-top: 5px;font-size: 14px;"></div>
+                    </div>
+                </div>
+                <div class="modal__field modal__field-action">
+                    <button type="button"
+                            class="btn btn-primary nts-btn-login-telegram js_telegram__auth"
+                            data-loading-text="{{ text_nadsylannya }}"
+                            disabled>{{ text_pidtverdyty }}</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

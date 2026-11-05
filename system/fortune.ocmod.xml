@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>fortune</name>
+	<code>fortune</code>
+	<version>1.1.0</version>
+	<author>NTS</author>
+	<link></link>
+
+	<!--
+      <file path="catalog/controller/common/header.php">
+            <operation error="skip">
+                <search><![CDATA[$data['analytics'] = array();]]></search>
+                <add position="before"><![CDATA[
+            $data['fortune'] = $this->config->get('config_fortune');
+            $data['fortune_body'] = $this->load->controller('extension/module/fortune/view');
+                ]]></add>
+            </operation>
+      </file>
+      <file path="catalog/view/theme/*/template/common/header.twig">
+        <operation error="skip">
+          <search><![CDATA[{% for information in informations %}]]></search>
+          <add position="before"><![CDATA[
+          {% if fortune %}
+              <li><a href=""javascript:void(0)"/" class="header__menu-link-fortune">Фортуна</a></li>
+          {% endif %}
+
+           {% if fortune %}
+                {{ fortune_body }}
+           {% endif %}
+
+          ]]></add>
+        </operation>
+      </file>
+     -->
+	<file path="catalog/controller/common/footer.php">
+		<operation error="skip">
+			<search><![CDATA[$data['informations'] = array();]]></search>
+			<add position="before"><![CDATA[
+		$data['fortune'] = $this->config->get('config_fortune');
+		$data['fortune_style'] = $this->config->get('config_style_fortune');
+		$data['style_elements'] = $this->config->get('config_style_elements');
+		$data['fortune_body'] = $this->load->controller('extension/module/fortune/view');
+
+		if (isset($this->request->get['fortune']) && $this->request->get['fortune']) {
+			$this->session->data['fortune'] = $this->request->get['fortune'];
+		}
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/*/template/common/footer.twig">
+		<operation error="skip">
+			<search><![CDATA[{% for style in styles %}]]></search>
+			<add position="before"><![CDATA[
+	{% if fortune %}
+                {{ fortune_body }}
+                <style>
+    #nts_fixed_contact_button {
+    left: 15px;
+    right: 0 !important;
+    }
+     .nts-fixed-contact-dropdown {
+     left: 36px;
+     right: 0 !important;
+     }
+
+    @media (min-width: 480px) {
+    #nts_fixed_contact_button {
+        left: 30px;
+    }
+        .nts-fixed-contact-dropdown {
+        left: 60px;
+    }
+}
+  </style>
+	{% endif %}
+	  ]]></add>
+		</operation>
+	</file>
+
+
+	<file path="catalog/controller/checkout/cart.php">
+		<operation error="skip">
+			<search><![CDATA[foreach ($products as $product) {]]></search>
+			<add position="before"><![CDATA[
+		$data['total_reward'] = 0;
+		$data['socks'] = $this->cart->hasSocks();
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[foreach ($products as $product) {]]></search>
+			<add position="after"><![CDATA[
+		$data['total_reward'] += $product['double_reward'] ? $product['double_reward'] : 0;
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/view/theme/*/template/checkout/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<div class="buttons clearfix">]]></search>
+			<add position="before"><![CDATA[
+			{% if socks %}
+			<div class="total_prize">
+Секретний подарунок
+			</div>
+			{% endif %}
+			{% if total_reward %}
+			<div class="total_prize">
+Вам будет нарахований подвійний кешбек на суму: {{ total_reward }} грн.
+			</div>
+			{% endif %}
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/controller/common/cart.php">
+		<operation error="skip">
+			<search><![CDATA[foreach ($this->cart->getProducts()]]></search>
+			<add position="before"><![CDATA[
+		$data['total_reward'] = 0;
+		$data['socks'] = $this->cart->hasSocks();
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[foreach ($this->cart->getProducts()]]></search>
+			<add position="after"><![CDATA[
+		$data['total_reward'] += $product['double_reward'] ? $product['double_reward'] : 0;
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/view/theme/*/template/common/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<div class="modal__total">]]></search>
+			<add position="before"><![CDATA[
+			{% if socks %}
+			<div class="modal__total_prize">
+До вашого замовлення буде додано Секретний подарунок!
+			</div>
+			{% endif %}
+			{% if total_reward %}
+			<div class="modal__total_prize">
+Вам будет нарахований подвійний кешбек на суму: {{ total_reward }} грн.
+			</div>
+			{% endif %}
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/controller/checkout/simplecheckout_summary.php">
+		<operation error="skip">
+			<search><![CDATA[foreach ($products as $product) {]]></search>
+			<add position="before"><![CDATA[
+		$this->_templateData['total_reward'] = 0;
+		$this->_templateData['socks'] = $this->cart->hasSocks();
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[foreach ($products as $product) {]]></search>
+			<add position="after"><![CDATA[
+		$this->_templateData['total_reward'] += $product['double_reward'] ? $product['double_reward'] : 0;
+			]]></add>
+		</operation>
+	</file>
+
+
+	<file path="catalog/view/theme/*/template/checkout/simplecheckout_summary.twig">
+		<operation error="skip">
+			<search><![CDATA[<div class="checkout__rside-desk">]]></search>
+			<add position="before"><![CDATA[
+			{% if socks %}
+			<div class="modal__total_prize">
+До вашого замовлення буде додано Секретний подарунок!
+			</div>
+			{% endif %}
+			{% if total_reward %}
+			<div class="modal__total_prize">
+Вам будет нарахований подвійний кешбек на суму: {{ total_reward }} грн.
+			</div>
+			{% endif %}
+			]]></add>
+		</operation>
+	</file>
+	<!-- cart.php gift/reward/hasSocks baked into system/library/cart/cart.php; do not patch here -->
+
+	<file path="catalog/model/checkout/order.php">
+		<operation error="skip">
+			<search><![CDATA[// Only do the fraud check if the customer]]></search>
+			<add position="before"><![CDATA[
+					if ($this->config->get('config_fortune') && $this->customer->isLogged()) {
+						unset($this->session->data['free_cartrige']);
+						$prize_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "customer_fortune_prize` WHERE customer_id = '" . (int)$this->customer->getId() . "' AND date_added > DATE_SUB(NOW(), INTERVAL 24 HOUR)");
+						$date_start = new DateTime(date('Y-m-d H:i:s'));
+						$date_start->setTime(00, 00, 01);
+						$date_end = new DateTime(date('Y-m-d H:i:s'));
+						$date_end->setTime(23, 59, 59);
+						if ($prize_query->num_rows) {
+						/*
+							if ($prize_query->row['prize'] == 'double') {
+								$this->db->query("UPDATE " . DB_PREFIX . "order SET prize = 'double' WHERE order_id = '" . (int)$order_id . "'");
+								$this->db->query("DELETE FROM " . DB_PREFIX . "customer_fortune_prize WHERE customer_id = '" . (int)$this->customer->getId() . "' AND prize = 'double'");
+							}
+						*/
+							if ($prize_query->row['prize'] == 'double') {
+								$order_products = $this->getOrderProducts($order_id);
+								foreach ($order_products as $order_product) {
+									$this->db->query("UPDATE " . DB_PREFIX . "order_product SET prize = 'double' WHERE product_id = '" . (int)$order_product['product_id'] . "'");
+								}
+								$this->db->query("DELETE FROM " . DB_PREFIX . "customer_fortune_prize WHERE customer_id = '" . (int)$this->customer->getId() . "' AND prize = 'double'");
+								$this->db->query("UPDATE `" . DB_PREFIX . "customer_fortune` SET used = (used + 1), date_used = NOW() WHERE customer_id = '" . (int)$this->customer->getId() . "' AND prize = 'double' AND date_added > '" . $date_start->format('Y-m-d H:i:s') ."' AND date_added <= '" . $date_end->format('Y-m-d H:i:s') ."'");
+							}
+							if ($prize_query->row['prize'] == 'socks') {
+								$this->db->query("UPDATE " . DB_PREFIX . "order SET prize = 'socks' WHERE order_id = '" . (int)$order_id . "'");
+								$this->db->query("DELETE FROM " . DB_PREFIX . "customer_fortune_prize WHERE customer_id = '" . (int)$this->customer->getId() . "' AND prize = 'socks'");
+								$this->db->query("UPDATE `" . DB_PREFIX . "customer_fortune` SET used = (used + 1), date_used = NOW() WHERE customer_id = '" . (int)$this->customer->getId() . "' AND prize = 'socks' AND date_added > '" . $date_start->format('Y-m-d H:i:s') ."' AND date_added <= '" . $date_end->format('Y-m-d H:i:s') ."'");
+							}
+						}
+					}
+			]]></add>
+		</operation>
+	</file>
+</modification>

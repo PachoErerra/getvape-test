@@ -1,0 +1,426 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+      <div class="pull-right">
+        <button type="submit" form="form-battlepass" class="btn btn-primary"><i class="fa fa-save"></i> Сохранить</button>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-battlepass" class="form-horizontal">
+          
+			<div class="row">
+			  <div class="col-sm-3">
+				<ul class="nav nav-pills nav-stacked" id="season-tabs">
+				  {% for season in battlepass_seasons %}
+				  <li id="season-li-{{ season.season_id }}" class="{% if loop.first %}active{% endif %}">
+					<div class="btn-group season-btn-group" style="display: flex; width: 100%;">
+						<a href="#tab-season-{{ season.season_id }}" data-toggle="tab" style="flex-grow: 1; text-align: left;padding: 10px 15px;">
+							<i class="fa fa-trophy"></i> {{ season.name }}
+						</a>
+						<button type="button" class="btn btn-danger btn-sm" onclick="removeSeason('{{ season.season_id }}');" title="Удалить сезон">
+							<i class="fa fa-trash"></i>
+						</button>
+					</div>
+				  </li>
+				  {% endfor %}
+				  <li id="season-add"><a onclick="addSeason();" style="cursor:pointer; background: #e7ffe7;"><i class="fa fa-plus-circle"></i> Добавить сезон</a></li>
+				</ul>
+			  </div>
+
+			  <div class="col-sm-9">
+				<div class="tab-content">
+				  {% for season in battlepass_seasons %}
+				  <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab-season-{{ season.season_id }}">
+					
+					<div class="form-group">
+					  <label class="col-sm-2 control-label">Название</label>
+					  <div class="col-sm-10">
+						<input type="text" name="battlepass_seasons[{{ season.season_id }}][name]" value="{{ season.name }}" class="form-control" />
+					  </div>
+					</div>
+
+					<div class="form-group">
+					  <label class="col-sm-2 control-label">Период</label>
+					  <div class="col-sm-5">
+						<input type="date" name="battlepass_seasons[{{ season.season_id }}][date_start]" value="{{ season.date_start }}" class="form-control" />
+					  </div>
+					  <div class="col-sm-5">
+						<input type="date" name="battlepass_seasons[{{ season.season_id }}][date_end]" value="{{ season.date_end }}" class="form-control" />
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-2 control-label">Статус сезона</label>
+					  <div class="col-sm-10">
+						<select name="battlepass_seasons[{{ season.season_id }}][status]" class="form-control">
+						  <option value="1" {% if season.status %}selected{% endif %}>Включен (Активен)</option>
+						  <option value="0" {% if not season.status %}selected{% endif %}>Отключен</option>
+						</select>
+						<small class="text-muted">* Только один сезон может быть активным одновременно в текущие даты.</small>
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-2 control-label">Тип обліку (Логіка)</label>
+					  <div class="col-sm-10">
+						{% if season.has_active_players %}
+							<select class="form-control" disabled="disabled">
+							  <option value="orders" {% if season.progression_type == 'orders' %}selected{% endif %}>За кількістю замовлень</option>
+							  <option value="amount" {% if season.progression_type == 'amount' %}selected{% endif %}>За накопиченою сумою</option>
+							</select>
+							<input type="hidden" name="battlepass_seasons[{{ season.season_id }}][progression_type]" value="{{ season.progression_type }}" />
+							<small class="text-danger"><i class="fa fa-exclamation-triangle"></i> Неможливо змінити тип обліку, оскільки гравці вже мають прогрес вище 1-го рівня.</small>
+						{% else %}
+							<select name="battlepass_seasons[{{ season.season_id }}][progression_type]" class="form-control" onchange="toggleProgression('{{ season.season_id }}', this.value)">
+							  <option value="orders" {% if season.progression_type == 'orders' %}selected{% endif %}>За кількістю замовлень</option>
+							  <option value="amount" {% if season.progression_type == 'amount' %}selected{% endif %}>За накопиченою сумою</option>
+							</select>
+						{% endif %}
+					  </div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><i class="fa fa-users"></i> Статистика активності (Всього: {{ season.total_clients }})</h3>
+						</div>
+						<div class="table-responsive">
+							<table class="table table-bordered text-center">
+								<thead>
+									<tr style="background: #f9f9f9;">
+										<th class="text-center" style="vertical-align: middle;">Рівень</th>
+										<th class="text-center" style="vertical-align: middle;">К-сть гравців</th>
+										<th class="text-center" style="color: #fff; background-color: #5cb85c;">
+											🎁 Можуть забрати<br><small>(Потрібна дія клієнта)</small>
+										</th>
+										<th class="text-center" style="color: #fff; background-color: #f0ad4e;">
+											⏳ Чекають замовлення<br>
+										</th>
+										<th class="text-center" style="color: #fff; background-color: #5bc0de;">
+											🕒 На таймері<br><small>(Чекають час)</small>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for lvl, info in season.detailed_stats %}
+									<tr>
+										<td style="font-weight: bold;">Рівень {{ lvl }}</td>
+										<td><span class="badge">{{ info.total }}</span></td>
+										
+										<td style="{% if info.ready_claim > 0 %}background-color: #dff0d8; color: #3c763d; font-weight:bold;{% endif %}">
+											{{ info.ready_claim > 0 ? info.ready_claim : '-' }}
+										</td>
+										
+										<td style="{% if info.waiting_order > 0 %}background-color: #fcf8e3; color: #8a6d3b; font-weight:bold;{% endif %}">
+											{{ info.waiting_order > 0 ? info.waiting_order : '-' }}
+										</td>
+										
+										<td style="{% if info.on_timer > 0 %}background-color: #d9edf7; color: #31708f;{% endif %}">
+											{{ info.on_timer > 0 ? info.on_timer : '-' }}
+										</td>
+									</tr>
+									{% else %}
+									<tr><td colspan="5">Даних немає</td></tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<table class="table table-bordered">
+					  <thead>
+						<tr>
+						  <td>Уровень</td>
+						  <td class="col-amount-{{ season.season_id }}" {% if season.progression_type == 'orders' %}style="display:none;"{% endif %}>Поріг суми (грн)</td>
+						  <td class="text-left">Назва призу (для клієнта)</td>
+						  <td>Тип награды</td>
+						  <td>товар / Значение</td>
+						  <td>Картинка</td>
+						  <td>Удалить</td>
+						</tr>
+					  </thead>
+					  <tbody id="reward-rows-{{ season.season_id }}">
+						{% for reward in season.rewards %}
+						<tr>
+						  <td><input type="text" name="battlepass_seasons[{{ season.season_id }}][reward][{{ loop.index0 }}][level]" value="{{ reward.level }}" class="form-control" /></td>
+							<td class="col-amount-{{ season.season_id }}" {% if season.progression_type == 'orders' %}style="display:none;"{% endif %}>
+                            <input type="text" name="battlepass_seasons[{{ season.season_id }}][reward][{{ loop.index0 }}][required_amount]" value="{{ reward.required_amount }}" class="form-control" placeholder="Напр: 500" />
+                          </td>
+							<td class="text-left">
+							  <input type="text" name="battlepass_seasons[{{ season.season_id }}][reward][{{ loop.index0 }}][title]" value="{{ reward.title }}" placeholder="Напр: 50 бонусів" class="form-control" />
+							</td>
+						  <td>
+							<select name="battlepass_seasons[{{ season.season_id }}][reward][{{ loop.index0 }}][type]" class="form-control">
+							  <option value="product" {% if reward.reward_type == 'product' %}selected{% endif %}>Товар</option>
+							  <option value="points" {% if reward.reward_type == 'points' %}selected{% endif %}>Баллы</option>
+							  <option value="discount" {% if reward.reward_type == 'discount' %}selected{% endif %}>Скидка (%)</option>
+							  <option value="ultra" {% if reward.reward_type == 'ultra' %}selected{% endif %}>Ультра-валюта</option>
+							</select>
+						  </td>
+                          {# ИЗМЕНЕНИЕ 1: Добавлен класс product-autocomplete для существующих строк #}
+						  <td>
+								<input type="text" 
+									   name="battlepass_seasons[{{ season.season_id }}][reward][{{ loop.index0 }}][value_display]" 
+									   value="{{ reward.reward_name }}" 
+									   placeholder="Поиск товара или значение..." 
+									   class="form-control product-autocomplete" />
+								<input type="hidden" 
+									   name="battlepass_seasons[{{ season.season_id }}][reward][{{ loop.index0 }}][value]" 
+									   value="{{ reward.reward_value }}" />
+							</td>
+							<td class="text-left">
+							  <a href="" id="thumb-image-{{ season.season_id }}-{{ loop.index0 }}" data-toggle="image" class="img-thumbnail">
+								<img src="{{ reward.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+							  </a>
+							  <input type="hidden" name="battlepass_seasons[{{ season.season_id }}][reward][{{ loop.index0 }}][image]" value="{{ reward.image }}" id="input-image-{{ season.season_id }}-{{ loop.index0 }}" />
+							</td>
+						  <td><button type="button" onclick="$(this).parents('tr').remove();" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+						</tr>
+						{% endfor %}
+					  </tbody>
+					  <tfoot>
+						<tr>
+						  <td colspan="5"></td>
+						  <td><button type="button" onclick="addReward('{{ season.season_id }}');" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+						</tr>
+					  </tfoot>
+					</table>
+					
+					<div class="row">
+
+						<div class="col-sm-8">
+							<div class="panel panel-default">
+								<div class="panel-heading"><h3 class="panel-title">Остання активність (Топ-20)</h3></div>
+								<table class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>Клієнт</th>
+											<th class="text-center">Рівень</th>
+											<th>Статус</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for participant in season.stats %}
+										<tr>
+											<td>{{ participant.name }}</td>
+											<td class="text-center"><span class="badge">{{ participant.level }}</span></td>
+											<td><span class="label label-{{ participant.label }}">{{ participant.status }}</span></td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				  </div>
+				  {% endfor %}
+
+				</div>
+			  </div>
+			</div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var season_row = 0;
+
+function addSeason() {
+    var token = '{{ user_token }}';
+    var html_tab = '';
+    var html_content = '';
+    var season_id = 'new' + season_row;
+
+    html_tab = '<li id="season-li-' + season_id + '">';
+    html_tab += '  <a href="#tab-season-' + season_id + '" data-toggle="tab"><i class="fa fa-clock-o"></i> Новый сезон (черновик)</a>';
+    html_tab += '</li>';
+    
+    $('#season-add').before(html_tab);
+
+    html_content = '<div class="tab-pane" id="tab-season-' + season_id + '">';
+    html_content += '  <div class="form-group required">';
+    html_content += '    <label class="col-sm-2 control-label">Название сезона</label>';
+    html_content += '    <div class="col-sm-10"><input type="text" name="battlepass_seasons[' + season_id + '][name]" value="" placeholder="Напр: Весенний марафон" class="form-control" /></div>';
+    html_content += '  </div>';
+    
+    html_content += '  <div class="form-group">';
+    html_content += '    <label class="col-sm-2 control-label">Даты (Начало - Конец)</label>';
+    html_content += '    <div class="col-sm-5"><input type="date" name="battlepass_seasons[' + season_id + '][date_start]" class="form-control" /></div>';
+    html_content += '    <div class="col-sm-5"><input type="date" name="battlepass_seasons[' + season_id + '][date_end]" class="form-control" /></div>';
+    html_content += '  </div>';
+
+    html_content += '  <div class="form-group">';
+    html_content += '    <label class="col-sm-2 control-label">Статус</label>';
+    html_content += '    <div class="col-sm-10"><select name="battlepass_seasons[' + season_id + '][status]" class="form-control"><option value="1">Включен</option><option value="0" selected>Отключен</option></select></div>';
+    html_content += '  </div>';
+
+	html_content += '  <div class="form-group">';
+    html_content += '    <label class="col-sm-2 control-label">Тип обліку</label>';
+    html_content += '    <div class="col-sm-10"><select name="battlepass_seasons[' + season_id + '][progression_type]" class="form-control" onchange="toggleProgression(\'' + season_id + '\', this.value)"><option value="orders" selected>За кількістю замовлень</option><option value="amount">За накопиченою сумою</option></select></div>';
+    html_content += '  </div>';
+	
+    html_content += '  <table class="table table-bordered table-hover">';
+    html_content += '    <thead><tr><td>Уровень</td><td class="col-amount-' + season_id + '" style="display:none;">Поріг суми (грн)</td><td>Назва призу</td><td>Тип</td><td>Награда</td><td>Картинка</td><td>Действие</td></tr></thead>';
+    html_content += '    <tbody id="reward-rows-' + season_id + '"></tbody>';
+    html_content += '    <tfoot><tr><td colspan="4"></td><td><button type="button" onclick="addReward(\'' + season_id + '\');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Добавить уровень</button></td></tr></tfoot>';
+    html_content += '  </table>';
+    html_content += '  <button type="button" class="btn btn-danger" onclick="$(\'#season-li-' + season_id + ', #tab-season-' + season_id + '\').remove(); $(\'#season-tabs a:first\').tab(\'show\');">Удалить этот сезон</button>';
+    html_content += '</div>';
+
+    $('.tab-content').append(html_content);
+    $('#season-tabs a[href="#tab-season-' + season_id + '"]').tab('show');
+    
+    season_row++;
+}
+
+
+var reward_row = 100;
+
+function addReward(season_id) {
+    var row = reward_row;
+	var current_type = $('select[name="battlepass_seasons[' + season_id + '][progression_type]"]').val();
+    var display_style = (current_type === 'orders') ? '' : 'style="display:none;"';   
+    html = '<tr>';
+    html += '  <td><input type="text" name="battlepass_seasons[' + season_id + '][reward][' + row + '][level]" value="" class="form-control" /></td>';
+	html += '  <td class="col-amount-' + season_id + '" ' + display_style + '><input type="text" name="battlepass_seasons[' + season_id + '][reward][' + row + '][required_amount]" value="0" class="form-control" placeholder="Напр: 500" /></td>';
+	
+	html += '  <td class="text-left"><input type="text" name="battlepass_seasons[' + season_id + '][reward][' + row + '][title]" value="" placeholder="Напр: 50 бонусів" class="form-control" /></td>';
+	html += '  <td><select name="battlepass_seasons[' + season_id + '][reward][' + row + '][type]" class="form-control">';
+	html += '    <option value="product">Товар</option>';
+	html += '    <option value="points">Баллы</option>';
+	html += '    <option value="discount">Скидка (%)</option>';
+	html += '    <option value="ultra">Ультра-валюта</option>';
+	html += '  </select></td>';
+    {# ИЗМЕНЕНИЕ 2: Добавлен класс product-autocomplete для НОВЫХ строк наград #}
+	html += '  <td>';
+	html += '    <input type="text" name="battlepass_seasons[' + season_id + '][reward][' + row + '][value_display]" value="" placeholder="Поиск товара..." class="form-control product-autocomplete" />';
+	html += '    <input type="hidden" name="battlepass_seasons[' + season_id + '][reward][' + row + '][value]" value="" />';
+	html += '  </td>';
+	
+    html += '  <td class="text-left">';
+    html += '    <a href="" id="thumb-image-' + season_id + '-' + row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" data-placeholder="{{ placeholder }}" /></a>';
+    html += '    <input type="hidden" name="battlepass_seasons[' + season_id + '][reward][' + row + '][image]" value="" id="input-image-' + season_id + '-' + row + '" />';
+    html += '  </td>';
+    
+    html += '  <td><button type="button" onclick="$(this).parents(\'tr\').remove();" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+    html += '</tr>';
+
+    $('#reward-rows-' + season_id).append(html);
+    reward_row++;
+}
+
+function removeSeason(season_id) {
+    if (!confirm('Вы уверены, что хотите полностью удалить этот сезон и все его призы?')) {
+        return;
+    }
+
+    if (String(season_id).indexOf('new') !== -1) {
+        $('#season-li-' + season_id + ', #tab-season-' + season_id).remove();
+        $('#season-tabs a:first').tab('show');
+        return;
+    }
+
+    $.ajax({
+        url: 'index.php?route=extension/module/battlepass/delete&user_token={{ user_token }}&season_id=' + season_id,
+        dataType: 'json',
+        success: function(json) {
+            if (json['success']) {
+                $('#season-li-' + season_id + ', #tab-season-' + season_id).remove();
+                $('#season-tabs a:first').tab('show');
+            } else {
+                alert(json['error']);
+            }
+        }
+    });
+}
+
+$(document).on('focus', '.product-autocomplete', function() {
+    var $input = $(this);
+    // Находим ближайший селект типа награды в этой же строке (tr)
+    var reward_type = $input.closest('tr').find('select[name*="[type]"]').val();
+
+    // Если выбран тип "product", инициализируем автокомплит
+    if (reward_type === 'product') {
+        $input.autocomplete({
+            'source': function(request, response) {
+                $.ajax({
+                    url: 'index.php?route=extension/module/battlepass/autocomplete&user_token={{ user_token }}&filter_category_id=4535&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function(json) {
+                        response($.map(json, function(item) {
+                            return { label: item['name'], value: item['product_id'] }
+                        }));
+                    }
+                });
+            },
+			'select': function(item) {
+				var $row = $(this).closest('tr');
+				
+				// Показываем название товара в текстовом поле
+				$(this).val(item['label']); 
+				
+				// ИСПРАВЛЕНИЕ: Ищем скрытое поле, имя которого заканчивается на [value]
+				// Это гарантирует, что мы не перезапишем [image]
+				$row.find('input[type="hidden"][name*="[value]"]').val(item['value']);
+				
+				return false; 
+			}
+        });
+	} else {
+        // Для скидки, баллов и валюты отключаем поиск
+        if ($input.data('ui-autocomplete')) {
+            $input.autocomplete("destroy");
+        }
+        $input.attr('placeholder', reward_type === 'discount' ? 'Напр: 15' : 'Введите значение...');
+    }
+});
+$(document).on('change', 'select[name*="[type]"]', function() {
+    var $row = $(this).closest('tr');
+    var $input = $row.find('.product-autocomplete');
+    
+    if ($(this).val() !== 'product') {
+        $input.attr('placeholder', 'Введите значение...');
+        // Опционально: можно очищать значение, если тип сменили с товара на что-то другое
+        // $input.val(''); 
+    } else {
+        $input.attr('placeholder', 'Поиск товара...');
+    }
+});
+$(document).on('keyup', '.product-autocomplete', function() {
+    var $row = $(this).closest('tr');
+    var type = $row.find('select[name*="[type]"]').val();
+    
+    if (type !== 'product') {
+        // ИСПРАВЛЕНИЕ: Пишем строго в скрытое поле [value], игнорируя [image]
+        $row.find('input[type="hidden"][name*="[value]"]').val($(this).val());
+    }
+});
+function toggleProgression(season_id, type) {
+    if (type === 'amount') {
+        $('.col-amount-' + season_id).show();
+    } else {
+        $('.col-amount-' + season_id).hide();
+    }
+}
+</script>
+
+<style>
+.season-btn-group .btn-danger {
+    border-radius: 0;
+    padding: 10px 15px;
+}
+.season-btn-group a {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+</style>
+{{ footer }}

@@ -1,0 +1,30 @@
+<?php
+// Auto-generated
+$_['text_vsi_vakansiyi'] = 'Всі вакансії';
+$_['text_vidhuknutysya'] = 'Відгукнутися';
+$_['text_podilytysya_vakansiyeyu'] = 'Поділитися вакансією';
+$_['text_https_telegram_me_share_url'] = 'Вакансія ';
+$_['text_my_proponuyemo'] = 'Ми пропонуємо';
+$_['text_svyata_ta_tymbildinhy'] = 'Свята та тимбілдінги';
+$_['text_navchannya_ta_rozvytok'] = 'Навчання та розвиток';
+$_['text_viddalena_robota'] = 'Віддалена робота';
+$_['text_robota_v_ofisi'] = 'Робота в офісі';
+$_['text_yak_do_nas_potrapyty'] = 'Як до нас потрапити';
+$_['text_vidhuk'] = 'Відгук';
+$_['text_vidhukuysya_na_odnu_abo_kilka'] = 'Відгукуйся на одну або кілька вакансій, тільки не забудь прикріпити резюме чи портфоліо. Якщо ми підійдемо один до одного, наш рекрутер поспілкується з тобою по телефону, а потім запросить на інтерв\'ю.';
+$_['text_interv_yu'] = 'Інтерв\'ю';
+$_['text_na_onlayn_abo_offlayn_zustrichi'] = 'На онлайн або оффлайн-зустрічі ми розпитаємо тебе про досвід, проекти, професійні та особисті плани. Відповімо на твої питання про компанію, завдання та команду. Іноді перед чи під час інтерв\'ю ми просимо зробити завдання: кейс чи презентацію.';
+$_['text_rishennya'] = 'Рішення';
+$_['text_my_obov_yazkovo_skazhemo_u'] = 'Ми обов\'язково скажемо, у який термін повернемося до тебе із зворотним зв\'язком.';
+$_['text_ofer'] = 'Офер';
+$_['text_yakshcho_vse_proyshlo_uspishno_my'] = 'Якщо все пройшло успішно, ми надішлемо тобі пропозицію щодо роботи.';
+$_['text_nashi_vakansiyi'] = 'Наші вакансії';
+$_['text_vidhuk_na_vakansiyu'] = 'Відгук на вакансію';
+$_['text_vashe_im_ya'] = 'Ваше ім\'я';
+$_['text_vashe_prizvyshche'] = 'Ваше прізвище';
+$_['text_nomer_telefonu'] = 'Номер телефону';
+$_['text_data_narodzhennya'] = 'Дата народження';
+$_['text_zachekayte'] = 'Зачекайте..';
+$_['text_zavantazhte_rezyume_pdf_abo_ms'] = 'Завантажте резюме PDF або MS Word (не обов\'язково)';
+$_['text_dali'] = 'Далі';
+$_['text_nazad'] = 'Назад';

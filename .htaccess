@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^image/(.*)$ https://getvape.com.ua/image/$1 [R=302,L]
+RewriteRule ^sitemap.xml$ index.php?route=extension/feed/google_sitemap [L]
+RewriteRule ^system/storage/(.*) - [F,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|webp|js|css|svg)
+RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
+<IfModule mod_headers.c>
+Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

@@ -1,0 +1,110 @@
+{% if logged %}
+    <div class="profile__info">
+        <div class="profile__info-photo">{{ aname }}</div>
+        <div class="profile__info-name">{{ name }}
+
+            <div class="profile__bonus">
+                {{ text_bonusy }} {{ reward_total }} ₴
+            </div>
+
+            {% if discount %}
+                <div class="profile__bonus">
+                    {{ text_vasha_znyzhka }} {{ discount }}%
+                </div>
+            {% endif %}
+
+        </div>
+
+        <a href="{{ logout }}" aria-label="{{ text_logout }}" class="profile__info-exit">
+            <svg class="sprite-icon" width="20" height="20">
+                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-sign-out"></use>
+            </svg>
+        </a>
+    </div>
+
+{% endif %}
+<div class="profile__menu-wrapper">
+    <ul class="profile__menu">
+        {% if not logged %}
+            <li>
+                <a href="javascript:void(0);" class="regsms_open list-group-item">
+                    <img src="image/catalog/site/icon-user-profile.svg" alt="">{{ text_login }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if logged %}
+            <li>
+                <a href="{{ edit }}" class="list-group-item {% if edit == mid %}is-active{% endif %}">
+                    <svg class="sprite-icon" width="20" height="20">
+                        <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-gear-g"></use>
+                    </svg>
+                    <span>{{ text_edit }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ wishlist }}" class="list-group-item {% if wishlist == mid %}is-active{% endif %}">
+                    <svg class="sprite-icon" width="20" height="20">
+                        <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-fav-g"></use>
+                    </svg>
+                    <span>{{ text_wishlist }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ order }}" class="list-group-item {% if order == mid %}is-active{% endif %}">
+                    <svg class="sprite-icon" width="20" height="20">
+                        <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-cart-g"></use>
+                    </svg>
+                    <span>{{ text_order }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ promocodes }}" class="list-group-item {% if promocodes == mid %}is-active{% endif %}">
+                    <svg class="sprite-icon" width="20" height="20">
+                        <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-promo-code-g"></use>
+                    </svg>
+                    <span>{{ text_promocodes }}</span>
+                </a>
+            </li>
+
+            {% if referral %}
+                <li>
+                    <a href="{{ referral }}" class="list-group-item {% if referral == mid %}is-active{% endif %}">
+                        <svg class="sprite-icon" width="20" height="20">
+                            <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-shooting-star-g"></use>
+                        </svg>
+                        <span>{{ text_referral }}</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if fortune %}
+                <li>
+                    <a role="button" class="list-group-item js-open-fortune">
+                        <svg class="sprite-icon" width="20" height="20">
+                            <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-wheel"></use>
+                        </svg>
+                        <span>{{ text_fortune }}</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if active_season %}
+                <li>
+                    <a role="button" class="list-group-item profile__menu-battle-pass js-open-battle-pass">
+                        <svg class="sprite-icon" width="20" height="20">
+                            <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-game-controller"></use>
+                        </svg>
+                        <img src="/catalog/view/theme/default/image/battle-pass/battle-pass-text.svg"
+                             style="width: 110px; height: auto;" alt="Battle Pass">
+                    </a>
+                </li>
+            {% endif %}
+
+
+
+        {% endif %}
+    </ul>
+</div>
+
+

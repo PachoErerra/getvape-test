@@ -1,0 +1,14 @@
+<div class="home-partners__slider swiper" style="">
+    <div class="swiper-wrapper">
+        {% for manufacturer in manufacturers %}
+            <div class="swiper-slide">
+                <div class="item">
+                    <a href="{{ manufacturer.href }}" class="home-partners__slide">
+                        <img src="{{ manufacturer.thumb }}" alt="{{ manufacturer.name }}">
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+

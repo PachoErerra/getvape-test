@@ -1,0 +1,72 @@
+$xxl: 1430px
+$xl: 1220px
+$lg: 992px
+$md: 767px
+$sm: 576px
+$xs: 320px
+
+.g-wrapper
+  position: relative
+  max-width: 1170px
+  width: 100%
+  margin-right: auto
+  margin-left: auto
+  padding-right: 1.5rem
+  padding-left: 1.5rem
+
+.g-wrapper_full
+  max-width: 100%!important
+
+.g-cell
+  position: relative
+  padding-left: 1.5rem
+  padding-right: 1.5rem
+  padding-top: 0.5rem
+  padding-bottom: 0.5rem
+  min-height: 1px
+  min-width: 1px
+
+.g-row
+  display: flex
+  flex-wrap: wrap
+  margin-left: -1.5rem
+  margin-right: -1.5rem
+  margin-top: -0.5rem
+  margin-bottom: -0.5rem
+
+@media only screen and (max-width : $xl)
+
+  .g-wrapper
+     max-width: 960px
+
+  .g-hidden-xl
+    display: none!important
+
+@media only screen and (max-width : $lg)
+
+  .g-wrapper
+    max-width: 720px
+
+  .g-hidden-lg
+    display: none!important
+
+@media only screen and (max-width : $md)
+
+  .g-wrapper
+    max-width: 540px
+
+  .g-hidden-md
+    display: none!important
+
+@media only screen and (max-width : $sm)
+
+  .g-wrapper
+    max-width: 100%
+
+  .g-hidden-sm
+    display: none!important
+
+@media only screen and (max-width : $xs)
+
+  .g-hidden-xs
+    display: none!important

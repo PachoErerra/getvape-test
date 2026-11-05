@@ -1,0 +1,737 @@
+<div class="modal modal--battle-pass" data-current-level="{{ carousel_start_level }}"
+     data-bp-auto-show="{{ bp_show ? '1' : '0' }}">
+    <div class="modal__overlay"></div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-bp">
+        <div class="modal__container battle-pass">
+            <button type="button" class="modal__hide js-modal-close d-flex align-items-center justify-content-center"
+                    aria-label="{{ text_zakryty }}">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use href="#icon-cross"></use>
+                </svg>
+            </button>
+
+            <div class="battle-pass__top d-flex flex-column flex-md-row-reverse align-items-md-start">
+                <div class="battle-pass__main">
+                    <div class="battle-pass__head d-flex align-items-center">
+                        <div class="battle-pass__head-left">
+                            <div class="battle-pass__title">
+                                <img src="/catalog/view/theme/default/image/battle-pass/bp-title-text.png"
+                                     alt="Battle Pass">
+                            </div>
+
+                            {# Прогресс-бар #}
+                            <div class="battle-pass__progress d-flex flex-column">
+                                {% if 0 %}
+                                    <div class="battle-pass__progress-done d-flex align-items-center">
+                                        <svg class="sprite-icon">
+                                            <use href="/catalog/view/theme/default/image/sprites/sprites-battle-pass.svg?v=2.1.6#icon-battle-pass-check-small"></use>
+                                        </svg>
+
+                                        {% if progression_type == 'amount' %}
+                                            <div class="battle-pass__progress-num js-battle-pass-progress"
+                                                 style="font-size: 16px;">
+                                                {{ text_suma_zamovlen }} {{ total_amount|number_format(0, '', ' ') }} {{ text_hrn }}
+
+                                                {% if current_level >= rewards|length %}
+                                                    <div class="battle-pass__progress-num-next"
+                                                         style="font-size: 14px; color: #4cae4c;">
+                                                        {{ text_usi_rivni_vidkryto }}
+                                                    </div>
+                                                {% else %}
+                                                    {% if current_level != 0 %}
+                                                        <div class="battle-pass__progress-num-next"
+                                                             style="font-size: 14px; opacity: 0.7;">
+                                                            / {{ next_level_amount|number_format(0, '', ' ') }} {{ text_hrn_do_rivnya }} {{ current_level + 1 }}
+                                                            )
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+
+                                            <div class="battle-pass__progress-num js-battle-pass-progress">
+                                                {{ current_level }}<span
+                                                        class="battle-pass__progress-num-next">/{{ rewards|length }} </span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="battle-pass__progress-line">
+
+                                        {% if progression_type == 'amount' %}
+                                            <div class="battle-pass__progress-fill js-battle-pass-progress-bar"
+                                                 style="width: {{ percent_to_next|default(0) }}%;"></div>
+                                        {% else %}
+                                            <div class="battle-pass__progress-fill js-battle-pass-progress-bar"
+                                                 style="width: {{ (current_level / rewards|length * 100) }}%;"></div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                {% if progression_type == 'orders' and waiting_message %}
+                                    <div class="battle-pass__waiting-text">
+                                        {{ waiting_message }}
+
+                                        <a href="{{ rules_link }}" target="_blank"
+                                           class="battle-pass__waiting-rules">{{ text_rules }}</a>
+                                    </div>
+                                {% elseif progression_type == 'amount' %}
+                                    <div class="battle-pass__waiting-text">
+
+                                        {# ПРІОРИТЕТ 1: Є що забрати (кнопка світиться) #}
+                                        {% if has_unclaimed %}
+                                            {{ text_nahoroda_dostupna_zaberit_sviy_pryz }}
+
+                                        {% elseif next_level_amount > 0 %}
+                                            {{ text_shchob_vidkryty_nastupnyy_podarunok }} <a
+                                                href="/specials/">{{ text_zroby }}</a> {{ text_pokupku_shche_na }}
+                                            <b>{{ (next_level_amount - total_amount)|number_format(0, '', ' ') }}
+                                                <small>{{ text_hrn }}</small></b>
+
+                                        {% else %}
+                                            {{ text_usi_rivni_vidkryto_1 }}
+                                        {% endif %}
+
+                                        <a href="{{ rules_link }}" target="_blank"
+                                           class="battle-pass__waiting-rules">{{ text_rules }}</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="battle-pass__head-gift is-{% if can_play %}ready{% else %}timer{% endif %}"
+                             data-gift-state="{% if can_play %}ready{% else %}timer{% endif %}"
+                             data-gift-expires-at="{{ tomorrow }}">
+                            <img class="battle-pass__head-gift-box"
+                                 src="/catalog/view/theme/default/image/battle-pass/bp-gift-box-.png"
+                                 alt="Подарункова скриня">
+
+                            <div class="battle-pass__head-gift-label">
+                                <div class="battle-pass__head-gift-pill battle-pass__head-gift-timer js-battle-pass-gift-tip-trigger"
+                                     aria-live="polite"
+                                     tabindex="0"
+                                     aria-describedby="battle-pass-gift-tooltip">
+                                    <img class="battle-pass__head-gift-pill-bg"
+                                         src="/catalog/view/theme/default/image/battle-pass/bp-gift-label.png"
+                                         alt=""
+                                         aria-hidden="true">
+                                    <span class="battle-pass__head-gift-timer-value battle-pass__head-gift-pill-front"></span>
+                                </div>
+
+                                <button type="button"
+                                        class="battle-pass__head-gift-pill battle-pass__head-gift-action js-battle-pass-gift-tip-trigger {% if customer_isLogged and can_play %} js-open-daily-reward {% endif %}"{% if not customer_isLogged %} onclick="showLoginModal();"{% elseif not can_play %} disabled{% endif %}
+                                        aria-label="Забрати щоденну нагороду"
+                                        aria-describedby="battle-pass-gift-tooltip"
+                                        data-daily-reward-title="Твоя щоденна нагорода"
+                                        data-daily-reward-image="/catalog/view/theme/default/image/battle-pass/daily-{% if prize.type == 'ultra' %}ultra{% else %}bonus{% endif %}.png"
+                                        data-daily-reward-image-alt="{% if prize.type == 'ultra' %}{{ text_ultra }}{% else %}{{ text_bonuses }}{% endif %}"
+                                        data-daily-reward-amount="{{ prize.amount }}"
+                                        data-daily-reward-unit="{{ text_prize }}"
+                                        data-daily-reward-label="{% if prize.type == 'ultra' %}{{ text_ultra }}{% else %}{{ text_bonuses }}{% endif %}"
+                                        data-daily-reward-button-text="Забрати">
+
+                                    <img class="battle-pass__head-gift-pill-bg"
+                                         src="/catalog/view/theme/default/image/battle-pass/bp-gift-label.png"
+                                         alt=""
+                                         aria-hidden="true">
+
+                                    <span class="battle-pass__head-gift-action-inner battle-pass__head-gift-pill-front">
+                                        <span class="battle-pass__head-gift-pill-badge" aria-hidden="true">1</span>
+                                        <span class="battle-pass__head-gift-pill-text">
+                                            Таємна
+                                            нагорода
+                                        </span>
+                                    </span>
+                                </button>
+
+                                <div id="battle-pass-gift-tooltip"
+                                     class="battle-pass__head-gift-tooltip"
+                                     role="tooltip">
+                                    Забери свою щоденну нагороду
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="battle-pass__stage d-flex align-items-center">
+                        <div class="battle-pass__progress-bar">
+                            <div class="battle-pass__progress-line">
+                                {% if progression_type == 'amount' %}
+                                    <div class="battle-pass__progress-fill"
+                                         style="--progress: {{ percent_to_next|default(0) }}%;"></div>
+                                {% else %}
+                                    <div class="battle-pass__progress-fill"
+                                         style="--progress: {{ (current_level / rewards|length * 100) }}%;"></div>
+                                {% endif %}
+                            </div>
+
+                            <div class="battle-pass__progress-levels">
+                                {% for reward in rewards %}
+                                    {% set reward_level = reward.level + 0 %}
+                                    <div class="battle-pass__progress-item" data-level="{{ reward_level }}">
+                                        <div class="battle-pass__progress-star">
+                                            <img src="/catalog/view/theme/default/image/battle-pass/star.svg"
+                                                 alt="Battle Pass">
+                                            <span>{{ reward_level }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="battle-pass__body">
+                        <div class="battle-pass__arrows battle-pass__arrows--prev js-battle-pass-prev">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_4363_8875)">
+                                    <path d="M3.2236 15.9985C3.2236 8.9368 8.9483 3.2096 15.993 3.2096C23.0517 3.2096 28.7764 8.9368 28.7764 15.9985C28.7764 23.0462 23.0517 28.7734 15.993 28.7734C8.9483 28.7734 3.2236 23.0462 3.2236 15.9985Z"
+                                          fill="var(--arrowColor)"/>
+                                    <path d="M9.21246 17.8893C9.60146 18.4036 10.0879 18.8206 10.5881 19.2099C11.0976 19.6084 11.6117 20.0022 12.1304 20.3915C13.4829 21.4109 14.8585 22.4071 16.2572 23.3802C16.5722 23.5933 16.8871 23.8065 17.2021 24.0196C17.5355 24.242 17.869 24.4366 18.2998 24.381C18.7166 24.3254 19.1196 24.0613 19.3002 23.6721C19.3928 23.4589 19.4345 23.2319 19.4253 22.9909C19.4253 22.7037 19.4299 22.421 19.4391 22.143C19.4391 21.6333 19.4391 21.1189 19.4391 20.6C19.4669 20.1134 20.0922 20.2385 20.4118 20.2385C20.9676 20.2385 21.5512 20.2663 22.1069 20.2246C22.5932 20.1968 23.0101 19.9049 23.1907 19.4462C23.3436 19.0709 23.288 18.6121 23.288 18.2229C23.2787 17.2869 23.2695 16.3555 23.2602 15.4288C23.2509 14.9469 23.2463 14.4696 23.2463 13.997C23.2463 13.5939 23.2741 13.1491 23.2185 12.7459C23.149 12.2872 22.8156 11.9119 22.3848 11.759C22.1486 11.6895 21.8985 11.7034 21.6484 11.7034C21.3798 11.7034 21.1065 11.7034 20.8286 11.7034C20.5693 11.7034 20.3099 11.708 20.0505 11.7173C19.8699 11.7173 19.6615 11.759 19.5225 11.62C19.3975 11.4948 19.3975 11.3141 19.3975 11.1612C19.3975 10.5959 19.3975 10.0352 19.3975 9.4792C19.3975 8.9649 19.4669 8.4366 19.1057 8.0196C18.8278 7.6999 18.397 7.547 17.9802 7.6165C17.5911 7.6721 17.2854 7.9501 16.9797 8.1586C16.2665 8.6683 15.5764 9.1966 14.9094 9.7433C13.5014 10.8647 12.149 12.0416 10.8521 13.2742C10.2546 13.8302 9.62926 14.414 9.17076 15.0952C8.89286 15.5122 8.68446 16.0127 8.69836 16.5409C8.71226 17.0413 8.92066 17.5001 9.21246 17.8893Z"
+                                          fill="#fff" stroke="#fff" stroke-width="0.4" stroke-miterlimit="10"/>
+                                    <path opacity="0.05"
+                                          d="M1.39876e-06 16C2.17167e-06 7.159 7.1698 6.26808e-07 15.9931 1.39817e-06C24.8302 2.17073e-06 32 7.159 32 16C32 24.8271 24.8302 32 15.9931 32C7.1698 32 6.27075e-07 24.8271 1.39876e-06 16Z"
+                                          fill="white"/>
+                                    <g style="mix-blend-mode:screen">
+                                        <path d="M1.39876e-06 16C2.17167e-06 7.159 7.1698 6.26808e-07 15.9931 1.39817e-06C24.8302 2.17073e-06 32 7.159 32 16C32 24.8271 24.8302 32 15.9931 32C7.1698 32 6.27075e-07 24.8271 1.39876e-06 16Z"
+                                              fill="url(#paint0_linear_4363_8875)"/>
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                              d="M1.39876e-06 16C2.17167e-06 7.159 7.1698 6.26808e-07 15.9931 1.39817e-06C24.8302 2.17073e-06 32 7.159 32 16C32 24.8271 24.8302 32 15.9931 32C7.1698 32 6.27075e-07 24.8271 1.39876e-06 16ZM31.4303 16C31.4303 7.4787 24.5106 0.556002 15.9931 0.556001C7.4894 0.556 0.569702 7.4787 0.569702 16C0.569701 24.5074 7.4894 31.4301 15.9931 31.4301C24.5106 31.4301 31.4303 24.5074 31.4303 16Z"
+                                              fill="url(#paint1_linear_4363_8875)"/>
+                                    </g>
+                                    <g opacity="0.2">
+                                        <path d="M15.868 28.5391C13.5892 23.8406 20.1059 23.5487 21.2453 22.2837C22.3847 21.0187 23.5241 14.4297 28.3595 18.3081C30.0964 20.4349 28.7208 24.4523 25.2748 27.2742C21.8289 30.11 17.6188 30.6799 15.868 28.5391Z"
+                                              fill="white"/>
+                                    </g>
+                                </g>
+                                <defs>
+                                    <linearGradient id="paint0_linear_4363_8875" x1="23.9965" y1="-13.8648" x2="45.8605"
+                                                    y2="23.9876" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="white"/>
+                                        <stop offset="0.505"/>
+                                        <stop offset="1" stop-color="white"/>
+                                    </linearGradient>
+                                    <linearGradient id="paint1_linear_4363_8875" x1="23.9965" y1="-13.8648" x2="45.8605"
+                                                    y2="23.9876" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="white"/>
+                                        <stop offset="0.505"/>
+                                        <stop offset="1" stop-color="white"/>
+                                    </linearGradient>
+                                    <clipPath id="clip0_4363_8875">
+                                        <rect width="32" height="32" fill="white"
+                                              transform="translate(32 32) rotate(-180)"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+
+                        </div>
+                        <div class="battle-pass__arrows battle-pass__arrows--next js-battle-pass-next">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M28.7764 16.0015C28.7764 23.0632 23.0517 28.7904 16.007 28.7904C8.94833 28.7904 3.22363 23.0632 3.22363 16.0015C3.22363 8.95376 8.94833 3.22656 16.007 3.22656C23.0517 3.22656 28.7764 8.95376 28.7764 16.0015Z"
+                                      fill="var(--arrowColor)"/>
+                                <path d="M22.7876 14.1107C22.3986 13.5964 21.9122 13.1794 21.412 12.7901C20.9025 12.3916 20.3884 11.9978 19.8697 11.6085C18.5172 10.5891 17.1416 9.59291 15.7429 8.61984C15.4279 8.40669 15.113 8.19355 14.798 7.9804C14.4646 7.75798 14.1311 7.56337 13.7003 7.61897C13.2835 7.67458 12.8805 7.9387 12.6999 8.32792C12.6073 8.54107 12.5656 8.76812 12.5748 9.00907C12.5748 9.29635 12.5702 9.57901 12.561 9.85703C12.561 10.3667 12.561 10.8811 12.561 11.4C12.5332 11.8866 11.9079 11.7615 11.5883 11.7615C11.0325 11.7615 10.4489 11.7337 9.89313 11.7754C9.40681 11.8032 8.98996 12.0951 8.80933 12.5538C8.65648 12.9291 8.71206 13.3879 8.71206 13.7771C8.72133 14.7131 8.73058 15.6445 8.73985 16.5712C8.74911 17.0531 8.75375 17.5304 8.75375 18.003C8.75375 18.4061 8.72596 18.8509 8.78154 19.2541C8.85102 19.7128 9.18449 20.0881 9.61523 20.241C9.85145 20.3105 10.1016 20.2966 10.3517 20.2966C10.6203 20.2966 10.8936 20.2966 11.1715 20.2966C11.4308 20.2966 11.6902 20.292 11.9496 20.2827C12.1302 20.2827 12.3386 20.241 12.4776 20.38C12.6026 20.5052 12.6026 20.6859 12.6026 20.8388C12.6026 21.4041 12.6026 21.9648 12.6026 22.5208C12.6026 23.0351 12.5332 23.5634 12.8944 23.9804C13.1723 24.3001 13.6031 24.453 14.0199 24.3835C14.409 24.3279 14.7147 24.0499 15.0204 23.8414C15.7336 23.3317 16.4237 22.8034 17.0907 22.2567C18.4987 21.1353 19.8511 19.9584 21.148 18.7258C21.7455 18.1698 22.3708 17.586 22.8293 16.9048C23.1072 16.4878 23.3156 15.9873 23.3017 15.4591C23.2878 14.9587 23.0794 14.4999 22.7876 14.1107Z"
+                                      fill="#fff" stroke="#fff" stroke-width="0.4" stroke-miterlimit="10"/>
+                                <path opacity="0.05"
+                                      d="M32 16C32 24.841 24.8302 32 16.0069 32C7.16978 32 0 24.841 0 16C0 7.1729 7.16978 0 16.0069 0C24.8302 0 32 7.1729 32 16Z"
+                                      fill="white"/>
+                                <g style="mix-blend-mode:screen">
+                                    <path d="M32 16C32 24.841 24.8302 32 16.0069 32C7.16978 32 0 24.841 0 16C0 7.1729 7.16978 0 16.0069 0C24.8302 0 32 7.1729 32 16Z"
+                                          fill="url(#paint0_linear_4351_15055)"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                          d="M32 16C32 24.841 24.8302 32 16.0069 32C7.16978 32 0 24.841 0 16C0 7.1729 7.16978 0 16.0069 0C24.8302 0 32 7.1729 32 16ZM0.569697 16C0.569697 24.5213 7.48937 31.444 16.0069 31.444C24.5106 31.444 31.4303 24.5213 31.4303 16C31.4303 7.49262 24.5106 0.569944 16.0069 0.569944C7.48937 0.569944 0.569697 7.49262 0.569697 16Z"
+                                          fill="url(#paint1_linear_4351_15055)"/>
+                                </g>
+                                <g opacity="0.2">
+                                    <path d="M16.132 3.46086C18.4108 8.15938 11.8941 8.4513 10.7547 9.71629C9.61529 10.9813 8.4759 17.5703 3.64047 13.6919C1.90361 11.5651 3.27921 7.54773 6.72515 4.72584C10.1711 1.89004 14.3812 1.32011 16.132 3.46086Z"
+                                          fill="white"/>
+                                </g>
+                                <defs>
+                                    <linearGradient id="paint0_linear_4351_15055" x1="8.00347" y1="45.8648"
+                                                    x2="-13.8605" y2="8.01239" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="white"/>
+                                        <stop offset="0.505"/>
+                                        <stop offset="1" stop-color="white"/>
+                                    </linearGradient>
+                                    <linearGradient id="paint1_linear_4351_15055" x1="8.00347" y1="45.8648"
+                                                    x2="-13.8605" y2="8.01239" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="white"/>
+                                        <stop offset="0.505"/>
+                                        <stop offset="1" stop-color="white"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="battle-pass__track js-battle-pass-track swiper">
+                            <div class="battle-pass__cards swiper-wrapper">
+                                {% for reward in rewards %}
+
+                                    <div class="battle-pass-card swiper-slide
+                                        {{ reward.status == 'claimed' ? 'battle-pass-card--received' }}
+                                        {{ reward.status == 'available' ? 'battle-pass-card--available' }}
+                                        {{ reward.status == 'locked' ? 'battle-pass-card--locked' }}
+                                        {{ reward.status == 'waiting' ? 'battle-pass-card--waiting' }}
+{% if reward.is_active_arrow %} battle-pass-card--active{% endif %}
+"
+                                         data-level="{{ reward.level }}">
+
+                                        <div class="battle-pass-card__arrow js-battle-pass-arrow" aria-hidden="true">
+                                            <svg width="32" height="23" viewBox="0 0 32 23" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <g style="mix-blend-mode:multiply" opacity="0.3">
+                                                    <path d="M0.000115224 4.66161C0.000115338 2.05708 1.75859 1.72588e-07 3.99816 2.70483e-07L25.3487 1.20374e-06C27.5882 1.30164e-06 29.3467 2.05708 29.3467 4.66161C29.3467 5.80627 28.9652 6.91777 28.2684 7.78042L17.6014 21.1017C16.8549 22.0307 15.7766 22.5781 14.6651 22.5781C13.5536 22.5781 12.4919 22.0307 11.7454 21.1017L1.06183 7.78042C0.381669 6.91777 0.000115174 5.80627 0.000115224 4.66161Z"
+                                                          fill="black"/>
+                                                </g>
+                                                <path d="M1.37706 4.66161C1.37706 2.05708 3.11894 1.72587e-07 5.3585 2.70482e-07L26.7256 1.20447e-06C28.9652 1.30236e-06 30.7071 2.05708 30.7071 4.66161C30.7071 5.80627 30.3421 6.91777 29.6453 7.78042L18.9618 21.1017C18.2153 22.0307 17.1535 22.5781 16.0421 22.5781C14.9306 22.5781 13.8689 22.0307 13.1223 21.1017L2.43878 7.78042C1.74203 6.91777 1.37706 5.80627 1.37706 4.66161Z"
+                                                      fill="#C9C9C9"/>
+                                                <path d="M2.18995 4.66161C2.18995 2.05708 3.9484 1.72587e-07 6.18797 2.70482e-07L27.5385 1.20374e-06C29.7781 1.30164e-06 31.5365 2.05708 31.5365 4.66161C31.5365 5.80627 31.155 6.91777 30.4748 7.78042L19.7913 21.1017C19.0447 22.0307 17.983 22.5781 16.8715 22.5781C15.76 22.5781 14.6817 22.0307 13.9352 21.1017L3.26825 7.78042C2.57149 6.91777 2.18995 5.80627 2.18995 4.66161Z"
+                                                      fill="white"/>
+                                                <path d="M29.3468 6.89444L18.6798 20.2157C17.6679 21.4599 16.0587 21.4599 15.0633 20.2157L4.37976 6.89443C2.77059 4.88712 3.91525 1.45313 6.188 1.45313L27.5385 1.45313C29.8113 1.45313 30.9559 4.88712 29.3468 6.89444Z"
+                                                      fill="#FED330"/>
+                                                <g opacity="0.08">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                          d="M29.3467 6.89444L18.6798 20.2157C17.6678 21.4599 16.0586 21.4599 15.0633 20.2157L4.37972 6.89443C3.86545 6.24745 3.63321 5.45114 3.63321 4.67144C3.63321 3.02909 4.64515 1.45313 6.18796 1.45313L27.5385 1.45313C29.0813 1.45313 30.1098 3.02909 30.1098 4.67144C30.1098 5.45114 29.861 6.24745 29.3467 6.89444ZM27.5385 2.00058L6.18796 2.00058C4.94376 2.00058 4.18066 3.37747 4.18066 4.67144C4.18066 5.16912 4.2802 5.89906 4.81106 6.54605L15.4946 19.8673C15.8817 20.3429 16.3407 20.5862 16.8715 20.5972C17.3913 20.5862 17.8503 20.3429 18.2484 19.8673L28.9154 6.54605C29.4463 5.89906 29.5458 5.16912 29.5458 4.67144C29.5458 3.37747 28.7827 2.00058 27.5385 2.00058Z"
+                                                          fill="black"/>
+                                                </g>
+                                            </svg>
+                                        </div>
+
+                                        <div class="battle-pass-card__inner">
+                                            <div class="battle-pass-card__shield">
+                                                <svg width="172" height="200" viewBox="0 0 172 200" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <g style="mix-blend-mode:screen">
+                                                        <path d="M153.859 200H18.1596C8.16449 200 0 190.034 0 177.855V22.167C0 9.98856 8.16449 0 18.1596 0L153.859 0C163.836 0 172 9.98856 172 22.167V177.855C172 190.034 163.836 200 153.859 200Z"
+                                                        />
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                              d="M172 22.167V177.855C172 190.034 163.836 200 153.859 200H18.1596C8.16449 200 0 190.034 0 177.855V22.167C0 9.98856 8.16449 0 18.1596 0L153.859 0C163.836 0 172 9.98856 172 22.167ZM18.1596 0.692713C8.45739 0.692713 0.567483 10.3237 0.567483 22.167V177.855C0.567483 189.676 8.45739 199.307 18.1596 199.307H153.859C163.543 199.307 171.433 189.676 171.433 177.855V22.167C171.433 10.3237 163.543 0.692713 153.859 0.692713H18.1596Z"
+                                                              fill="url(#paint1_linear_4347_8807)"/>
+                                                    </g>
+                                                    <defs>
+                                                        <linearGradient x1="80.0157"
+                                                                        y1="114.842" x2="-20.041" y2="-27.1331"
+                                                                        gradientUnits="userSpaceOnUse">
+                                                            <stop stop-color="white" stop-opacity="0.36"/>
+                                                            <stop offset="0.505"/>
+                                                            <stop offset="1" stop-color="white"/>
+                                                        </linearGradient>
+                                                        <linearGradient x1="62.1343"
+                                                                        y1="77.0348" x2="5.24598" y2="-3.68584"
+                                                                        gradientUnits="userSpaceOnUse">
+                                                            <stop stop-color="white"/>
+                                                            <stop offset="0.505"/>
+                                                            <stop offset="1" stop-color="white"/>
+                                                        </linearGradient>
+                                                    </defs>
+                                                </svg>
+                                            </div>
+
+                                            <div class="battle-pass-card__content">
+                                                {% if reward.image %}
+                                                    <span class="battle-pass-card__image"><img src="{{ reward.image }}"
+                                                                                               alt="{{ reward.title|replace({'<br>': ' ', '<br/>': ' ', '<br />': ' '})|striptags|replace({'\n': ' ', '\r': ''})|trim }}"></span>
+                                                {% endif %}
+                                                <span class="battle-pass-card__label">{{ reward.title }}</span>
+                                            </div>
+
+                                            {% if reward.status == 'available' %}
+                                                <button type="button" class="battle-pass-card__btn js-btn-claim"
+                                                        data-level="{{ reward.level }}">
+                                                    <img src="/catalog/view/theme/default/image/battle-pass/main-button.svg"
+                                                         alt="Battle Pass">
+                                                    <span>{{ text_otrymaty }}</span>
+                                                </button>
+
+                                            {% elseif reward.status == 'claimed' %}
+
+
+                                            {% elseif reward.status == 'waiting' %}
+                                                <div class="battle-pass-card__status battle-pass-card__status--waiting">
+                                                    <svg class="sprite-icon">
+                                                        {# Тут іконка годинника або очікування, якщо є #}
+                                                        <use href="/catalog/view/theme/default/image/sprites/sprites-battle-pass.svg?v=2.1.2#icon-battle-pass-clock"></use>
+                                                    </svg>
+                                                </div>
+
+                                            {% else %}
+                                                <div class="battle-pass-card__status battle-pass-card__status--lock">
+                                                    <img src="/catalog/view/theme/default/image/battle-pass/lock.svg"
+                                                         loading="lazy" alt="Battle Pass Lock">
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                <div class="battle-pass-card swiper-slide">
+
+                                    <div class="battle-pass-card__arrow js-battle-pass-arrow" aria-hidden="true">
+                                        <svg width="32" height="23" viewBox="0 0 32 23" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <g style="mix-blend-mode:multiply" opacity="0.3">
+                                                <path d="M0.000115224 4.66161C0.000115338 2.05708 1.75859 1.72588e-07 3.99816 2.70483e-07L25.3487 1.20374e-06C27.5882 1.30164e-06 29.3467 2.05708 29.3467 4.66161C29.3467 5.80627 28.9652 6.91777 28.2684 7.78042L17.6014 21.1017C16.8549 22.0307 15.7766 22.5781 14.6651 22.5781C13.5536 22.5781 12.4919 22.0307 11.7454 21.1017L1.06183 7.78042C0.381669 6.91777 0.000115174 5.80627 0.000115224 4.66161Z"
+                                                      fill="black"/>
+                                            </g>
+                                            <path d="M1.37706 4.66161C1.37706 2.05708 3.11894 1.72587e-07 5.3585 2.70482e-07L26.7256 1.20447e-06C28.9652 1.30236e-06 30.7071 2.05708 30.7071 4.66161C30.7071 5.80627 30.3421 6.91777 29.6453 7.78042L18.9618 21.1017C18.2153 22.0307 17.1535 22.5781 16.0421 22.5781C14.9306 22.5781 13.8689 22.0307 13.1223 21.1017L2.43878 7.78042C1.74203 6.91777 1.37706 5.80627 1.37706 4.66161Z"
+                                                  fill="#C9C9C9"/>
+                                            <path d="M2.18995 4.66161C2.18995 2.05708 3.9484 1.72587e-07 6.18797 2.70482e-07L27.5385 1.20374e-06C29.7781 1.30164e-06 31.5365 2.05708 31.5365 4.66161C31.5365 5.80627 31.155 6.91777 30.4748 7.78042L19.7913 21.1017C19.0447 22.0307 17.983 22.5781 16.8715 22.5781C15.76 22.5781 14.6817 22.0307 13.9352 21.1017L3.26825 7.78042C2.57149 6.91777 2.18995 5.80627 2.18995 4.66161Z"
+                                                  fill="white"/>
+                                            <path d="M29.3468 6.89444L18.6798 20.2157C17.6679 21.4599 16.0587 21.4599 15.0633 20.2157L4.37976 6.89443C2.77059 4.88712 3.91525 1.45313 6.188 1.45313L27.5385 1.45313C29.8113 1.45313 30.9559 4.88712 29.3468 6.89444Z"
+                                                  fill="#FED330"/>
+                                            <g opacity="0.08">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M29.3467 6.89444L18.6798 20.2157C17.6678 21.4599 16.0586 21.4599 15.0633 20.2157L4.37972 6.89443C3.86545 6.24745 3.63321 5.45114 3.63321 4.67144C3.63321 3.02909 4.64515 1.45313 6.18796 1.45313L27.5385 1.45313C29.0813 1.45313 30.1098 3.02909 30.1098 4.67144C30.1098 5.45114 29.861 6.24745 29.3467 6.89444ZM27.5385 2.00058L6.18796 2.00058C4.94376 2.00058 4.18066 3.37747 4.18066 4.67144C4.18066 5.16912 4.2802 5.89906 4.81106 6.54605L15.4946 19.8673C15.8817 20.3429 16.3407 20.5862 16.8715 20.5972C17.3913 20.5862 17.8503 20.3429 18.2484 19.8673L28.9154 6.54605C29.4463 5.89906 29.5458 5.16912 29.5458 4.67144C29.5458 3.37747 28.7827 2.00058 27.5385 2.00058Z"
+                                                      fill="black"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+
+                                    <div class="battle-pass-card__inner">
+                                        <div class="battle-pass-card__shield">
+                                            <svg width="172" height="200" viewBox="0 0 172 200" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <g style="mix-blend-mode:screen">
+                                                    <path d="M153.859 200H18.1596C8.16449 200 0 190.034 0 177.855V22.167C0 9.98856 8.16449 0 18.1596 0L153.859 0C163.836 0 172 9.98856 172 22.167V177.855C172 190.034 163.836 200 153.859 200Z"/>
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                          d="M172 22.167V177.855C172 190.034 163.836 200 153.859 200H18.1596C8.16449 200 0 190.034 0 177.855V22.167C0 9.98856 8.16449 0 18.1596 0L153.859 0C163.836 0 172 9.98856 172 22.167ZM18.1596 0.692713C8.45739 0.692713 0.567483 10.3237 0.567483 22.167V177.855C0.567483 189.676 8.45739 199.307 18.1596 199.307H153.859C163.543 199.307 171.433 189.676 171.433 177.855V22.167C171.433 10.3237 163.543 0.692713 153.859 0.692713H18.1596Z"
+                                                          fill="url(#paint1_linear_4347_8807)"/>
+                                                </g>
+                                                <defs>
+                                                    <linearGradient x1="80.0157" y1="114.842" x2="-20.041" y2="-27.1331"
+                                                                    gradientUnits="userSpaceOnUse">
+                                                        <stop stop-color="white" stop-opacity="0.36"/>
+                                                        <stop offset="0.505"/>
+                                                        <stop offset="1" stop-color="white"/>
+                                                    </linearGradient>
+                                                    <linearGradient x1="62.1343" y1="77.0348" x2="5.24598" y2="-3.68584"
+                                                                    gradientUnits="userSpaceOnUse">
+                                                        <stop stop-color="white"/>
+                                                        <stop offset="0.505"/>
+                                                        <stop offset="1" stop-color="white"/>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                        </div>
+
+                                        <div class="battle-pass-card__content">
+                                            <span class="battle-pass-card__image"><img
+                                                        src="catalog/view/theme/default/image/battle-pass/coming-soon.png"
+                                                        alt="Наступні  рівні скоро"></span>
+                                            <span class="battle-pass-card__label">Наступні  рівні скоро</span>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battle-pass__side">
+                    <div class="battle-pass__avatar">
+                        <img src="/catalog/view/theme/default/image/battle-pass/bp-avatar.png" alt="Battle Pass">
+                    </div>
+
+                    <div class="battle-pass__currency">
+                        <div>
+                            <strong class="js-battle-pass-currency">{{ total_ultra|default(0) }}</strong>
+                            {{ text_ultravalyuty_nakopycheno }}
+
+                            <div class="battle-pass__currency-info"
+                                 tabindex="0"
+                                 role="button">
+                                <svg class="battle-pass__currency-info-icon" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none"
+                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M12 1.5C17.7991 1.5 22.5 6.20086 22.5 12C22.5 17.7991 17.7991 22.5 12 22.5C6.20086 22.5 1.5 17.7991 1.5 12C1.5 6.20086 6.20086 1.5 12 1.5ZM12 4.5C10.0109 4.5 8.10281 5.28977 6.69629 6.69629C5.28977 8.10281 4.5 10.0109 4.5 12C4.5 13.9891 5.28977 15.8972 6.69629 17.3037C8.10281 18.7102 10.0109 19.5 12 19.5C13.9891 19.5 15.8972 18.7102 17.3037 17.3037C18.7102 15.8972 19.5 13.9891 19.5 12C19.5 10.0109 18.7102 8.10281 17.3037 6.69629C15.8972 5.28977 13.9891 4.5 12 4.5ZM10.5 12.5C10.5 12.1022 10.6581 11.7208 10.9395 11.4395C11.2208 11.1581 11.6022 11 12 11L12.1406 10.9902C12.2803 10.9704 12.4151 10.9208 12.5352 10.8447C12.695 10.7434 12.8233 10.5988 12.9043 10.4277C12.9852 10.2566 13.0153 10.0658 12.9922 9.87793C12.9691 9.69008 12.8934 9.51261 12.7734 9.36621C12.6534 9.21986 12.4941 9.11031 12.3145 9.05078C12.1347 8.99129 11.9415 8.98441 11.7578 9.03027C11.5742 9.07614 11.407 9.17264 11.2764 9.30957C11.1457 9.44655 11.0567 9.61812 11.0195 9.80371L10.9209 10.2949L10.4307 10.1963L8.46875 9.80371L7.97852 9.70508L8.07715 9.21484C8.21617 8.52016 8.5367 7.87471 9.00684 7.34473C9.477 6.81471 10.0797 6.4191 10.7529 6.19824C11.4261 5.97743 12.1462 5.93942 12.8389 6.08789C13.5313 6.23638 14.1719 6.5659 14.6953 7.04297C15.2189 7.52034 15.6067 8.12853 15.8184 8.80469C16.03 9.48078 16.0583 10.201 15.9004 10.8916C15.7425 11.5823 15.4034 12.2184 14.9189 12.7354C14.5213 13.1597 14.0363 13.489 13.5 13.7061V17.5H10.5V12.5Z"
+                                          fill="white" stroke="black"/>
+                                </svg>
+                                <span class="battle-pass__currency-tooltip" role="tooltip">
+                                    <span class="battle-pass__currency-tooltip-text">{{ text_ultra }}</span>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="battle-pass__head-gift battle-pass__head-gift--mobile is-{% if can_play %}ready{% else %}timer{% endif %}"
+                         data-gift-state="{% if can_play %}ready{% else %}timer{% endif %}"
+                         data-gift-expires-at="{{ tomorrow }}">
+                        <img class="battle-pass__head-gift-box"
+                             src="/catalog/view/theme/default/image/battle-pass/bp-gift-box-.png"
+                             alt="Подарункова скриня">
+
+                        <div class="battle-pass__head-gift-label">
+                            <div class="battle-pass__head-gift-pill battle-pass__head-gift-timer"
+                                 aria-live="polite">
+                                <img class="battle-pass__head-gift-pill-bg"
+                                     src="/catalog/view/theme/default/image/battle-pass/bp-gift-label.png"
+                                     alt=""
+                                     aria-hidden="true">
+                                <span class="battle-pass__head-gift-timer-value battle-pass__head-gift-pill-front"></span>
+                            </div>
+                        </div>
+
+                        <div class="battle-pass__head-gift-mobile-caption">
+                            Таємна <br>нагорода
+                        </div>
+
+                        <button type="button"
+                                class="battle-pass__head-gift-mobile-action {% if customer_isLogged and can_play %} js-open-daily-reward {% endif %}"{% if not customer_isLogged %} onclick="showLoginModal();"{% elseif not can_play %} disabled{% endif %}
+                                aria-label="Забрати щоденну нагороду"
+                                aria-describedby="battle-pass-gift-tooltip"
+                                data-daily-reward-title="Твоя щоденна нагорода"
+                                data-daily-reward-image="/catalog/view/theme/default/image/battle-pass/daily-{% if prize.type == 'ultra' %}ultra{% else %}bonus{% endif %}.png"
+                                data-daily-reward-image-alt="{% if prize.type == 'ultra' %}{{ text_ultra }}{% else %}{{ text_bonuses }}{% endif %}"
+                                data-daily-reward-amount="{{ prize.amount }}"
+                                data-daily-reward-unit="{{ text_prize }}"
+                                data-daily-reward-label="{% if prize.type == 'ultra' %}{{ text_ultra }}{% else %}{{ text_bonuses }}{% endif %}"
+                                data-daily-reward-button-text="Забрати">
+                            <span class="battle-pass__head-gift-pill-badge" aria-hidden="true">1</span>
+                        </button>
+                    </div>
+                </div>
+                <!--div>{{ text_seasonend }} {{ season_end }}</div-->
+
+            </div>
+
+            <div class="battle-pass__daily-reward" aria-hidden="true">
+                <button type="button"
+                        class="battle-pass__daily-reward-overlay js-battle-pass-daily-reward-close"
+                        aria-label="Закрити щоденну нагороду"></button>
+
+                <div class="battle-pass__daily-reward-dialog" role="dialog" aria-modal="true"
+                     aria-labelledby="battle-pass-daily-reward-title">
+                    <button type="button"
+                            class="battle-pass__daily-reward-close js-battle-pass-daily-reward-close"
+                            aria-label="Закрити">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <use href="#icon-cross"></use>
+                        </svg>
+                    </button>
+
+                    <div class="battle-pass__daily-reward-title" id="battle-pass-daily-reward-title">
+
+                    </div>
+
+                    <div class="battle-pass__daily-reward-card">
+                        <span class="battle-pass__daily-reward-image">
+                            <img class="js-daily-reward-image"
+                                 src="/catalog/view/theme/default/image/battle-pass/daily-{% if prize.type == 'ultra' %}ultra{% else %}bonus{% endif %}.png"
+                                 alt="Ультравалюта">
+                        </span>
+
+                        <div class="battle-pass__daily-reward-text">
+                            <span class="js-daily-reward-amount"></span> <span class="js-daily-reward-unit"></span>
+                            <br>
+                            <span class="js-daily-reward-label"></span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="battle-pass-card__btn js-btn-claimlottery">
+                        <img src="/catalog/view/theme/default/image/battle-pass/main-button.svg"
+                             alt="Battle Pass">
+                        <span class="js-daily-reward-button-text">Забрати</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if not battle_pass_hidden %}
+    <div class="battle-pass__poster d-flex align-items-start">
+        <button class="battle-pass__poster-action js-open-battle-pass" aria-label="battle pass">
+            <img src="/catalog/view/theme/default/image/battle-pass-short.svg" alt="Battle Pass">
+        </button>
+        <!--
+		<button
+		
+                {% if customer_isLogged %}
+                    class="battle-pass__poster-action js-open-battle-pass"
+                {% else %}
+                    class="battle-pass__poster-action"
+                    onclick="showLoginModal()"
+                {% endif %}
+                aria-label="battle pass">
+            <img src="/catalog/view/theme/default/image/battle-pass-short.svg" alt="Battle Pass">
+        </button>
+		-->
+        <button type="button"
+                class="js-battle-pass__poster-hide battle-pass__poster-hide d-flex align-items-center justify-content-center"
+                aria-label="{{ text_zakryty }}">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <use href="#icon-cross"></use>
+            </svg>
+        </button>
+    </div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js" data-cfasync="false"></script>
+
+<script>
+  const duration = 2.5 * 1000,
+    defaults = {startVelocity: 25, spread: 250, ticks: 50, zIndex: 100};
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function setConfetti() {
+    const animationEnd = Date.now() + duration;
+    const interval = setInterval(function () {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 20 * (timeLeft / duration);
+
+      confetti(
+        Object.assign({}, defaults, {
+          particleCount,
+          origin: {x: randomInRange(0.1, 0.3), y: Math.random() - 0.2},
+        })
+      );
+      confetti(
+        Object.assign({}, defaults, {
+          particleCount,
+          origin: {x: randomInRange(0.7, 0.9), y: Math.random() - 0.2},
+        })
+      );
+    }, 300);
+  }
+
+  $(document).on('click', '.js-btn-claim', function (e) {
+    e.preventDefault();
+      {% if customer_isLogged %}
+    let $btn = $(this),
+      level = $btn.data('level'),
+      $card = $btn.closest('.battle-pass-card');
+
+    $.ajax({
+      url: 'index.php?route=extension/module/battlepass/claim',
+      type: 'post',
+      data: {level: level},
+      dataType: 'json',
+      beforeSend: function () {
+        $btn.prop('disabled', true).css('opacity', '0');
+      },
+      success: function (json) {
+        if (json['error']) {
+          alert(json['error']);
+          $btn.prop('disabled', false).css('opacity', '1');
+          return;
+        }
+
+        if (json['success']) {
+
+          $card.removeClass('battle-pass-card--available battle-pass-card--locked battle-pass-card--waiting').addClass('battle-pass-card--received');
+
+          $card.find('.js-battle-pass-arrow').closest('.battle-pass-card').removeClass('battle-pass-card--active');
+
+          $('.modal--battle-pass').hide();
+          if (typeof window.syncBodyModalLock === 'function') {
+            window.syncBodyModalLock();
+          } else {
+            $('body').removeClass('is-open-modal');
+          }
+
+          $('.toast .p').html(json['message']);
+          $('.toast').addClass('is-show');
+
+          setConfetti();
+
+          setTimeout(function () {
+            $('.toast').removeClass('is-show');
+
+            if (json['redirect']) {
+              location.href = json['redirect'];
+            } else {
+              location.reload();
+            }
+          }, 6000);
+        }
+      },
+      error: function () {
+        $btn.prop('disabled', false).css('opacity', '1');
+      }
+    });
+      {% else %}
+    showLoginModal();
+      {% endif %}
+  });
+
+  $('.js-battle-pass__poster-hide').click(function () {
+    if ($('body').attr('data-age-gate') === '1') {
+      return false;
+    }
+    setCookie('battle_pass_hidden', '1', 1, 'days');
+    $('.battle-pass__poster').fadeOut(200);
+  });
+
+  $(document).on('click', '.js-btn-claimlottery', function (e) {
+    e.preventDefault();
+      {% if customer_isLogged %}
+    let $btn = $(this);
+
+    if ($btn.data('claiming')) {
+      return;
+    }
+
+    $btn.data('claiming', 1);
+
+    $.ajax({
+      url: 'index.php?route=extension/module/battlepass/claimlottery',
+      type: 'post',
+      dataType: 'json',
+      beforeSend: function () {
+        $btn.prop('disabled', true).css('opacity', '0');
+      },
+      success: function (json) {
+        if (json['error']) {
+          alert(json['error']);
+          $btn.prop('disabled', false).css('opacity', '1').data('claiming', 0);
+          return;
+        }
+
+        if (json['success']) {
+
+          $('.modal--battle-pass').hide();
+          if (typeof window.syncBodyModalLock === 'function') {
+            window.syncBodyModalLock();
+          } else {
+            $('body').removeClass('is-open-modal');
+          }
+
+          $('.toast .p').html(json['message']);
+          $('.toast').addClass('is-show');
+
+          setConfetti();
+
+          setTimeout(function () {
+            $('.toast').removeClass('is-show');
+
+            if (json['redirect']) {
+              location.href = json['redirect'];
+            } else {
+              location.reload();
+            }
+          }, 6000);
+        } else {
+          $btn.prop('disabled', false).css('opacity', '1').data('claiming', 0);
+        }
+      },
+      error: function () {
+        $btn.prop('disabled', false).css('opacity', '1').data('claiming', 0);
+      }
+    });
+      {% else %}
+    showLoginModal();
+      {% endif %}
+  });
+</script>
+
+<script src="/catalog/view/javascript/battle-pass/battle-pass.js?v=2.1.6" data-cfasync="false"></script>

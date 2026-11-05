@@ -1,0 +1,169 @@
+<?php
+
+class ControllerExtensionModuleHotSearch extends Controller {
+
+	private $error = array();
+	private $version = '1.0.2';
+
+	public function index() {
+
+		$this->load->language('extension/module/hotsearch');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('setting/setting');
+
+		$data['user_token'] = $this->session->data['user_token'];
+
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+      $this->model_setting_setting->editSetting('module_hotsearch', $this->request->post);
+			$data['success'] = $this->language->get('text_success');
+		}
+
+		if (isset($this->request->post['module_hotsearch_status'])) {
+			$data['module_hotsearch_status'] = $this->request->post['module_hotsearch_status'];
+		} else {
+			$data['module_hotsearch_status'] = $this->config->get('module_hotsearch_status');
+		}
+
+		if (isset($this->request->post['module_hotsearch_ocstore'])) {
+			$data['module_hotsearch_ocstore'] = $this->request->post['module_hotsearch_ocstore'];
+		} elseif ($this->config->get('module_hotsearch_ocstore')) {
+			$data['module_hotsearch_ocstore'] = $this->config->get('module_hotsearch_ocstore');
+		} else {
+			$data['module_hotsearch_ocstore'] = 0;
+		}
+
+		if (isset($this->request->post['module_hotsearch_wrapper'])) {
+			$data['module_hotsearch_wrapper'] = $this->request->post['module_hotsearch_wrapper'];
+		} elseif ($this->config->get('module_hotsearch_wrapper')) {
+			$data['module_hotsearch_wrapper'] = $this->config->get('module_hotsearch_wrapper');
+		} else {
+			$data['module_hotsearch_wrapper'] = '';
+		}
+
+		if (isset($this->request->post['module_hotsearch_form'])) {
+			$data['module_hotsearch_form'] = $this->request->post['module_hotsearch_form'];
+		} elseif ($this->config->get('module_hotsearch_form')) {
+			$data['module_hotsearch_form'] = $this->config->get('module_hotsearch_form');
+		} else {
+			$data['module_hotsearch_form'] = '';
+		}
+
+		if (isset($this->request->post['module_hotsearch_sku'])) {
+			$data['module_hotsearch_sku'] = (bool)$this->request->post['module_hotsearch_sku'];
+		} elseif ($this->config->get('module_hotsearch_sku')) {
+			$data['module_hotsearch_sku'] = (bool)$this->config->get('module_hotsearch_sku');
+		} else {
+			$data['module_hotsearch_sku'] = 1;
+		}
+
+		if (isset($this->request->post['module_hotsearch_model'])) {
+			$data['module_hotsearch_model'] = (bool)$this->request->post['module_hotsearch_model'];
+		} elseif ($this->config->get('module_hotsearch_model')) {
+			$data['module_hotsearch_model'] = (bool)$this->config->get('module_hotsearch_model');
+		} else {
+			$data['module_hotsearch_model'] = 1;
+		}
+
+		if (isset($this->request->post['module_hotsearch_stock'])) {
+			$data['module_hotsearch_stock'] = (bool)$this->request->post['module_hotsearch_stock'];
+		} elseif ($this->config->get('module_hotsearch_stock')) {
+			$data['module_hotsearch_stock'] = (bool)$this->config->get('module_hotsearch_stock');
+		} else {
+			$data['module_hotsearch_stock'] = 1;
+		}
+
+		if (isset($this->request->post['module_hotsearch_price'])) {
+			$data['module_hotsearch_price'] = (bool)$this->request->post['module_hotsearch_price'];
+		} elseif ($this->config->get('module_hotsearch_price')) {
+			$data['module_hotsearch_price'] = (bool)$this->config->get('module_hotsearch_price');
+		} else {
+			$data['module_hotsearch_price'] = 1;
+		}
+
+		if (isset($this->request->post['module_hotsearch_products_count'])) {
+			$data['module_hotsearch_products_count'] = $this->request->post['module_hotsearch_products_count'];
+		} elseif ($this->config->get('module_hotsearch_products_count')) {
+			$data['module_hotsearch_products_count'] = $this->config->get('module_hotsearch_products_count');
+		} else {
+			$data['module_hotsearch_products_count'] = 15;
+		}
+
+		if (isset($this->request->post['module_hotsearch_categories_count'])) {
+			$data['module_hotsearch_categories_count'] = $this->request->post['module_hotsearch_categories_count'];
+		} elseif ($this->config->get('module_hotsearch_categories_count')) {
+			$data['module_hotsearch_categories_count'] = $this->config->get('module_hotsearch_categories_count');
+		} else {
+			$data['module_hotsearch_categories_count'] = 15;
+		}
+
+		if (isset($this->request->post['module_hotsearch_breakpoint'])) {
+			$data['module_hotsearch_breakpoint'] = $this->request->post['module_hotsearch_breakpoint'];
+		} elseif ($this->config->get('module_hotsearch_breakpoint')) {
+			$data['module_hotsearch_breakpoint'] = $this->config->get('module_hotsearch_breakpoint');
+		} else {
+			$data['module_hotsearch_breakpoint'] = 992;
+		}
+
+		if (isset($this->request->post['module_hotsearch_minlength'])) {
+			$data['module_hotsearch_minlength'] = $this->request->post['module_hotsearch_minlength'];
+		} elseif ($this->config->get('module_hotsearch_minlength')) {
+			$data['module_hotsearch_minlength'] = $this->config->get('module_hotsearch_minlength');
+		} else {
+			$data['module_hotsearch_minlength'] = 3;
+		}
+
+		if (isset($this->request->post['module_hotsearch_image_width'])) {
+			$data['module_hotsearch_image_width'] = $this->request->post['module_hotsearch_image_width'];
+		} elseif ($this->config->get('module_hotsearch_image_width')) {
+			$data['module_hotsearch_image_width'] = $this->config->get('module_hotsearch_image_width');
+		} else {
+			$data['module_hotsearch_image_width'] = 50;
+		}
+
+		if (isset($this->request->post['module_hotsearch_image_height'])) {
+			$data['module_hotsearch_image_height'] = $this->request->post['module_hotsearch_image_height'];
+		} elseif ($this->config->get('module_hotsearch_image_height')) {
+			$data['module_hotsearch_image_height'] = $this->config->get('module_hotsearch_image_height');
+		} else {
+			$data['module_hotsearch_image_height'] = 50;
+		}
+
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/module/hotsearch', 'user_token=' . $this->session->data['user_token'], true)
+		);
+
+		$data['version'] = sprintf($this->language->get('version'), $this->version);
+		$data['action'] = $this->url->link('extension/module/hotsearch', 'user_token=' . $this->session->data['user_token'], true);
+		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', true);
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->load->view('extension/module/hotsearch', $data));
+	}
+
+	protected function validate() {
+
+		if (!$this->user->hasPermission('modify', 'extension/module/hotsearch')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+
+		return !$this->error;
+	}
+
+}

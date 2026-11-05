@@ -1,0 +1,163 @@
+<div class="simplecheckout-block checkout__inner" id="simplecheckout_cart" {{ hide ? 'data-hide="true"' : '' }} {{ has_error ? 'data-error="true"' : '' }}>
+{% if display_header %}
+    <div class="checkout-heading panel-heading">{{ text_cart }} <span class="checkout-heading-button"><a href="javascript:void(0)" data-onclick="clearCart" class="text-danger" data-confirm-text="{{ text_clear_cart_question }}">{{ text_clear_cart }}</a></span></div>
+{% endif %}
+{% if attention %}
+    <script>
+        $('.toast').addClass('toast-danger is-show').find('.p').html('{{ attention }}');
+		setTimeout(function () {
+			$('.toast').removeClass('is-show');
+		}, 3000);
+    </script>
+
+{% endif %}
+{% if error_warning %}
+    <script>
+        $('.toast').addClass('toast-danger is-show').find('.p').html('{{ error_warning }}');
+		setTimeout(function () {
+			$('.toast').removeClass('is-show');
+		}, 3000);
+    </script>
+
+{% endif %}
+
+
+
+
+
+{% if modules['reward'] is defined and points > 0 %}
+<div class="h5">{{ entry_reward }}</div>
+<div class="checkout__inner-location-description" style="padding-left: 0; margin-top: 20px;">{{ text_vykorystaty_bonusy }}</div>
+<div class="checkout__tabs-fields">
+<div class="checkout__tabs-field w50">
+    <div class="field field-rel">
+        <input class="form-control" type="text" name="reward" id="inputreward" data-onchange="reloadAll" value="{{ reward }}" /></span>
+		<button class="btn-arrow btn-arrow-pink"></button>
+    </div>
+    <button class="bonuses_all">{{ text_spysaty_vsi_bonusy }}</button>
+</div>
+<div class="checkout__tabs-field w50 checkout__inner-location-description">{{ text_vy_mozhete_vykorystaty_bonusy_u }}</div>
+</div>
+{% else %}
+<div class="checkout__inner-bottom1">
+    <div class="h5">{{ text_bonusy_za_vashym_nomerom_telefonu }}</div>
+    <div class="p color-grey m-top-5">{{ text_za_tsym_nomerom_telefonu_v }}</div>
+</div>
+
+
+{% endif %}
+
+{% if discount %}
+<div class="discount" style="margin-top: 20px;">
+	{% if not discount_session %}
+	<div class="h5">{{ text_discount }}</div>
+	<button  title="{{ text_zastosuvaty_znyzhku }}" class="discount_button">{{ text_zastosuvaty_znyzhku }}</button>
+
+        <style>
+            .discount_button {
+                margin-top: 10px;
+                background-color: var(--pink);
+                padding: 8px 10px;
+                font-weight: bold;
+                color: #ffffff;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                transition-property: box-shadow;
+                transition-duration: .3s;
+                font-size: 15px;
+            }
+
+            .discount_button:hover {
+                box-shadow: 0 10px 15px rgba(252, 75, 130, 0.15);
+            }
+        </style>
+	{% else %}
+	<div class="h5">{{ text_discount_used }}</div>
+	{% endif %}
+</div>
+{% endif %}
+
+
+{% if modules['coupon'] is defined %}
+<!--
+<div class="checkout__inner-location-description" style="padding-left: 0; margin-top: 20px;">{{ text_vykorystaty_promokod }}</div>
+<div class="checkout__tabs-fields">
+	<div class="checkout__tabs-field w50">
+		<div class="field field-rel">
+			<input class="form-control" type="text" id="inputcoupon" data-onchange="reloadAll" name="coupon" value="{{ coupon }}"" /></span>
+			<button class="btn-arrow btn-arrow-pink"></button>
+		</div>
+	</div>
+</div>
+-->
+{% endif %}
+
+
+
+{% if modules['voucher'] is defined %}
+    <div class="simplecheckout-cart-total">
+        <span class="inputs">{{ entry_voucher }}&nbsp;<input class="form-control" type="text" name="voucher" data-onchange="reloadAll" value="{{ voucher }}" /></span>
+    </div>
+{% endif %}
+<!--
+{% if modules['coupon'] is defined or (modules['reward'] is defined and points > 0) or modules['voucher'] is defined %}
+    <div class="simplecheckout-cart-total simplecheckout-cart-buttons">
+        <span class="inputs buttons"><a id="simplecheckout_button_cart" data-onclick="reloadAll" class="button btn-primary button_oc btn"><span>{{ button_update }}</span></a></span>
+    </div>
+{% endif %}
+-->
+<input type="hidden" name="remove" value="" id="simplecheckout_remove">
+<div style="display:none;" id="simplecheckout_cart_total">{{ cart_total }}</div>
+{% if display_weight %}
+    <div style="display:none;" id="simplecheckout_cart_weight">{{ weight }}</div>
+{% endif %}
+{% if not display_model %}
+    <style>
+    .simplecheckout-cart col.model,
+    .simplecheckout-cart th.model,
+    .simplecheckout-cart td.model {
+        display: none;
+    }
+    </style>
+{% endif %}
+</div>
+<script>
+$('.icon-cart span').html({{ carttotal }});
+$('body').on('click', '.bonuses_all', function(){
+{% if points is defined and points %}
+var points = {{ points }};
+{% else %}
+var points = 0;
+{% endif %}
+var cart = {{ totalcart-1 }};
+if (points >= cart) {
+var getall = cart;
+} else {
+var getall = points;
+}
+$('#inputreward').val(getall);
+$('#inputreward').trigger('change');
+});
+
+$('body').on('click', '.discount_button', function(){
+	$.ajax({
+		url: 'index.php?route=extension/total/reward/discount',
+		type: 'post',
+		data: '',
+		dataType: 'json',
+		beforeSend: function() {
+			$('.discount_button').button('зачекайте');
+		},
+		complete: function() {
+			$('.discount_button').button('reset');
+		},
+		success: function(json) {
+			reloadAll();
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+</script>

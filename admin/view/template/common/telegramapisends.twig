@@ -1,0 +1,136 @@
+
+<div id="content">
+  <div class="container-fluid">
+    <div class="row" style="margin-bottom: 15px;">
+      <div class="col-sm-12">
+        <div class="alert alert-info" style="margin-bottom: 0;">
+          Відправок за фільтром: <strong>{{ total }}</strong>
+          | Успішно (sent): <strong>{{ total_sent }}</strong>
+          | Унікальних номерів: <strong>{{ total_unique }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="filter-api-send" class="col-md-3 col-md-push-9 col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="control-label" for="input-api-date-start">Період</label>
+              <div class="input-group datetime">
+                <input type="text" name="filter_api_date_start" value="{{ filter_api_date_start }}" placeholder="З" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-api-date-start" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+              <div class="input-group datetime" style="margin-top: 8px;">
+                <input type="text" name="filter_api_date_end" value="{{ filter_api_date_end }}" placeholder="По" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-api-date-end" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="input-api-phone">Телефон</label>
+              <input type="text" name="filter_api_phone" value="{{ filter_api_phone }}" placeholder="Телефон" id="input-api-phone" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="input-api-status">Статус</label>
+              <select name="filter_api_status" id="input-api-status" class="form-control">
+                <option value="">Всі</option>
+                {% for status_code, status_label in statuses %}
+                  <option value="{{ status_code }}" {% if filter_api_status == status_code %}selected{% endif %}>{{ status_label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group text-right">
+              <button type="button" id="button-api-send-filter" class="btn btn-default"><i class="fa fa-filter"></i> Фільтр</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9 col-md-pull-3 col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left">Дата</td>
+                    <td class="text-left">Телефон</td>
+                    <td class="text-left">Статус</td>
+                    <td class="text-left">Повідомлення</td>
+                    <td class="text-left">Помилка</td>
+                  </tr>
+                </thead>
+                <tbody>
+                {% if rows %}
+                  {% for row in rows %}
+                  <tr>
+                    <td class="text-left" style="white-space: nowrap;">{{ row.date_added }}</td>
+                    <td class="text-left">{{ row.phone }}</td>
+                    <td class="text-left">
+                      {% if row.status == 'sent' %}
+                        <span class="label label-success">{{ row.status_label }}</span>
+                      {% elseif row.status == 'unsubscribed' or row.status == 'no_telegram' %}
+                        <span class="label label-warning">{{ row.status_label }}</span>
+                      {% else %}
+                        <span class="label label-danger">{{ row.status_label }}</span>
+                      {% endif %}
+                    </td>
+                    <td class="text-left" style="max-width: 420px; word-break: break-word;">{{ row.message }}</td>
+                    <td class="text-left">{{ row.error }}</td>
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td class="text-center" colspan="5">Немає записів</td>
+                  </tr>
+                {% endif %}
+                </tbody>
+              </table>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 text-left">{{ pagination }}</div>
+              <div class="col-sm-6 text-right">{{ results }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+$('#button-api-send-filter').on('click', function() {
+	var url = '';
+
+	var filter_api_phone = $('input[name=\'filter_api_phone\']').val();
+	if (filter_api_phone) {
+		url += '&filter_api_phone=' + encodeURIComponent(filter_api_phone);
+	}
+
+	var filter_api_status = $('select[name=\'filter_api_status\']').val();
+	if (filter_api_status) {
+		url += '&filter_api_status=' + encodeURIComponent(filter_api_status);
+	}
+
+	var filter_api_date_start = $('input[name=\'filter_api_date_start\']').val();
+	if (filter_api_date_start) {
+		url += '&filter_api_date_start=' + encodeURIComponent(filter_api_date_start);
+	}
+
+	var filter_api_date_end = $('input[name=\'filter_api_date_end\']').val();
+	if (filter_api_date_end) {
+		url += '&filter_api_date_end=' + encodeURIComponent(filter_api_date_end);
+	}
+
+	location = 'index.php?route=common/telegram&user_token={{ user_token }}&active_tab=8' + url;
+});
+
+$('.datetime').datetimepicker({
+	pickDate: true,
+	pickTime: true
+});
+//--></script>
+</div>

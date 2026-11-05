@@ -1,0 +1,224 @@
+{{ header }}
+<div id="product-compare" class="container">
+
+
+
+
+  <section class="comparison">
+
+    <h1 class="h2 color-black">{{ heading_title }}</h1>
+    {% if products %}
+    <div class="comparison__header">
+      <div class="comparison__controls">
+        <a href="/specials/" class="a-link sm">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <rect x="7.5" width="1" height="16" fill="currentColor"/>
+            <rect x="16" y="7.5" width="1" height="16" transform="rotate(90 16 7.5)" fill="currentColor"/>
+          </svg>
+          {{ text_dodaty_shche_tovar }}
+        </a>
+        <a href="{{ removeall }}" class="a-link sm remove_all_products">{{ text_vydalyty_ves_perelik }}</a>
+        <a href="/specials/" class="button-light-blue button-light-blue--with-icon button-light-blue--center-text-medium">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <rect x="7.5" width="1" height="16" fill="currentColor"/>
+            <rect x="16" y="7.5" width="1" height="16" transform="rotate(90 16 7.5)" fill="currentColor"/>
+          </svg>
+          {{ text_dodaty_tovar }}
+        </a>
+        <a href="#" class="button-light-blue button-light-blue--with-icon button-light-blue--alternative-color button-light-blue--center-text-medium remove_all_products">
+          <svg width="17.5" height="17.5" viewBox="0 0 17.5 17.5" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M5.625 2.50122L5.625 0.625C5.625 0.459229 5.69092 0.300293 5.80811 0.183105C5.92529 0.0657959 6.08423 0 6.25 0L11.25 0C11.4158 0 11.5747 0.0657959 11.6919 0.183105C11.8091 0.300293 11.875 0.459229 11.875 0.625L11.875 2.50122L16.875 2.50122C17.0408 2.50122 17.1997 2.56714 17.3169 2.68433C17.4341 2.80151 17.5 2.96045 17.5 3.12622C17.5 3.29199 17.4341 3.45093 17.3169 3.56824C17.1997 3.68542 17.0408 3.75122 16.875 3.75122L0.625 3.75122C0.459229 3.75122 0.300293 3.68542 0.183105 3.56824C0.065918 3.45093 0 3.29199 0 3.12622C0 2.96045 0.065918 2.80151 0.183105 2.68433C0.300293 2.56714 0.459229 2.50122 0.625 2.50122L5.625 2.50122ZM6.875 2.50122L10.625 2.50122L10.625 1.25122L6.875 1.25122L6.875 2.50122ZM2.5 17.5012C2.33423 17.5012 2.17529 17.4354 2.05811 17.3182C1.94092 17.2009 1.875 17.042 1.875 16.8762L1.875 3.75122L15.625 3.75122L15.625 16.8762C15.625 17.042 15.5591 17.2009 15.4419 17.3182C15.3247 17.4354 15.1658 17.5012 15 17.5012L2.5 17.5012ZM6.875 13.7512C7.04077 13.7512 7.19971 13.6854 7.31689 13.5682C7.43408 13.4509 7.5 13.292 7.5 13.1262L7.5 6.87622C7.5 6.71045 7.43408 6.55151 7.31689 6.43433C7.19971 6.31714 7.04077 6.25122 6.875 6.25122C6.70923 6.25122 6.55029 6.31714 6.43311 6.43433C6.31592 6.55151 6.25 6.71045 6.25 6.87622L6.25 13.1262C6.25 13.292 6.31592 13.4509 6.43311 13.5682C6.55029 13.6854 6.70923 13.7512 6.875 13.7512ZM10.625 13.7512C10.7908 13.7512 10.9497 13.6854 11.0669 13.5682C11.1841 13.4509 11.25 13.292 11.25 13.1262L11.25 6.87622C11.25 6.71045 11.1841 6.55151 11.0669 6.43433C10.9497 6.31714 10.7908 6.25122 10.625 6.25122C10.4592 6.25122 10.3003 6.31714 10.1831 6.43433C10.0659 6.55151 10 6.71045 10 6.87622L10 13.1262C10 13.292 10.0659 13.4509 10.1831 13.5682C10.3003 13.6854 10.4592 13.7512 10.625 13.7512Z" fill="currentColor"/>
+          </svg>
+          {{ text_vydalyty_vse }}
+        </a>
+      </div>
+      <div class="comparison__products">
+        <div class="comparison__products_inner swiper" data-id="table_slider">
+          <div class="comparison__products_wrapper swiper-wrapper">
+		  
+		  
+		  {% for product in products %}
+            <div class="comparison__products_card swiper-slide">
+              <div class="product" data-id="{{ product.product_id }}">
+                <div class="product__wrapper">
+                  <div class="product__top">
+                    <button type="button" class="product__remove" title="{{ text_vydalyty_tovar }}">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path d="M9.76221 7.99951L15.7444 2.01709C15.9089 1.85242 15.9998 1.63269 16 1.39832C16 1.16394 15.9092 0.94397 15.7444 0.779541L15.2202 0.255493C15.0554 0.0904541 14.8357 0 14.6011 0C14.3669 0 14.1472 0.0904541 13.9824 0.255493L8.00024 6.23755L2.01782 0.255493C1.85327 0.0904541 1.63354 0 1.39893 0C1.16479 0 0.945068 0.0904541 0.780518 0.255493L0.256104 0.779541C-0.0854492 1.12085 -0.0854492 1.67615 0.256104 2.01709L6.23828 7.99951L0.256104 13.9817C0.0913086 14.1466 0.000732422 14.3663 0.000732422 14.6006C0.000732422 14.8348 0.0913086 15.0546 0.256104 15.2194L0.780273 15.7435C0.944824 15.9084 1.16479 15.9989 1.39893 15.9989C1.6333 15.9989 1.85303 15.9084 2.01758 15.7435L8.00024 9.76135L13.9824 15.7435C14.1472 15.9084 14.3669 15.9989 14.6011 15.9989L14.6013 15.9989C14.8354 15.9989 15.0552 15.9084 15.22 15.7435L15.7441 15.2194C15.9087 15.0547 15.9995 14.8348 15.9995 14.6006C15.9995 14.3663 15.9087 14.1466 15.7441 13.9818L9.76221 7.99951Z" fill="currentColor" fill-rule="nonzero"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <a href="{{ product.href }}" class="product__image">
+				    {% if product.thumb %} <img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail" /> {% endif %}
+                  </a>
+                  <a href="{{ product.href }}" class="product__name">{{ product.name }}</a>
+                  <div class="product__rating d-flex align-items-center">
+                    <div class="rating__stars">
+                      <div class="rating__stars-current" style="width:{{ product.rating * 20 }}%;"></div>
+                    </div>
+
+                    <div class="rating__stars-count">{{ product.reviews }}</div>
+                  </div>
+                  <div class="product__bottom d-flex align-items-center justify-content-between">
+                    <div class="product__prices">
+					<div class="product__prices-cashback">{{ text_keshbek }} {{ product.reward }}₴</div>
+                        {% if not product.special %}
+                            <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                        {% else %}
+                            <span>{{ product.price }}</span>
+                            <strong>{{ product.special|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                        {% endif %}
+                        {% if product.tax %}
+                            <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                        {% endif %}
+                    </div>
+                    <button type="button" class="product__add-cart btn btn-primary" aria-label="{{ text_u_koshyk }}" onclick="cart.add('{{ product.product_id }}');">
+                      <svg width="20" height="20" viewBox="0 0 20 20">
+                        <use href="#icon-cart"></use>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+		  {% endfor %}
+          </div>
+        </div>
+        <div class="comparison__products_controls">
+          <button class="comparison__products_arrow swiper-button-prev" type="button"></button>
+          <button class="comparison__products_arrow swiper-button-next" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <div class="comparison__fixed_header">
+      <div class="container">
+        <div class="comparison__controls">
+          <a href="/specials/" class="a-link sm">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <rect x="7.5" width="1" height="16" fill="currentColor"/>
+              <rect x="16" y="7.5" width="1" height="16" transform="rotate(90 16 7.5)" fill="currentColor"/>
+            </svg>
+            {{ text_dodaty_shche_tovar }}
+          </a>
+          <a href="{{ removeall }}" class="a-link sm remove_all_products">{{ text_vydalyty_ves_perelik }}</a>
+        </div>
+        <div class="comparison__products">
+          <div class="comparison__products_inner swiper" data-id="table_slider">
+            <div class="comparison__products_wrapper swiper-wrapper">
+			
+			  {% for product in products %}
+              <div class="comparison__products_card swiper-slide">
+                <div class="product" data-id="{{ product.product_id }}">
+                  <div class="product__wrapper">
+                    <div class="product__top">
+                      <button type="button" class="product__remove" title="{{ text_vydalyty_tovar }}">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                          <path d="M9.76221 7.99951L15.7444 2.01709C15.9089 1.85242 15.9998 1.63269 16 1.39832C16 1.16394 15.9092 0.94397 15.7444 0.779541L15.2202 0.255493C15.0554 0.0904541 14.8357 0 14.6011 0C14.3669 0 14.1472 0.0904541 13.9824 0.255493L8.00024 6.23755L2.01782 0.255493C1.85327 0.0904541 1.63354 0 1.39893 0C1.16479 0 0.945068 0.0904541 0.780518 0.255493L0.256104 0.779541C-0.0854492 1.12085 -0.0854492 1.67615 0.256104 2.01709L6.23828 7.99951L0.256104 13.9817C0.0913086 14.1466 0.000732422 14.3663 0.000732422 14.6006C0.000732422 14.8348 0.0913086 15.0546 0.256104 15.2194L0.780273 15.7435C0.944824 15.9084 1.16479 15.9989 1.39893 15.9989C1.6333 15.9989 1.85303 15.9084 2.01758 15.7435L8.00024 9.76135L13.9824 15.7435C14.1472 15.9084 14.3669 15.9989 14.6011 15.9989L14.6013 15.9989C14.8354 15.9989 15.0552 15.9084 15.22 15.7435L15.7441 15.2194C15.9087 15.0547 15.9995 14.8348 15.9995 14.6006C15.9995 14.3663 15.9087 14.1466 15.7441 13.9818L9.76221 7.99951Z" fill="currentColor" fill-rule="nonzero"/>
+                        </svg>
+                      </button>
+                    </div>
+                    <a href="{{ product.href }}" class="product__name">
+                      <img src="{{ product.thumb }}" width="40" height="40" alt="">
+                      {{ product.name }}
+                    </a>
+                    <div class="product__bottom d-flex align-items-center justify-content-between">
+                      <div class="product__prices">
+					  <div class="product__prices-cashback">{{ text_keshbek }} {{ product.reward }}₴</div>
+                        {% if not product.special %}
+                            <strong>{{ product.price|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                        {% else %}
+                            <span>{{ product.price }}</span>
+                            <strong>{{ product.special|replace({' ₴': ' <small>₴</small>'}) }}</strong>
+                        {% endif %}
+                        {% if product.tax %}
+                            <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                        {% endif %}
+                      </div>
+                      <button type="button" class="product__add-cart btn btn-primary" aria-label="{{ text_u_koshyk }}" onclick="cart.add('{{ product.product_id }}');">
+                        <svg width="20" height="20" viewBox="0 0 20 20">
+                          <use href="#icon-cart"></use>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+			  {% endfor %}
+
+		   </div>
+          </div>
+          <div class="comparison__products_controls">
+            <!-- <button class="comparison__products_arrow swiper-button-prev" type="button"></button>
+            <button class="comparison__products_arrow swiper-button-next" type="button"></button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comparison__table">
+      <div class="comparison__table_head">
+        <ul>
+          <li>
+            {{ text_kod_tovaru }}
+          </li>
+          <li>
+            {{ text_manufacturer }}
+          </li>
+          <li>
+            {{ text_availability }}
+          </li>
+
+			{% for attribute_group in attribute_groups %}
+			{% for key, attribute in attribute_group.attribute %}
+			{% if key != 42 %}
+				<li>{{ attribute.name }}</li>
+			{% endif %}
+			{% endfor %}
+			{% endfor %}
+
+        </ul>
+      </div>
+      <div class="comparison__table_slider swiper" id="table_slider">
+        <div class="comparison__table_slider_wrapper swiper-wrapper">
+		{% for product in products %}
+          <div class="comparison__table_slide swiper-slide">
+            <ul>
+              <li>
+                {{ product.model }}
+              </li>
+              <li>
+                {{ product.manufacturer }}
+              </li>
+              <li>
+                {{ product.availability }}
+              </li>
+
+			  
+        {% for attribute_group in attribute_groups %}
+        {% for key, attribute in attribute_group.attribute %}
+		{% if key != 42 %}
+
+
+            {% if product.attribute[key] %}
+            <li> {{ product.attribute[key] }}</li>
+            {% else %}
+            <li>-</li>
+            {% endif %}
+
+		{% endif %}
+        {% endfor %}
+        {% endfor %}
+		
+            </ul>
+          </div>
+		{% endfor %}  
+
+		</div>
+      </div>
+    </div>
+    {% else %}
+      <p>{{ text_empty }}</p>
+    {% endif %}
+  </section>
+
+</div>
+{{ footer }} 

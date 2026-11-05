@@ -1,0 +1,86 @@
+<modification>
+	<name>MicrodataPro 10</name>
+	<code>MicrodataPro</code>
+	<version>10</version>
+	<author>Exploits</author>
+	<link><![CDATA[https://microdata.pro]]></link>
+
+	<!--OpenGraph-->
+		<file path="catalog/controller/{common/home,information/contact,product/special,product/search,product/manufacturer}.php">
+			<operation error="skip">
+				<search><![CDATA[$data['header'] = ]]></search>
+				<add position="after"><![CDATA[
+					//microdatapro 10 start
+						$data = $this->load->controller(((substr(VERSION,0,3)>=2.3)?'extension/':'').'module/microdatapro', ['', $data]);
+					//microdatapro 10 end
+				]]></add>
+			</operation>
+		</file>
+	<!--/OpenGraph-->
+
+	<!--product-->
+		<file path="catalog/controller/product/product.php">
+			<operation error="skip">
+				<search index="0"><![CDATA[$data['header'] = ]]></search>
+					<add position="after"><![CDATA[
+            //microdatapro 10 start
+      				$data = $this->load->controller(((substr(VERSION,0,3)>=2.3)?'extension/':'').'module/microdatapro', ['product', $data, isset($product_info)?$product_info:false]);
+      			//microdatapro 10 end
+					]]></add>
+			</operation>
+		</file>
+  <!--product-->
+
+	<!--category-->
+		<file path="catalog/controller/product/category.php">
+      <operation error="skip">
+				<search index="0"><![CDATA[$data['header'] = ]]></search>
+					<add position="after"><![CDATA[
+            //microdatapro 10 start
+      				$data = $this->load->controller(((substr(VERSION,0,3)>=2.3)?'extension/':'').'module/microdatapro', ['category', $data, (isset($category_info)?$category_info:false), (isset($results)?$results:false)]);
+      			//microdatapro 10 end
+					]]></add>
+			</operation>
+		</file>
+	<!--/category-->
+
+	<!--article-->
+		<file path="catalog/controller/information/information.php">
+			<operation error="skip">
+				<search><![CDATA[$data['header'] = ]]></search>
+					<add position="after"><![CDATA[
+            //microdatapro 10 start
+      				$data = $this->load->controller(((substr(VERSION,0,3)>=2.3)?'extension/':'').'module/microdatapro', ['article', $data, isset($information_info)?$information_info:false]);
+      			//microdatapro 10 end
+					]]></add>
+			</operation>
+		</file>
+  <!--article-->
+
+	<!--manufacturer-->
+		<file path="catalog/controller/product/manufacturer.php">
+      <operation error="skip">
+				<search><![CDATA[$data['header'] = ]]></search>
+					<add position="after"><![CDATA[
+            //microdatapro 10 start
+      				$data = $this->load->controller(((substr(VERSION,0,3)>=2.3)?'extension/':'').'module/microdatapro', ['manufacturer', $data, (isset($manufacturer_info)?$manufacturer_info:false), (isset($results)?$results:false)]);
+      			//microdatapro 10 end
+					]]></add>
+			</operation>
+		</file>
+	<!--/manufacturer-->
+
+	<!--blog-->
+		<file path="catalog/controller/{blog/article,luxshop/article,octemplates/blog/oct_blogarticle,extension/ocdevwizard/blog}.php">
+			<operation error="skip">
+				<search><![CDATA[$data['header'] = ]]></search>
+					<add position="after"><![CDATA[
+            //microdatapro 10 start
+      				$data = $this->load->controller(((substr(VERSION,0,3)>=2.3)?'extension/':'').'module/microdatapro', ['blog', $data]);
+      			//microdatapro 10 end
+					]]></add>
+			</operation>
+		</file>
+  <!--blog-->
+
+</modification>

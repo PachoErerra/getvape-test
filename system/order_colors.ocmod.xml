@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Цветные статусы заказов</name>
+  <code>Color order status</code>
+  <version>1.0</version>
+  <author>Lebedev Egor</author>
+  <link></link>
+
+  <file path="admin/controller/extension/dashboard/recent.php">
+   <operation error="skip">
+     <search><![CDATA['status'     => $result['order_status'],]]></search>
+     <add position="after"><![CDATA[				'color'		 	 => $color,]]></add>
+   </operation>
+   <operation error="skip">
+     <search><![CDATA[foreach ($results as $result) {]]></search>
+     <add position="after"><![CDATA[if($data['color_orders_status']){$color = explode(' ', $result['color']);}]]></add>
+   </operation>
+   <operation error="skip">
+     <search><![CDATA[$results = $this->model_sale_order->getOrders($filter_data);]]></search>
+     <add position="after"><![CDATA[$data['color_orders_status'] = $this->config->get('color_orders_status');
+       $data['color_orders_show_home'] = $this->config->get('color_orders_show_home');
+       $color = null;]]></add>
+   </operation>
+ </file>
+
+ <file path="admin/view/template/extension/dashboard/recent_info.twig">
+    <operation error="skip">
+      <search><![CDATA[{% for order in orders %}]]></search>
+      <add position="after"><![CDATA[{% if color_orders_show_home is defined and color_orders_show_home and  order.color.2 and color_orders_status %}
+                          <tr style = "background-color: #{{order.color.0}}; color: #{{order.color.1}}">
+                        {% else %}]]></add>
+</operation>
+    <operation error="skip">
+      <search><![CDATA[<td class="text-right">{{ order.order_id }}</td>]]></search>
+      <add position="before"><![CDATA[                    {% endif %}]]></add>
+</operation>
+
+<operation error="skip">
+  <search><![CDATA[<td>{{ order.status }}</td>]]></search>
+  <add position="replace"><![CDATA[{% if (color_orders_show_home is defined and color_orders_show_home and color_orders_status is defined and color_orders_status) %}
+      <td style = "background-color: #{{ order['color'][0] }}; color: #{{ order['color'][1] }}">{{ order['status'] }}</td>
+      {% else %}
+      <td>{{ order['status'] }}</td>
+      {% endif %}]]></add>
+</operation>
+  </file>
+
+  <file path="admin/controller/sale/order.php">
+   <operation error="skip">
+     <search><![CDATA['order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),]]></search>
+     <add position="after"><![CDATA[				'color'					=> $color,]]></add>
+   </operation>
+   <operation error="skip">
+     <search><![CDATA[$results = $this->model_sale_order->getOrders($filter_data);]]></search>
+     <add position="after"><![CDATA[		$data['color_orders_status'] = $this->config->get('color_orders_status');
+     		$color = null;]]></add>
+   </operation>
+   <operation error="skip">
+     <search index = "0"><![CDATA[foreach ($results as $result) {]]></search>
+     <add position="after"><![CDATA[			if($data['color_orders_status']){
+     				$color = explode(' ', $result['color']);
+     			}]]></add>
+   </operation>
+ </file>
+
+     <file path="admin/model/sale/order.php">
+   <operation error="skip">
+     <search><![CDATA[public function getOrders($data = array()) {]]></search>
+     <add position="after"><![CDATA[if ($this->config->get('color_orders_status')){
+       $sql = "SELECT o.order_id, CONCAT(o.firstname, ' ', o.lastname) AS customer, (SELECT CONCAT(os.b_color, ' ', os.t_color, ' ', os.s_color) FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS color, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";}
+       else{]]></add>
+   </operation>
+   <operation error="skip">
+     <search index = "0"><![CDATA[if (!empty($data['filter_order_status'])) {]]></search>
+     <add position="before"><![CDATA[}]]></add>
+   </operation>
+ </file>
+
+ <file path="admin/view/template/sale/order_list.twig">
+    <operation error="skip">
+      <search><![CDATA[{% for order in orders %}]]></search>
+      <add position="after"><![CDATA[{% if (order['color'][2] is defined and order['color'][2] and color_orders_status) %}
+                          <tr style = "background-color: #{{ order['color'][0] }}; color: #{{ order['color'][1] }}">
+                        {% else %}]]></add>
+</operation>
+    <operation error="skip">
+      <search><![CDATA[<td class="text-center"> {% if order.order_id in selected %}]]></search>
+      <add position="before"><![CDATA[                    {% endif %}]]></add>
+</operation>
+
+<operation error="skip">
+  <search><![CDATA[<td class="text-left">{{ order.order_status }}</td>]]></search>
+  <add position="replace"><![CDATA[{% if (color_orders_status is defined and color_orders_status) %}
+      <td class="text-left" style = "background-color: #{{ order['color'][0] }}; color: #{{ order['color'][1] }}">{{ order['order_status'] }}</td>
+      {% else %}
+      <td class="text-left">{{ order['order_status'] }}</td>
+      {% endif %}]]></add>
+</operation>
+  </file>
+
+        <file path="admin/controller/localisation/order_status.php">
+    <operation error="skip">
+      <search><![CDATA[$data['order_status'] = array();]]></search>
+      <add position="after" offset = "3"><![CDATA[
+        if (isset($this->request->get['order_status_id'])) {
+    		$status_data = $this->model_localisation_order_status->getOrderStatus($this->request->get['order_status_id']);
+    		}
+        $data['color_orders_status'] = $this->config->get('color_orders_status');
+    		if (isset($this->request->post['b_color'])) {
+    			$data['b_color'] = $this->request->post['b_color'];
+    		} elseif (isset($this->request->get['order_status_id'])) {
+    			$data['b_color'] = $status_data['b_color'];
+    		} else {
+    			$data['b_color'] = '';
+    		}
+
+    		if (isset($this->request->post['t_color'])) {
+    			$data['t_color'] = $this->request->post['t_color'];
+    		} elseif (isset($this->request->get['order_status_id'])) {
+    			$data['t_color'] = $status_data['t_color'];
+    		} else {
+    			$data['t_color'] = '';
+    		}
+
+    		if (isset($this->request->post['s_color'])) {
+    			$data['s_color'] = $this->request->post['s_color'];
+    		} elseif (isset($this->request->get['order_status_id'])) {
+    			$data['s_color'] = $status_data['s_color'];
+    		} else {
+    			$data['s_color'] = '0';
+    		}
+        ]]></add>
+</operation>
+<operation error="skip">
+  <search><![CDATA[protected function getForm() {]]></search>
+  <add position="after"><![CDATA[$this->document->addScript("view/javascript/jscolor.js");]]></add>
+</operation>
+
+<operation error="skip">
+  <search><![CDATA['order_status_id' => $result['order_status_id'],]]></search>
+  <add position="after"><![CDATA[				'b_color' 				=> $result['b_color'],
+  				't_color' 				=> $result['t_color'],]]></add>
+</operation>
+<operation>
+  <search><![CDATA[$order_status_total = $this->model_localisation_order_status->getTotalOrderStatuses();]]></search>
+  <add position="after"><![CDATA[		$data['color_orders_status'] = $this->config->get('color_orders_status');]]></add>
+</operation>
+  </file>
+
+  <file path="admin/model/localisation/order_status.php">
+    <operation error="skip">
+      <search><![CDATA[$this->db->query("INSERT INTO " . DB_PREFIX . "order_status SET order_status_id = '" . (int)$order_status_id . "', language_id = '" . (int)$language_id . "', name = '" . $this->db->escape($value['name']) . "'");]]></search>
+      <add position="replace"><![CDATA[$this->db->query("INSERT INTO " . DB_PREFIX . "order_status SET order_status_id = '" . (int)$order_status_id . "', language_id = '" . (int)$language_id . "', name = '" . $this->db->escape($value['name']) . "', b_color = '" . $this->db->escape($data['b_color']) . "', t_color = '" . $this->db->escape($data['t_color']) . "', s_color = '" . (int)$data['s_color'] . "'");]]></add>
+  </operation>
+  <operation error="skip">
+      <search><![CDATA[$this->db->query("INSERT INTO " . DB_PREFIX . "order_status SET language_id = '" . (int)$language_id . "', name = '" . $this->db->escape($value['name']) . "'");]]></search>
+      <add position="replace"><![CDATA[$this->db->query("INSERT INTO " . DB_PREFIX . "order_status SET language_id = '" . (int)$language_id . "', name = '" . $this->db->escape($value['name']) . "', b_color = '" . $this->db->escape($data['b_color']) . "', t_color = '" . $this->db->escape($data['t_color']) . "', s_color = '" . (int)$data['s_color'] . "'");]]></add>
+  </operation>
+  </file>
+
+  <file path="admin/view/template/localisation/order_status_list.twig">
+    <operation error="skip">
+      <search><![CDATA[{% for order_status in order_statuses %}]]></search>
+      <add position="after"><![CDATA[{% if (color_orders_status is defined and color_orders_status) %}
+                            <tr style = "background-color: #{{ order_status['b_color'] }}; color: #{{ order_status['t_color'] }}">
+                          {% else %}]]></add>
+      </operation>
+      <operation>
+        <search><![CDATA[<td class="text-center">{% if order_status.order_status_id in selected %}]]></search>
+        <add position="before"><![CDATA[{% endif %}]]></add>
+      </operation>
+  </file>
+
+  <file path="admin/view/template/localisation/order_status_form.twig">
+    <operation error="skip">
+      <search><![CDATA[</form>]]></search>
+      <add position="before"><![CDATA[{% if (color_orders_status is defined and color_orders_status) %}
+                <div class="form-group">
+                <label class="col-sm-6 control-label" for="input-container">Применить стили ко всей строке</label>
+                <div class="col-sm-6">
+                <div class="radio-group-lite">
+                <input id="all_off" class="hide-radio radio-off" type="radio" name="s_color" value="0" {{ s_color ? '' : 'checked' }}>
+                <label for="all_off" id = "off">Да</label>
+                <input id="all_on" class="hide-radio radio-on" type="radio" name="s_color" value="1" {{ s_color ? 'checked' : '' }}>
+                <label for="all_on" id = "on">Нет<span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                </div>
+                </div>
+                </div>
+                <table class="table table-bordered table-hover">
+                <tr id = "table-color">
+                    <td class="text-right loy">1178</td>
+                    <td class="text-left loy">Тест Тестовый  </td>
+                    <td id ="stat" class="text-left p color" style = "background-color: #{{ b_color is defined ? b_color : '' }}; color: #{{ t_color is defined ? t_color : '' }}">Новый заказ</td>
+                    <td class="text-right loy">400грн</td>
+                    <td class="text-left loy">09.08.2019</td>
+                    <td class="text-left loy">+38 (096) 906-23-91</td>
+                    <td class="text-right loy"><a class="btn btn-info" data-original-title="Обзор"><i class="fa fa-eye"></i></a> <a class="btn btn-primary" data-original-title="Редактировать"><i class="fa fa-pencil"></i></a></td>
+                  </tr>
+                </table>
+                <div class = "col-sm-12 col-md-6 col-lg-3" style="padding: 10px 10px 10px 0">
+                  <div class = "input-group">
+                    <span class="input-group-addon">Цвет фона</span>
+                    <input class="form-control jscolor {required:false, onFineChange:'updateBackground(this)'}" name = "b_color" id = "backColor" value="{{ b_color is defined ? b_color : '' }}">
+                  </div>
+                </div>
+                <div class = "col-sm-12 col-md-6 col-lg-3" style="padding: 10px 10px 10px 0">
+                  <div class = "input-group">
+                  <span class="input-group-addon">Цвет текста</span>
+                  <input class="form-control jscolor {required:false, onFineChange:'updateText(this)'}" name = "t_color" id = "textColor" value="{{ t_color is defined ? t_color : '' }}">
+                  </div>
+                </div>
+                {% endif %}]]></add>
+  </operation>
+  <operation error="skip">
+      <search><![CDATA[{{ footer }}]]></search>
+      <add position="before"><![CDATA[<script>
+        var statusText = $('input[name=\'order_status[1][name]\']').val();
+        $("#stat").text(statusText);
+        $(document).ready(function(){
+        if($('#all_on').prop("checked") == true){
+          $('#table-color').addClass('color');
+          $("#table-color").css("background-color", $("#stat").css("background-color"));
+          $("#table-color").css("color", $("#stat").css("color"));
+        }
+        });
+      var back = $('#backColor');
+      $('#off').click(function(){
+        $('#table-color').removeClass('color');
+        $('#table-color').css({"background-color": "#fff", "color": "#686868"});
+      });
+      $('#on').click(function(){
+        $('#table-color').addClass('color');
+        $("#table-color").css("background-color", $("#stat").css("background-color"));
+        $("#table-color").css("color", $("#stat").css("color"));
+      });
+      function updateBackground(jscolor) {
+          // 'jscolor' instance can be used as a string
+          var items = document.getElementsByClassName('color');
+          for(var i=0; i<items.length; i++){
+            items[i].style.backgroundColor = '#' + jscolor;
+          }
+      }
+      function updateText(jscolor) {
+          // 'jscolor' instance can be used as a string
+          var items = document.getElementsByClassName('color');
+          for(var i=0; i<items.length; i++){
+            items[i].style.color = '#' + jscolor;
+          }
+
+      }
+      </script>
+      <style>
+      .radio-group-lite {
+          display: inline-block;
+          position: relative;
+          width: 70px;
+          background: #eceeef none repeat scroll 0 0;
+          border-radius: 18px;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.35) inset, 0 1px 2px rgba(0, 0, 0, 0.2) inset, 0 0 0 2px #efefef;
+          padding: 2px;
+          -webkit-user-select:none;
+          -moz-user-select:none;
+          -ms-user-select: none;
+      }
+      .hide-radio {
+          display: none;
+      }
+      .hide-radio + label {
+          background: transparent;
+          display: block;
+      		font-weight: 600;
+      		letter-spacing: -.5px;
+          float: left;
+          padding: 5px 0;
+          text-align: center;
+          -webkit-transition: 0.15s ease-in-out;
+          -moz-transition: 0.15s ease-in-out;
+          -o-transition: 0.15s ease-in-out;
+          transition: 0.15s ease-in-out;
+          width: 50%;
+          margin-bottom: 0px;
+          position: relative;
+          color: #969696;
+          cursor: pointer;
+      }
+      .hide-radio:checked + label{
+        color: transparent !important;
+      }
+      .onoffswitch-switch {
+          display: block;
+          width: 28px;
+          height: 28px;
+          box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.2), 0 1px rgba(0, 0, 0, 0.02) inset;
+          background: #f9f9f9 linear-gradient(to bottom, #eeeeee, white) repeat scroll 0 0;
+          position: absolute;
+          top: 0px;
+          right: 38px;
+          border: 4px solid #FFFFFF;
+          border-radius: 15px;
+          transition: all 0.2s ease-in 0s;
+      }
+      .radio-on.hide-radio:checked + label .onoffswitch-switch{
+        right: -1px;
+      }
+      .onoffswitch-inner{
+        transition: all 0s;
+      }
+      .radio-on.hide-radio:checked + label .onoffswitch-inner{
+        position: absolute;
+        left: -35px;
+        top: -2px;
+        width: 70px;
+        height: 32px;
+        border-radius: 18px;
+        background: linear-gradient(45deg, #13bc4f, #02ce4d);
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.33) inset, 0 1px 2px rgba(0, 0, 0, 0.2) inset, 0 0 0 2px #7cdb9c;
+      }
+      .radio-off.hide-radio + label{
+        color: #fff;
+        z-index: 1;
+      }
+      </style>]]></add>
+  </operation>
+  </file>
+</modification>

@@ -1,0 +1,149 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> {{ heading_title }}</h3>
+  </div>
+  <div class="panel-body">
+    <div class="chart-sale-filters form-inline" style="margin-bottom:15px;">
+      <div class="btn-group chart-sale-presets" role="group">
+        <button type="button" class="btn btn-default" data-range="today">{{ text_today }}</button>
+        <button type="button" class="btn btn-default" data-range="yesterday">{{ text_yesterday }}</button>
+        <button type="button" class="btn btn-default" data-range="week">{{ text_week }}</button>
+        <button type="button" class="btn btn-default active" data-range="month">{{ text_month }}</button>
+      </div>
+      <span class="chart-sale-sep hidden-xs">{{ text_custom }}:</span>
+      <div class="input-group date" style="width:140px;">
+        <input type="text" name="chart_sale_start" value="" placeholder="{{ text_date_start }}" data-date-format="YYYY-MM-DD" id="chart-sale-start" class="form-control" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
+      <div class="input-group date" style="width:140px;">
+        <input type="text" name="chart_sale_end" value="" placeholder="{{ text_date_end }}" data-date-format="YYYY-MM-DD" id="chart-sale-end" class="form-control" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
+      <button type="button" id="chart-sale-apply" class="btn btn-primary">{{ text_filter }}</button>
+      <span id="chart-sale-period" class="label label-default" style="margin-left:8px;"></span>
+      <span id="chart-sale-orders-total" class="label label-primary" style="margin-left:4px;"></span>
+      <span id="chart-sale-customers-total" class="label label-info" style="margin-left:4px;"></span>
+    </div>
+    <div id="chart-sale" style="width: 100%; height: 260px;"></div>
+  </div>
+</div>
+<style type="text/css">
+.chart-sale-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.chart-sale-sep {
+  color: #777;
+  margin-left: 4px;
+}
+</style>
+<script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.js"></script>
+<script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.resize.min.js"></script>
+<script type="text/javascript"><!--
+(function() {
+	$('.chart-sale-filters .date').datetimepicker({
+		pickTime: false,
+		format: 'YYYY-MM-DD'
+	});
+
+	function loadSaleChart(range, dateStart, dateEnd) {
+		var url = 'index.php?route=extension/dashboard/chart/chart&user_token={{ user_token }}&range=' + encodeURIComponent(range);
+
+		if (range === 'custom') {
+			url += '&date_start=' + encodeURIComponent(dateStart || '') + '&date_end=' + encodeURIComponent(dateEnd || '');
+		}
+
+		$.ajax({
+			type: 'get',
+			url: url,
+			dataType: 'json',
+			success: function(json) {
+				if (typeof json['order'] == 'undefined') {
+					return false;
+				}
+
+				$('#chart-sale-period').text('{{ text_period }}: ' + json['period_label']);
+				$('#chart-sale-orders-total').text('{{ text_order }}: ' + json['order_total']);
+				$('#chart-sale-customers-total').text('{{ text_customer }}: ' + json['customer_total']);
+
+				if (json['date_start']) {
+					$('#chart-sale-start').val(json['date_start']);
+				}
+
+				if (json['date_end']) {
+					$('#chart-sale-end').val(json['date_end']);
+				}
+
+				var option = {
+					shadowSize: 0,
+					colors: ['#9FD5F1', '#1065D2'],
+					bars: {
+						show: true,
+						fill: true,
+						lineWidth: 1
+					},
+					grid: {
+						backgroundColor: '#FFFFFF',
+						hoverable: true
+					},
+					points: {
+						show: false
+					},
+					xaxis: {
+						show: true,
+						ticks: json['xaxis']
+					},
+					legend: {
+						show: true,
+						position: 'nw'
+					}
+				};
+
+				$.plot('#chart-sale', [json['order'], json['customer']], option);
+
+				$('#chart-sale').off('plothover').on('plothover', function(event, pos, item) {
+					$('.tooltip').remove();
+
+					if (item) {
+						var seriesLabel = item.series.label || '';
+						$('<div id="tooltip" class="tooltip top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + seriesLabel + ': ' + item.datapoint[1].toFixed(0) + '</div></div>').prependTo('body');
+
+						$('#tooltip').css({
+							position: 'absolute',
+							left: item.pageX - ($('#tooltip').outerWidth() / 2),
+							top: item.pageY - $('#tooltip').outerHeight(),
+							pointer: 'cursor'
+						}).fadeIn(80);
+
+						$('#chart-sale').css('cursor', 'pointer');
+					} else {
+						$('#chart-sale').css('cursor', 'auto');
+					}
+				});
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	}
+
+	$('.chart-sale-presets button').on('click', function() {
+		$('.chart-sale-presets button').removeClass('active');
+		$(this).addClass('active');
+		loadSaleChart($(this).data('range'));
+	});
+
+	$('#chart-sale-apply').on('click', function() {
+		$('.chart-sale-presets button').removeClass('active');
+		loadSaleChart('custom', $('#chart-sale-start').val(), $('#chart-sale-end').val());
+	});
+
+	loadSaleChart('month');
+})();
+//--></script>

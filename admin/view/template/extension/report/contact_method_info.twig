@@ -1,0 +1,196 @@
+<div class="row">
+  <div id="filter-report" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="control-label" for="input-date-start">{{ entry_date_start }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_start" value="{{ filter_date_start }}" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-date-end">{{ entry_date_end }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_end" value="{{ filter_date_end }}" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" id="input-date-end" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-contact">{{ entry_contact }}</label>
+          <select name="filter_contact" id="input-contact" class="form-control">
+            <option value="">{{ text_all_contacts }}</option>
+            {% for type in filter_contact_types %}
+            <option value="{{ type.code }}"{% if filter_contact == type.code %} selected="selected"{% endif %}>{{ type.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <a href="{{ preset_today }}" class="btn btn-default btn-block">{{ text_preset_today }}</a>
+          <a href="{{ preset_week }}" class="btn btn-default btn-block">{{ text_preset_week }}</a>
+          <a href="{{ preset_month }}" class="btn btn-default btn-block">{{ text_preset_month }}</a>
+        </div>
+        <div class="form-group text-right">
+          <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+        <p class="help-block">{{ text_period_hint }}</p>
+        <p class="help-block">{{ text_contact_hint }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 col-md-pull-3 col-sm-12">
+    <div class="row">
+      <div class="col-sm-3 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.total }}</h3>
+          <div><small>{{ text_orders_count }}</small></div>
+        </div>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.telegram }}</h3>
+          <div><small>{{ text_telegram }}</small></div>
+        </div>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.viber }}</h3>
+          <div><small>{{ text_viber }}</small></div>
+        </div>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px;">{{ summary.telephone }}</h3>
+          <div><small>{{ text_telephone }}</small></div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-6" style="margin-bottom:15px;">
+        <div class="thumbnail text-center" style="margin-bottom:0;">
+          <h3 style="margin:8px 0 4px; font-size:16px;">{{ summary.sum }}</h3>
+          <div><small>{{ text_sum }}</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-trophy"></i> {{ text_ranking }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="text-center">{{ column_rank }}</td>
+                <td class="text-left">{{ column_contact }}</td>
+                <td class="text-right">{{ column_orders }}</td>
+                <td class="text-right">{{ column_percent }}</td>
+                <td class="text-right">{{ column_sum }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if contacts %}
+            {% for contact in contacts %}
+            <tr>
+              <td class="text-center"><strong>{{ contact.rank }}</strong></td>
+              <td class="text-left">{{ contact.contact }}</td>
+              <td class="text-right"><strong>{{ contact.orders }}</strong></td>
+              <td class="text-right">{{ contact.percent }}</td>
+              <td class="text-right">{{ contact.sum }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="5">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-comments"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="text-right">{% if sort == 'order_id' %}<a href="{{ sort_order_id }}" class="{{ order|lower }}">{{ column_order_id }}</a>{% else %}<a href="{{ sort_order_id }}">{{ column_order_id }}</a>{% endif %}</td>
+                <td class="text-left">{% if sort == 'customer' %}<a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>{% else %}<a href="{{ sort_customer }}">{{ column_customer }}</a>{% endif %}</td>
+                <td class="text-left">{% if sort == 'contact' %}<a href="{{ sort_contact }}" class="{{ order|lower }}">{{ column_contact }}</a>{% else %}<a href="{{ sort_contact }}">{{ column_contact }}</a>{% endif %}</td>
+                <td class="text-left">{{ column_payment }}</td>
+                <td class="text-right">{% if sort == 'total' %}<a href="{{ sort_total }}" class="{{ order|lower }}">{{ column_total }}</a>{% else %}<a href="{{ sort_total }}">{{ column_total }}</a>{% endif %}</td>
+                <td class="text-left">{% if sort == 'date_added' %}<a href="{{ sort_date_added }}" class="{{ order|lower }}">{{ column_date }}</a>{% else %}<a href="{{ sort_date_added }}">{{ column_date }}</a>{% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if orders %}
+            {% for order in orders %}
+            <tr>
+              <td class="text-right"><a href="{{ order.view }}">#{{ order.order_id }}</a></td>
+              <td class="text-left">{{ order.customer }}<br><small>{{ order.telephone }}</small></td>
+              <td class="text-left">{{ order.contact }}</td>
+              <td class="text-left">{{ order.payment_method }}</td>
+              <td class="text-right">{{ order.total }}</td>
+              <td class="text-left">{{ order.date_added }}</td>
+              <td class="text-right"><a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="7">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=report/report&user_token={{ user_token }}&code=contact_method';
+
+	var filter_date_start = $('input[name=\'filter_date_start\']').val();
+
+	if (filter_date_start) {
+		url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
+	}
+
+	var filter_date_end = $('input[name=\'filter_date_end\']').val();
+
+	if (filter_date_end) {
+		url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+	}
+
+	var filter_contact = $('select[name=\'filter_contact\']').val();
+
+	if (filter_contact) {
+		url += '&filter_contact=' + encodeURIComponent(filter_contact);
+	}
+
+	url += '&sort={{ sort }}&order={{ order }}';
+
+	location = url;
+});
+//--></script>

@@ -1,0 +1,40 @@
+{{ header }}
+<div id="account-address" class="container">
+	<div class="profile__content">
+	  {% if success %}
+	  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
+	  {% endif %}
+        <div class="profile__holder">
+            <div class="profile__lside">
+			<h1 class="h2 color-black profile__title">{{ text_address_book }}</h1>
+			{% if addresses %}
+				<div class="profile__orders">
+				{% for result in addresses %}
+                    <div class="profile__order">
+						<div class="profile__order-title">{{ result.address }}</div>
+						<a href="{{ result.update }}" class="reorder button-light-blue button-light-blue--border-radius-min">{{ button_edit }}</a> &nbsp; 
+						<a href = "{{ result.delete }}" title="{{ button_delete }}" class="reorder button-light-blue button-light-blue--border-radius-min" onclick="return confirm('{{ text_confirm }}')">{{ button_delete }}</a>
+					</div>
+				{% endfor %}
+				</div>
+			  {% else %}
+			  <p>{{ text_empty }}</p>
+			  {% endif %}
+			  
+			  <a href="{{ add }}" class="reorder button-light-blue button-light-blue--border-radius-min">{{ button_new_address }}</a>
+            </div>
+            {{ column_right }}
+        </div>
+    </div>
+</div>
+{{ footer }}
+{% if error_warning %}
+<input type="hidden" class="js-open-toast">
+<script>
+$(document).ready(function() {
+$('.toast').addClass('toast-danger');
+$('.toast .p').text('{{ error_warning }}');
+$(".js-open-toast").trigger('click');
+});
+</script>
+{% endif %}

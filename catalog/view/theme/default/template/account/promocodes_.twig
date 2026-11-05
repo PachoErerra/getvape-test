@@ -1,0 +1,221 @@
+{{ header }}
+<div id="account-order" class="container">
+
+    <div class="profile__content">
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+
+
+        <div class="profile__holder">
+            <div class="profile__lside">
+                <h1 class="h2 color-black profile__title">{{ text_moyi_promokody }}</h1>
+
+                <div class="profile__inners">
+                    <div class="codes-tabs d-flex align-items-center">
+                        <button type="button" class="codes-tab codes-tab--active d-flex align-items-center" data-tab="1">
+                            <svg class="sprite-icon">
+                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-shooting-star"></use>
+                            </svg>
+                            {{ text_aktyvni_promokody }}
+                        </button>
+                        <button type="button" class="codes-tab d-flex align-items-center" data-tab="2">
+                            <svg class="sprite-icon">
+                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-x-circle"></use>
+                            </svg>
+                            {{ text_neaktyvni_promokody }}
+                        </button>
+                    </div>
+
+
+
+                    <div class="profile__inner codes-content" data-tab-content="1">
+                        <div class="profile__inner-title">{{ text_aktyvni_promokody }}</div>
+
+                        <div class="codes-list">
+                            <!--code-item-->
+                            <div class="code-item d-flex flex-column flex-md-row align-items-md-center justify-content-md-between flex-wrap">
+                                <div class="code-top">
+                                    <div class="code-badge code-badge--active">{{ text_aktyvnyy }}</div>
+
+                                    <div class="code-title">{{ text_shkarpetky_za_1_hrn }}</div>
+                                </div>
+                                <div class="code-left">
+                                    <div class="code-box d-flex align-items-center justify-content-between js-code-parent">
+                                        <span class="code-value js-input-code">VAPORS2025</span>
+                                        <button class="code-copy js-copy-code">
+                                            <svg width="22" height="22" viewBox="0 0 16 16">
+                                                <use id="fortune__prize-copy-icon" href="#icon-clipboard"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="code-right d-flex flex-column flex-md-row justify-content-md-end">
+                                    <div class="code-info">
+                                        <span>{{ text_umovy_vykorystannya }}</span>
+                                        <b>{{ text_minimalna_suma_zamovlennya_vid_500 }}</b>
+                                    </div>
+
+                                    <div class="code-info">
+                                        <span>{{ text_diysnyy_do }}</span>
+                                        <b>25.09.25</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/code-item-->
+
+                            <!--code-item-->
+                            <div class="code-item d-flex flex-column flex-md-row align-items-md-center justify-content-md-between flex-wrap">
+                                <div class="code-top">
+                                    <div class="code-badge code-badge--active">{{ text_aktyvnyy }}</div>
+
+                                    <div class="code-title">{{ text_shkarpetky_za_1_hrn }}</div>
+                                </div>
+                                <div class="code-left">
+                                    <div class="code-box d-flex align-items-center justify-content-between js-code-parent">
+                                        <span class="code-value js-input-code">VAPORS2026</span>
+                                        <button class="code-copy js-copy-code">
+                                            <svg width="22" height="22" viewBox="0 0 16 16">
+                                                <use id="fortune__prize-copy-icon" href="#icon-clipboard"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="code-right d-flex flex-column flex-md-row justify-content-md-end">
+                                    <div class="code-info">
+                                        <span>{{ text_umovy_vykorystannya }}</span>
+                                        <b>{{ text_minimalna_suma_zamovlennya_vid_500 }}</b>
+                                    </div>
+
+                                    <div class="code-info">
+                                        <span>{{ text_diysnyy_do }}</span>
+                                        <b>25.09.25</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/code-item-->
+                        </div>
+                    </div>
+
+                    <div class="profile__inner codes-content" style="display: none;" data-tab-content="2">
+                        <div class="profile__inner-title">{{ text_neaktyvni_promokody }}</div>
+
+                        <div class="codes-list">
+                            <!--code-item-->
+                            <div class="code-item d-flex flex-column flex-md-row align-items-md-center justify-content-md-between flex-wrap">
+                                <div class="code-top">
+                                    <div class="code-badge code-badge--inactive">{{ text_vykorystanyy }}</div>
+
+                                    <div class="code-title">{{ text_shkarpetky_za_1_hrn }}</div>
+                                </div>
+                                <div class="code-left">
+                                    <div class="code-box d-flex align-items-center justify-content-between">
+                                        <span class="code-value">VAPORS2025</span>
+                                        <button class="code-copy code-copy--inactive">
+                                            <svg width="22" height="22" viewBox="0 0 16 16">
+                                                <use id="fortune__prize-copy-icon" href="#icon-clipboard"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="code-right d-flex flex-column flex-md-row justify-content-md-end">
+                                    <div class="code-info">
+                                        <span>{{ text_umovy_vykorystannya }}</span>
+                                        <b>{{ text_minimalna_suma_zamovlennya_vid_500 }}</b>
+                                    </div>
+
+                                    <div class="code-info">
+                                        <span>{{ text_diysnyy_do }}</span>
+                                        <b>25.09.25</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/code-item-->
+
+                            <!--code-item-->
+                            <div class="code-item d-flex flex-column flex-md-row align-items-md-center justify-content-md-between flex-wrap">
+                                <div class="code-top">
+                                    <div class="code-badge code-badge--inactive">{{ text_prostrochenyy }}</div>
+
+                                    <div class="code-title">{{ text_shkarpetky_za_1_hrn }}</div>
+                                </div>
+                                <div class="code-left">
+                                    <div class="code-box d-flex align-items-center justify-content-between">
+                                        <span class="code-value">VAPORS2026</span>
+                                        <button class="code-copy code-copy--inactive">
+                                            <svg width="22" height="22" viewBox="0 0 16 16">
+                                                <use id="fortune__prize-copy-icon" href="#icon-clipboard"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="code-right d-flex flex-column flex-md-row justify-content-md-end">
+                                    <div class="code-info">
+                                        <span>{{ text_umovy_vykorystannya }}</span>
+                                        <b>{{ text_minimalna_suma_zamovlennya_vid_500 }}</b>
+                                    </div>
+
+                                    <div class="code-info">
+                                        <span>{{ text_diysnyy_do }}</span>
+                                        <b>25.09.25</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/code-item-->
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            {{ column_right }}
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.codes-tab')) {
+      const btn = e.target.closest('.codes-tab');
+      const tab = btn.getAttribute('data-tab');
+
+
+      document.querySelectorAll('.codes-tab').forEach(b => b.classList.remove('codes-tab--active'));
+      btn.classList.add('codes-tab--active');
+
+
+      document.querySelectorAll('.codes-content').forEach(content => {
+        if (content.getAttribute('data-tab-content') === tab) {
+          content.style.display = '';
+        } else {
+          content.style.display = 'none';
+        }
+      });
+    }
+  });
+</script>
+
+{{ footer }}
+
+{% if error_warning %}
+    <input type="hidden" class="js-open-toast">
+
+
+    <script>
+      $(document).ready(function () {
+        $('.toast').addClass('toast-danger');
+        $('.toast .p').text('{{ error_warning }}');
+        $(".js-open-toast").trigger('click');
+      });
+    </script>
+{% endif %}

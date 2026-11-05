@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Vapors X Punch Gift</name>
+	<code>vapors_punch_gift</code>
+	<version>1.0.0</version>
+	<author>GetVape</author>
+	<link></link>
+	<file path="system/library/cart/cart.php">
+		<operation error="skip">
+			<search><![CDATA[if (isset($product_query->row['isgift']) && $product_query->row['isgift']) {
+	$gift_teaser=true; 
+}]]></search>
+			<add position="after"><![CDATA[
+if (!empty($this->session->data['vapors_punch_gift']) && in_array($cart['cart_id'], (array)$this->session->data['vapors_punch_gift'])) {
+	$gift_teaser=true;
+}
+]]></add>
+		</operation>
+	</file>
+</modification>

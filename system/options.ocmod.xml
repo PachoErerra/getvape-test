@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+  <name>Обновление цены при выборе опций</name>
+  <version>1</version>
+  <link>https://fringe.com.ua</link>
+  <author>ya</author>
+  <code>dev_opencart_com_autocalc_price_opencart</code>
+  <file path="admin/view/template/setting/setting.twig">
+    <operation error="skip">                           
+      <search><![CDATA[<label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_currency_auto }}">{{ entry_currency_auto }}</span></label>]]></search>
+      <add position="before"><![CDATA[
+          <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="Выводится модулем autocalc_price_option в карточке товара">Дополнительная валюта <i>(autocalc)</i>:</span></label>
+          <div class="col-sm-10">
+            <select name="config_currency2" id="input-currency" class="form-control">
+              <option value="">{{ text_none }}</option>
+              {% for currency in currencies %}
+                {% if currency.code == config_currency2 %}
+                  <option value="{{ currency.code }}" selected="selected">{{ currency.title }}</option>
+                {% else %}
+                  <option value="{{ currency.code }}">{{ currency.title }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="Акция на опции пропорционально акции на товар (autocalc_price_option)">Акция на опции <i>(autocalc)</i>:</span></label>
+          <div class="col-sm-10">
+            <label class="radio-inline"> 
+              {% if config_autocalc_option_special %}
+              <input type="radio" name="config_autocalc_option_special" value="1" checked="checked" />
+              {{ text_yes }}
+              {% else %}
+              <input type="radio" name="config_autocalc_option_special" value="1" />
+              {{ text_yes }}
+              {% endif %}
+            </label>
+            <label class="radio-inline">
+              {% if not config_autocalc_option_special %}
+              <input type="radio" name="config_autocalc_option_special" value="0" checked="checked" />
+              {{ text_no }}
+              {% else %}
+              <input type="radio" name="config_autocalc_option_special" value="0" />
+              {{ text_no }}
+              {% endif %}
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="Скидка на опции пропорционально скидке на товар (autocalc_price_option)">Скидка на опции <i>(autocalc)</i>:</span></label>
+          <div class="col-sm-10">
+            <label class="radio-inline">
+              {% if config_autocalc_option_discount %}
+              <input type="radio" name="config_autocalc_option_discount" value="1" checked="checked" />
+              {{ text_yes }}
+              {% else %}
+              <input type="radio" name="config_autocalc_option_discount" value="1" />
+              {{ text_yes }}
+              {% endif %}
+            </label>
+            <label class="radio-inline">
+              {% if not config_autocalc_option_discount %}
+              <input type="radio" name="config_autocalc_option_discount" value="0" checked="checked" />
+              {{ text_no }}
+              {% else %}
+              <input type="radio" name="config_autocalc_option_discount" value="0" />
+              {{ text_no }}
+              {% endif %}
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="Отключении функции умножения на количество (autocalc_price_option)">Не умножать на количество <i>(autocalc)</i>:</span></label>
+          <div class="col-sm-10">
+            <label class="radio-inline">
+              {% if config_autocalc_not_mul_qty %}
+              <input type="radio" name="config_autocalc_not_mul_qty" value="1" checked="checked" />
+              {{ text_yes }}
+              {% else %}
+              <input type="radio" name="config_autocalc_not_mul_qty" value="1" />
+              {{ text_yes }}
+              {% endif %} </label>
+            <label class="radio-inline">
+              {% if not config_autocalc_not_mul_qty %}
+              <input type="radio" name="config_autocalc_not_mul_qty" value="0" checked="checked" />
+              {{ text_no }}
+              {% else %}
+              <input type="radio" name="config_autocalc_not_mul_qty" value="0" />
+              {{ text_no }}
+              {% endif %}
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="Автоматический выбор первой опции (radio,select). (autocalc_price_option)">Выбор первой опции <i>(autocalc)</i>:</span></label>
+          <div class="col-sm-10">
+            <label class="radio-inline">
+              {% if config_autocalc_select_first %}
+              <input type="radio" name="config_autocalc_select_first" value="1" checked="checked" />
+              {{ text_yes }}
+              {% else %}
+              <input type="radio" name="config_autocalc_select_first" value="1" />
+              {{ text_yes }}
+              {% endif %}
+            </label>
+            <label class="radio-inline">
+              {% if not config_autocalc_select_first %}
+              <input type="radio" name="config_autocalc_select_first" value="0" checked="checked" />
+              {{ text_no }}
+              {% else %}
+              <input type="radio" name="config_autocalc_select_first" value="0" />
+              {{ text_no }}
+              {% endif %}
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="Скрыть вывод наценки для опции. (autocalc_price_option)">Не показывать цену опции <i>(autocalc)</i>:</span></label>
+          <div class="col-sm-10">
+            <label class="radio-inline">
+              {% if config_autocalc_hide_option_price %}
+              <input type="radio" name="config_autocalc_hide_option_price" value="1" checked="checked" />
+              {{ text_yes }}
+              {% else %}
+              <input type="radio" name="config_autocalc_hide_option_price" value="1" />
+              {{ text_yes }}
+              {% endif %}
+            </label>
+            <label class="radio-inline">
+              {% if not config_autocalc_hide_option_price %}
+              <input type="radio" name="config_autocalc_hide_option_price" value="0" checked="checked" />
+              {{ text_no }}
+              {% else %}
+              <input type="radio" name="config_autocalc_hide_option_price" value="0" />
+              {{ text_no }}
+              {% endif %}
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+      ]]></add>
+    </operation>        
+  </file>  
+  <file path="admin/controller/setting/setting.php">
+    <operation>                           
+      <search><![CDATA[if (isset($this->request->post['config_currency'])) {]]></search>
+      <add position="before"><![CDATA[
+        if (isset($this->request->post['config_currency2'])) {
+            $data['config_currency2'] = $this->request->post['config_currency2'];
+        } else {
+            $data['config_currency2'] = $this->config->get('config_currency2');
+        }
+        if (isset($this->request->post['config_autocalc_option_special'])) {
+            $data['config_autocalc_option_special'] = $this->request->post['config_autocalc_option_special'];
+        } else {
+            $data['config_autocalc_option_special'] = $this->config->get('config_autocalc_option_special');
+        }        
+        if (isset($this->request->post['config_autocalc_option_discount'])) {
+            $data['config_autocalc_option_discount'] = $this->request->post['config_autocalc_option_discount'];
+        } else {
+            $data['config_autocalc_option_discount'] = $this->config->get('config_autocalc_option_discount');
+        }
+        if (isset($this->request->post['config_autocalc_not_mul_qty'])) {
+            $data['config_autocalc_not_mul_qty'] = $this->request->post['config_autocalc_not_mul_qty'];
+        } else {
+            $data['config_autocalc_not_mul_qty'] = $this->config->get('config_autocalc_not_mul_qty');
+        }
+        if (isset($this->request->post['config_autocalc_select_first'])) {
+            $data['config_autocalc_select_first'] = $this->request->post['config_autocalc_select_first'];
+        } else {
+            $data['config_autocalc_select_first'] = $this->config->get('config_autocalc_select_first');
+        }        
+        if (isset($this->request->post['config_autocalc_hide_option_price'])) {
+            $data['config_autocalc_hide_option_price'] = $this->request->post['config_autocalc_hide_option_price'];
+        } else {
+            $data['config_autocalc_hide_option_price'] = $this->config->get('config_autocalc_hide_option_price');
+        }
+      ]]></add>
+    </operation>        
+  </file>
+  
+  
+  <file path="admin/view/template/catalog/product_form.twig">
+    <operation error="skip">                           
+      <search><![CDATA[{% if product_option_value.price_prefix == '+' %}]]></search>
+      <add position="before"><![CDATA[
+        {% if product_option_value.price_prefix == '=' %}
+          <option value="=" selected="selected">=</option>
+        {% else %}
+          <option value="=">=</option>
+        {% endif %}
+        {% if product_option_value.price_prefix == '%' %}
+          <option value="%" selected="selected">%</option>
+        {% else %}
+          <option value="%">%</option>
+        {% endif %}
+        {% if product_option_value.price_prefix == '*' %}
+          <option value="*" selected="selected">*</option>
+        {% else %}
+          <option value="*">*</option>
+        {% endif %}
+        {% if product_option_value.price_prefix == '/' %}
+          <option value="/" selected="selected">/</option>
+        {% else %}
+          <option value="/">/</option>
+        {% endif %}
+      ]]></add>
+    </operation>    
+    <operation error="skip">                           
+      <search index="0"><![CDATA[html += '    <option value="-">-</option>';]]></search>
+      <add position="after"><![CDATA[
+        html += '    <option value="=">=</option>';
+        html += '    <option value="%">%</option>';
+        html += '    <option value="*">*</option>';
+        html += '    <option value="/">/</option>';
+      ]]></add>
+    </operation>
+  </file>
+  
+  
+  <file path="system/library/cart/cart.php">    
+    <operation>
+      <search><![CDATA[if ($product_discount_query->num_rows) {]]></search>
+      <add position="after"><![CDATA[
+        if ((float)$product_discount_query->row['price'] && (float)$product_query->row['price'] && $this->config->get('config_autocalc_option_discount')) {
+            $autocalc_discount_coefficient = (float)$product_discount_query->row['price'] / (float)$product_query->row['price'];
+            $option_price *= $autocalc_discount_coefficient;
+        }
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[if ($product_special_query->num_rows) {]]></search>
+      <add position="after"><![CDATA[
+        if ((float)$product_special_query->row['price'] && (float)$product_query->row['price'] &&  $this->config->get('config_autocalc_option_special')) {
+            $autocalc_special_coefficient = (float)$product_special_query->row['price'] / (float)$product_query->row['price'];
+            $option_price *= $autocalc_special_coefficient;
+        }
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[if ($product_query->num_rows && ($cart['quantity'] > 0)) {]]></search>
+      <add position="after"><![CDATA[
+        $autocalc_override_price = false;
+        $autocalc_discount_coefficient = false;
+        $autocalc_special_coefficient = false;
+        $autocalc_option_prices = array();
+      ]]></add>
+    </operation>    
+    <operation>
+      <search><![CDATA[if ($option_value_query->row['price_prefix'] == '+') {]]></search>
+      <add position="replace"><![CDATA[
+        if (true) {
+            if ($option_value_query->row['price_prefix'] == '=') {
+                $autocalc_override_price += $option_value_query->row['price'];
+            } else {
+                $autocalc_option_prices[] = array('prefix' => $option_value_query->row['price_prefix'], 'value' => $option_value_query->row['price']);
+            }
+        } else 
+        if ($option_value_query->row['price_prefix'] == '+') {]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$recurring_query = $this->db->query("SELECT]]></search>
+      <add position="before"><![CDATA[
+        $option_price = 0;
+        if ($autocalc_override_price !== false) {
+            $price = 0;
+            $option_price = $autocalc_override_price;
+        }
+        foreach ($autocalc_option_prices as $op) {
+            switch ($op['prefix']) {
+                case '+':
+                    $option_price += $op['value'];
+                    break;
+                case '-':
+                    $option_price -= $op['value'];
+                    break;
+                case '*':
+                    $price *= $op['value'];
+                    $option_price *= $op['value'];
+                    break;
+                case '/':
+                    $price /= $op['value'];
+                    $option_price /= $op['value'];
+                    break;
+                case '%':
+                    $price *= 1.0 + $op['value'] / 100.0;
+                    $option_price *= 1.0 + $op['value'] / 100.0;
+                    break;
+            }
+        }
+        if ($autocalc_discount_coefficient !== false) {
+            $option_price *= $autocalc_discount_coefficient;
+        }
+        if ($autocalc_special_coefficient !== false) {
+            $option_price *= $autocalc_special_coefficient;
+        }
+      ]]></add>
+    </operation>
+  </file>
+
+
+  <file path="catalog/model/catalog/product.php">
+    <operation>
+      <search><![CDATA[=> $product_option_value['weight'],]]></search>
+      <add position="before"><![CDATA[
+        'points'        => $product_option_value['points'],
+        'points_prefix' => $product_option_value['points_prefix'],
+      ]]></add>
+    </operation>
+  </file>
+  
+  <file path="catalog/controller/product/product.php">
+    <operation>
+      <search><![CDATA[$data['options'] = array();]]></search>
+      <add position="before"><![CDATA[
+        if ($data['price']) {
+            $data['price'] = '<span data-value=\'' . $this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')) . '\' class=\'autocalc-product-price\'>' . $data['price'] . '</span>';
+        }
+        if ($data['special']) {
+            $data['special'] = '<span data-value=\'' . $this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')) . '\' class=\'autocalc-product-special\'>' . $data['special'] . '</span>';
+        }
+        if ($data['points']) {
+            $data['points'] = '<span data-value=\'' . $product_info['points'] . '\' class=\'autocalc-product-points\'>' . $data['points'] . '</span>';
+        }
+        if ($data['reward']) {
+            $data['reward'] = '<span data-value=\'' . $product_info['reward'] . '\' class=\'autocalc-product-reward\'>' . $data['reward'] . '</span>';
+        }
+        if ($data['tax']) {
+            $data['tax'] = '<span data-value=\'' . (float)($product_info['special'] ? $product_info['special'] : $product_info['price']) . '\' class=\'autocalc-product-tax\'>' . $data['tax'] . '</span>';
+        }
+        
+        $data['apo_price_value'] = $product_info['price'];
+        $data['apo_special_value'] = $product_info['special'];
+        $data['apo_tax_value'] = (float)$product_info['special'] ? $product_info['special'] : $product_info['price'];
+        $data['apo_points_value'] = $product_info['points'];
+		$data['apo_reward_value'] = $product_info['reward'];
+        
+        $currency_code = $this->session->data['currency'];
+        $data['autocalc_currency'] = array(
+            'value'           => (float)$this->currency->getValue($currency_code),
+            'symbol_left'     => str_replace("'", "\'", $this->currency->getSymbolLeft($currency_code)),
+            'symbol_right'    => str_replace("'", "\'", $this->currency->getSymbolRight($currency_code)),
+            'decimals'        => (int)$this->currency->getDecimalPlace($currency_code),
+            'decimal_point'   => $this->language->get('decimal_point'),
+            'thousand_point'  => $this->language->get('thousand_point'),
+        );
+        
+
+        $currency2_code = $this->config->get('config_currency2');
+        if ($this->currency->has($currency2_code) && $currency2_code != $currency_code) {
+            $currency_code = $currency2_code;
+            $data['autocalc_currency2'] = array(
+                'value'           => (float)$this->currency->getValue($currency_code),
+                'symbol_left'     => str_replace("'", "\'", $this->currency->getSymbolLeft($currency_code)),
+                'symbol_right'    => str_replace("'", "\'", $this->currency->getSymbolRight($currency_code)),
+                'decimals'        => (int)$this->currency->getDecimalPlace($currency_code),
+                'decimal_point'   => $this->language->get('decimal_point'),
+                'thousand_point'  => $this->language->get('thousand_point'),
+            );
+        }
+        
+        $data['discounts_raw'] = $discounts;
+
+        $data['tax_class_id'] = $product_info['tax_class_id'];
+        $data['tax_rates'] = $this->tax->getRates(0, $product_info['tax_class_id']);
+      
+        $data['autocalc_option_special'] = $this->config->get('config_autocalc_option_special');
+        $data['autocalc_option_discount'] = $this->config->get('config_autocalc_option_discount');
+        $data['autocalc_not_mul_qty'] = $this->config->get('config_autocalc_not_mul_qty');
+        $data['autocalc_select_first'] = $this->config->get('config_autocalc_select_first');
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$product_option_value_data[] = array(]]></search>
+      <add position="before"><![CDATA[
+        if ($price) {
+            switch ($option_value['price_prefix']) {
+                case '%':
+                    $price = ($option_value['price'] > 0 ? '+' : '') . (float)$option_value['price'] . '%';
+                    break;
+                case '*':
+                    $price = '*' . (float)$option_value['price'];
+                    break;
+                case '/':
+                    $price = '/' . (float)$option_value['price'];
+                    break;
+            }
+        }
+        if ($this->config->get('config_autocalc_hide_option_price')) $price = false;
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$product_option_value_data[] = array(]]></search>
+      <add position="after"><![CDATA[
+        'apo_price_value'               => $option_value['price'],
+        'apo_points_value'              => isset($option_value['points_prefix']) && $option_value['points'] ? intval($option_value['points_prefix'].$option_value['points']) : 0,
+		'apo_reward_value'              => isset($option_value['points_prefix']) && $option_value['points'] ? intval($option_value['points_prefix'].$option_value['points']) : 0,
+      ]]></add>
+    </operation>
+  </file>
+    
+  <file path="catalog/controller/common/footer.php">
+    <operation>
+      <search><![CDATA[public function index() {]]></search>
+      <add position="after"><![CDATA[
+        $currency_code = $this->session->data['currency'];
+        $data['autocalc_currency'] = array(
+            'value'           => (float)$this->currency->getValue($currency_code),
+            'symbol_left'     => str_replace("'", "\'", $this->currency->getSymbolLeft($currency_code)),
+            'symbol_right'    => str_replace("'", "\'", $this->currency->getSymbolRight($currency_code)),
+            'decimals'        => (int)$this->currency->getDecimalPlace($currency_code),
+            'decimal_point'   => $this->language->get('decimal_point'),
+            'thousand_point'  => $this->language->get('thousand_point'),
+        );
+        
+        $data['autocalc_option_special'] = $this->config->get('config_autocalc_option_special');
+        $data['autocalc_option_discount'] = $this->config->get('config_autocalc_option_discount');
+        $data['autocalc_not_mul_qty'] = $this->config->get('config_autocalc_not_mul_qty');
+        $data['autocalc_select_first'] = $this->config->get('config_autocalc_select_first');
+      ]]></add>
+    </operation>
+  </file>
+
+
+  
+  <file path="catalog/view/theme/*/template/product/product*.twig">
+    <operation error="skip"> <!-- royal -->
+      <search><![CDATA[{{ option_value['price_prefix'] }}{{ option_value['price'] }}]]></search>
+      <add position="replace"><![CDATA[{{ option_value.price_prefix }}{{ option_value.price }}]]></add>
+    </operation>
+  </file>  
+
+  <file path="catalog/view/theme/unishop2/template/{product/*,extension/module/*}.twig">
+    <operation error="skip">
+      <search><![CDATA[{{option_value.price_prefix}}{{option_value.price}}]]></search>
+      <add position="replace"><![CDATA[{% if option_value.price_prefix == '+' or option_value.price_prefix == '-' %}{{ option_value.price_prefix }}{% endif %}{{ option_value.price }}]]></add>
+    </operation>
+  </file>  
+  <file path="catalog/view/theme/newstore/template/{product/*,extension/module/*}.twig">
+    <operation error="skip">
+      <search><![CDATA[{{ option_value.price_prefix }}{{ option_value.price }}]]></search>
+      <add position="replace"><![CDATA[{% if option_value.price_prefix == '+' or option_value.price_prefix == '-' %}{{ option_value.price_prefix }}{% endif %}{{ option_value.price }}]]></add>
+    </operation>    
+    <operation error="skip">
+      <search><![CDATA[onchange="recalc]]></search>
+      <add position="replace"><![CDATA[data-old-onchange="recalc]]></add>
+    </operation>    
+    <operation error="skip">
+      <search><![CDATA[data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}"]]></search>
+      <add position="replace"><![CDATA[data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}"]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[<p class="price">]]></search>
+      <add position="replace"><![CDATA[<p class="price" data-price="{{ product.price_no_format }}" data-special="{{ product.special_no_format }}">]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[<div class="price">]]></search>
+      <add position="replace"><![CDATA[<div class="price" data-price="{{ product.price_no_format }}" data-special="{{ product.special_no_format }}">]]></add>
+    </operation>    
+    <operation error="skip">
+      <search><![CDATA[onkeyup="validate_quantity(]]></search>
+      <add position="replace"><![CDATA[data-old-onkeyup="validate_quantity(]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[recalc_quantity(]]></search>
+      <add position="replace"><![CDATA[// recalc_quantity(]]></add>
+    </operation>
+  </file>
+  
+  <file path="catalog/view/theme/{unishop2,newstore}/template/common/footer.twig">    
+    <operation error="skip">
+      <search><![CDATA[<footer>]]></search>
+      <add position="before"><![CDATA[
+<!--autocalc_price_option_v4-->
+<script type="text/javascript"><!--
+function price_format_ucat(price) { 
+c={{ autocalc_currency.decimals }};d='{{ autocalc_currency.decimal_point }}';t='{{ autocalc_currency.thousand_point }}';sl='{{ autocalc_currency.symbol_left }}';sr='{{ autocalc_currency.symbol_right }}';n=price;i=parseInt(n=Math.abs(n).toFixed(c))+''; j=((j=i.length)>3)?j%3:0;price_text=sl+(j?i.substr(0,j)+t:'')+i.substr(j).replace(/(\d{3})(?=\d)/g,"$1"+t)+(c?d+Math.abs(n-i).toFixed(c).slice(2):'')+sr;{% if autocalc_currency2 %}c={{ autocalc_currency2.decimals }};d='{{ autocalc_currency2.decimal_point }}';t='{{ autocalc_currency2.thousand_point }}';sl='{{ autocalc_currency2.symbol_left }}';sr='{{ autocalc_currency2.symbol_right }}';n=price*{{ autocalc_currency2.value }};i=parseInt(n=Math.abs(n).toFixed(c))+''; j=((j=i.length)>3)?j%3:0; price_text+='  <span class="currency2">(' + sl+(j?i.substr(0,j)+t:'')+i.substr(j).replace(/(\d{3})(?=\d)/g,"$1"+t)+(c?d+Math.abs(n-i).toFixed(c).slice(2):'')+sr + ')</span>';{% endif %}return price_text;
+}
+function aa_ucat($s,p,dp,ff){$s.each(function(){var $t=$(this);$({value:$t.data('value')||dp}).animate({value:p},{easing:'swing',duration:500,step:function(value){$t.html(ff(value));$t.data('value',value);}});});}
+function aa_pds(d,p,q){if(!d)return(p);d=JSON.parse(d.replace(/'/g,'"'));d.forEach(function(di){if(q>=Number(di.quantity))p=Number(di.price)||p;});return p;}
+function recalculateprice_cat(o) {
+  dc=1;$o=$(o);$c=$o.closest('#quick_order');if($c.length==0)$c=$o.closest('.product-thumb');q=Number($c.find('input[name="quantity"]').first().val())||1;$pd=$c.find('p.price,div.price').first();pp=Number($pd.data('price')||0);ps=Number($pd.data('special')||0);if(isNaN(pp))return;if(ps==0){ps=false;dp=aa_pds($pd.data('discount'),pp,q);{% if autocalc_option_discount %}if(pp)dc=dp/pp;{% else %}pp=dp;{% endif %}}var spp=pp;var sps=ps;var op=0;var sc=1.0;if(ps!==false)sc=pp/ps;$c.find('input:checked,option:selected').each(function(){if($(this).data('prefix')=='='){op+=Number($(this).data('price'));pp=0;if(ps!==false)ps=0;}});$c.find('input:checked,option:selected').each(function(){if($(this).data('prefix')=='+'){op+=Number($(this).data('price'));}if($(this).data('prefix')=='-'){op-=Number($(this).data('price'));}if($(this).data('prefix')=='%'){pcnt=1.0+(Number($(this).data('price'))/100.0);op*=pcnt;pp*=pcnt;if(ps!==false)ps*=pcnt;}if($(this).data('prefix')=='*'){op*=Number($(this).data('price'));pp*=Number($(this).data('price'));if(ps!==false)ps*=Number($(this).data('price'));}if($(this).data('prefix')=='/'){op/=Number($(this).data('price'));pp/=Number($(this).data('price'));if(ps!==false)ps/=Number($(this).data('price'));}});pp+=op;if(ps!==false){ps+=op;{% if autocalc_option_special %}ps=pp/sc;{% else %}pp=ps*sc;{% endif %}}else{pp*=dc;}pp*=q;if(ps!==false){ps*=q;aa_ucat($c.find('.price-old'),pp,spp,price_format_ucat);aa_ucat($c.find('.price-new'),ps,sps,price_format_ucat);}else{aa_ucat($pd,pp,spp,price_format_ucat);}
+}
+function autocalc_init() {
+  $('.product-thumb .price-tax').remove();
+  $('#quick_order input[type="checkbox"],#quick_order input[type="radio"],#quick_order select,.product-thumb input[type="checkbox"],.product-thumb input[type="radio"],.product-thumb select').each(function(){if($(this).data('autocalc'))return;$(this).data('autocalc',1).on('change',function(){recalculateprice_cat(this);});});
+  $('#quick_order input[name="quantity"],.product-thumb input[name="quantity"]').each(function(){if($(this).data('autocalc'))return;$(this).data('autocalc',1).on('input change',function(){recalculateprice_cat(this);});}); 
+  $('.product-thumb .option').wrapInner(function(){return $(this).find('form').length==0?'<form></form>':'';});
+  {% if autocalc_select_first %}
+  $('#quick_order select[name^="option"] option[value=""], .product-thumb select[name^="option"] option[value=""]').remove();
+  last_name='';$('#quick_order input[type="radio"][name^="option"], .product-thumb input[type="radio"][name^="option"]').each(function(){if($(this).attr('name')!=last_name)$(this).prop('checked',true).trigger('change');last_name=$(this).attr('name');});
+  $('#quick_order input[type="checkbox"]:checked,#quick_order input[type="radio"]:checked,#quick_order select,.product-thumb input[type="checkbox"]:checked,.product-thumb input[type="radio"]:checked,.product-thumb select').each(function(){$(this).trigger('change');});
+  {% endif %}
+}
+$(document).ready(function() {
+  autocalc_init();
+});
+//--></script>
+      ]]></add>
+    </operation>
+  </file>
+  <file path="catalog/view/theme/unishop2/template/extension/module/uni_quick_order.twig">    
+    <operation error="skip">
+      <search><![CDATA[<div id="modal-quick-order" class="modal fade">]]></search>
+      <add position="after"><![CDATA[
+<script type="text/javascript"><!--
+$(document).ready(function() {
+  if (typeof autocalc_init == 'function') autocalc_init();
+});
+//--></script>
+      ]]></add>
+    </operation>
+  </file>
+  
+  <file path="catalog/view/theme/*/template/product/product*.twig">
+    <operation error="skip">
+      <search><![CDATA[{{ option_value.price_prefix }}{{ option_value.price }}]]></search>
+      <add position="replace"><![CDATA[{% if option_value.price_prefix == '+' or option_value.price_prefix == '-' %}{{ option_value.price_prefix }}{% endif %}{{ option_value.price }}]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[value="{{ option_value.product_option_value_id }}"]]></search>
+      <add position="replace"><![CDATA[value="{{ option_value.product_option_value_id }}" data-reward="{{ option_value.reward_prefix }}{{ option_value.apo_reward }}" data-points="{{ option_value.apo_points_value }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.apo_price_value }}"]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[{{option_value.price_prefix}}{{option_value.price}}]]></search>
+      <add position="replace"><![CDATA[{% if option_value.price_prefix == '+' or option_value.price_prefix == '-' %}{{ option_value.price_prefix }}{% endif %}{{ option_value.price }}]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[value="{{option_value.product_option_value_id}}"]]></search>
+      <add position="replace"><![CDATA[value="{{ option_value.product_option_value_id }}" data-reward="{{ option_value.apo_reward }}" data-points="{{ option_value.apo_points_value }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.apo_price_value }}"]]></add>
+    </operation>    
+    <operation error="skip">
+      <search><![CDATA[value="{{ option_value['product_option_value_id'] }}"]]></search>
+      <add position="replace"><![CDATA[value="{{ option_value['product_option_value_id'] }}" data-reward="{{ option_value.apo_reward }}" data-points="{{ option_value.apo_points_value }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.apo_price_value }}"]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[{{footer}}]]></search>
+      <add position="replace"><![CDATA[{{ footer }}]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[{{ footer }}]]></search>
+      <add position="before"><![CDATA[
+<!--autocalc_price_option_v4-->
+<script type="text/javascript"><!--
+function price_format(price) { 
+c={{ autocalc_currency.decimals }};d='{{ autocalc_currency.decimal_point }}';t='{{ autocalc_currency.thousand_point }}';sl='{{ autocalc_currency.symbol_left }}';sr='{{ autocalc_currency.symbol_right }}';n=price*{{ autocalc_currency.value }};i=parseInt(n=Math.abs(n).toFixed(c))+''; j=((j=i.length)>3)?j%3:0;price_text=sl+(j?i.substr(0,j)+t:'')+i.substr(j).replace(/(\d{3})(?=\d)/g,"$1"+t)+(c?d+Math.abs(n-i).toFixed(c).slice(2):'')+sr;{% if autocalc_currency2 %}c={{ autocalc_currency2.decimals }};d='{{ autocalc_currency2.decimal_point }}';t='{{ autocalc_currency2.thousand_point }}';sl='{{ autocalc_currency2.symbol_left }}';sr='{{ autocalc_currency2.symbol_right }}';n=price*{{ autocalc_currency2.value }};i=parseInt(n=Math.abs(n).toFixed(c))+''; j=((j=i.length)>3)?j%3:0; price_text+='  <span class="currency2">(' + sl+(j?i.substr(0,j)+t:'')+i.substr(j).replace(/(\d{3})(?=\d)/g,"$1"+t)+(c?d+Math.abs(n-i).toFixed(c).slice(2):'')+sr + ')</span>';{% endif %}return price_text;
+}
+function points_format(v) {
+return v.toFixed(0);
+}
+function reward_format(v) {
+return v.toFixed(0);
+}
+function process_discounts(price, quantity) {
+{% for discounts in discounts_raw %}if(quantity>={{ discounts.quantity }}){price={{ discounts.price }};}{% endfor %}return price;
+}
+function calculate_tax(price) {
+var p=price;{% for tax_rate in tax_rates %}{% if tax_rate.type == 'F' %}p+={{ tax_rate.rate }};{% endif %}{% if tax_rate.type == 'P' %}p+=price*{{ tax_rate.rate / 100.0 }};{% endif %}{% endfor %}return p;
+}
+function autocalc_aap(s,p,ff){$(s).each(function(){var $t=$(this);$({value:$t.data('value')||0}).animate({value:p},{easing:'swing',duration:500,step:function(value){$t.html(ff(value));$t.data('value',value);}});});}
+function recalculateprice() {
+    var main_price = {{ apo_price_value + 0.0 }};
+    var special = {{ apo_special_value + 0.0 }};
+    var input_quantity = Number($('#product input[name="quantity"]').val()) || 1;
+    var discount_coefficient = 1;
+    var option_price = 0;
+    var discount_quantity = 0;
+    
+    $('#product .owq-option input[type="checkbox"]').each(function() {
+        $qty = $(this).closest('tr').find('.owq-input');
+        if ($(this).data('split')=='/') discount_quantity += Number($qty.val()) || 0;
+    });    
+    if (discount_quantity == 0) discount_quantity = input_quantity;
+    
+    {% if special %}
+    special_coefficient = {{ apo_price_value / apo_special_value }};
+    {% else %}
+    {% if autocalc_option_discount %}
+    if (main_price) discount_coefficient = process_discounts(main_price, discount_quantity) / main_price;
+    {% else %}
+    main_price = process_discounts(main_price, discount_quantity);
+    {% endif %}
+    {% endif %}
+    
+    {% if points %}
+    var points = {{ apo_points_value }};
+    $('#product input:checked,#product option:selected').each(function() {
+        if ($(this).data('points')) points += Number($(this).data('points'));
+    });
+    autocalc_aap('.autocalc-product-points', points, points_format);
+    {% endif %}
+	
+     {% if reward %}
+    var reward = {{ apo_reward_value }};
+    $('#product input:checked,#product option:selected').each(function() {
+        if ($(this).data('reward')) reward += Number($(this).data('reward'));
+    });
+    autocalc_aap('.autocalc-product-reward', reward, reward_format);
+    {% endif %}   
+	
+    $('#product input:checked,#product option:selected').each(function() {
+    if ($(this).data('prefix') == '=') {
+        option_price += Number($(this).data('price'));
+        main_price = 0;
+        special = 0;
+    }
+    });
+    
+    $('#product input:checked,#product option:selected').each(function() {
+    if ($(this).data('prefix') == '+') {
+        option_price += Number($(this).data('price'));
+    }
+    if ($(this).data('prefix') == '-') {
+        option_price -= Number($(this).data('price'));
+    }
+    if ($(this).data('prefix') == '%') {
+        pcnt = 1.0 + (Number($(this).data('price')) / 100.0);
+        option_price *= pcnt;
+        main_price *= pcnt;
+        special *= pcnt;
+    }
+    if ($(this).data('prefix') == '*') {
+        option_price *= Number($(this).data('price'));
+        main_price *= Number($(this).data('price'));
+        special *= Number($(this).data('price'));
+    }
+    if ($(this).data('prefix') == '/') {
+        option_price /= Number($(this).data('price'));
+        main_price /= Number($(this).data('price'));
+        special /= Number($(this).data('price'));
+    }
+    });
+    
+    special += option_price;
+    main_price += option_price;
+
+    {% if special %}
+    {% if autocalc_option_special %}
+    special = main_price / special_coefficient;
+    {% else %}
+//    main_price = special * special_coefficient;
+    {% endif %}
+    tax = special;
+    {% else %}
+    {% if autocalc_option_discount %}
+    main_price *= discount_coefficient;
+    {% endif %}
+    tax = main_price;
+    {% endif %}
+    
+    {% if tax %}
+    main_price = calculate_tax(main_price);
+    {% if special %}
+    special = calculate_tax(special);
+    {% endif %}
+    {% endif %}
+    
+    {% if not autocalc_not_mul_qty %}
+    if (input_quantity > 0) {
+        main_price *= input_quantity;
+        special *= input_quantity;
+        {% if tax %}tax *= input_quantity;{% endif %}
+    }
+    {% endif %}
+    
+    autocalc_aap('.autocalc-product-price', main_price, price_format);
+    {% if special %}autocalc_aap('.autocalc-product-special', special, price_format);{% endif %}
+    {% if tax %}autocalc_aap('.autocalc-product-tax', tax, price_format);{% endif %}
+}
+
+$(document).ready(function() {
+    $('#product input[type="checkbox"],#product input[type="radio"],#product select').each(function(){if($(this).data('autocalc'))return;$(this).data('autocalc',1).on('change',function(){recalculateprice();});});    
+    $('#product input[name="quantity"]').each(function(){if($(this).data('autocalc'))return;var $q=$(this);$q.data('autocalc',1).data('val',$q.val());(function(){if($q.val()!=$q.data('val')){$q.data('val',$q.val());recalculateprice();}setTimeout(arguments.callee,250);})();});
+    
+    {% if autocalc_select_first %}
+    $('#product select[name^="option"] option[value=""]').remove();
+    last_name='';$('#product input[type="checkbox"][name^="option"]').each(function(){if($(this).attr('name')!=last_name)$(this).prop('checked',true);last_name=$(this).attr('name');});
+    {% endif %}
+    
+    recalculateprice();
+});
+//--></script>
+      ]]></add>
+    </operation>
+  </file>
+</modification>

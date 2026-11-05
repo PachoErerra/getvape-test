@@ -1,0 +1,442 @@
+{{ header }}
+<div id="information-information" class="container">
+    <div class="home__content">
+        <div class="profile__holder">
+            <div id="content" class="profile__lside">{{ content_top }}
+
+
+                <div class="article d-flex">
+                    <div class="article__sidebar">
+                        {% if description.links %}
+                            <div class="article__sidebar-toc">
+                                <div class="article__sidebar-toc-title">{{ text_zmist }}</div>
+                                <ul class="article__sidebar-toc-list">
+                                    {% for idLink, linkLabel in description.links %}
+                                        <li><a href="#{{ idLink }}"
+                                               onclick="scrollIntoBlock('#{{ idLink }}')">{{ loop.index}}. <span>{{ linkLabel }}</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="article__content">
+
+                        <h1 class="h1 color-black">{{ heading_title }}</h1>
+
+                        <div class="breadcrumbs">
+                            {% for breadcrumb in breadcrumbs %}
+                                {% if loop.last %}
+                                    <span>{{ breadcrumb.text }}</span>
+                                {% else %}
+                                    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <ul class="article__info d-flex align-items-center flex-wrap">
+                            <li>
+                                <svg class="sprite-icon" width="17" height="17">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-calendar"></use>
+                                </svg>
+
+                                {{ date_added }}
+                            </li>
+
+                            <li>
+                                <svg class="sprite-icon" width="17" height="17">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-clock"></use>
+                                </svg>
+                                {{ read_time }}
+                                {{ text_khvylyn }}
+                            </li>
+                            <li>
+                                <svg class="sprite-icon" width="17" height="17">
+                                    <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-eye"></use>
+                                </svg>
+                                {{ text_views }} {{ viewed }}
+
+                            </li>
+							{% if author %}
+                            <li>
+                                {{ text_avtor }} {{ author }}
+                            </li>
+							{% endif %}
+                        </ul>
+
+                        <div class="article__content-toc">
+                            {% if description.links %}
+                                <div class="article__sidebar-toc">
+                                    <div class="article__sidebar-toc-title">{{ text_zmist }}</div>
+                                    <ul class="article__sidebar-toc-list">
+                                        {% for idLink, linkLabel in description.links %}
+                                            <li><a href="#{{ idLink }}"
+                                                   onclick="scrollIntoBlock('#{{ idLink }}')">{{ loop.index}}. <span>{{ linkLabel }}</span></a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="article__description text-content">
+                            {% if description.html %}
+                                {{ description.html | raw }}
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="article__actions d-flex align-items-center">
+                            <div class="article__share d-inline-flex align-items-center">
+                                <div class="article__share-title">{{ text_podilytys }}</div>
+
+                                <ul class="article__share-action d-flex align-items-center">
+                                    <li class="article__share-action-item">
+                                        <a href="https://telegram.me/share/url?url={{ href|url_encode }}&text={{ heading_title|url_encode }}"
+                                           class="article__share-action-link" target="_blank" rel="nofollow">
+                                            <svg class="sprite-icon" width="24" height="24">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-telegram"></use>
+                                            </svg>
+                                        </a>
+                                    </li>
+
+                                    <li class="article__share-action-item">
+                                        <a href="https://www.facebook.com/sharer.php?u={{ href|url_encode }}&t={{ heading_title|url_encode }}"
+                                           class="article__share-action-link" target="_blank" rel="nofollow">
+                                            <svg class="sprite-icon" width="24" height="24">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-facebook"></use>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li class="article__share-action-item">
+                                        <a href="viber://forward?text={{ href|url_encode }}%20{{ heading_title|url_encode }}"
+                                           class="article__share-action-link" target="_blank" rel="nofollow">
+                                            <svg class="sprite-icon" width="24" height="24">
+                                                <use href="catalog/view/theme/default/image/sprites/sprites.svg?v={{ sprite_version }}#icon-viber"></use>
+                                            </svg>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                            <div class="article__vote{{ already_voted ? ' is-voted' : '' }}">
+                                <div class="field field--rating">
+                                    <label>{{ text_otsinyty }}</label>
+                                    <div class="rating" data-article-id="{{ article_id }}">
+      {% for i in 5..1 %}
+                                        <input type="radio" id="vote-{{ i }}" name="article-vote" value="{{ i }}"{{ already_voted ? ' disabled' : '' }}>
+                                        <label for="vote-{{ i }}"{% if reputation_half == i %} class="active-half"{% elseif reputation_full >= i %} class="active"{% endif %}></label>
+      {% endfor %}
+                                    </div>
+                                    <div class="rating__count">{{ reputation }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="article__fake">
+
+                    </div>
+                </div>
+
+                <div class="article__feedback">
+
+                    <div class="article__feedback-title h3">{{ text_komentari_y_zapytannya }}</div>
+
+                    <div class="article__form">
+                        <form id="form-review">
+                            <div class="article__form-title h4">{{ text_napysaty_komentar }}</div>
+                            <div class="row flex-wrap">
+                                <div class="col col-xs-12 col-md-6" style="margin-bottom: 10px;">
+                                    <div class="modal__field">
+                                        <div class="field">
+                                            <label>{{ text_vashe_im_ya_ta_prizvyshche }} <span class="field-required">*</span></label>
+                                            <input type="text" name="name" placeholder="" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col col-xs-12 col-md-6" style="margin-bottom: 10px;">
+                                    <div class="modal__field">
+                                        <div class="field">
+                                            <label>Email</label>
+                                            <input type="email" name="email" placeholder="" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal__field">
+                                <div class="field">
+                                    <label>{{ text_komentar }}<span class="field-required">*</span></label>
+                                    <textarea name="text" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+
+<input type="text" value="" name="human" hidden>
+                            <div class="modal__field modal__field_btn">
+                                <button type="button" class="btn btn-primary" id="button-review"
+                                        data-loading-text="{{ text_nadsylannya }}">{{ text_nadislaty }}
+                                </button>
+                                <input type="hidden" class="js-open-toast">
+                            </div>
+                        </form>
+                    </div>
+{{ reviews }}
+
+
+                </div>
+
+
+                {{ content_bottom }}</div>{{ column_right }}
+        </div>
+    </div>
+</div>
+<div class="toast">
+    <div class="toast__close"></div>
+    <div class="p md font-medium">{{ text_vash_vidhuk_uspishno_vidpravleno_pislya }}
+    </div>
+</div>
+<script>
+(function ($) {
+  function showArticleToast(message) {
+    var $toast = $('.toast').first();
+
+    if (!$toast.length) {
+      return;
+    }
+
+    $toast.find('.p').text(message);
+    $toast.addClass('is-show');
+
+    setTimeout(function () {
+      $toast.removeClass('is-show');
+    }, 4000);
+  }
+
+  function formatReputation(value) {
+    var num = parseFloat(value);
+
+    if (isNaN(num)) {
+      return '0';
+    }
+
+    num = Math.round(num * 2) / 2;
+
+    if (num === Math.floor(num)) {
+      return String(Math.floor(num));
+    }
+
+    return num.toFixed(1);
+  }
+
+  function getReputationParts(value) {
+    var num = Math.round((parseFloat(value) || 0) * 2) / 2;
+    var full = Math.floor(num);
+    var half = (num - full) >= 0.5 ? full + 1 : 0;
+
+    return { value: formatReputation(num), full: full, half: half };
+  }
+
+  function updateArticleStars(reputation, full, half) {
+    var parts = getReputationParts(reputation);
+
+    if (typeof full !== 'undefined') {
+      parts.full = parseInt(full, 10) || 0;
+    }
+
+    if (typeof half !== 'undefined') {
+      parts.half = parseInt(half, 10) || 0;
+    }
+
+    $('.article__vote .rating label').removeClass('active active-half');
+    $('.article__vote .rating input[type=radio]').each(function () {
+      var star = parseInt($(this).val(), 10);
+      var $label = $(this).next('label');
+
+      if (parts.half && star === parts.half) {
+        $label.addClass('active-half');
+      } else if (parts.full > 0 && star <= parts.full) {
+        $label.addClass('active');
+      }
+
+      $(this).prop('checked', false);
+    });
+
+    $('.article__vote .rating__count').text(parts.value);
+  }
+
+  function lockArticleVote() {
+    $('.article__vote').addClass('is-voted');
+    $('.article__vote .rating input[type=radio]').prop('disabled', true);
+  }
+
+  $(document).on('click', '.article__vote .rating label', function (e) {
+    e.preventDefault();
+
+    var $vote = $(this).closest('.article__vote');
+
+    if ($vote.hasClass('is-voted') || $vote.data('voting')) {
+      showArticleToast('{{ error_ip_exist|e('js') }}');
+      return;
+    }
+
+    var $input = $(this).prev('input[type=radio]');
+    var reputation = parseInt($input.val(), 10);
+    var articleId = $input.closest('.rating').data('article-id') || {{ article_id }};
+
+    if (!reputation || reputation < 1 || reputation > 5) {
+      return;
+    }
+
+    // превью выбора - целые звезды
+    updateArticleStars(reputation, reputation, 0);
+    $vote.data('voting', true);
+
+    $.ajax({
+      url: 'index.php?route=blog/article/ReviewReputation&article_id=' + articleId + '&reputation=' + reputation,
+      dataType: 'json',
+      complete: function () {
+        $vote.data('voting', false);
+      },
+      success: function (json) {
+        if (json['error']) {
+          showArticleToast(json['error']);
+
+          if (typeof json['reputation'] !== 'undefined') {
+            updateArticleStars(json['reputation'], json['reputation_full'], json['reputation_half']);
+            lockArticleVote();
+          }
+
+          return;
+        }
+
+        if (json['success']) {
+          showArticleToast(json['success']);
+          updateArticleStars(json['reputation'], json['reputation_full'], json['reputation_half']);
+          lockArticleVote();
+        }
+      },
+      error: function () {
+        showArticleToast('{{ error_rating|e('js') }}');
+      }
+    });
+  });
+
+  $(document).on('click', '#morereviews', function (e) {
+    e.preventDefault();
+
+    var $items = $('.article__reviews .reviews__items').first();
+    var nextPage = $items.find('ul.pagination li.active').next().find('a').first();
+    var url = nextPage.attr('href');
+
+    if (!url) {
+      return false;
+    }
+
+    $.ajax({
+      url: url,
+      success: function (data) {
+        $items.find('.pagination').parent().remove();
+        $items.find('.reviews__show-more').remove();
+        $items.append(data);
+
+        if ($items.find('ul.pagination li.active').next().find('a').length == 0) {
+          $items.find('.reviews__show-more').remove();
+        }
+      }
+    });
+
+    return false;
+  });
+
+  $('#button-review').on('click', function () {
+    $.ajax({
+      url: 'index.php?route=blog/article/write&article_id={{ article_id }}',
+      type: 'post',
+      dataType: 'json',
+      data: $("#form-review").serialize(),
+      beforeSend: function () {
+        $('#button-review').button('loading');
+      },
+      complete: function () {
+        $('#button-review').button('reset');
+      },
+      success: function (json) {
+        $('.alert-dismissible').remove();
+
+        if (json['error']) {
+          $('#button-review').after('<div class="alert alert-danger alert-dismissible" style="margin-top: 10px;"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+          $('#form-review input, textarea').parent().removeClass('has-error');
+          if (json['email']) {
+            $('input[name=\'email\']').parent().addClass('has-error');
+          }
+          if (json['name']) {
+            $('input[name=\'name\']').parent().addClass('has-error');
+          }
+          if (json['text']) {
+            $('textarea[name=\'text\']').parent().addClass('has-error');
+          }
+        }
+
+        if (json['success']) {
+          $('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+          showArticleToast(json['success']);
+          $('input[name=\'name\']').val('');
+          $('input[name=\'email\']').val('');
+          $('textarea[name=\'text\']').val('');
+          $('input[name=\'rating\']:checked').prop('checked', false);
+        }
+      }
+    });
+  });
+})(jQuery);
+</script>
+
+<script>
+  function scrollIntoBlock(elem) {
+    event.preventDefault();
+
+    let headerHeight = $('header').outerHeight(),
+      targetOffset = $(elem).offset().top;
+
+    $('html, body').animate({
+      scrollTop: targetOffset - headerHeight * 1.5
+    }, 'fast');
+  }
+</script>
+
+
+<script type="application/ld+json">
+    {
+     "@context": "http://schema.org",
+     "@type": "BlogPosting",
+     "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ href|replace({'&amp;': '&'}) }}"
+},
+ "headline": "{{ heading_title }}",
+ "image": "{{ thumb }}",
+ "datePublished": "{{ date_added }}",
+ "dateModified": "{{ date_modified }}",
+ "author": {
+   "@type": "Person",
+   "name": "Не вказано"
+ },
+  "publisher": {
+   "@type": "Organization",
+   "name": "Vapors",
+   "logo": {
+     "@type": "ImageObject",
+     "url": "https://getvape.com.ua/image/catalog/vapors.png"
+   }
+ },
+ "description": "{{ shortdescription }}"
+}
+</script>
+
+
+{{ footer }}
+
+

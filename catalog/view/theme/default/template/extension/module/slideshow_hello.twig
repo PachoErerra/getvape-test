@@ -1,0 +1,27 @@
+<div class="main-section__list">
+    {% for key, banner in banners if banner.full_width == '100' %}
+        <a href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow" {% endif %}
+               class="main-section__item item-vapors item-vapors-100 {% if loop.index is odd %}item-vapors--odd{% else %}item-vapors--even{% endif %}" id="div{{ key+1 }}">
+                <div class="item-vapors-title">{{ banner.title|raw }}</div>
+                <img srcset="{{ banner.image }} 2x" src="{{ banner.image }}" alt="{{ banner.title }}"/>
+            </a>
+    {% endfor %}
+
+    {% for key, banner in banners if banner.full_width == '50' %}
+        <a href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow" {% endif %}
+           class="main-section__item item-vapors item-vapors-50 {% if loop.index is odd %}item-vapors--odd{% else %}item-vapors--even{% endif %}" id="div{{ key+1 }}">
+            <div class="item-vapors-title">{{ banner.title|raw }}</div>
+            <img srcset="{{ banner.image }} 2x" src="{{ banner.image }}" alt="{{ banner.title }}"/>
+        </a>
+    {% endfor %}
+
+    {% for key, banner in banners if banner.full_width not in ['100','50'] %}
+        <a href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow" {% endif %}
+           class="main-section__item item-vapors item-vapors-25 item-vapors--{{ key+1 }}" id="div{{ key+1 }}">
+            <div class="item-vapors-title">{{ banner.title|raw}}</div>
+            <img srcset="{{ banner.image }} 2x" src="{{ banner.image }}" alt="{{ banner.title }}"/>
+        </a>
+    {% endfor %}
+</div>
+
+

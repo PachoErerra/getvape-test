@@ -1,0 +1,154 @@
+{{ header }}
+<div id="product-category" class="container">
+
+
+    {% if dom.dueDate|date('Y-m-d H:i') < bfstart and bfmenu %}
+        <style>
+          .bf-brands .home__inner {
+            margin-top: 0;
+          }
+        </style>
+
+        <div class="home__content d-flex flex-column align-items-center">
+            <div class="bf">
+                <div class="h2 color-black bf__title">{{ heading_title }}</div>
+                <div class="bf__sub-title">{{ text_tovary_dostupni_cherez }}</div>
+                <script type="text/javascript">
+                  let clock,
+                    futureDate = new Date('{{ bfstart }}'),
+                    currentDate = new Date(),
+                    diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+
+                  clock = $('.clock').FlipClock(diff, {
+                    clockFace: 'HourlyCounter',
+                    language: 'ua',
+                    autoStart: true,
+                    countdown: true,
+                    callbacks: {
+                      stop: function () {
+                        // $('.message').html('Черная пятница началась!');
+                       // $('.home__content').show();
+						location = '{{ redirect }}'
+                      }
+                    }
+                  });
+                </script>
+                <div class="clock d-flex justify-content-center"></div>
+                <div class="bf__sub-title">
+                    {{ text_bezprohrashnyy_rozihrash_u_nashomu_telehram }}
+                </div>
+                <div class="bf__info">
+                    {{ text_pershi_100_zamovlen_na_sayti }}
+                </div>
+            </div>
+
+            <div class="bf-brands" style="margin-top: 30px;width: 100%;">
+                {{ content_top }}
+                
+                <div class="profile__inners">
+                    <div class="profile__faq">
+                        {{ content_bottom }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="contacts__stores" style="width: 100%;margin-top: 30px;">
+                <div class="h3">{{ text_rozklad_roboty_mahazyniv_pid_chas }}</div>
+                <div class="contacts__stores-items">
+                    {% for key, warehouse in warehouses %}
+                        {% if key != 'hide' and key !='' %}
+                            {% if key != 'count' %}
+                                <div class="contacts__store">
+                                    <div class="contacts__store-header">{{ key }}</div>
+                                    <div class="contacts__store-body">
+                                        <div class="contacts__store-items">
+                                            {% for shop in warehouse %}
+                                                <div class="contacts__store-item">
+                                                    <div class="contacts__store-item-inners">
+                                                        <div class="contacts__store-item-inner">
+                                                            <div class="p md font-semibold">{{ shop.address|nl2br }}</div>
+                                                            <div class="p md color-grey font-semibold m-top-5">
+                                                                {{ shop.openBF|nl2br }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="contacts__store-item-inner">
+                                                            <div class="p md font-semibold">{{ shop.telephone }}</div>
+                                                        </div>
+                                                        <div class="contacts__store-item-inner">
+                                                            <a href="{{ shop.geocode }}" target="_blank" rel="nofollow"
+                                                               class="a-link font-semibold">{{ text_pokazaty_na_karti }}</a>
+                                                        </div>
+                                                        <div class="contacts__store-item-inner">
+                                                            {% if shop.thumb %}
+                                                                <img src="{{ shop.thumb }}"
+                                                                     class="contacts__store-item-img"
+                                                                     alt="{{ shop.address|nl2br }}">
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
+    {% endif %}
+    {% if (dom.dueDate|date('Y-m-d H:i') < bfend) and (dom.dueDate|date('Y-m-d H:i') > bfstart) %}
+        <!--div class="message">{{ text_skoro_zakonchytsya }}</div>
+	<script type="text/javascript">
+				var clock;
+				var futureDate  = new Date('{{ bfend }}');
+				var currentDate = new Date();
+				var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+				clock = $('.clock').FlipClock(diff, {	
+		        clockFace: 'DailyCounter',
+				language: 'ua',
+		        autoStart: true,
+				countdown: true,
+		        callbacks: {
+		        	stop: function() {
+		        		$('.message').html('Черная пятница закончилась!');
+						$('.home__content').hide();
+		        	}
+		        }
+		    });
+	</script-->
+    {% endif %}
+{% if dom.dueDate|date('Y-m-d H:i') > bfstart and bfmenu %}
+<script>
+location = '{{ redirect }}'
+</script>
+{% endif %}
+
+    <div class="home__content"
+	
+	{% if not bfmenu %}style="display:none"{% endif %}
+	
+         {% if (dom.dueDate|date('Y-m-d H:i') < bfstart) or (dom.dueDate|date('Y-m-d H:i') > bfend) %}style="display:none"{% endif %}>
+
+        <h1 class="h2 color-black">{{ heading_title }}</h1>
+
+        <div class="breadcrumbs">
+            {% for breadcrumb in breadcrumbs %}
+                {% if loop.last %}
+                    <span>{{ breadcrumb.text }}</span>
+                {% else %}
+                    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+
+
+    </div>
+</div>
+{{ footer }} 
