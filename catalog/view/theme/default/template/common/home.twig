@@ -8,69 +8,28 @@
             <div class="home__body">
                 {{ content_top }}
 
-                {# Швидкі переходи (плитки категорій) — тест #}
-                <section class="vt-tiles" aria-label="Швидкі переходи">
-                    <ul class="vt-list">
-                        <li><a class="vt-tile" href="/nabori-solov-3013/">
-                            <span class="vt-name">Ароматизатори<small>сольові</small></span>
-                            <img class="vt-img" src="/catalog/view/theme/default/image/vt/aromatyzatory-solovi.png" alt="" width="144" height="144" loading="lazy">
-                            <span class="vt-go" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        </a></li>
-                        <li><a class="vt-tile" href="/podsistemi-1122/">
-                            <span class="vt-name">Подсистеми</span>
-                            <img class="vt-img" src="/catalog/view/theme/default/image/vt/podsystemy.png" alt="" width="144" height="144" loading="lazy">
-                            <span class="vt-go" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        </a></li>
-                        <li><a class="vt-tile" href="/kartridj-1271/">
-                            <span class="vt-name">Картриджі</span>
-                            <img class="vt-img vt-img--s" src="/catalog/view/theme/default/image/vt/kartridzhi.png" alt="" width="144" height="144" loading="lazy">
-                            <span class="vt-go" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        </a></li>
-                        <li><a class="vt-tile" href="/specials/">
-                            <span class="vt-name">Знижки</span>
-                            <img class="vt-img" src="/catalog/view/theme/default/image/vt/znyzhky-gradient.png" alt="" width="144" height="144" loading="lazy">
-                            <span class="vt-go" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        </a></li>
-                        <li><a class="vt-tile" href="/latest/">
-                            <span class="vt-name">Новинки</span>
-                            <img class="vt-img" src="/catalog/view/theme/default/image/vt/novynky-gradient.png" alt="" width="144" height="144" loading="lazy">
-                            <span class="vt-go" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        </a></li>
-                        <li><a class="vt-tile" href="/populyarni-tovary/">
-                            <span class="vt-name">Популярні<small>товари</small></span>
-                            <img class="vt-img" src="/catalog/view/theme/default/image/vt/populyarni-gradient.png" alt="" width="144" height="144" loading="lazy">
-                            <span class="vt-go" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                        </a></li>
-                    </ul>
+                {# Швидкі переходи — мозаїка (варіант 6, тест) #}
+                <section class="vt-mz" aria-label="Швидкі переходи">
+                    <div class="t6w"><a class="t6 t6-big" href="/specials/" style="--c:#ff3ea5;--p:#fce7f3"><b>Знижки</b><small>Дивитися всі →</small><img src="/catalog/view/theme/default/image/vt/znyzhky-gradient.png" alt=""></a><a class="t6 t6-big" href="/latest/" style="--c:#8b5cf6;--p:#ede9fe"><b>Новинки</b><small>Дивитися всі →</small><img src="/catalog/view/theme/default/image/vt/novynky-gradient.png" alt=""></a><a class="t6 " href="/nabori-solov-3013/" style="--c:#22c55e;--p:#dcfce7"><b>Ароматизатори сольові</b><img src="/catalog/view/theme/default/image/vt/aromatyzatory-solovi.png" alt=""></a><a class="t6 " href="/podsistemi-1122/" style="--c:#3b82f6;--p:#dbeafe"><b>Подсистеми</b><img src="/catalog/view/theme/default/image/vt/podsystemy.png" alt=""></a><a class="t6 " href="/kartridj-1271/" style="--c:#64748b;--p:#e2e8f0"><b>Картриджі</b><img src="/catalog/view/theme/default/image/vt/kartridzhi.png" alt=""></a><a class="t6 " href="/populyarni-tovary/" style="--c:#f59e0b;--p:#fef3c7"><b>Популярні товари</b><img src="/catalog/view/theme/default/image/vt/populyarni-gradient.png" alt=""></a></div>
                 </section>
                 <style>
-                .vt-tiles{margin:22px 0 36px}
-                .vt-list{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;list-style:none;margin:0;padding:0}
-                .vt-tile{position:relative;display:block;height:150px;padding:16px 16px 0;border-radius:20px;overflow:hidden;isolation:isolate;text-decoration:none;color:#fff;
-                  background:radial-gradient(130% 110% at 100% 100%,#7a1f5f 0%,#2a1030 45%,#140a18 100%);
-                  border:1px solid rgba(255,90,190,.22);box-shadow:0 8px 22px -14px rgba(20,8,24,.55);
-                  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
-                .vt-tile::before{content:"";position:absolute;right:-30px;bottom:-30px;width:130px;height:130px;border-radius:50%;z-index:-1;
-                  background:radial-gradient(circle,rgba(255,62,165,.75) 0%,rgba(255,62,165,0) 68%);filter:blur(6px);transition:transform .35s,opacity .35s;opacity:.75}
-                .vt-tile::after{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
-                  background:linear-gradient(115deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 38%)}
-                .vt-name{position:relative;z-index:2;display:block;font-size:16px;font-weight:700;line-height:1.2;letter-spacing:.1px}
-                .vt-name small{display:block;font-size:13px;font-weight:500;color:rgba(255,255,255,.62);margin-top:2px}
-                .vt-img{position:absolute;right:-4px;bottom:-6px;width:104px;height:104px;object-fit:contain;z-index:1;
-                  filter:drop-shadow(0 10px 14px rgba(0,0,0,.45));transform:rotate(-8deg);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
-                .vt-img--s{width:80px;height:80px;right:6px;bottom:4px}
-                .vt-go{position:absolute;left:16px;bottom:14px;z-index:2;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
-                  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);color:#fff;transition:background .3s,transform .3s,border-color .3s}
-                .vt-tile:hover{transform:translateY(-4px);border-color:rgba(255,90,190,.6);box-shadow:0 18px 34px -14px rgba(255,62,165,.55)}
-                .vt-tile:hover::before{transform:scale(1.35);opacity:1}
-                .vt-tile:hover .vt-img{transform:rotate(0deg) scale(1.1) translateY(-4px)}
-                .vt-tile:hover .vt-go{background:#ff3ea5;border-color:#ff3ea5;transform:translateX(3px)}
-                @media (max-width:1300px){.vt-list{grid-template-columns:repeat(3,minmax(0,1fr))}.vt-tile{height:132px}}
-                @media (max-width:640px){.vt-list{display:flex;overflow-x:auto;gap:10px;padding:2px 2px 8px;scroll-snap-type:x mandatory;scrollbar-width:none}
-                  .vt-list::-webkit-scrollbar{display:none}.vt-list li{flex:0 0 140px;scroll-snap-align:start}
-                  .vt-tile{height:124px;padding:12px 12px 0;border-radius:16px}.vt-name{font-size:14px}.vt-name small{font-size:12px}
-                  .vt-img{width:80px;height:80px}.vt-go{width:26px;height:26px;left:12px;bottom:10px}}
-                @media (prefers-reduced-motion:reduce){.vt-tile,.vt-tile *,.vt-tile::before{transition:none!important}}
+                .vt-mz{margin:22px 0 34px}
+                .vt-mz a{text-decoration:none;color:#17151c}
+                .vt-mz img{display:block}
+                
+.t6w{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:150px 150px;gap:14px}
+.t6{position:relative;padding:18px;border-radius:22px;background:var(--p);overflow:hidden;transition:transform .3s}
+.t6 b{position:relative;z-index:2;font-size:16px}.t6 small{position:absolute;left:18px;bottom:16px;font-weight:700;font-size:13px;color:var(--c)}
+.t6 img{position:absolute;right:10px;bottom:6px;width:90px;height:90px;object-fit:contain;transition:transform .4s}
+.t6-big{grid-row:span 2}.t6-big b{font-size:24px}.t6-big img{width:170px;height:170px;right:14px;bottom:44px}
+.t6:hover{transform:translateY(-3px)}.t6:hover img{transform:scale(1.08) rotate(-5deg)}
+
+                .t6 b{display:block;line-height:1.2}
+                .t6:hover{box-shadow:0 16px 30px -16px color-mix(in srgb,var(--c) 60%,transparent)}
+                .t6:hover small{text-decoration:underline}
+                @media (max-width:900px){.t6w{grid-template-columns:1fr 1fr;grid-template-rows:none}.t6-big{grid-row:auto;height:200px}.t6{height:130px}.t6-big img{width:110px;height:110px;bottom:40px}}
+                @media (max-width:420px){.t6{height:118px;padding:14px}.t6 b{font-size:14px}.t6 img{width:72px;height:72px}.t6-big{height:170px}.t6-big b{font-size:20px}.t6-big img{width:90px;height:90px;bottom:38px}}
+                @media (prefers-reduced-motion:reduce){.t6,.t6 img{transition:none}}
                 </style>
                 <ul class="home__categories home__categories--mob"></ul>
                 {{ content_bottom }}
