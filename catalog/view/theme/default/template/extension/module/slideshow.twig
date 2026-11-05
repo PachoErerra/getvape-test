@@ -17,19 +17,72 @@
     <span>{{ text_katehoriyi_tovariv }}</span>
 </button>
 
-<div class="home__slider swiper">
-    <div class="swiper-wrapper">
-        {% for banner in banners %}
-            <div class="swiper-slide">
-                <a {% if banner.link %}href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow"
-                   {% endif %}{% else %}role="button"{% endif %} class="home__slide">
-                    <img src="{{ banner.image }}" alt="{{ banner.title }}">
-                </a>
-            </div>
-        {% endfor %}
+{# Банери — сцена з об'ємом (тест) #}
+<section class="vt-stage" aria-label="Акції та новинки">
+    <div class="vt-stage__bars" aria-hidden="true">
+        {% for banner in banners %}<span class="vt-stage__bar"><i></i></span>{% endfor %}
     </div>
-    <div class="swiper-nts swiper-button-next icon-arrow-next"></div>
-    <div class="swiper-nts swiper-button-prev icon-arrow-prev"></div>
-</div>
-
-
+    <div class="vt-stage__swiper swiper">
+        <div class="swiper-wrapper">
+            {% for banner in banners %}
+                <div class="swiper-slide vt-stage__slide">
+                    <a {% if banner.link %}href="{{ banner.link }}" {% if banner.newtab %} target="blank" rel="nofollow"{% endif %}{% else %}role="button"{% endif %} class="vt-stage__card">
+                        <img src="{{ banner.image }}" alt="{{ banner.title }}" loading="{{ loop.index0 < 4 ? 'eager' : 'lazy' }}">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="button" class="vt-stage__nav vt-stage__nav--prev" aria-label="Попередній банер"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button type="button" class="vt-stage__nav vt-stage__nav--next" aria-label="Наступний банер"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</section>
+<style>
+.vt-stage{position:relative;margin:6px 0 0;padding:34px 0 18px;isolation:isolate;overflow:hidden;border-radius:28px;
+  background:radial-gradient(60% 70% at 50% 55%,rgba(255,62,165,.22) 0%,rgba(255,62,165,0) 70%),linear-gradient(180deg,#1a0d1f 0%,#120914 100%)}
+.vt-stage::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;
+  background-image:radial-gradient(rgba(255,255,255,.35) 1px,transparent 1.2px);background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(70% 80% at 50% 50%,#000 0%,transparent 75%);mask-image:radial-gradient(70% 80% at 50% 50%,#000 0%,transparent 75%)}
+.vt-stage__bars{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;width:min(420px,70%);z-index:3}
+.vt-stage__bar{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden;cursor:pointer}
+.vt-stage__bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#ff7ac6,#ff3ea5)}
+.vt-stage__bar.is-done i{width:100%}
+.vt-stage__swiper{overflow:visible!important;padding:6px 0 10px}
+.vt-stage__slide{width:240px!important;height:432px;transition:filter .45s}
+.vt-stage__slide:not(.swiper-slide-active){filter:brightness(.55) saturate(.8)}
+.vt-stage__card{display:block;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#241329;
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.8);transition:box-shadow .45s,transform .3s}
+.vt-stage__card img{display:block;width:100%;height:100%;object-fit:cover}
+.swiper-slide-active .vt-stage__card{box-shadow:0 0 0 2px rgba(255,90,190,.75),0 24px 60px -16px rgba(255,62,165,.65)}
+.swiper-slide-active .vt-stage__card:hover{transform:translateY(-3px)}
+.vt-stage__nav{position:absolute;top:50%;z-index:4;width:46px;height:46px;margin-top:-10px;border-radius:50%;border:1px solid rgba(255,255,255,.22);
+  display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;transition:background .25s,transform .25s,border-color .25s}
+.vt-stage__nav:hover{background:#ff3ea5;border-color:#ff3ea5;transform:scale(1.06)}
+.vt-stage__nav--prev{left:18px}.vt-stage__nav--next{right:18px}
+@media (max-width:767px){.vt-stage{border-radius:20px;padding:28px 0 14px}.vt-stage__slide{width:62vw!important;height:calc(62vw * 1.8)}.vt-stage__nav{display:none}.vt-stage__bars{top:11px}}
+@media (prefers-reduced-motion:reduce){.vt-stage__slide,.vt-stage__card{transition:none}}
+</style>
+<script>
+(function(){
+  function init(){
+    var el=document.querySelector('.vt-stage__swiper');
+    if(!el||el.swiper||typeof Swiper==='undefined')return;
+    var stage=el.closest('.vt-stage'), bars=[].slice.call(stage.querySelectorAll('.vt-stage__bar'));
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, DELAY=4500;
+    var sw=new Swiper(el,{
+      effect:'coverflow',centeredSlides:true,slidesPerView:'auto',loop:bars.length>3,speed:650,grabCursor:true,
+      coverflowEffect:{rotate:0,stretch:-30,depth:220,modifier:1,scale:.86,slideShadows:false},
+      autoplay:reduce?false:{delay:DELAY,disableOnInteraction:false,pauseOnMouseEnter:true},
+      navigation:{nextEl:stage.querySelector('.vt-stage__nav--next'),prevEl:stage.querySelector('.vt-stage__nav--prev')},
+      slideToClickedSlide:true,
+      on:{
+        autoplayTimeLeft:function(s,t,p){var b=bars[s.realIndex];if(b)b.firstChild.style.width=((1-p)*100)+'%';},
+        slideChange:function(s){bars.forEach(function(b,i){b.classList.toggle('is-done',i<s.realIndex);b.firstChild.style.width=i<s.realIndex?'100%':'0';});}
+      }
+    });
+    bars.forEach(function(b,i){b.addEventListener('click',function(){sw.slideToLoop(i);});});
+    el.addEventListener('click',function(e){var a=e.target.closest('.vt-stage__card');if(a&&!a.closest('.swiper-slide-active'))e.preventDefault();},true);
+    sw.emit('slideChange');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
