@@ -6,51 +6,40 @@
   try { if (!force && sessionStorage.getItem('punchShown')) return; sessionStorage.setItem('punchShown', '1'); } catch (e) {}
   if (!force && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  var IMG = (document.querySelector('base') ? document.querySelector('base').href : '/') + 'catalog/view/theme/default/image/vt/';
+  /* Справжнє фото флакона Vapors X Punch Oksana 30ml, розрізане на кришку і флакон.
+     Під кришкою — горлечко з різьбою і довгий носик (як у флакона 30 мл). viewBox = пікселі фото 352×1000. */
   var BOTTLE = '' +
-  '<svg viewBox="0 0 200 520" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">' +
+  '<svg viewBox="0 0 352 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow:visible">' +
   '<defs>' +
-    '<linearGradient id="pnCyl" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".12" stop-color="#000" stop-opacity=".15"/><stop offset=".22" stop-color="#fff" stop-opacity=".38"/><stop offset=".3" stop-color="#fff" stop-opacity=".06"/><stop offset=".72" stop-color="#000" stop-opacity="0"/><stop offset=".9" stop-color="#000" stop-opacity=".32"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient>' +
-    '<linearGradient id="pnCapG" x1="0" x2="1"><stop offset="0" stop-color="#050505"/><stop offset=".25" stop-color="#3a3a3a"/><stop offset=".35" stop-color="#151515"/><stop offset=".8" stop-color="#0a0a0a"/><stop offset="1" stop-color="#000"/></linearGradient>' +
-    '<pattern id="pnRibs" width="7" height="10" patternUnits="userSpaceOnUse"><rect width="7" height="10" fill="none"/><rect x="0" width="3.2" height="10" fill="#fff" fill-opacity=".09"/></pattern>' +
-    '<linearGradient id="pnLab" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd23f"/><stop offset=".45" stop-color="#ff9a2e"/><stop offset="1" stop-color="#ff5a3c"/></linearGradient>' +
-    '<radialGradient id="pnPeach" cx=".38" cy=".35" r=".7"><stop offset="0" stop-color="#ffe08a"/><stop offset=".45" stop-color="#ffab45"/><stop offset="1" stop-color="#e2452f"/></radialGradient>' +
-    '<clipPath id="pnBodyClip"><rect x="15" y="168" width="170" height="350" rx="24"/></clipPath>' +
-    '<linearGradient id="pnShoulder" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c8" stop-opacity=".55"/><stop offset="1" stop-color="#ffd76a" stop-opacity=".75"/></linearGradient>' +
+    '<linearGradient id="pnNoz" x1="0" x2="1"><stop offset="0" stop-color="#cfd3d6" stop-opacity=".75"/><stop offset=".22" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".4" stop-color="#e9eef0" stop-opacity=".7"/><stop offset=".8" stop-color="#b8c0c4" stop-opacity=".6"/><stop offset="1" stop-color="#8f989d" stop-opacity=".8"/></linearGradient>' +
+    '<linearGradient id="pnNeck" x1="0" x2="1"><stop offset="0" stop-color="#050505"/><stop offset=".25" stop-color="#3b3b3b"/><stop offset=".4" stop-color="#151515"/><stop offset="1" stop-color="#000"/></linearGradient>' +
+    '<linearGradient id="pnJuice" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".0"/><stop offset="1" stop-color="#f3cf5f" stop-opacity=".55"/></linearGradient>' +
+    '<pattern id="pnRibs" width="9" height="20" patternUnits="userSpaceOnUse"><rect x="0" width="3" height="20" fill="#000" fill-opacity=".35"/><rect x="4" width="1.5" height="20" fill="#fff" fill-opacity=".10"/></pattern>' +
+    '<linearGradient id="pnShine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+    '<clipPath id="pnCapClip"><path d="M167 0h18l19 20 24 40 40 60 56 50 22 15v235H4V185l24-15 56-50 40-60 24-40z"/></clipPath>' +
   '</defs>' +
-  '<ellipse cx="100" cy="520" rx="92" ry="10" fill="#000" opacity=".25" class="pn-shadow"/>' +
-  /* тіло флакона */
-  '<g clip-path="url(#pnBodyClip)">' +
-    '<rect x="15" y="168" width="170" height="350" fill="url(#pnShoulder)"/>' +
-    '<rect x="15" y="196" width="170" height="322" fill="url(#pnLab)"/>' +
-    /* візерунок етикетки: хвилі й плями */
-    '<path d="M15 300c40-30 80 20 120-6s50-20 50-20v80c-30 14-60-18-100 6s-70 10-70 10z" fill="#e8344a" opacity=".85"/>' +
-    '<path d="M15 420c30-26 70 14 110-8s60-6 60-6v112H15z" fill="#c4213c" opacity=".9"/>' +
-    '<circle cx="40" cy="250" r="16" fill="#fff3b0" opacity=".55"/><circle cx="165" cy="400" r="22" fill="#ffe36b" opacity=".5"/><circle cx="60" cy="470" r="10" fill="#ffd23f" opacity=".7"/>' +
-    /* персик */
-    '<g transform="translate(118 300)"><path d="M0 -30c22 -6 42 10 40 34s-22 40 -42 38S-38 18 -36 0 -18 -26 0 -30z" fill="url(#pnPeach)"/><path d="M0 -30c-6 20 -4 44 0 72" stroke="#c23a24" stroke-width="2" fill="none" opacity=".5"/><path d="M2 -30c8 -14 22 -18 34 -14 -6 12 -20 16 -34 14z" fill="#3fa34d"/><ellipse cx="-14" cy="-10" rx="8" ry="12" fill="#fff" opacity=".35"/></g>' +
-    /* текст */
-    '<text x="100" y="236" text-anchor="middle" font-family="Brush Script MT,Segoe Script,cursive" font-style="italic" font-weight="700" font-size="40" fill="#fff" stroke="#7a1022" stroke-width="1.2" paint-order="stroke">Vapors</text>' +
-    '<text x="100" y="388" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="46" letter-spacing="1" fill="#fff" stroke="#5a0a1a" stroke-width="5" paint-order="stroke" transform="rotate(-6 100 388)">OKSANA</text>' +
-    '<text x="100" y="420" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="15" fill="#5a0a1a" letter-spacing="3">PUNCH × VAPORS</text>' +
-    '<rect x="70" y="482" width="60" height="20" rx="10" fill="#3fa34d"/><text x="100" y="497" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="12" fill="#fff">14 мл</text>' +
-    /* циліндричне світло */
-    '<rect x="15" y="168" width="170" height="350" fill="url(#pnCyl)"/>' +
-    '<rect x="44" y="176" width="10" height="330" rx="5" fill="#fff" opacity=".28"/>' +
-  '</g>' +
-  '<rect x="15" y="168" width="170" height="350" rx="24" fill="none" stroke="#000" stroke-opacity=".25"/>' +
-  /* горлечко */
-  '<rect x="58" y="146" width="84" height="26" rx="6" fill="#1a1a1a"/><rect x="58" y="146" width="84" height="26" rx="6" fill="url(#pnCyl)"/>' +
+  '<ellipse cx="176" cy="1000" rx="165" ry="18" fill="#000" opacity=".22"/>' +
+  /* горлечко з різьбою */
+  '<rect x="104" y="318" width="144" height="110" rx="10" fill="url(#pnNeck)"/>' +
+  '<path d="M104 340h144M104 362h144M104 384h144M104 406h144" stroke="#fff" stroke-opacity=".12" stroke-width="3"/>' +
+  '<rect x="94" y="300" width="164" height="24" rx="8" fill="url(#pnNeck)"/>' +
+  /* носик */
+  '<path d="M128 302 C132 230 156 120 166 40 L170 12 h12 l4 28 C196 120 220 230 224 302 Z" fill="url(#pnNoz)" stroke="#9aa3a8" stroke-opacity=".6" stroke-width="1.5"/>' +
+  '<path d="M146 300 C150 230 162 130 169 50 L171 30 h10 l2 20 C190 130 202 230 206 300 Z" fill="url(#pnJuice)"/>' +
+  '<path d="M140 296 C146 220 160 120 168 46" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-opacity=".75" fill="none"/>' +
+  '<ellipse cx="176" cy="12" rx="6" ry="2.5" fill="#6b7276"/>' +
+  /* флакон */
+  '<image href="' + IMG + 'pn-body.png" xlink:href="' + IMG + 'pn-body.png" x="0" y="420" width="352" height="580"/>' +
   /* кришка (окремо — відкручується) */
   '<g id="pnCap">' +
-    '<path d="M86 4c0-3 3-4 7-4h14c4 0 7 1 7 4l6 52H80z" fill="url(#pnCapG)"/>' +
-    '<rect x="88" y="6" width="5" height="46" rx="2.5" fill="#fff" opacity=".18"/>' +
-    '<rect x="52" y="54" width="96" height="98" rx="10" fill="url(#pnCapG)"/>' +
-    '<rect id="pnRibRect" x="52" y="58" width="96" height="90" rx="8" fill="url(#pnRibs)"/>' +
-    '<rect x="60" y="58" width="9" height="90" rx="4.5" fill="#fff" opacity=".2"/>' +
-    '<rect x="52" y="54" width="96" height="98" rx="10" fill="none" stroke="#000"/>' +
+    '<image href="' + IMG + 'pn-cap.png" xlink:href="' + IMG + 'pn-cap.png" x="0" y="0" width="352" height="420"/>' +
+    '<g clip-path="url(#pnCapClip)">' +
+      '<rect id="pnRibRect" x="0" y="185" width="352" height="233" fill="url(#pnRibs)" opacity="0"/>' +
+      '<rect id="pnShineRect" x="-120" y="0" width="90" height="420" fill="url(#pnShine)" opacity="0"/>' +
+    '</g>' +
   '</g>' +
-  /* точка носика (куди виливається) */
-  '<circle id="pnTip" cx="100" cy="150" r="1" fill="none"/>' +
+  '<circle id="pnTip" cx="176" cy="12" r="1" fill="none"/>' +
   '</svg>';
 
   var css = '' +
@@ -70,13 +59,13 @@
     var skip = document.createElement('button'); skip.id = 'pnSkip'; skip.textContent = 'Пропустити ✕'; document.body.appendChild(skip);
 
     var cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), glass = root.querySelector('#pnGlass');
-    var bottle = root.querySelector('#pnBottle'), cap = root.querySelector('#pnCap'), rib = root.querySelector('#pnRibs rect + rect') || null;
+    var bottle = root.querySelector('#pnBottle'), cap = root.querySelector('#pnCap'), ribRect = root.querySelector('#pnRibRect'), shine = root.querySelector('#pnShineRect');
     var ribPat = root.querySelector('#pnRibs'), tip = root.querySelector('#pnTip');
     var W, H, dpr = Math.min(window.devicePixelRatio || 1, 2), BH, BW;
     var COLS, cw, hgt = [], vel = [], level = 0, target = 0, drops = [], bubbles = [];
     function size() {
       W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      BH = Math.min(H * 0.96, W * 1.3); BW = BH * 200 / 520;
+      BH = Math.min(H * 0.96, W * 1.3); BW = BH * 352 / 1000;
       bottle.style.width = BW + 'px'; bottle.style.height = BH + 'px';
       cw = 8; COLS = Math.ceil(W / cw) + 2; while (hgt.length < COLS) { hgt.push(0); vel.push(0); }
     }
@@ -108,17 +97,22 @@
       var cx = W * 0.6, cy = H * 0.5, x, y, rot, capY = 0, capX = 0, capR = 0, capO = 1, ribX = 0;
       if (t < 1.7) { var k = back(t / 1.7); x = lerp(W + BW * 1.2, cx, k); rot = lerp(560, 0, ease(t / 1.7)); y = cy - Math.abs(Math.sin(t * 5)) * 40 * (1 - t / 1.7); }
       else { x = cx; y = cy; rot = 0; }
-      if (t >= 1.7 && t < 3.4) { var u = (t - 1.7) / 1.7; ribX = u * 70; capY = -eio(u) * 30; capR = Math.sin(u * 30) * 1.5; }
-      if (t >= 3.4) { var f2 = Math.min(1, (t - 3.4) / .7); capY = -30 - eio(f2) * H * 1.2 / (BH / 520); capX = eio(f2) * 260; capR = eio(f2) * 240; capO = 1 - f2; }
+      var turning = t >= 1.7 && t < 3.4;
+      if (turning) { var u = (t - 1.7) / 1.7; ribX = u * 160; capY = -eio(u) * 70; capR = Math.sin(u * 34) * 1.2; }
+      if (t >= 3.4) { var f2 = Math.min(1, (t - 3.4) / .7); capY = -70 - eio(f2) * H * 1.3 / (BH / 1000); capX = eio(f2) * 420; capR = eio(f2) * 240; capO = 1 - f2; }
       var tilt = 0;
-      if (t >= 3.6 && t < 8.6) tilt = -128 * eio((t - 3.6) / 1.1);
-      if (t >= 8.6) tilt = -128 * (1 - eio((t - 8.6) / .9));
-      if (t >= 3.6) { var pk = eio(Math.min(1, (t - 3.6) / 1.1)) * (t >= 8.6 ? 1 - eio((t - 8.6) / .9) : 1); x = cx + pk * W * 0.08; y = cy - pk * H * 0.12; }
+      if (t >= 3.6 && t < 8.6) tilt = -118 * eio((t - 3.6) / 1.1);
+      if (t >= 8.6) tilt = -118 * (1 - eio((t - 8.6) / .9));
+      var sc = 1;
+      if (t >= 3.6) { var pk = eio(Math.min(1, (t - 3.6) / 1.1)) * (t >= 8.6 ? 1 - eio((t - 8.6) / .9) : 1); x = cx + pk * W * 0.06; y = cy - pk * H * 0.3; sc = 1 - pk * 0.22; }
       if (t >= 9.3) { var ex = eio((t - 9.3) / 1.1); x = cx + ex * (W * .6 + BW); y = cy + ex * 60; rot = ex * 120; }
-      bottle.style.transform = 'translate(' + (x - BW / 2) + 'px,' + (y - BH / 2) + 'px) rotate(' + (rot + tilt) + 'deg)';
-      cap.setAttribute('transform', 'translate(' + capX + ' ' + capY + ') rotate(' + capR + ' 100 100)');
+      bottle.style.transform = 'translate(' + (x - BW / 2) + 'px,' + (y - BH / 2) + 'px) rotate(' + (rot + tilt) + 'deg) scale(' + sc + ')';
+      cap.setAttribute('transform', 'translate(' + capX + ' ' + capY + ') rotate(' + capR + ' 176 210)');
       cap.style.opacity = capO;
       ribPat.setAttribute('patternTransform', 'translate(' + ribX + ' 0)');
+      ribRect.setAttribute('opacity', turning ? .9 : 0);
+      shine.setAttribute('opacity', turning ? 1 : 0);
+      if (turning) shine.setAttribute('x', -120 + ((ribX * 3) % 560));
 
       /* ---- жижа ---- */
       var pouring = t > 4.3 && t < 8.7;
