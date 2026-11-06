@@ -538,7 +538,11 @@
   /* ---- кейс з рулеткою ---- */
   var rolling=false;
   root.querySelector('.js-us-case').onclick=function(){SND.click();if(rolling)return;
-    if(bal===null)return needLogin();
+    if(bal===null){ /* ДЕМО для тих, хто не увійшов: нічого не списується */
+      var W={rare:700,epic:220,mythic:65,legendary:15},roll=Math.random()*1000,acc=0,rr='rare';for(var k in W){acc+=W[k];if(roll<acc){rr=k;break}}
+      var pool=ITEMS.filter(function(i){return i.rarity===rr}),id=pool[Math.random()*pool.length|0].id,cs=root.querySelector('.us-case');
+      rolling=true;cs.classList.add('opening');beep(180,.5,'sawtooth',.05,90);setTimeout(function(){cs.classList.remove('opening')},1800);
+      setTimeout(function(){spinRoll(id,function(){rolling=false;celebrate(id,'Це демо — UC не списано. Увійди в акаунт, щоб вибивати предмети по-справжньому.')})},900);return}
     if(bal<CASE){SND.err();return show('Не вистачає UC','Кейс коштує '+CASE+' UC, у тебе '+bal+'.',[btn('Зрозуміло','',closeAll)])}
     show('Відкрити кейс?','Це коштує '+CASE+' UC. Випаде випадковий предмет з вітрини.',[btn('Відкрити!','',function(){closeAll();rolling=true;var cs=root.querySelector('.us-case');cs.classList.add('opening');beep(180,.5,'sawtooth',.05,90);
       post(CASEURL,'go=1',function(r){if(!r.success){rolling=false;cs.classList.remove('opening');if(r.error==='login')return needLogin();SND.err();return show('Не вдалося',r.error||'Спробуй ще раз.',[btn('Закрити','ghost',closeAll)])}
