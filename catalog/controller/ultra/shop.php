@@ -6,6 +6,8 @@ class ControllerUltraShop extends Controller
     private function items()
     {
         return array(
+            array('id' => 'bomber',   'name' => 'Бомбер «Ultra Mythic»',   'cat' => 'wear', 'price' => 120, 'rarity' => 'mythic',   'stock' => 3,   'sizes' => array('S','M','L','XL','XXL'), 'desc' => 'Атласний бомбер з неоновою вишивкою на всю спину. Лише 3 штуки на весь сезон — справжній артефакт.'),
+            array('id' => 'sign',     'name' => 'Неонова вивіска Vapors', 'cat' => 'acc',  'price' => 90,  'rarity' => 'mythic',   'stock' => 5,   'desc' => 'Справжній неон з логотипом-хмаринкою. Повісь удома — і кімната стане кіберпанком.'),
             array('id' => 'hoodie',   'name' => 'Худі «Neon Cloud»',      'cat' => 'wear', 'price' => 40, 'rarity' => 'legendary', 'stock' => 12, 'sizes' => array('S','M','L','XL','XXL'),  'desc' => 'Оверсайз худі з неоновою хмаринкою, що світиться в темряві. Лімітована серія.'),
             array('id' => 'tee',      'name' => 'Футболка Vapors',         'cat' => 'wear', 'price' => 20, 'rarity' => 'epic',      'stock' => 40, 'sizes' => array('S','M','L','XL','XXL'),  'desc' => 'Щільна чорна бавовна, рожевий принт на спині.'),
             array('id' => 'cap',      'name' => 'Кепка «Cyber Pink»',      'cat' => 'wear', 'price' => 15, 'rarity' => 'epic',      'stock' => 30,  'desc' => 'Вишитий логотип, металева застібка.'),
@@ -48,7 +50,7 @@ class ControllerUltraShop extends Controller
 
     public function index()
     {
-        $this->document->setTitle('Ультра-магазин Vapors');
+        $this->document->setTitle('Ультра шоп Vapors');
         $data['items'] = $this->items();
         $data['logged'] = $this->customer->isLogged();
         $data['balance'] = $this->balance();
@@ -112,8 +114,8 @@ class ControllerUltraShop extends Controller
             if ($bal < self::CASE_PRICE) {
                 $json['error'] = 'Не вистачає ультравалюти: кейс коштує ' . self::CASE_PRICE . ', у тебе ' . $bal;
             } else {
-                $weights = array('common' => 60, 'rare' => 28, 'epic' => 10, 'legendary' => 2);
-                $roll = mt_rand(1, 100); $acc = 0; $rar = 'common';
+                $weights = array('common' => 590, 'rare' => 280, 'epic' => 100, 'legendary' => 25, 'mythic' => 5);
+                $roll = mt_rand(1, 1000); $acc = 0; $rar = 'common';
                 foreach ($weights as $r => $w) { $acc += $w; if ($roll <= $acc) { $rar = $r; break; } }
                 $pool = array();
                 foreach ($this->items() as $it) if ($it['rarity'] === $rar) $pool[] = $it;

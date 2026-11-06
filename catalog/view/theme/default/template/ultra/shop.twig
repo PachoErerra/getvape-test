@@ -1,6 +1,8 @@
 {{ header }}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Exo+2:wght@500;600;700&display=swap" rel="stylesheet">
 {% set art = {
+ 'bomber':'<path d="M38 20c6 6 14 8 22 8s16-2 22-8l20 8 12 30-14 6v44c0 4-3 6-6 6H26c-3 0-6-2-6-6V64L6 58l12-30z"/><path d="M38 20c4 8 12 12 22 12s18-4 22-12"/><path d="M60 32v74"/><path d="M20 100h80"/><path d="M44 54l-8 14h10l-6 14" stroke-width="2"/><path d="M76 54l-8 14h10l-6 14" stroke-width="2"/>',
+ 'sign':'<rect x="10" y="26" width="100" height="64" rx="10"/><path d="M30 66c0-7 5-11 11-11 3-6 13-7 17-1 6 0 11 4 11 11s-5 10-11 10H40c-6 0-10-4-10-9z"/><path d="M76 50h20M76 60h16M76 70h20"/><path d="M30 26 46 8M90 26 74 8"/><circle cx="60" cy="8" r="3"/>',
  'hoodie':'<path d="M38 22c4 8 14 12 22 12s18-4 22-12l18 8 14 30-14 6v42H20V66L6 60l14-30z"/><path d="M38 22c-2 10 6 22 22 22s24-12 22-22"/><path d="M44 80h32v14H44z"/><path d="M52 40v10M68 40v10"/>',
  'tee':'<path d="M40 18c4 7 11 10 20 10s16-3 20-10l20 10 12 22-16 8v50H24V58L8 50l12-22z"/><path d="M40 18c2 6 10 10 20 10s18-4 20-10"/><path d="M50 60c0-6 5-10 10-10s10 4 10 10c4 0 7 3 7 7s-3 7-7 7H50c-4 0-7-3-7-7s3-7 7-7z"/>',
  'cap':'<path d="M18 74c0-26 18-44 42-44s42 18 42 44"/><path d="M18 74h84"/><path d="M18 74c-6 0-12 6-10 12 12 4 34 4 52 0"/><path d="M60 30v-4"/><path d="M60 30c-8 10-10 28-8 44M60 30c8 10 10 28 8 44"/><path d="M48 56c0-4 3-7 7-7 2-4 9-4 11 0 4 0 6 3 6 6s-3 6-6 6H54c-3 0-6-2-6-5z"/>',
@@ -10,15 +12,27 @@
  'keychain':'<circle cx="60" cy="22" r="10"/><path d="M60 32v10"/><path d="M34 74c0-10 8-18 18-18 4-8 18-10 24-2 10 0 18 8 18 18s-8 18-18 18H48c-8 0-14-7-14-16z"/><path d="M50 74h20" opacity=".6"/>',
  'stickers':'<rect x="18" y="26" width="52" height="52" rx="10" transform="rotate(-10 44 52)"/><rect x="48" y="44" width="54" height="54" rx="27"/><path d="M60 72c0-5 4-8 8-8 2-4 9-4 11 0 4 0 7 3 7 7s-3 7-7 7H66c-4 0-6-3-6-6z"/><path d="M28 40l20 30" opacity=".6"/>'
 } %}
-{% set rar = {'common':'Звичайний','rare':'Рідкісний','epic':'Епічний','legendary':'Легендарний'} %}
+{% set rar = {'common':'Звичайний','rare':'Рідкісний','epic':'Епічний','legendary':'Легендарний','mythic':'Міфічний'} %}
 <main class="us">
-  <div class="us-bg" aria-hidden="true"><i class="us-grid"></i><i class="us-sun"></i><i class="us-scan"></i></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="ucG" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#7df9ff"/><stop offset=".5" stop-color="#b56bff"/><stop offset="1" stop-color="#ff2fa0"/></linearGradient>
+  <radialGradient id="ucIn" cx=".35" cy=".3" r=".8"><stop stop-color="#3a1d63"/><stop offset="1" stop-color="#0d0618"/></radialGradient>
+  <symbol id="ucIcon" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="url(#ucIn)" stroke="url(#ucG)" stroke-width="2.4"/><circle cx="16" cy="16" r="10.2" fill="none" stroke="url(#ucG)" stroke-opacity=".5" stroke-width="1" stroke-dasharray="1.6 1.6"/><path d="M11.2 9.5v7a4.8 4.8 0 0 0 9.6 0v-7" fill="none" stroke="url(#ucG)" stroke-width="3" stroke-linecap="round"/><path d="M25 4.5l.9 2.2 2.2.9-2.2.9-.9 2.2-.9-2.2-2.2-.9 2.2-.9z" fill="#fff"/></symbol>
+</defs></svg>
+
+  <div class="us-bg" aria-hidden="true">
+    <i class="us-sky"></i><i class="us-moon"></i>
+    <svg class="us-city us-city-far" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice"><rect x="0" y="335" width="57" height="265" fill="#1d0f33"/><rect x="26" y="359" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="16" y="387" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="36" y="541" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="63" y="371" width="66" height="229" fill="#1d0f33"/><rect x="79" y="395" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="119" y="409" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="119" y="479" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="79" y="521" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="119" y="535" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="99" y="591" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="130" y="371" width="83" height="229" fill="#1d0f33"/><rect x="169" y="341" width="4" height="30" fill="#1d0f33"/><rect x="196" y="423" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="176" y="465" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="186" y="507" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="146" y="591" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="215" y="354" width="85" height="246" fill="#1d0f33"/><rect x="261" y="406" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="261" y="420" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="281" y="420" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="291" y="420" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="221" y="448" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="291" y="574" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="306" y="341" width="61" height="259" fill="#1d0f33"/><rect x="332" y="365" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="312" y="519" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="332" y="533" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="369" y="463" width="74" height="137" fill="#1d0f33"/><rect x="404" y="433" width="4" height="30" fill="#1d0f33"/><rect x="405" y="515" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="385" y="585" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="447" y="393" width="96" height="207" fill="#1d0f33"/><rect x="453" y="431" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="463" y="445" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="533" y="445" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="463" y="459" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="533" y="501" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="463" y="515" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="503" y="515" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="533" y="529" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="483" y="571" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="463" y="585" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="548" y="280" width="81" height="320" fill="#1d0f33"/><rect x="594" y="346" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="554" y="416" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="574" y="430" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="594" y="430" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="594" y="472" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="614" y="472" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="584" y="486" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="574" y="514" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="564" y="570" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="584" y="570" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="604" y="570" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="635" y="279" width="46" height="321" fill="#1d0f33"/><rect x="656" y="249" width="4" height="30" fill="#1d0f33"/><rect x="661" y="387" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="661" y="485" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="671" y="555" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="684" y="449" width="42" height="151" fill="#1d0f33"/><rect x="700" y="473" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="690" y="501" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="730" y="343" width="93" height="257" fill="#1d0f33"/><rect x="746" y="367" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="776" y="423" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="736" y="437" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="776" y="479" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="756" y="493" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="756" y="507" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="746" y="521" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="796" y="549" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="823" y="338" width="108" height="262" fill="#1d0f33"/><rect x="839" y="376" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="889" y="432" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="899" y="460" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="839" y="474" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="829" y="502" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="889" y="502" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="909" y="516" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="889" y="530" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="919" y="544" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="869" y="558" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="935" y="471" width="54" height="129" fill="#1d0f33"/><rect x="941" y="481" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="971" y="481" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="989" y="299" width="49" height="301" fill="#1d0f33"/><rect x="1011" y="269" width="4" height="30" fill="#1d0f33"/><rect x="1015" y="379" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1005" y="393" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="1015" y="421" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="995" y="449" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="1025" y="449" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="1039" y="308" width="74" height="292" fill="#1d0f33"/><rect x="1095" y="318" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1075" y="346" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1065" y="360" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="1055" y="374" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1095" y="444" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1065" y="458" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1045" y="486" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1085" y="500" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="1045" y="514" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="1055" y="514" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1095" y="514" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1085" y="542" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="1055" y="556" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="1055" y="584" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1065" y="584" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1113" y="467" width="65" height="133" fill="#1d0f33"/><rect x="1139" y="491" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1180" y="453" width="97" height="147" fill="#1d0f33"/><rect x="1186" y="491" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="1186" y="547" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="1279" y="434" width="42" height="166" fill="#1d0f33"/><rect x="1285" y="472" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="1295" y="570" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="1285" y="584" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="1325" y="336" width="61" height="264" fill="#1d0f33"/><rect x="1371" y="388" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="1331" y="570" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="1361" y="584" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="1389" y="351" width="82" height="249" fill="#1d0f33"/><rect x="1428" y="321" width="4" height="30" fill="#1d0f33"/><rect x="1425" y="459" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="1475" y="427" width="58" height="173" fill="#1d0f33"/><rect x="1481" y="465" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1511" y="549" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1534" y="387" width="42" height="213" fill="#1d0f33"/><rect x="1553" y="357" width="4" height="30" fill="#1d0f33"/><rect x="1560" y="397" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="1540" y="565" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1582" y="367" width="101" height="233" fill="#1d0f33"/><rect x="1638" y="433" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="1618" y="461" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="1608" y="489" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1598" y="503" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="1618" y="531" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1608" y="545" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="1628" y="545" width="4" height="6" fill="#22e6ff" opacity="0.55"/></svg>
+    <div class="us-signs"><span class="s1">VAPORS</span><span class="s2">ULTRA</span><span class="s3">ШОП 24/7</span><span class="s4">UC</span></div>
+    <svg class="us-city us-city-near" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice"><rect x="0" y="517" width="67" height="83" fill="#0c0616"/><rect x="31" y="487" width="4" height="30" fill="#0c0616"/><rect x="46" y="555" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="6" y="583" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="70" y="406" width="113" height="194" fill="#0c0616"/><rect x="86" y="472" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="96" y="472" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="126" y="472" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="126" y="486" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="156" y="486" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="166" y="486" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="136" y="500" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="156" y="500" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="76" y="514" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="106" y="542" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="116" y="542" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="136" y="542" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="166" y="542" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="86" y="556" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="106" y="570" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="116" y="570" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="146" y="584" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="188" y="447" width="121" height="153" fill="#0c0616"/><rect x="246" y="417" width="4" height="30" fill="#0c0616"/><rect x="214" y="471" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="244" y="471" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="274" y="471" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="214" y="499" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="194" y="527" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="234" y="527" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="264" y="541" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="204" y="569" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="294" y="569" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="244" y="583" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="294" y="583" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="313" y="442" width="137" height="158" fill="#0c0616"/><rect x="359" y="466" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="389" y="466" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="409" y="480" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="339" y="494" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="319" y="522" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="359" y="522" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="399" y="564" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="319" y="578" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="349" y="578" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="452" y="377" width="120" height="223" fill="#0c0616"/><rect x="538" y="387" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="458" y="401" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="478" y="401" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="518" y="429" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="468" y="443" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="488" y="443" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="538" y="443" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="458" y="457" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="468" y="457" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="488" y="471" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="558" y="499" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="528" y="513" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="548" y="513" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="488" y="527" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="548" y="583" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="572" y="404" width="100" height="196" fill="#0c0616"/><rect x="620" y="374" width="4" height="30" fill="#0c0616"/><rect x="628" y="414" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="578" y="428" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="658" y="442" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="578" y="470" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="608" y="470" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="588" y="484" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="618" y="484" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="658" y="484" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="648" y="498" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="658" y="498" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="588" y="512" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="598" y="526" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="608" y="526" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="618" y="526" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="658" y="526" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="588" y="540" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="628" y="540" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="608" y="554" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="628" y="554" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="628" y="582" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="675" y="422" width="120" height="178" fill="#0c0616"/><rect x="733" y="392" width="4" height="30" fill="#0c0616"/><rect x="721" y="432" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="761" y="432" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="771" y="460" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="681" y="502" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="771" y="502" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="751" y="516" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="781" y="516" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="781" y="530" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="711" y="558" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="721" y="572" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="781" y="572" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="681" y="586" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="701" y="586" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="801" y="466" width="127" height="134" fill="#0c0616"/><rect x="862" y="436" width="4" height="30" fill="#0c0616"/><rect x="807" y="476" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="867" y="476" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="857" y="490" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="867" y="504" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="857" y="518" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="847" y="532" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="817" y="546" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="887" y="546" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="837" y="560" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="887" y="588" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="928" y="443" width="84" height="157" fill="#0c0616"/><rect x="964" y="537" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="944" y="551" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="984" y="579" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="1014" y="529" width="142" height="71" fill="#0c0616"/><rect x="1030" y="539" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1080" y="539" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1100" y="553" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1070" y="567" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="1120" y="567" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1140" y="567" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1130" y="581" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1157" y="485" width="66" height="115" fill="#0c0616"/><rect x="1193" y="509" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="1163" y="537" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="1213" y="579" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="1224" y="533" width="121" height="67" fill="#0c0616"/><rect x="1282" y="503" width="4" height="30" fill="#0c0616"/><rect x="1230" y="557" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="1310" y="557" width="4" height="6" fill="#ff2fa0" opacity="0.55"/><rect x="1320" y="571" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="1350" y="421" width="118" height="179" fill="#0c0616"/><rect x="1407" y="391" width="4" height="30" fill="#0c0616"/><rect x="1366" y="431" width="4" height="6" fill="#22e6ff" opacity="0.8"/><rect x="1386" y="431" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1456" y="459" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="1446" y="487" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="1416" y="501" width="4" height="6" fill="#b56bff" opacity="0.8"/><rect x="1376" y="515" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="1436" y="515" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1366" y="543" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="1416" y="557" width="4" height="6" fill="#ffc23d" opacity="0.35"/><rect x="1426" y="557" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="1366" y="585" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="1468" y="533" width="92" height="67" fill="#0c0616"/><rect x="1512" y="503" width="4" height="30" fill="#0c0616"/><rect x="1514" y="543" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1534" y="585" width="4" height="6" fill="#b56bff" opacity="0.55"/><rect x="1566" y="417" width="94" height="183" fill="#0c0616"/><rect x="1611" y="387" width="4" height="30" fill="#0c0616"/><rect x="1632" y="427" width="4" height="6" fill="#ffc23d" opacity="0.8"/><rect x="1642" y="427" width="4" height="6" fill="#ff2fa0" opacity="0.8"/><rect x="1572" y="455" width="4" height="6" fill="#22e6ff" opacity="0.55"/><rect x="1582" y="455" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="1582" y="469" width="4" height="6" fill="#ff2fa0" opacity="0.35"/><rect x="1602" y="483" width="4" height="6" fill="#b56bff" opacity="0.35"/><rect x="1602" y="511" width="4" height="6" fill="#ffc23d" opacity="0.55"/><rect x="1572" y="525" width="4" height="6" fill="#22e6ff" opacity="0.35"/><rect x="1632" y="525" width="4" height="6" fill="#ffc23d" opacity="0.8"/></svg>
+    <i class="us-fog"></i><i class="us-grid"></i><i class="us-rain"></i><i class="us-scan"></i>
+  </div>
   <div class="us-in">
     <header class="us-hud">
       <div class="us-title">
-        <span class="us-kicker">// VAPORS · SEASON 01</span>
-        <h1 data-text="УЛЬТРА-МАГАЗИН">УЛЬТРА-МАГАЗИН</h1>
-        <p>Обмінюй ультравалюту з Battle Pass на мерч Vapors або випробуй удачу в кейсі.</p>
+        <span class="us-kicker us-kicker-pink">// VAPORS · SEASON 01</span>
+        <h1 data-text="УЛЬТРА ШОП">УЛЬТРА ШОП</h1>
+        <p>Тут не купують — тут <b>вибивають</b>. Збирай ультравалюту в Battle Pass, обмінюй на мерч, якого немає в жодному магазині, або крути кейс і лови міфічний дроп.</p>
       </div>
       <div class="us-side">
         {% if logged %}
@@ -34,7 +48,7 @@
         {% endif %}
         <div class="us-wallet">
           <div class="us-wallet-l">Твій баланс</div>
-          <div class="us-wallet-v"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg><b id="usBal">{{ logged ? balance : '—' }}</b><span>UC</span></div>
+          <div class="us-wallet-v"><svg class="us-uc" viewBox="0 0 32 32"><use href="#ucIcon"/></svg><b id="usBal">{{ logged ? balance : '—' }}</b><span>UC</span></div>
           {% if not logged %}<a class="us-btn us-btn-sm" href="{{ login }}">Увійти, щоб бачити баланс</a>{% endif %}
         </div>
       </div>
@@ -55,17 +69,17 @@
       <div class="us-case-i">
         <span class="us-kicker">// LOOTBOX</span>
         <h2>Кейс Vapors</h2>
-        <p>Випадковий предмет з вітрини. Удача вирішує — може випасти і легендарне худі.</p>
+        <p>Випадковий предмет з вітрини. Крутиш рулетку — і доля вирішує. Пощастить — забереш міфічний бомбер, якого всього 3 штуки на сезон.</p>
         <ul class="us-odds">
-          <li class="r-common"><i></i>Звичайний <b>60%</b></li><li class="r-rare"><i></i>Рідкісний <b>28%</b></li>
-          <li class="r-epic"><i></i>Епічний <b>10%</b></li><li class="r-legendary"><i></i>Легендарний <b>2%</b></li>
+          <li class="r-common"><i></i>Звичайний <b>59%</b></li><li class="r-rare"><i></i>Рідкісний <b>28%</b></li>
+          <li class="r-epic"><i></i>Епічний <b>10%</b></li><li class="r-legendary"><i></i>Легендарний <b>2,5%</b></li><li class="r-mythic"><i></i>Міфічний <b>0,5%</b></li>
         </ul>
-        <div class="us-buy"><span class="us-price"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg>{{ case_price }}</span><button class="us-btn us-btn-lg js-us-case">Відкрити кейс</button></div>
+        <div class="us-buy"><span class="us-price"><svg class="us-uc" viewBox="0 0 32 32"><use href="#ucIcon"/></svg>{{ case_price }}</span><button class="us-btn us-btn-lg js-us-case">Відкрити кейс</button></div>
       </div>
     </section>
 
     <nav class="us-tabs" role="tablist">
-      <button class="on" data-f="all">Усе</button><button data-f="wear">Одяг</button><button data-f="acc">Аксесуари</button><button data-f="legendary">Легендарне</button>
+      <button class="on" data-f="all">Усе</button><button data-f="wear">Одяг</button><button data-f="acc">Аксесуари</button><button data-f="legendary">Легендарне</button><button data-f="mythic">Міфічне</button>
       <span class="us-timer">Оновлення вітрини через <b id="usTimer">--:--:--</b></span>
     </nav>
 
@@ -79,7 +93,7 @@
           <h3>{{ it.name }}</h3>
           <p>{{ it.desc }}</p>
           <div class="us-buy">
-            <span class="us-price"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg>{{ it.price }}</span>
+            <span class="us-price"><svg class="us-uc" viewBox="0 0 32 32"><use href="#ucIcon"/></svg>{{ it.price }}</span>
             <button class="us-btn js-us-buy">Обміняти</button>
           </div>
         </div>
@@ -90,18 +104,18 @@
           <span class="us-rar">???</span>
           <div class="us-art"><span class="us-q">?</span><i class="us-plat"></i></div>
           <h3>Секретний дроп</h3>
-          <p>Новий предмет з'явиться в наступному сезоні. Збирай UC заздалегідь.</p>
+          <p>Що це — знає лише команда Vapors. З'явиться в наступному сезоні. Збирай UC заздалегідь.</p>
           <div class="us-buy"><span class="us-price">??</span><button class="us-btn" disabled>Скоро</button></div>
         </div>
       </article>
     </section>
 
     <section class="us-how">
-      <h2>Як отримати ультравалюту</h2>
+      <h2>Де фармити UC</h2>
       <div class="us-steps">
-        <div><b>01</b><span>Купуй у Vapors і проходь рівні Battle Pass</span></div>
-        <div><b>02</b><span>Забирай нагороди сезону та виграші в лотереї</span></div>
-        <div><b>03</b><span>Обмінюй UC тут на мерч — заберіть у магазині або отримайте з наступним замовленням</span></div>
+        <div><b>01</b><span>Купуй у Vapors — кожне замовлення качає твій Battle Pass</span></div>
+        <div><b>02</b><span>Забирай нагороди рівнів і крути щоденну лотерею</span></div>
+        <div><b>03</b><span>Обмінюй UC на мерч — забереш у магазині або отримаєш з наступним замовленням</span></div>
       </div>
     </section>
   </div>
@@ -117,7 +131,7 @@
         <p id="usDetDesc"></p>
         <div class="us-sizes" id="usDetSizes"></div>
         <div class="us-det-meta" id="usDetMeta"></div>
-        <div class="us-buy"><span class="us-price"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg><span id="usDetPrice"></span></span><button class="us-btn us-btn-lg" id="usDetBuy">Обміняти</button></div>
+        <div class="us-buy"><span class="us-price"><svg class="us-uc" viewBox="0 0 32 32"><use href="#ucIcon"/></svg><span id="usDetPrice"></span></span><button class="us-btn us-btn-lg" id="usDetBuy">Обміняти</button></div>
       </div>
     </div>
   </div>
@@ -325,12 +339,55 @@
 .us-inv-row em{font-style:normal;font:700 13px Unbounded,sans-serif;color:var(--pink)}
 .us-inv-empty{color:rgba(239,234,255,.6)}
 @media (max-width:820px){.us-case{grid-template-columns:1fr;text-align:center}.us-case-art{max-width:220px;margin:0 auto}.us-odds,.us-case .us-buy{justify-content:center}.us-det-box{grid-template-columns:1fr}.us-det-stage{min-height:260px}.us-det-rot{width:200px;height:200px}.us-snd{top:-34px}}
+
+/* --- кіберпанк-фон --- */
+.us{background:#06030c;clip-path:inset(0)}
+.us .us-bg{position:fixed;inset:0}
+.us-sky{position:absolute;inset:0;background:linear-gradient(180deg,#0a0418 0%,#1b0833 38%,#3b0d4f 62%,#5c1252 78%,#06030c 100%)}
+.us-moon{position:absolute;top:16%;right:22%;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#ffd1ec,#ff5ab8 45%,rgba(255,47,160,0) 70%);filter:blur(1px);opacity:.4}
+.us-city{position:absolute;left:0;right:0;bottom:0;width:100%}
+.us-city-far{height:58%;opacity:.9;filter:drop-shadow(0 0 30px rgba(181,107,255,.25))}
+.us-city-near{height:40%}
+.us-signs span{position:absolute;font:900 22px Unbounded,sans-serif;letter-spacing:3px;writing-mode:vertical-rl;padding:10px 6px;border:2px solid currentColor;border-radius:6px;text-shadow:0 0 10px currentColor;box-shadow:0 0 18px currentColor,inset 0 0 12px currentColor;animation:usFlick 6s infinite}
+.us-signs .s1{left:6%;bottom:36%;color:#ff2fa0}
+.us-signs .s2{right:9%;bottom:44%;color:#22e6ff;animation-delay:-2s}
+.us-signs .s3{left:40%;bottom:30%;color:#ffc23d;writing-mode:horizontal-tb;font-size:16px;animation-delay:-4s}
+.us-signs .s4{right:30%;bottom:38%;color:#b56bff;writing-mode:horizontal-tb;animation-delay:-1s}
+@keyframes usFlick{0%,18%,22%,60%,64%,100%{opacity:.5}20%,62%{opacity:.15}}
+.us-fog{position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(0deg,rgba(255,47,160,.18),transparent)}
+.us .us-grid{opacity:.35;height:38%}
+.us-rain{position:absolute;inset:-100px 0 0;background-image:repeating-linear-gradient(105deg,transparent 0 22px,rgba(160,200,255,.13) 22px 23px,transparent 23px 47px);background-size:100% 200px;animation:usRain .6s linear infinite;opacity:.7}
+@keyframes usRain{to{background-position:-40px 200px}}
+.us-in{position:relative}
+.us .us-how{background:rgba(10,6,20,.82);backdrop-filter:blur(4px)}
+.us .us-hud .us-wallet,.us .us-prof{background-color:rgba(10,6,20,.6);backdrop-filter:blur(4px)}
+.us-title p b{color:var(--pink)}
+/* рожевий переливчастий надпис */
+.us-kicker-pink{background:linear-gradient(90deg,#ff2fa0,#ffb3df,#ff5ab8,#c026d3,#ff2fa0);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:usShine 3s linear infinite;filter:drop-shadow(0 0 8px rgba(255,47,160,.55))}
+@keyframes usShine{to{background-position:250% 0}}
+/* значок UC */
+.us-uc{width:28px;height:28px;fill:none;stroke:none;filter:drop-shadow(0 0 6px rgba(181,107,255,.8));animation:usCoin 4s ease-in-out infinite}
+.us-price .us-uc{width:24px;height:24px}
+@keyframes usCoin{0%,80%,100%{transform:rotateY(0)}90%{transform:rotateY(180deg)}}
+/* міфічна рідкісність */
+.us .r-mythic,.us-card.r-mythic{--rc:#ff3b5c}
+.us-card.r-mythic{background:conic-gradient(from var(--ang,0deg),#ff3b5c,#ffc23d,#22e6ff,#b56bff,#ff3b5c);animation:usMyth 4s linear infinite}
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes usMyth{to{--ang:360deg}}
+.us-card.r-mythic .us-rar{background:linear-gradient(90deg,#ff3b5c,#ffc23d,#b56bff);color:#fff;text-shadow:0 1px 2px #0008}
+.us-card.r-mythic .us-card-in{background:radial-gradient(80% 60% at 50% 40%,rgba(255,59,92,.18),transparent 70%),linear-gradient(180deg,#1d0d1e,#0b0714)}
+.us-card.r-mythic .us-art svg{animation:usFloat 4s ease-in-out infinite,usHue 6s linear infinite}
+@keyframes usHue{to{filter:hue-rotate(360deg) drop-shadow(0 0 10px #ff3b5c)}}
+.us-odds .r-mythic i{background:linear-gradient(45deg,#ff3b5c,#ffc23d,#b56bff)}
+.us-got.r-mythic .us-got-t{background:linear-gradient(90deg,#ff3b5c,#ffc23d,#22e6ff,#b56bff);-webkit-background-clip:text;background-clip:text}
+/* шапка сайту на телефоні не їде за прокруткою */
+@media (max-width:991px){body:has(.us) .header{position:absolute}}
 </style>
 <script>
 (function(){
   var root=document.querySelector('.us');if(!root)return;
   var ITEMS={{ items_json|raw }},MAP={};ITEMS.forEach(function(i){MAP[i.id]=i});
-  var RN={common:'Звичайний',rare:'Рідкісний',epic:'Епічний',legendary:'Легендарний'};
+  var RN={common:'Звичайний',rare:'Рідкісний',epic:'Епічний',legendary:'Легендарний',mythic:'Міфічний'};
   var ART={};[].forEach.call(document.getElementById('usArts').content.querySelectorAll('svg'),function(s){ART[s.dataset.id]=s.innerHTML});
   var bal={{ logged ? balance : 'null' }},CASE={{ case_price }};
   var BUY='{{ buy_url|replace({'&amp;':'&'}) }}',CASEURL='{{ case_url|replace({'&amp;':'&'}) }}',LOGIN='{{ login|replace({'&amp;':'&'}) }}';
@@ -344,7 +401,7 @@
   function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
   function beep(f,d,type,vol,slide){if(muted)return;var a=ac();if(!a)return;var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);g.gain.setValueAtTime(vol||.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.02)}
   var SND={hover:function(){beep(1300,.05,'sine',.025)},click:function(){beep(520,.09,'square',.04,880)},tick:function(){beep(1800,.025,'square',.03)},
-    win:function(r){var n=r==='legendary'?[523,659,784,1046,1318]:r==='epic'?[523,659,784,1046]:[523,659,784];n.forEach(function(f,i){setTimeout(function(){beep(f,.32,'triangle',.07)},i*110)})},
+    win:function(r){var n=r==='mythic'?[392,523,659,784,1046,1318,1568]:r==='legendary'?[523,659,784,1046,1318]:r==='epic'?[523,659,784,1046]:[523,659,784];n.forEach(function(f,i){setTimeout(function(){beep(f,.32,'triangle',.07)},i*110)})},
     err:function(){beep(220,.25,'sawtooth',.04,140)}};
   root.querySelectorAll('.us-card:not(.us-mystery),.us-btn,.us-tabs button').forEach(function(el){el.addEventListener('mouseenter',SND.hover)});
 
@@ -371,8 +428,8 @@
 
   /* ---- отримано: конфеті ---- */
   function celebrate(id,txt){var it=MAP[id],g=$('usGot');g.className='us-got r-'+it.rarity;$('usGotArt').innerHTML=svg(id);$('usGotRar').textContent=RN[it.rarity];$('usGotName').textContent=it.name;$('usGotTxt').textContent=txt;g.hidden=false;SND.win(it.rarity);confetti(it.rarity)}
-  function confetti(r){var cv=$('usConf'),cx=cv.getContext('2d'),W=cv.width=innerWidth,H=cv.height=innerHeight,cols=r==='legendary'?['#ffc23d','#fff2a8','#ff2fa0']:['#ff2fa0','#22e6ff','#8b5cf6','#fff'],P=[];
-    for(var i=0;i<(r==='legendary'?260:160);i++)P.push({x:W/2,y:H/2,vx:(Math.random()-.5)*16,vy:Math.random()*-16-4,s:Math.random()*8+4,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[i%cols.length]});
+  function confetti(r){var cv=$('usConf'),cx=cv.getContext('2d'),W=cv.width=innerWidth,H=cv.height=innerHeight,cols=r==='mythic'?['#ff3b5c','#ffc23d','#22e6ff','#b56bff','#fff']:r==='legendary'?['#ffc23d','#fff2a8','#ff2fa0']:['#ff2fa0','#22e6ff','#8b5cf6','#fff'],P=[];
+    for(var i=0;i<(r==='mythic'?360:r==='legendary'?260:160);i++)P.push({x:W/2,y:H/2,vx:(Math.random()-.5)*16,vy:Math.random()*-16-4,s:Math.random()*8+4,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[i%cols.length]});
     var t0=performance.now();(function f(now){cx.clearRect(0,0,W,H);P.forEach(function(p){p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore()});if(now-t0<4000&&!$('usGot').hidden)requestAnimationFrame(f);else cx.clearRect(0,0,W,H)})(t0)}
 
   /* ---- купівля ---- */
@@ -412,8 +469,8 @@
       post(CASEURL,'go=1',function(r){if(!r.success){rolling=false;if(r.error==='login')return needLogin();SND.err();return show('Не вдалося',r.error||'Спробуй ще раз.',[btn('Закрити','ghost',closeAll)])}
         spinRoll(r.item,function(){rolling=false;setBal(r.balance);addInv(r.item,MAP[r.item].name+' (з кейса)',r.order,CASE);celebrate(r.item,'Замовлення №'+r.order+'. Предмет уже в «Моїх предметах».')})})}),btn('Ні','ghost',closeAll)]);
   };
-  function spinRoll(win,done){var R=$('usRoll'),S=$('usStrip'),pool=[],w={common:60,rare:28,epic:10,legendary:2};
-    ITEMS.forEach(function(i){for(var k=0;k<w[i.rarity]/2;k++)pool.push(i.id)});
+  function spinRoll(win,done){var R=$('usRoll'),S=$('usStrip'),pool=[],w={common:59,rare:28,epic:10,legendary:3,mythic:1};
+    ITEMS.forEach(function(i){for(var k=0;k<w[i.rarity];k++)pool.push(i.id)});
     var N=56,stop=48,html='';for(var i=0;i<N;i++){var id=i===stop?win:pool[Math.random()*pool.length|0],it=MAP[id];html+='<div class="us-roll-it r-'+it.rarity+'">'+svg(id)+'<span>'+it.name+'</span></div>'}
     S.innerHTML=html;S.style.transition='none';S.style.transform='translateX(0)';R.hidden=false;document.body.style.overflow='hidden';
     var box=R.querySelector('.us-roll-win').clientWidth,step=160,target=stop*step+75-box/2+(Math.random()*90-45),dur=6000,t0=performance.now(),last=-1;
