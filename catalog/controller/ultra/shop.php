@@ -6,16 +6,16 @@ class ControllerUltraShop extends Controller
     private function items()
     {
         return array(
-            array('id' => 'bomber',   'name' => 'Бомбер «Ultra Mythic»',   'cat' => 'wear', 'price' => 120, 'rarity' => 'mythic',   'stock' => 3,   'sizes' => array('S','M','L','XL','XXL'), 'desc' => 'Атласний бомбер з неоновою вишивкою на всю спину. Лише 3 штуки на весь сезон — справжній артефакт.'),
-            array('id' => 'sign',     'name' => 'Неонова вивіска Vapors', 'cat' => 'acc',  'price' => 90,  'rarity' => 'mythic',   'stock' => 5,   'desc' => 'Справжній неон з логотипом-хмаринкою. Повісь удома — і кімната стане кіберпанком.'),
-            array('id' => 'hoodie',   'name' => 'Худі «Neon Cloud»',      'cat' => 'wear', 'price' => 40, 'rarity' => 'legendary', 'stock' => 12, 'sizes' => array('S','M','L','XL','XXL'),  'desc' => 'Оверсайз худі з неоновою хмаринкою, що світиться в темряві. Лімітована серія.'),
-            array('id' => 'tee',      'name' => 'Футболка Vapors',         'cat' => 'wear', 'price' => 20, 'rarity' => 'epic',      'stock' => 40, 'sizes' => array('S','M','L','XL','XXL'),  'desc' => 'Щільна чорна бавовна, рожевий принт на спині.'),
-            array('id' => 'cap',      'name' => 'Кепка «Cyber Pink»',      'cat' => 'wear', 'price' => 15, 'rarity' => 'epic',      'stock' => 30,  'desc' => 'Вишитий логотип, металева застібка.'),
-            array('id' => 'socks',    'name' => 'Шкарпетки Vapors',        'cat' => 'wear', 'price' => 5,  'rarity' => 'common',    'stock' => 150, 'sizes' => array('36-39','40-43','44-46'), 'desc' => 'Ті самі легендарні шкарпетки — тепер можна обрати пару.'),
-            array('id' => 'tote',     'name' => 'Шопер «Cloud Bag»',       'cat' => 'acc',  'price' => 10, 'rarity' => 'rare',      'stock' => 60,  'desc' => 'Місткий шопер з товстої тканини.'),
-            array('id' => 'mug',      'name' => 'Чашка «Morning Vape»',    'cat' => 'acc',  'price' => 8,  'rarity' => 'rare',      'stock' => 50,  'desc' => 'Матова чорна чашка з неоновим лого.'),
-            array('id' => 'keychain', 'name' => 'Брелок-хмаринка',         'cat' => 'acc',  'price' => 5,  'rarity' => 'rare',      'stock' => 100, 'desc' => 'Акриловий брелок з голографічним ефектом.'),
-            array('id' => 'stickers', 'name' => 'Стікерпак Vapors',        'cat' => 'acc',  'price' => 3,  'rarity' => 'common',    'stock' => 300, 'desc' => '10 водостійких наліпок на телефон, ноут чи под.'),
+            array('id' => 'bomber',   'name' => 'Бомбер «Ultra Legend»',  'cat' => 'wear', 'price' => 120, 'rarity' => 'legendary', 'stock' => 3,   'sizes' => array('S','M','L','XL','XXL'), 'desc' => 'Атласний бомбер з неоновою вишивкою на всю спину. Лише 3 штуки на весь сезон — справжній артефакт.'),
+            array('id' => 'sign',     'name' => 'Неонова вивіска Vapors', 'cat' => 'acc',  'price' => 70,  'rarity' => 'mythic',    'stock' => 5,   'desc' => 'Справжній неон з логотипом-хмаринкою. Повісь удома — і кімната стане кіберпанком.'),
+            array('id' => 'hoodie',   'name' => 'Худі «Neon Cloud»',      'cat' => 'wear', 'price' => 60,  'rarity' => 'mythic',    'stock' => 12,  'sizes' => array('S','M','L','XL','XXL'), 'desc' => 'Оверсайз худі з неоновою хмаринкою, що світиться в темряві. Лімітована серія.'),
+            array('id' => 'tee',      'name' => 'Футболка Vapors',         'cat' => 'wear', 'price' => 20,  'rarity' => 'epic',      'stock' => 40,  'sizes' => array('S','M','L','XL','XXL'), 'desc' => 'Щільна чорна бавовна, рожевий принт на спині.'),
+            array('id' => 'cap',      'name' => 'Кепка «Cyber Pink»',      'cat' => 'wear', 'price' => 15,  'rarity' => 'epic',      'stock' => 30,  'desc' => 'Вишитий логотип, металева застібка.'),
+            array('id' => 'tote',     'name' => 'Шопер «Cloud Bag»',       'cat' => 'acc',  'price' => 10,  'rarity' => 'rare',      'stock' => 60,  'desc' => 'Місткий шопер з товстої тканини.'),
+            array('id' => 'mug',      'name' => 'Чашка «Morning Vape»',    'cat' => 'acc',  'price' => 8,   'rarity' => 'rare',      'stock' => 50,  'desc' => 'Матова чорна чашка з неоновим лого.'),
+            array('id' => 'keychain', 'name' => 'Брелок-хмаринка',         'cat' => 'acc',  'price' => 5,   'rarity' => 'rare',      'stock' => 100, 'desc' => 'Акриловий брелок з голографічним ефектом.'),
+            array('id' => 'socks',    'name' => 'Шкарпетки Vapors',        'cat' => 'wear', 'price' => 5,   'rarity' => 'rare',      'stock' => 150, 'sizes' => array('36-39','40-43','44-46'), 'desc' => 'Ті самі легендарні шкарпетки — тепер можна обрати пару.'),
+            array('id' => 'stickers', 'name' => 'Стікерпак Vapors',        'cat' => 'acc',  'price' => 3,   'rarity' => 'rare',      'stock' => 300, 'desc' => '10 водостійких наліпок на телефон, ноут чи под.'),
         );
     }
 
@@ -114,8 +114,8 @@ class ControllerUltraShop extends Controller
             if ($bal < self::CASE_PRICE) {
                 $json['error'] = 'Не вистачає ультравалюти: кейс коштує ' . self::CASE_PRICE . ', у тебе ' . $bal;
             } else {
-                $weights = array('common' => 590, 'rare' => 280, 'epic' => 100, 'legendary' => 25, 'mythic' => 5);
-                $roll = mt_rand(1, 1000); $acc = 0; $rar = 'common';
+                $weights = array('rare' => 700, 'epic' => 220, 'mythic' => 65, 'legendary' => 15);
+                $roll = mt_rand(1, 1000); $acc = 0; $rar = 'rare';
                 foreach ($weights as $r => $w) { $acc += $w; if ($roll <= $acc) { $rar = $r; break; } }
                 $pool = array();
                 foreach ($this->items() as $it) if ($it['rarity'] === $rar) $pool[] = $it;

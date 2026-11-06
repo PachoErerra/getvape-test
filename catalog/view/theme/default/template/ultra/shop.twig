@@ -12,7 +12,7 @@
  'keychain':'<circle cx="60" cy="22" r="10"/><path d="M60 32v10"/><path d="M34 74c0-10 8-18 18-18 4-8 18-10 24-2 10 0 18 8 18 18s-8 18-18 18H48c-8 0-14-7-14-16z"/><path d="M50 74h20" opacity=".6"/>',
  'stickers':'<rect x="18" y="26" width="52" height="52" rx="10" transform="rotate(-10 44 52)"/><rect x="48" y="44" width="54" height="54" rx="27"/><path d="M60 72c0-5 4-8 8-8 2-4 9-4 11 0 4 0 7 3 7 7s-3 7-7 7H66c-4 0-6-3-6-6z"/><path d="M28 40l20 30" opacity=".6"/>'
 } %}
-{% set rar = {'common':'Звичайний','rare':'Рідкісний','epic':'Епічний','legendary':'Легендарний','mythic':'Міфічний'} %}
+{% set rar = {'rare':'Рідкісний','epic':'Епічний','mythic':'Міфічний','legendary':'Легендарний'} %}
 <main class="us">
   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="ucG" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#7df9ff"/><stop offset=".5" stop-color="#b56bff"/><stop offset="1" stop-color="#ff2fa0"/></linearGradient>
@@ -32,7 +32,7 @@
       <div class="us-title">
         <span class="us-kicker us-kicker-pink">// VAPORS · SEASON 01</span>
         <h1 data-text="УЛЬТРА ШОП">УЛЬТРА ШОП</h1>
-        <p>Тут не купують — тут <b>вибивають</b>. Збирай ультравалюту в Battle Pass, обмінюй на мерч, якого немає в жодному магазині, або крути кейс і лови міфічний дроп.</p>
+        <p>Тут не купують — тут <b>вибивають</b>. Збирай ультравалюту в Battle Pass, обмінюй на мерч, якого немає в жодному магазині, або крути кейс і лови легендарний дроп.</p>
       </div>
       <div class="us-side">
         {% if logged %}
@@ -57,29 +57,64 @@
 
     <section class="us-case">
       <div class="us-case-art" aria-hidden="true">
-        <svg viewBox="0 0 200 170" fill="none" stroke-linejoin="round">
-          <defs><linearGradient id="usCg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff2fa0"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
-          <path class="us-case-lid" d="M24 62 100 30l76 32-76 32z" fill="#1a0f2c" stroke="url(#usCg)" stroke-width="3"/>
-          <path d="M24 62v60l76 36V94zM176 62v60l-76 36V94z" fill="#120a20" stroke="url(#usCg)" stroke-width="3"/>
-          <path d="M100 94v64" stroke="#22e6ff" stroke-width="2"/><path d="M62 78v62M138 78v62" stroke="#ff2fa0" stroke-opacity=".5" stroke-width="2"/>
-          <path d="M88 108h24v20H88z" fill="#22e6ff" fill-opacity=".2" stroke="#22e6ff" stroke-width="2"/>
-          <path d="M100 6 106 20 120 24 106 28 100 42 94 28 80 24 94 20z" fill="#ffc23d" class="us-spark"/>
+        <svg viewBox="0 0 300 300" class="us-crate">
+          <defs>
+            <linearGradient id="crL" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3a2552"/><stop offset="1" stop-color="#140a22"/></linearGradient>
+            <linearGradient id="crR" x1="1" y1="0" x2="0" y2="1"><stop stop-color="#241536"/><stop offset="1" stop-color="#0a0512"/></linearGradient>
+            <linearGradient id="crT" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5b3a82"/><stop offset=".5" stop-color="#3a2257"/><stop offset="1" stop-color="#241436"/></linearGradient>
+            <linearGradient id="crN" x1="0" x2="1"><stop stop-color="#ff2fa0"/><stop offset="1" stop-color="#b56bff"/></linearGradient>
+            <linearGradient id="crBeam" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#ffd1ec" stop-opacity=".9"/><stop offset="1" stop-color="#ff2fa0" stop-opacity="0"/></linearGradient>
+            <radialGradient id="crHalo"><stop stop-color="#ff2fa0" stop-opacity=".55"/><stop offset="1" stop-color="#ff2fa0" stop-opacity="0"/></radialGradient>
+            <pattern id="crHaz" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="14" fill="#ffc23d"/><rect x="7" width="7" height="14" fill="#1a1022"/></pattern>
+          </defs>
+          <ellipse cx="150" cy="268" rx="120" ry="22" fill="url(#crHalo)" class="cr-halo"/>
+          <!-- промені світла (видно при відкритті) -->
+          <g class="cr-beams"><path d="M150 140 90 -20h120z" fill="url(#crBeam)"/><path d="M150 140 40 10 70 -10z" fill="url(#crBeam)" opacity=".6"/><path d="M150 140 260 10 230 -10z" fill="url(#crBeam)" opacity=".6"/></g>
+          <!-- корпус -->
+          <path d="M40 120 150 175v95L40 215z" fill="url(#crL)"/>
+          <path d="M150 175 260 120v95l-110 55z" fill="url(#crR)"/>
+          <!-- смуги-попередження -->
+          <path d="M40 200 150 255v15L40 215z" fill="url(#crHaz)" opacity=".9"/>
+          <path d="M150 255 260 200v15l-110 55z" fill="url(#crHaz)" opacity=".7"/>
+          <!-- панелі -->
+          <path d="M58 140 132 177v60L58 200z" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="2"/>
+          <path d="M168 177 242 140v60l-74 37z" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="2"/>
+          <!-- емблема-хмаринка на лівій грані -->
+          <g transform="matrix(1 .5 0 1 66 150)"><path class="cr-logo" d="M10 34c0-8 6-13 13-13 3-8 16-10 21-2 8 0 14 5 14 13s-6 13-14 13H23C15 45 10 40 10 34z" fill="none" stroke="#ff2fa0" stroke-width="3.2" stroke-linejoin="round"/></g>
+          <!-- напис на правій грані -->
+          <g transform="matrix(1 -.5 0 1 166 212)"><text x="0" y="0" font-family="Unbounded,Arial Black,sans-serif" font-weight="900" font-size="15" fill="#22e6ff" class="cr-text">VAPORS</text></g>
+          <!-- ребра -->
+          <path d="M40 120 150 175 260 120M150 175v95" fill="none" stroke="url(#crN)" stroke-width="2.5"/>
+          <path d="M40 120v95l110 55 110-55v-95" fill="none" stroke="url(#crN)" stroke-width="2.5" class="cr-edge"/>
+          <!-- замок -->
+          <g class="cr-lock"><rect x="138" y="182" width="24" height="26" rx="4" fill="#0d0718" stroke="#22e6ff" stroke-width="2"/><circle cx="150" cy="193" r="3.5" fill="#22e6ff"/><path d="M150 196v6" stroke="#22e6ff" stroke-width="2.5"/></g>
+          <!-- кришка -->
+          <g class="cr-lid">
+            <path d="M150 62 270 118 150 176 30 118z" fill="url(#crT)"/>
+            <path d="M30 118 150 176v14L30 132z" fill="#2a1840"/><path d="M150 176 270 118v14l-120 58z" fill="#1a0f29"/>
+            <path d="M150 62 270 118 150 176 30 118z" fill="none" stroke="url(#crN)" stroke-width="2.5"/>
+            <path d="M30 132 150 190 270 132" fill="none" stroke="url(#crN)" stroke-width="2"/>
+            <path d="M90 90 150 118 210 90" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="2"/>
+            <path d="M150 74 238 117 150 160 62 117z" fill="none" stroke="#ff2fa0" stroke-opacity=".35" stroke-dasharray="4 6"/>
+          </g>
+          <!-- іскри -->
+          <g class="cr-sparks"><circle cx="60" cy="70" r="2.5" fill="#22e6ff"/><circle cx="245" cy="60" r="2" fill="#ff2fa0"/><circle cx="270" cy="170" r="2.5" fill="#ffc23d"/><circle cx="30" cy="180" r="2" fill="#b56bff"/><path d="M220 30l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#ffc23d"/></g>
         </svg>
       </div>
       <div class="us-case-i">
         <span class="us-kicker">// LOOTBOX</span>
         <h2>Кейс Vapors</h2>
-        <p>Випадковий предмет з вітрини. Крутиш рулетку — і доля вирішує. Пощастить — забереш міфічний бомбер, якого всього 3 штуки на сезон.</p>
+        <p>Випадковий предмет з вітрини. Крутиш рулетку — і доля вирішує. Пощастить — забереш легендарний бомбер, якого всього 3 штуки на сезон.</p>
         <ul class="us-odds">
-          <li class="r-common"><i></i>Звичайний <b>59%</b></li><li class="r-rare"><i></i>Рідкісний <b>28%</b></li>
-          <li class="r-epic"><i></i>Епічний <b>10%</b></li><li class="r-legendary"><i></i>Легендарний <b>2,5%</b></li><li class="r-mythic"><i></i>Міфічний <b>0,5%</b></li>
+          <li class="r-rare"><i></i>Рідкісний <b>70%</b></li><li class="r-epic"><i></i>Епічний <b>22%</b></li>
+          <li class="r-mythic"><i></i>Міфічний <b>6,5%</b></li><li class="r-legendary"><i></i>Легендарний <b>1,5%</b></li>
         </ul>
         <div class="us-buy"><span class="us-price"><svg class="us-uc" viewBox="0 0 32 32"><use href="#ucIcon"/></svg>{{ case_price }}</span><button class="us-btn us-btn-lg js-us-case">Відкрити кейс</button></div>
       </div>
     </section>
 
     <nav class="us-tabs" role="tablist">
-      <button class="on" data-f="all">Усе</button><button data-f="wear">Одяг</button><button data-f="acc">Аксесуари</button><button data-f="legendary">Легендарне</button><button data-f="mythic">Міфічне</button>
+      <button class="on" data-f="all">Усе</button><button data-f="wear">Одяг</button><button data-f="acc">Аксесуари</button><button data-f="mythic">Міфічне</button><button data-f="legendary">Легендарне</button>
       <span class="us-timer">Оновлення вітрини через <b id="usTimer">--:--:--</b></span>
     </nav>
 
@@ -387,12 +422,33 @@
 .us-got.r-mythic .us-got-t{background:linear-gradient(90deg,#ff1f3d,#ff8a8a,#ff1f3d);-webkit-background-clip:text;background-clip:text}
 /* шапка сайту на телефоні не їде за прокруткою */
 @media (max-width:991px){body:has(.us) .header{position:absolute}}
+
+/* --- новий кейс --- */
+.us-crate{width:100%;overflow:visible;animation:usFloat 3.5s ease-in-out infinite;filter:drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+.us-case-art svg{filter:drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+.cr-lid{transform-box:fill-box;transform-origin:50% 100%;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.cr-beams{opacity:0;transition:opacity .4s;transform-origin:150px 140px}
+.us-case:hover .cr-lid{transform:translateY(-14px) rotate(-4deg)}
+.us-case:hover .cr-beams{opacity:.5}
+.us-case.opening .cr-lid{transform:translate(30px,-120px) rotate(-28deg);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.us-case.opening .cr-beams{opacity:1;animation:crBeam .6s ease-in-out infinite alternate}
+.us-case.opening .us-crate{animation:crShake .12s linear 6}
+@keyframes crBeam{to{transform:scaleX(1.15)}}
+@keyframes crShake{25%{transform:translate(-3px,1px) rotate(-1deg)}75%{transform:translate(3px,-1px) rotate(1deg)}}
+.cr-logo{filter:drop-shadow(0 0 4px #ff2fa0);animation:crPulse 2.4s ease-in-out infinite}
+.cr-text{filter:drop-shadow(0 0 4px #22e6ff)}
+.cr-edge{filter:drop-shadow(0 0 5px #ff2fa0)}
+@keyframes crPulse{50%{opacity:.45}}
+.cr-halo{animation:crPulse 3s ease-in-out infinite}
+.cr-sparks circle,.cr-sparks path{animation:crTw 2s ease-in-out infinite}
+.cr-sparks :nth-child(2){animation-delay:-.5s}.cr-sparks :nth-child(3){animation-delay:-1s}.cr-sparks :nth-child(4){animation-delay:-1.5s}
+@keyframes crTw{50%{opacity:.2}}
 </style>
 <script>
 (function(){
   var root=document.querySelector('.us');if(!root)return;
   var ITEMS={{ items_json|raw }},MAP={};ITEMS.forEach(function(i){MAP[i.id]=i});
-  var RN={common:'Звичайний',rare:'Рідкісний',epic:'Епічний',legendary:'Легендарний',mythic:'Міфічний'};
+  var RN={rare:'Рідкісний',epic:'Епічний',mythic:'Міфічний',legendary:'Легендарний'};
   var ART={};[].forEach.call(document.getElementById('usArts').content.querySelectorAll('svg'),function(s){ART[s.dataset.id]=s.innerHTML});
   var bal={{ logged ? balance : 'null' }},CASE={{ case_price }};
   var BUY='{{ buy_url|replace({'&amp;':'&'}) }}',CASEURL='{{ case_url|replace({'&amp;':'&'}) }}',LOGIN='{{ login|replace({'&amp;':'&'}) }}';
@@ -420,7 +476,7 @@
   function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
   function beep(f,d,type,vol,slide){if(muted)return;var a=ac();if(!a)return;var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);g.gain.setValueAtTime(vol||.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.02)}
   var SND={hover:function(){beep(1300,.05,'sine',.025)},click:function(){beep(520,.09,'square',.04,880)},tick:function(){beep(1800,.025,'square',.03)},
-    win:function(r){var n=r==='mythic'?[392,523,659,784,1046,1318,1568]:r==='legendary'?[523,659,784,1046,1318]:r==='epic'?[523,659,784,1046]:[523,659,784];n.forEach(function(f,i){setTimeout(function(){beep(f,.32,'triangle',.07)},i*110)})},
+    win:function(r){var n=r==='legendary'?[392,523,659,784,1046,1318,1568]:r==='mythic'?[523,659,784,1046,1318]:r==='epic'?[523,659,784,1046]:[523,659,784];n.forEach(function(f,i){setTimeout(function(){beep(f,.32,'triangle',.07)},i*110)})},
     err:function(){beep(220,.25,'sawtooth',.04,140)}};
   root.querySelectorAll('.us-card:not(.us-mystery),.us-btn,.us-tabs button').forEach(function(el){el.addEventListener('mouseenter',SND.hover)});
 
@@ -448,7 +504,7 @@
   /* ---- отримано: конфеті ---- */
   function celebrate(id,txt){var it=MAP[id],g=$('usGot');g.className='us-got r-'+it.rarity;$('usGotArt').innerHTML=svg(id);$('usGotRar').textContent=RN[it.rarity];$('usGotName').textContent=it.name;$('usGotTxt').textContent=txt;g.hidden=false;SND.win(it.rarity);confetti(it.rarity)}
   function confetti(r){var cv=$('usConf'),cx=cv.getContext('2d'),W=cv.width=innerWidth,H=cv.height=innerHeight,cols=r==='mythic'?['#ff1f3d','#ff6b7f','#fff','#b3001b']:r==='legendary'?['#ffc23d','#fff2a8','#ff2fa0']:['#ff2fa0','#22e6ff','#8b5cf6','#fff'],P=[];
-    for(var i=0;i<(r==='mythic'?360:r==='legendary'?260:160);i++)P.push({x:W/2,y:H/2,vx:(Math.random()-.5)*16,vy:Math.random()*-16-4,s:Math.random()*8+4,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[i%cols.length]});
+    for(var i=0;i<(r==='legendary'?380:r==='mythic'?280:160);i++)P.push({x:W/2,y:H/2,vx:(Math.random()-.5)*16,vy:Math.random()*-16-4,s:Math.random()*8+4,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[i%cols.length]});
     var t0=performance.now();(function f(now){cx.clearRect(0,0,W,H);P.forEach(function(p){p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore()});if(now-t0<4000&&!$('usGot').hidden)requestAnimationFrame(f);else cx.clearRect(0,0,W,H)})(t0)}
 
   /* ---- купівля ---- */
@@ -484,11 +540,11 @@
   root.querySelector('.js-us-case').onclick=function(){SND.click();if(rolling)return;
     if(bal===null)return needLogin();
     if(bal<CASE){SND.err();return show('Не вистачає UC','Кейс коштує '+CASE+' UC, у тебе '+bal+'.',[btn('Зрозуміло','',closeAll)])}
-    show('Відкрити кейс?','Це коштує '+CASE+' UC. Випаде випадковий предмет з вітрини.',[btn('Відкрити!','',function(){closeAll();rolling=true;
-      post(CASEURL,'go=1',function(r){if(!r.success){rolling=false;if(r.error==='login')return needLogin();SND.err();return show('Не вдалося',r.error||'Спробуй ще раз.',[btn('Закрити','ghost',closeAll)])}
-        spinRoll(r.item,function(){rolling=false;setBal(r.balance);addInv(r.item,MAP[r.item].name+' (з кейса)',r.order,CASE);celebrate(r.item,'Замовлення №'+r.order+'. Предмет уже в «Моїх предметах».')})})}),btn('Ні','ghost',closeAll)]);
+    show('Відкрити кейс?','Це коштує '+CASE+' UC. Випаде випадковий предмет з вітрини.',[btn('Відкрити!','',function(){closeAll();rolling=true;var cs=root.querySelector('.us-case');cs.classList.add('opening');beep(180,.5,'sawtooth',.05,90);
+      post(CASEURL,'go=1',function(r){if(!r.success){rolling=false;cs.classList.remove('opening');if(r.error==='login')return needLogin();SND.err();return show('Не вдалося',r.error||'Спробуй ще раз.',[btn('Закрити','ghost',closeAll)])}
+        setTimeout(function(){cs.classList.remove('opening')},1800);setTimeout(function(){spinRoll(r.item,function(){rolling=false;setBal(r.balance);addInv(r.item,MAP[r.item].name+' (з кейса)',r.order,CASE);celebrate(r.item,'Замовлення №'+r.order+'. Предмет уже в «Моїх предметах».')})},900)})}),btn('Ні','ghost',closeAll)]);
   };
-  function spinRoll(win,done){var R=$('usRoll'),S=$('usStrip'),pool=[],w={common:59,rare:28,epic:10,legendary:3,mythic:1};
+  function spinRoll(win,done){var R=$('usRoll'),S=$('usStrip'),pool=[],w={rare:70,epic:22,mythic:6,legendary:2};
     ITEMS.forEach(function(i){for(var k=0;k<w[i.rarity];k++)pool.push(i.id)});
     var N=56,stop=48,html='';for(var i=0;i<N;i++){var id=i===stop?win:pool[Math.random()*pool.length|0],it=MAP[id];html+='<div class="us-roll-it r-'+it.rarity+'">'+svg(id)+'<span>'+it.name+'</span></div>'}
     S.innerHTML=html;S.style.transition='none';S.style.transform='translateX(0)';R.hidden=false;document.body.style.overflow='hidden';
