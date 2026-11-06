@@ -6,15 +6,37 @@ class ControllerUltraShop extends Controller
     private function items()
     {
         return array(
-            array('id' => 'hoodie',   'name' => 'Худі «Neon Cloud»',      'cat' => 'wear', 'price' => 40, 'rarity' => 'legendary', 'stock' => 12,  'desc' => 'Оверсайз худі з неоновою хмаринкою, що світиться в темряві. Лімітована серія.'),
-            array('id' => 'tee',      'name' => 'Футболка Vapors',         'cat' => 'wear', 'price' => 20, 'rarity' => 'epic',      'stock' => 40,  'desc' => 'Щільна чорна бавовна, рожевий принт на спині.'),
+            array('id' => 'hoodie',   'name' => 'Худі «Neon Cloud»',      'cat' => 'wear', 'price' => 40, 'rarity' => 'legendary', 'stock' => 12, 'sizes' => array('S','M','L','XL','XXL'),  'desc' => 'Оверсайз худі з неоновою хмаринкою, що світиться в темряві. Лімітована серія.'),
+            array('id' => 'tee',      'name' => 'Футболка Vapors',         'cat' => 'wear', 'price' => 20, 'rarity' => 'epic',      'stock' => 40, 'sizes' => array('S','M','L','XL','XXL'),  'desc' => 'Щільна чорна бавовна, рожевий принт на спині.'),
             array('id' => 'cap',      'name' => 'Кепка «Cyber Pink»',      'cat' => 'wear', 'price' => 15, 'rarity' => 'epic',      'stock' => 30,  'desc' => 'Вишитий логотип, металева застібка.'),
-            array('id' => 'socks',    'name' => 'Шкарпетки Vapors',        'cat' => 'wear', 'price' => 5,  'rarity' => 'common',    'stock' => 150, 'desc' => 'Ті самі легендарні шкарпетки — тепер можна обрати пару.'),
+            array('id' => 'socks',    'name' => 'Шкарпетки Vapors',        'cat' => 'wear', 'price' => 5,  'rarity' => 'common',    'stock' => 150, 'sizes' => array('36-39','40-43','44-46'), 'desc' => 'Ті самі легендарні шкарпетки — тепер можна обрати пару.'),
             array('id' => 'tote',     'name' => 'Шопер «Cloud Bag»',       'cat' => 'acc',  'price' => 10, 'rarity' => 'rare',      'stock' => 60,  'desc' => 'Місткий шопер з товстої тканини.'),
             array('id' => 'mug',      'name' => 'Чашка «Morning Vape»',    'cat' => 'acc',  'price' => 8,  'rarity' => 'rare',      'stock' => 50,  'desc' => 'Матова чорна чашка з неоновим лого.'),
             array('id' => 'keychain', 'name' => 'Брелок-хмаринка',         'cat' => 'acc',  'price' => 5,  'rarity' => 'rare',      'stock' => 100, 'desc' => 'Акриловий брелок з голографічним ефектом.'),
             array('id' => 'stickers', 'name' => 'Стікерпак Vapors',        'cat' => 'acc',  'price' => 3,  'rarity' => 'common',    'stock' => 300, 'desc' => '10 водостійких наліпок на телефон, ноут чи под.'),
         );
+    }
+
+
+    const CASE_PRICE = 10;
+
+    private function ensureTable()
+    {
+        $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "ultra_order` (`order_id` int(11) NOT NULL AUTO_INCREMENT, `customer_id` int(11) NOT NULL, `item` varchar(64) NOT NULL, `name` varchar(255) NOT NULL, `price` int(11) NOT NULL, `status` varchar(32) NOT NULL DEFAULT 'new', `date_added` datetime NOT NULL, PRIMARY KEY (`order_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    }
+
+    // рівень гравця: за всю зароблену ультравалюту
+    private function profile()
+    {
+        if (!$this->customer->isLogged()) return null;
+        $cid = (int)$this->customer->getId();
+        $q = $this->db->query("SELECT COALESCE(SUM(CASE WHEN ultra > 0 THEN ultra ELSE 0 END),0) AS earned FROM `" . DB_PREFIX . "customer_ultra` WHERE customer_id = '" . $cid . "'");
+        $earned = (int)$q->row['earned'];
+        $lvl = 1; $need = 5; $left = $earned;
+        while ($left >= $need) { $left -= $need; $lvl++; $need = 5 + ($lvl - 1) * 5; }
+        $this->ensureTable();
+        $h = $this->db->query("SELECT order_id, item, name, price, status, date_added FROM `" . DB_PREFIX . "ultra_order` WHERE customer_id = '" . $cid . "' ORDER BY order_id DESC LIMIT 30");
+        return array('level' => $lvl, 'xp' => $left, 'need' => $need, 'earned' => $earned, 'history' => $h->rows);
     }
 
     private function balance()
@@ -33,6 +55,10 @@ class ControllerUltraShop extends Controller
         $data['name'] = $this->customer->isLogged() ? $this->customer->getFirstName() : '';
         $data['login'] = $this->url->link('account/login', '', true);
         $data['buy_url'] = $this->url->link('ultra/shop/buy', '', true);
+        $data['case_url'] = $this->url->link('ultra/shop/opencase', '', true);
+        $data['case_price'] = self::CASE_PRICE;
+        $data['profile'] = $this->profile();
+        $data['items_json'] = json_encode($this->items(), JSON_UNESCAPED_UNICODE);
         $data['home'] = $this->url->link('common/home');
 
         $data['column_left'] = '';
@@ -58,14 +84,48 @@ class ControllerUltraShop extends Controller
                 $json['error'] = 'Не вистачає ультравалюти: потрібно ' . $item['price'] . ', у тебе ' . $bal;
             } else {
                 $cid = (int)$this->customer->getId();
-                $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "ultra_order` (`order_id` int(11) NOT NULL AUTO_INCREMENT, `customer_id` int(11) NOT NULL, `item` varchar(64) NOT NULL, `name` varchar(255) NOT NULL, `price` int(11) NOT NULL, `status` varchar(32) NOT NULL DEFAULT 'new', `date_added` datetime NOT NULL, PRIMARY KEY (`order_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-                $this->db->query("INSERT INTO `" . DB_PREFIX . "ultra_order` SET customer_id = '" . $cid . "', item = '" . $this->db->escape($item['id']) . "', name = '" . $this->db->escape($item['name']) . "', price = '" . (int)$item['price'] . "', date_added = NOW()");
+                $this->ensureTable();
+                $size = isset($this->request->post['size']) ? trim((string)$this->request->post['size']) : '';
+                if ($size !== '' && (empty($item['sizes']) || !in_array($size, $item['sizes'], true))) $size = '';
+                $title = $item['name'] . ($size !== '' ? ' (розмір ' . $size . ')' : '');
+                $this->db->query("INSERT INTO `" . DB_PREFIX . "ultra_order` SET customer_id = '" . $cid . "', item = '" . $this->db->escape($item['id']) . "', name = '" . $this->db->escape($title) . "', price = '" . (int)$item['price'] . "', date_added = NOW()");
                 $oid = $this->db->getLastId();
                 $this->load->model('extension/module/battlepass');
-                $this->model_extension_module_battlepass->addUltra($cid, 'Ультра-магазин: ' . $item['name'] . ' (#' . $oid . ')', -(int)$item['price']);
+                $this->model_extension_module_battlepass->addUltra($cid, 'Ультра-магазин: ' . $title . ' (#' . $oid . ')', -(int)$item['price']);
                 $json['success'] = true;
                 $json['order'] = $oid;
                 $json['balance'] = $this->balance();
+            }
+        }
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    // Кейс: випадковий предмет за рідкісністю
+    public function opencase()
+    {
+        $json = array();
+        if (!$this->customer->isLogged()) {
+            $json['error'] = 'login';
+        } else {
+            $bal = $this->balance();
+            if ($bal < self::CASE_PRICE) {
+                $json['error'] = 'Не вистачає ультравалюти: кейс коштує ' . self::CASE_PRICE . ', у тебе ' . $bal;
+            } else {
+                $weights = array('common' => 60, 'rare' => 28, 'epic' => 10, 'legendary' => 2);
+                $roll = mt_rand(1, 100); $acc = 0; $rar = 'common';
+                foreach ($weights as $r => $w) { $acc += $w; if ($roll <= $acc) { $rar = $r; break; } }
+                $pool = array();
+                foreach ($this->items() as $it) if ($it['rarity'] === $rar) $pool[] = $it;
+                if (!$pool) $pool = $this->items();
+                $item = $pool[mt_rand(0, count($pool) - 1)];
+                $cid = (int)$this->customer->getId();
+                $this->ensureTable();
+                $this->db->query("INSERT INTO `" . DB_PREFIX . "ultra_order` SET customer_id = '" . $cid . "', item = '" . $this->db->escape($item['id']) . "', name = '" . $this->db->escape($item['name'] . ' (з кейса)') . "', price = '" . (int)self::CASE_PRICE . "', date_added = NOW()");
+                $oid = $this->db->getLastId();
+                $this->load->model('extension/module/battlepass');
+                $this->model_extension_module_battlepass->addUltra($cid, 'Ультра-магазин: кейс → ' . $item['name'] . ' (#' . $oid . ')', -self::CASE_PRICE);
+                $json['success'] = true; $json['item'] = $item['id']; $json['order'] = $oid; $json['balance'] = $this->balance();
             }
         }
         $this->response->addHeader('Content-Type: application/json');

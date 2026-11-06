@@ -18,19 +18,51 @@
       <div class="us-title">
         <span class="us-kicker">// VAPORS · SEASON 01</span>
         <h1 data-text="УЛЬТРА-МАГАЗИН">УЛЬТРА-МАГАЗИН</h1>
-        <p>Обмінюй ультравалюту з Battle Pass на мерч Vapors. Вітрина оновлюється щосезону.</p>
+        <p>Обмінюй ультравалюту з Battle Pass на мерч Vapors або випробуй удачу в кейсі.</p>
       </div>
-      <div class="us-wallet">
-        <div class="us-wallet-l">Твій баланс</div>
+      <div class="us-side">
         {% if logged %}
-          <div class="us-wallet-v"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg><b id="usBal">{{ balance }}</b><span>UC</span></div>
-          <div class="us-wallet-s">Гравець: {{ name }}</div>
-        {% else %}
-          <div class="us-wallet-v"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg><b>—</b><span>UC</span></div>
-          <a class="us-btn us-btn-sm" href="{{ login }}">Увійти, щоб бачити баланс</a>
+        <div class="us-prof">
+          <div class="us-ava">{{ name|slice(0,1)|upper }}<b>{{ profile.level }}</b></div>
+          <div class="us-prof-i">
+            <div class="us-prof-n">{{ name }} <span>Рівень {{ profile.level }}</span></div>
+            <div class="us-xp"><i style="width:{{ (profile.xp * 100 / profile.need)|round }}%"></i></div>
+            <div class="us-prof-s">{{ profile.xp }} / {{ profile.need }} UC до наступного рівня</div>
+          </div>
+          <button class="us-btn us-btn-sm ghost js-us-inv">Мої предмети ({{ profile.history|length }})</button>
+        </div>
         {% endif %}
+        <div class="us-wallet">
+          <div class="us-wallet-l">Твій баланс</div>
+          <div class="us-wallet-v"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg><b id="usBal">{{ logged ? balance : '—' }}</b><span>UC</span></div>
+          {% if not logged %}<a class="us-btn us-btn-sm" href="{{ login }}">Увійти, щоб бачити баланс</a>{% endif %}
+        </div>
       </div>
+      <button class="us-snd" id="usSnd" aria-label="Звук" title="Звук">🔊</button>
     </header>
+
+    <section class="us-case">
+      <div class="us-case-art" aria-hidden="true">
+        <svg viewBox="0 0 200 170" fill="none" stroke-linejoin="round">
+          <defs><linearGradient id="usCg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff2fa0"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+          <path class="us-case-lid" d="M24 62 100 30l76 32-76 32z" fill="#1a0f2c" stroke="url(#usCg)" stroke-width="3"/>
+          <path d="M24 62v60l76 36V94zM176 62v60l-76 36V94z" fill="#120a20" stroke="url(#usCg)" stroke-width="3"/>
+          <path d="M100 94v64" stroke="#22e6ff" stroke-width="2"/><path d="M62 78v62M138 78v62" stroke="#ff2fa0" stroke-opacity=".5" stroke-width="2"/>
+          <path d="M88 108h24v20H88z" fill="#22e6ff" fill-opacity=".2" stroke="#22e6ff" stroke-width="2"/>
+          <path d="M100 6 106 20 120 24 106 28 100 42 94 28 80 24 94 20z" fill="#ffc23d" class="us-spark"/>
+        </svg>
+      </div>
+      <div class="us-case-i">
+        <span class="us-kicker">// LOOTBOX</span>
+        <h2>Кейс Vapors</h2>
+        <p>Випадковий предмет з вітрини. Удача вирішує — може випасти і легендарне худі.</p>
+        <ul class="us-odds">
+          <li class="r-common"><i></i>Звичайний <b>60%</b></li><li class="r-rare"><i></i>Рідкісний <b>28%</b></li>
+          <li class="r-epic"><i></i>Епічний <b>10%</b></li><li class="r-legendary"><i></i>Легендарний <b>2%</b></li>
+        </ul>
+        <div class="us-buy"><span class="us-price"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg>{{ case_price }}</span><button class="us-btn us-btn-lg js-us-case">Відкрити кейс</button></div>
+      </div>
+    </section>
 
     <nav class="us-tabs" role="tablist">
       <button class="on" data-f="all">Усе</button><button data-f="wear">Одяг</button><button data-f="acc">Аксесуари</button><button data-f="legendary">Легендарне</button>
@@ -39,7 +71,7 @@
 
     <section class="us-grid-items">
       {% for it in items %}
-      <article class="us-card r-{{ it.rarity }}{% if loop.first %} us-feat{% endif %}" data-cat="{{ it.cat }}" data-r="{{ it.rarity }}" data-id="{{ it.id }}" data-price="{{ it.price }}" data-name="{{ it.name }}">
+      <article class="us-card r-{{ it.rarity }}{% if loop.first %} us-feat{% endif %}" data-cat="{{ it.cat }}" data-r="{{ it.rarity }}" data-id="{{ it.id }}" data-price="{{ it.price }}" data-name="{{ it.name }}" tabindex="0">
         <div class="us-card-in">
           <span class="us-rar">{{ rar[it.rarity] }}</span>
           <span class="us-stock">Залишилось: {{ it.stock }}</span>
@@ -74,16 +106,64 @@
     </section>
   </div>
 
-  <div class="us-modal" id="usModal" hidden>
-    <div class="us-modal-box">
-      <div class="us-modal-t" id="usMT"></div>
-      <div class="us-modal-p" id="usMP"></div>
-      <div class="us-modal-a" id="usMA"></div>
+  {# 3D-перегляд предмета #}
+  <div class="us-det" id="usDet" hidden>
+    <div class="us-det-box">
+      <button class="us-x js-us-close" aria-label="Закрити">✕</button>
+      <div class="us-det-stage" id="usStage"><div class="us-det-rot" id="usRot"><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="usDetArt"></svg><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.2" class="us-det-ghost" id="usDetGhost"></svg></div><i class="us-plat"></i><span class="us-det-hint">Поводь мишкою або пальцем — покрути</span></div>
+      <div class="us-det-i">
+        <span class="us-rar" id="usDetRar"></span>
+        <h2 id="usDetName"></h2>
+        <p id="usDetDesc"></p>
+        <div class="us-sizes" id="usDetSizes"></div>
+        <div class="us-det-meta" id="usDetMeta"></div>
+        <div class="us-buy"><span class="us-price"><svg viewBox="0 0 24 24" class="us-uc"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 6l5 3v6l-5 3-5-3V9z"/></svg><span id="usDetPrice"></span></span><button class="us-btn us-btn-lg" id="usDetBuy">Обміняти</button></div>
+      </div>
     </div>
   </div>
+
+  {# Рулетка кейса #}
+  <div class="us-roll" id="usRoll" hidden>
+    <div class="us-roll-t">Відкриваємо кейс…</div>
+    <div class="us-roll-win"><div class="us-roll-strip" id="usStrip"></div><i class="us-roll-line"></i></div>
+  </div>
+
+  {# Предмет отримано #}
+  <div class="us-got" id="usGot" hidden>
+    <canvas id="usConf"></canvas>
+    <div class="us-got-box">
+      <div class="us-got-t">ПРЕДМЕТ ОТРИМАНО</div>
+      <div class="us-got-art" id="usGotArt"></div>
+      <span class="us-rar" id="usGotRar"></span>
+      <h2 id="usGotName"></h2>
+      <p id="usGotTxt"></p>
+      <button class="us-btn us-btn-lg js-us-close">Забрати</button>
+    </div>
+  </div>
+
+  {# Мої предмети #}
+  <aside class="us-inv" id="usInv" hidden>
+    <div class="us-inv-box">
+      <button class="us-x js-us-close" aria-label="Закрити">✕</button>
+      <h2>Мої предмети</h2>
+      <div id="usInvList">
+      {% if profile and profile.history %}
+        {% for h in profile.history %}
+        <div class="us-inv-row" data-id="{{ h.item }}"><i class="us-inv-ic"></i><div><b>{{ h.name }}</b><span>№{{ h.order_id }} · {{ h.date_added|slice(0,16) }} · {{ h.status == 'new' ? 'Готуємо до видачі' : h.status }}</span></div><em>−{{ h.price }} UC</em></div>
+        {% endfor %}
+      {% else %}<p class="us-inv-empty">Поки порожньо. Обміняй перший предмет або відкрий кейс!</p>{% endif %}
+      </div>
+    </div>
+  </aside>
+
+  <div class="us-modal" id="usModal" hidden>
+    <div class="us-modal-box"><div class="us-modal-t" id="usMT"></div><div class="us-modal-p" id="usMP"></div><div class="us-modal-a" id="usMA"></div></div>
+  </div>
+  <template id="usArts">{% for it in items %}<svg data-id="{{ it.id }}">{{ art[it.id]|raw }}</svg>{% endfor %}</template>
 </main>
 
 <style>
+
 .us{--bg:#07050d;--pink:#ff2fa0;--cyan:#22e6ff;--violet:#8b5cf6;--gold:#ffc23d;--txt:#efeaff;position:relative;overflow:hidden;background:var(--bg);color:var(--txt);font-family:"Exo 2",Montserrat,Arial,sans-serif;isolation:isolate;margin-top:-1px}
 .us *{box-sizing:border-box}
 .us-bg{position:absolute;inset:0;z-index:-1;pointer-events:none}
@@ -160,38 +240,193 @@
 @media (max-width:520px){.us-grid-items{grid-template-columns:1fr 1fr;gap:10px}.us-feat{grid-column:span 2;grid-row:auto}.us-feat .us-art{min-height:200px}.us-feat .us-art svg{width:170px;height:170px}
  .us-card-in{padding:12px}.us-art{height:120px}.us-art svg{width:90px;height:90px}.us-plat{width:90px}.us-card h3{font-size:14px}.us-card p{display:none}.us-buy{flex-direction:column;align-items:stretch}.us-price{font-size:20px}.us-btn{text-align:center;padding:10px}.us-wallet{width:100%}}
 @media (prefers-reduced-motion:reduce){.us *{animation:none!important}}
+
+/* --- нове --- */
+.us-hud{position:relative}
+.us-side{display:flex;gap:14px;align-items:stretch;flex-wrap:wrap}
+.us-prof{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid rgba(255,47,160,.35);background:linear-gradient(135deg,rgba(255,47,160,.08),rgba(139,92,246,.08));clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);flex-wrap:wrap;max-width:420px}
+.us-ava{position:relative;width:54px;height:54px;flex:0 0 auto;display:grid;place-items:center;font:900 24px Unbounded,sans-serif;color:#fff;background:linear-gradient(135deg,#ff2fa0,#8b5cf6);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.us-ava b{position:absolute;right:-2px;bottom:-2px;min-width:22px;height:22px;padding:0 4px;display:grid;place-items:center;font:900 11px Unbounded,sans-serif;color:#0b0714;background:var(--gold);border-radius:6px}
+.us-prof-i{flex:1;min-width:150px}
+.us-prof-n{font:800 15px Unbounded,sans-serif;color:#fff}.us-prof-n span{margin-left:6px;font:700 11px Unbounded,sans-serif;color:var(--gold)}
+.us-xp{height:8px;margin:7px 0 5px;background:rgba(255,255,255,.08);overflow:hidden;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.us-xp i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));box-shadow:0 0 12px var(--pink);animation:usXp 1.4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes usXp{from{width:0}}
+.us-prof-s{font-size:13px;color:rgba(239,234,255,.55)}
+.us-snd{position:absolute;top:-28px;right:0;width:38px;height:38px;border:1px solid rgba(239,234,255,.2);background:rgba(255,255,255,.04);color:#fff;font-size:16px;cursor:pointer;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.us-snd.off{opacity:.45}
+.us-btn-lg{padding:14px 26px;font-size:14px}
+/* кейс */
+.us-case{position:relative;display:grid;grid-template-columns:280px 1fr;gap:30px;align-items:center;margin:0 0 30px;padding:24px 30px;border:1px solid rgba(255,47,160,.4);background:radial-gradient(60% 120% at 15% 50%,rgba(255,47,160,.22),transparent 70%),linear-gradient(135deg,#150c24,#0b0714);clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px);overflow:hidden}
+.us-case::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.07) 50%,transparent 60%);animation:usSweep 4s linear infinite}
+@keyframes usSweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.us-case-art svg{width:100%;filter:drop-shadow(0 0 18px rgba(255,47,160,.6));animation:usFloat 3.5s ease-in-out infinite}
+.us-case:hover .us-case-lid{transform:translateY(-8px)}
+.us-case-lid{transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.us-spark{transform-origin:100px 24px;animation:usSpark 2s ease-in-out infinite}
+@keyframes usSpark{50%{transform:scale(1.35) rotate(45deg);opacity:.7}}
+.us-case h2{margin:6px 0 6px;font:900 34px Unbounded,sans-serif;color:#fff}
+.us-case p{margin:0 0 14px;font-size:17px;color:rgba(239,234,255,.7);max-width:520px}
+.us-odds{display:flex;flex-wrap:wrap;gap:8px 18px;list-style:none;margin:0 0 18px;padding:0;font-size:15px;color:rgba(239,234,255,.75)}
+.us-odds li{display:flex;align-items:center;gap:7px}.us-odds i{width:10px;height:10px;background:var(--rc);box-shadow:0 0 8px var(--rc);transform:rotate(45deg)}
+.us-odds b{color:#fff}
+.us .r-common{--rc:#9aa3b5}.r-rare{--rc:var(--cyan)}.r-epic{--rc:var(--violet)}.r-legendary{--rc:var(--gold)}
+.us-case .us-buy{justify-content:flex-start;gap:20px}
+.us-card{cursor:pointer}
+/* 3D перегляд */
+.us-det,.us-roll,.us-got,.us-inv{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;background:rgba(5,3,10,.86);backdrop-filter:blur(8px);color:var(--txt);font-family:"Exo 2",sans-serif}
+.us-det[hidden],.us-roll[hidden],.us-got[hidden],.us-inv[hidden]{display:none}
+.us-det-box{position:relative;display:grid;grid-template-columns:1.1fr 1fr;gap:30px;width:min(980px,94vw);max-height:92vh;overflow:auto;padding:30px;background:linear-gradient(160deg,#160f26,#0b0714);border:1px solid var(--rc,#ff2fa0);clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px);animation:usPop .35s cubic-bezier(.34,1.56,.64,1)}
+.us-x{position:absolute;top:12px;right:14px;z-index:3;width:38px;height:38px;border:1px solid rgba(239,234,255,.25);background:rgba(255,255,255,.05);color:#fff;font-size:16px;cursor:pointer}
+.us-x:hover{background:var(--pink)}
+.us-det-stage{position:relative;display:grid;place-items:center;min-height:380px;perspective:900px;color:var(--rc);cursor:grab;background:radial-gradient(circle at 50% 55%,color-mix(in srgb,var(--rc) 22%,transparent),transparent 65%)}
+.us-det-rot{position:relative;width:300px;height:300px;transform-style:preserve-3d;transition:transform .12s linear}
+.us-det-rot svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 10px currentColor) drop-shadow(0 0 30px color-mix(in srgb,currentColor 50%,transparent))}
+.us-det-ghost{transform:translateZ(-30px);opacity:.25}
+.us-det-stage .us-plat{bottom:20px;width:260px;height:34px}
+.us-det-hint{position:absolute;bottom:-4px;font-size:13px;color:rgba(239,234,255,.45)}
+.us-det-i h2{margin:10px 0 8px;font:900 28px/1.15 Unbounded,sans-serif;color:#fff}
+.us-det-i p{font-size:17px;line-height:1.45;color:rgba(239,234,255,.72);margin:0 0 16px}
+.us-sizes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.us-sizes button{min-width:48px;padding:9px 12px;border:1px solid rgba(239,234,255,.25);background:transparent;color:#fff;font:700 13px Unbounded,sans-serif;cursor:pointer}
+.us-sizes button.on{background:var(--pink);border-color:var(--pink);box-shadow:0 0 14px rgba(255,47,160,.5)}
+.us-det-meta{font-size:15px;color:rgba(239,234,255,.55);margin-bottom:20px}
+.us-det .us-buy{justify-content:flex-start;gap:22px}
+/* рулетка */
+.us-roll{grid-template-rows:auto auto;align-content:center;gap:26px}
+.us-roll-t{font:900 26px Unbounded,sans-serif;color:#fff;text-align:center;text-shadow:0 0 20px var(--pink)}
+.us-roll-win{position:relative;width:min(1000px,96vw);height:190px;overflow:hidden;border-top:1px solid rgba(255,47,160,.5);border-bottom:1px solid rgba(255,47,160,.5);background:rgba(0,0,0,.35);-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.us-roll-strip{position:absolute;top:15px;left:0;display:flex;gap:10px;will-change:transform}
+.us-roll-it{flex:0 0 150px;height:160px;display:grid;place-items:center;align-content:center;gap:6px;padding:10px;color:var(--rc);background:linear-gradient(180deg,#1a1230,#0d0818);border-bottom:4px solid var(--rc);font:700 12px Unbounded,sans-serif;text-align:center}
+.us-roll-it svg{width:84px;height:84px;filter:drop-shadow(0 0 8px var(--rc))}
+.us-roll-it span{color:#fff;line-height:1.2}
+.us-roll-line{position:absolute;left:50%;top:0;bottom:0;width:3px;margin-left:-1.5px;background:var(--gold);box-shadow:0 0 16px var(--gold)}
+.us-roll-line::before,.us-roll-line::after{content:"";position:absolute;left:-7px;border:8px solid transparent}
+.us-roll-line::before{top:0;border-top-color:var(--gold)}.us-roll-line::after{bottom:0;border-bottom-color:var(--gold)}
+/* отримано */
+.us-got canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.us-got-box{position:relative;text-align:center;padding:30px 40px;animation:usPop .5s cubic-bezier(.34,1.56,.64,1)}
+.us-got-t{font:900 clamp(26px,5vw,48px) Unbounded,sans-serif;letter-spacing:2px;background:linear-gradient(90deg,var(--cyan),#fff,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:10px}
+.us-got-art{width:220px;height:220px;margin:0 auto;color:var(--rc);position:relative}
+.us-got-art::before{content:"";position:absolute;inset:-30px;border-radius:50%;background:conic-gradient(from 0deg,transparent,color-mix(in srgb,var(--rc) 60%,transparent),transparent 30%,color-mix(in srgb,var(--rc) 60%,transparent),transparent 60%);animation:vtSpin 4s linear infinite;filter:blur(6px);opacity:.8}
+@keyframes vtSpin{to{transform:rotate(360deg)}}
+.us-got-art svg{position:relative;width:100%;height:100%;filter:drop-shadow(0 0 12px currentColor) drop-shadow(0 0 40px currentColor);animation:usFloat 3s ease-in-out infinite}
+.us-got h2{margin:12px 0 6px;font:900 26px Unbounded,sans-serif;color:#fff}
+.us-got p{margin:0 0 20px;font-size:17px;color:rgba(239,234,255,.7)}
+/* мої предмети */
+.us-inv{justify-items:end;place-items:stretch end}
+.us-inv-box{position:relative;width:min(440px,100vw);height:100%;overflow:auto;padding:28px 22px;background:linear-gradient(180deg,#140c22,#0b0714);border-left:1px solid var(--pink);animation:usSlide .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes usSlide{from{transform:translateX(100%)}}
+.us-inv h2{margin:0 0 18px;font:900 22px Unbounded,sans-serif;color:#fff}
+.us-inv-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(239,234,255,.08)}
+.us-inv-ic{width:44px;height:44px;flex:0 0 auto;display:grid;place-items:center;color:var(--rc,#9aa3b5);border:1px solid currentColor}
+.us-inv-ic svg{width:34px;height:34px}
+.us-inv-row div{flex:1;min-width:0}.us-inv-row b{display:block;color:#fff;font-size:15px}.us-inv-row span{font-size:13px;color:rgba(239,234,255,.5)}
+.us-inv-row em{font-style:normal;font:700 13px Unbounded,sans-serif;color:var(--pink)}
+.us-inv-empty{color:rgba(239,234,255,.6)}
+@media (max-width:820px){.us-case{grid-template-columns:1fr;text-align:center}.us-case-art{max-width:220px;margin:0 auto}.us-odds,.us-case .us-buy{justify-content:center}.us-det-box{grid-template-columns:1fr}.us-det-stage{min-height:260px}.us-det-rot{width:200px;height:200px}.us-snd{top:-34px}}
 </style>
 <script>
 (function(){
   var root=document.querySelector('.us');if(!root)return;
-  var cards=[].slice.call(root.querySelectorAll('.us-card')),bal={{ logged ? balance : 'null' }};
-  function lock(){cards.forEach(function(c){c.classList.toggle('locked',bal!==null&&bal<+c.dataset.price)})}
-  lock();
-  root.querySelectorAll('.us-tabs button').forEach(function(b){b.onclick=function(){
+  var ITEMS={{ items_json|raw }},MAP={};ITEMS.forEach(function(i){MAP[i.id]=i});
+  var RN={common:'Звичайний',rare:'Рідкісний',epic:'Епічний',legendary:'Легендарний'};
+  var ART={};[].forEach.call(document.getElementById('usArts').content.querySelectorAll('svg'),function(s){ART[s.dataset.id]=s.innerHTML});
+  var bal={{ logged ? balance : 'null' }},CASE={{ case_price }};
+  var BUY='{{ buy_url|replace({'&amp;':'&'}) }}',CASEURL='{{ case_url|replace({'&amp;':'&'}) }}',LOGIN='{{ login|replace({'&amp;':'&'}) }}';
+  function svg(id,cls){return '<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"'+(cls?' class="'+cls+'"':'')+'>'+(ART[id]||'')+'</svg>'}
+  function $(id){return document.getElementById(id)}
+
+  /* ---- звук (без файлів) ---- */
+  var AC=null,muted=false;try{muted=localStorage.getItem('usMute')==='1'}catch(e){}
+  var sb=$('usSnd');function paintSnd(){sb.textContent=muted?'🔇':'🔊';sb.classList.toggle('off',muted)}paintSnd();
+  sb.onclick=function(){muted=!muted;try{localStorage.setItem('usMute',muted?'1':'0')}catch(e){}paintSnd();if(!muted)beep(880,.08,'triangle',.05)};
+  function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+  function beep(f,d,type,vol,slide){if(muted)return;var a=ac();if(!a)return;var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);g.gain.setValueAtTime(vol||.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.02)}
+  var SND={hover:function(){beep(1300,.05,'sine',.025)},click:function(){beep(520,.09,'square',.04,880)},tick:function(){beep(1800,.025,'square',.03)},
+    win:function(r){var n=r==='legendary'?[523,659,784,1046,1318]:r==='epic'?[523,659,784,1046]:[523,659,784];n.forEach(function(f,i){setTimeout(function(){beep(f,.32,'triangle',.07)},i*110)})},
+    err:function(){beep(220,.25,'sawtooth',.04,140)}};
+  root.querySelectorAll('.us-card:not(.us-mystery),.us-btn,.us-tabs button').forEach(function(el){el.addEventListener('mouseenter',SND.hover)});
+
+  /* ---- вітрина ---- */
+  var cards=[].slice.call(root.querySelectorAll('.us-card:not(.us-mystery)'));
+  function lock(){cards.forEach(function(c){c.classList.toggle('locked',bal!==null&&bal<+c.dataset.price)})}lock();
+  root.querySelectorAll('.us-tabs button').forEach(function(b){b.onclick=function(){SND.click();
     root.querySelectorAll('.us-tabs button').forEach(function(x){x.classList.toggle('on',x===b)});
-    var f=b.dataset.f;cards.forEach(function(c){c.classList.toggle('hide',!(f==='all'||c.dataset.cat===f||c.dataset.r===f))});
-  }});
-  // відлік до кінця місяця
-  var tm=document.getElementById('usTimer');
-  function tick(){var n=new Date(),e=new Date(n.getFullYear(),n.getMonth()+1,1),s=Math.max(0,(e-n)/1000|0),d=s/86400|0,h=(s%86400)/3600|0,m=(s%3600)/60|0,ss=s%60;
-    tm.textContent=(d?d+'д ':'')+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0')}
-  tick();setInterval(tick,1000);
-  var mod=document.getElementById('usModal');
-  function show(t,p,a){document.getElementById('usMT').textContent=t;document.getElementById('usMP').textContent=p;var A=document.getElementById('usMA');A.innerHTML='';a.forEach(function(x){A.appendChild(x)});mod.hidden=false}
-  function btn(t,cls,fn){var b=document.createElement(fn?'button':'a');b.className='us-btn '+(cls||'');b.textContent=t;if(fn)b.onclick=fn;else b.href=cls==='login'?'{{ login }}':'#';return b}
-  mod.onclick=function(e){if(e.target===mod)mod.hidden=true};
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')mod.hidden=true});
-  root.querySelectorAll('.js-us-buy').forEach(function(b){b.onclick=function(){
-    var c=b.closest('.us-card'),price=+c.dataset.price,name=c.dataset.name;
-    if(bal===null){var l=document.createElement('a');l.className='us-btn';l.href='{{ login }}';l.textContent='Увійти';show('Потрібен вхід','Увійди в акаунт, щоб обміняти ультравалюту.',[l,btn('Закрити','ghost',function(){mod.hidden=true})]);return}
-    if(bal<price){show('Не вистачає UC','Потрібно '+price+' UC, у тебе '+bal+'. Проходь Battle Pass, щоб заробити більше.',[btn('Зрозуміло','',function(){mod.hidden=true})]);return}
-    show('Обміняти?',name+' за '+price+' UC. Після обміну баланс: '+(bal-price)+' UC.',[btn('Так, обміняти','',function(){
-      var x=new XMLHttpRequest();x.open('POST','{{ buy_url|replace({'&amp;':'&'}) }}');x.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-      x.onload=function(){var r={};try{r=JSON.parse(x.responseText)}catch(e){}
-        if(r.success){bal=r.balance;var e=document.getElementById('usBal');if(e)e.textContent=bal;lock();show('Предмет твій!','Замовлення №'+r.order+'. Ми зв\'яжемося з тобою, щоб передати мерч.',[btn('Супер','',function(){mod.hidden=true})])}
-        else show('Не вдалося',r.error==='login'?'Увійди в акаунт.':(r.error||'Спробуй ще раз.'),[btn('Закрити','ghost',function(){mod.hidden=true})])};
-      x.send('item='+encodeURIComponent(c.dataset.id))}),btn('Ні','ghost',function(){mod.hidden=true})]);
-  }});
+    var f=b.dataset.f;root.querySelectorAll('.us-card').forEach(function(c){c.classList.toggle('hide',!(f==='all'||c.dataset.cat===f||c.dataset.r===f))})}});
+  var tm=$('usTimer');function tick(){var n=new Date(),e=new Date(n.getFullYear(),n.getMonth()+1,1),s=Math.max(0,(e-n)/1000|0),d=s/86400|0,h=(s%86400)/3600|0,m=(s%3600)/60|0,ss=s%60;tm.textContent=(d?d+'д ':'')+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0')}tick();setInterval(tick,1000);
+
+  /* ---- вікна ---- */
+  var mod=$('usModal');
+  function show(t,p,a){$('usMT').textContent=t;$('usMP').textContent=p;var A=$('usMA');A.innerHTML='';a.forEach(function(x){A.appendChild(x)});mod.hidden=false}
+  function btn(t,cls,fn){var b=document.createElement('button');b.className='us-btn '+(cls||'');b.textContent=t;b.onclick=fn;return b}
+  function link(t,href){var a=document.createElement('a');a.className='us-btn';a.textContent=t;a.href=href;return a}
+  function closeAll(){[mod,$('usDet'),$('usGot'),$('usInv')].forEach(function(x){x.hidden=true});document.body.style.overflow=''}
+  [mod,$('usDet'),$('usGot'),$('usInv')].forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)closeAll()})});
+  root.querySelectorAll('.js-us-close').forEach(function(b){b.onclick=closeAll});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('usRoll').hidden)closeAll()});
+  function post(url,data,cb){var x=new XMLHttpRequest();x.open('POST',url);x.setRequestHeader('Content-Type','application/x-www-form-urlencoded');x.onload=function(){var r={};try{r=JSON.parse(x.responseText)}catch(e){}cb(r)};x.onerror=function(){cb({error:'Немає зв\'язку, спробуй ще раз'})};x.send(data)}
+  function setBal(v){bal=v;var e=$('usBal');if(e)e.textContent=v;lock()}
+  function needLogin(){SND.err();show('Потрібен вхід','Увійди в акаунт, щоб витрачати ультравалюту.',[link('Увійти',LOGIN),btn('Закрити','ghost',closeAll)])}
+
+  /* ---- отримано: конфеті ---- */
+  function celebrate(id,txt){var it=MAP[id],g=$('usGot');g.className='us-got r-'+it.rarity;$('usGotArt').innerHTML=svg(id);$('usGotRar').textContent=RN[it.rarity];$('usGotName').textContent=it.name;$('usGotTxt').textContent=txt;g.hidden=false;SND.win(it.rarity);confetti(it.rarity)}
+  function confetti(r){var cv=$('usConf'),cx=cv.getContext('2d'),W=cv.width=innerWidth,H=cv.height=innerHeight,cols=r==='legendary'?['#ffc23d','#fff2a8','#ff2fa0']:['#ff2fa0','#22e6ff','#8b5cf6','#fff'],P=[];
+    for(var i=0;i<(r==='legendary'?260:160);i++)P.push({x:W/2,y:H/2,vx:(Math.random()-.5)*16,vy:Math.random()*-16-4,s:Math.random()*8+4,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[i%cols.length]});
+    var t0=performance.now();(function f(now){cx.clearRect(0,0,W,H);P.forEach(function(p){p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore()});if(now-t0<4000&&!$('usGot').hidden)requestAnimationFrame(f);else cx.clearRect(0,0,W,H)})(t0)}
+
+  /* ---- купівля ---- */
+  function buy(id,size){var it=MAP[id];
+    if(bal===null)return needLogin();
+    if(bal<it.price){SND.err();return show('Не вистачає UC','Потрібно '+it.price+' UC, у тебе '+bal+'. Проходь Battle Pass або спробуй кейс.',[btn('Зрозуміло','',closeAll)])}
+    if(it.sizes&&!size){SND.err();return openDet(id,true)}
+    show('Обміняти?',it.name+(size?' (розмір '+size+')':'')+' за '+it.price+' UC. Після обміну баланс: '+(bal-it.price)+' UC.',[btn('Так, обміняти','',function(){SND.click();
+      post(BUY,'item='+encodeURIComponent(id)+(size?'&size='+encodeURIComponent(size):''),function(r){closeAll();
+        if(r.success){setBal(r.balance);addInv(id,it.name+(size?' (розмір '+size+')':''),r.order,it.price);celebrate(id,'Замовлення №'+r.order+'. Ми зв\'яжемося з тобою, щоб передати мерч.')}
+        else if(r.error==='login')needLogin(); else{SND.err();show('Не вдалося',r.error||'Спробуй ще раз.',[btn('Закрити','ghost',closeAll)])}})}),btn('Ні','ghost',closeAll)]);
+  }
+  root.querySelectorAll('.js-us-buy').forEach(function(b){b.onclick=function(e){e.stopPropagation();SND.click();buy(b.closest('.us-card').dataset.id)}});
+
+  /* ---- 3D-перегляд ---- */
+  var det=$('usDet'),rot=$('usRot'),stage=$('usStage'),curId=null,curSize=null,auto=0,hov=false;
+  function openDet(id,askSize){var it=MAP[id];curId=id;curSize=null;det.className='us-det r-'+it.rarity;
+    $('usDetArt').innerHTML=ART[id];$('usDetGhost').innerHTML=ART[id];$('usDetRar').textContent=RN[it.rarity];$('usDetName').textContent=it.name;$('usDetDesc').textContent=it.desc;$('usDetPrice').textContent=it.price;
+    $('usDetMeta').textContent='Залишилось: '+it.stock+' шт.'+(it.sizes?' · Обери розмір':'');
+    var S=$('usDetSizes');S.innerHTML='';(it.sizes||[]).forEach(function(z){var b=document.createElement('button');b.textContent=z;b.onclick=function(){SND.click();curSize=z;[].forEach.call(S.children,function(x){x.classList.toggle('on',x===b)})};S.appendChild(b)});
+    if(askSize){$('usDetMeta').textContent='Спершу обери розмір 👇'}
+    det.hidden=false;document.body.style.overflow='hidden'}
+  $('usDetBuy').onclick=function(){SND.click();if(MAP[curId].sizes&&!curSize){SND.err();$('usDetMeta').textContent='Спершу обери розмір 👇';return}det.hidden=true;buy(curId,curSize)};
+  cards.forEach(function(c){c.addEventListener('click',function(){SND.click();openDet(c.dataset.id)});c.addEventListener('keydown',function(e){if(e.key==='Enter')openDet(c.dataset.id)})});
+  stage.addEventListener('pointermove',function(e){hov=true;var r=stage.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;rot.style.transform='rotateY('+(x*70)+'deg) rotateX('+(-y*40)+'deg)'});
+  stage.addEventListener('pointerleave',function(){hov=false});
+  stage.addEventListener('touchmove',function(e){var t=e.touches[0],r=stage.getBoundingClientRect(),x=(t.clientX-r.left)/r.width-.5,y=(t.clientY-r.top)/r.height-.5;hov=true;rot.style.transform='rotateY('+(x*90)+'deg) rotateX('+(-y*50)+'deg)';e.preventDefault()},{passive:false});
+  stage.addEventListener('touchend',function(){hov=false});
+  (function spin(){if(!det.hidden&&!hov){auto+=.6;rot.style.transform='rotateY('+(Math.sin(auto/40)*35)+'deg) rotateX('+(Math.cos(auto/55)*8)+'deg)'}requestAnimationFrame(spin)})();
+
+  /* ---- кейс з рулеткою ---- */
+  var rolling=false;
+  root.querySelector('.js-us-case').onclick=function(){SND.click();if(rolling)return;
+    if(bal===null)return needLogin();
+    if(bal<CASE){SND.err();return show('Не вистачає UC','Кейс коштує '+CASE+' UC, у тебе '+bal+'.',[btn('Зрозуміло','',closeAll)])}
+    show('Відкрити кейс?','Це коштує '+CASE+' UC. Випаде випадковий предмет з вітрини.',[btn('Відкрити!','',function(){closeAll();rolling=true;
+      post(CASEURL,'go=1',function(r){if(!r.success){rolling=false;if(r.error==='login')return needLogin();SND.err();return show('Не вдалося',r.error||'Спробуй ще раз.',[btn('Закрити','ghost',closeAll)])}
+        spinRoll(r.item,function(){rolling=false;setBal(r.balance);addInv(r.item,MAP[r.item].name+' (з кейса)',r.order,CASE);celebrate(r.item,'Замовлення №'+r.order+'. Предмет уже в «Моїх предметах».')})})}),btn('Ні','ghost',closeAll)]);
+  };
+  function spinRoll(win,done){var R=$('usRoll'),S=$('usStrip'),pool=[],w={common:60,rare:28,epic:10,legendary:2};
+    ITEMS.forEach(function(i){for(var k=0;k<w[i.rarity]/2;k++)pool.push(i.id)});
+    var N=56,stop=48,html='';for(var i=0;i<N;i++){var id=i===stop?win:pool[Math.random()*pool.length|0],it=MAP[id];html+='<div class="us-roll-it r-'+it.rarity+'">'+svg(id)+'<span>'+it.name+'</span></div>'}
+    S.innerHTML=html;S.style.transition='none';S.style.transform='translateX(0)';R.hidden=false;document.body.style.overflow='hidden';
+    var box=R.querySelector('.us-roll-win').clientWidth,step=160,target=stop*step+75-box/2+(Math.random()*90-45),dur=6000,t0=performance.now(),last=-1;
+    (function f(now){var k=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-k,4),x=target*e;S.style.transform='translateX('+(-x)+'px)';var idx=Math.floor((x+box/2)/step);if(idx!==last){last=idx;SND.tick()}
+      if(k<1)requestAnimationFrame(f);else setTimeout(function(){R.hidden=true;done()},700)})(t0);
+  }
+
+  /* ---- мої предмети ---- */
+  function icon(row){var id=row.dataset.id,it=MAP[id];if(!it)return;var ic=row.querySelector('.us-inv-ic');ic.className='us-inv-ic r-'+it.rarity;ic.innerHTML=svg(id)}
+  [].forEach.call(document.querySelectorAll('.us-inv-row'),icon);
+  function addInv(id,name,order,price){var L=$('usInvList'),e=L.querySelector('.us-inv-empty');if(e)e.remove();var d=document.createElement('div');d.className='us-inv-row';d.dataset.id=id;d.innerHTML='<i class="us-inv-ic"></i><div><b></b><span>№'+order+' · щойно · Готуємо до видачі</span></div><em>−'+price+' UC</em>';d.querySelector('b').textContent=name;L.prepend(d);icon(d);
+    var ib=root.querySelector('.js-us-inv');if(ib)ib.textContent='Мої предмети ('+L.querySelectorAll('.us-inv-row').length+')'}
+  var ib=root.querySelector('.js-us-inv');if(ib)ib.onclick=function(){SND.click();$('usInv').hidden=false;document.body.style.overflow='hidden'};
 })();
 </script>
 {{ footer }}
