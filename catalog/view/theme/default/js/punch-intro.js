@@ -2,7 +2,11 @@
    Флакон викочується, кришка відкручується, жижа виливається і заповнює пів екрана. */
 (function () {
   if (window.__punchIntro) return; window.__punchIntro = true;
-  var force = /[?&#]punch\b/.test(location.href);
+  /* Тимчасово: до цього часу інтро показується на кожній сторінці при кожному відкритті */
+  var ALWAYS_UNTIL = Date.parse('2026-11-07T08:29:09Z');
+  var always = Date.now() < ALWAYS_UNTIL;
+  if (!always && !document.getElementById('common-home')) return;
+  var force = always || /[?&#]punch\b/.test(location.href);
   try { if (!force && sessionStorage.getItem('punchShown')) return; sessionStorage.setItem('punchShown', '1'); } catch (e) {}
   if (!force && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
