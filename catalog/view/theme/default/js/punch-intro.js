@@ -3,7 +3,7 @@
 (function () {
   if (window.__punchIntro) return; window.__punchIntro = true;
   /* Тимчасово: до цього часу інтро показується на кожній сторінці при кожному відкритті */
-  var ALWAYS_UNTIL = Date.parse('2026-11-07T08:29:09Z');
+  var ALWAYS_UNTIL = Date.parse('2026-11-09T00:10:04Z');
   var always = Date.now() < ALWAYS_UNTIL;
   if (!always && !document.getElementById('common-home')) return;
   var force = always || /[?&#]punch\b/.test(location.href);
