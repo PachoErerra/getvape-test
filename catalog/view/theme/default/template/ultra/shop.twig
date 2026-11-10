@@ -57,49 +57,18 @@
 
     <section class="us-case">
       <div class="us-case-art" aria-hidden="true">
-        <svg viewBox="0 0 300 300" class="us-crate">
-          <defs>
-            <linearGradient id="crL" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3a2552"/><stop offset="1" stop-color="#140a22"/></linearGradient>
-            <linearGradient id="crR" x1="1" y1="0" x2="0" y2="1"><stop stop-color="#241536"/><stop offset="1" stop-color="#0a0512"/></linearGradient>
-            <linearGradient id="crT" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5b3a82"/><stop offset=".5" stop-color="#3a2257"/><stop offset="1" stop-color="#241436"/></linearGradient>
-            <linearGradient id="crN" x1="0" x2="1"><stop stop-color="#ff2fa0"/><stop offset="1" stop-color="#b56bff"/></linearGradient>
-            <linearGradient id="crBeam" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#ffd1ec" stop-opacity=".9"/><stop offset="1" stop-color="#ff2fa0" stop-opacity="0"/></linearGradient>
-            <radialGradient id="crHalo"><stop stop-color="#ff2fa0" stop-opacity=".55"/><stop offset="1" stop-color="#ff2fa0" stop-opacity="0"/></radialGradient>
-            <pattern id="crHaz" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="14" fill="#ffc23d"/><rect x="7" width="7" height="14" fill="#1a1022"/></pattern>
-          </defs>
-          <ellipse cx="150" cy="268" rx="120" ry="22" fill="url(#crHalo)" class="cr-halo"/>
-          <!-- промені світла (видно при відкритті) -->
-          <g class="cr-beams"><path d="M150 140 90 -20h120z" fill="url(#crBeam)"/><path d="M150 140 40 10 70 -10z" fill="url(#crBeam)" opacity=".6"/><path d="M150 140 260 10 230 -10z" fill="url(#crBeam)" opacity=".6"/></g>
-          <!-- корпус -->
-          <path d="M40 120 150 175v95L40 215z" fill="url(#crL)"/>
-          <path d="M150 175 260 120v95l-110 55z" fill="url(#crR)"/>
-          <!-- смуги-попередження -->
-          <path d="M40 200 150 255v15L40 215z" fill="url(#crHaz)" opacity=".9"/>
-          <path d="M150 255 260 200v15l-110 55z" fill="url(#crHaz)" opacity=".7"/>
-          <!-- панелі -->
-          <path d="M58 140 132 177v60L58 200z" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="2"/>
-          <path d="M168 177 242 140v60l-74 37z" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="2"/>
-          <!-- емблема-хмаринка на лівій грані -->
-          <g transform="matrix(1 .5 0 1 66 150)"><path class="cr-logo" d="M10 34c0-8 6-13 13-13 3-8 16-10 21-2 8 0 14 5 14 13s-6 13-14 13H23C15 45 10 40 10 34z" fill="none" stroke="#ff2fa0" stroke-width="3.2" stroke-linejoin="round"/></g>
-          <!-- напис на правій грані -->
-          <g transform="matrix(1 -.5 0 1 166 212)"><text x="0" y="0" font-family="Unbounded,Arial Black,sans-serif" font-weight="900" font-size="15" fill="#22e6ff" class="cr-text">VAPORS</text></g>
-          <!-- ребра -->
-          <path d="M40 120 150 175 260 120M150 175v95" fill="none" stroke="url(#crN)" stroke-width="2.5"/>
-          <path d="M40 120v95l110 55 110-55v-95" fill="none" stroke="url(#crN)" stroke-width="2.5" class="cr-edge"/>
-          <!-- замок -->
-          <g class="cr-lock"><rect x="138" y="182" width="24" height="26" rx="4" fill="#0d0718" stroke="#22e6ff" stroke-width="2"/><circle cx="150" cy="193" r="3.5" fill="#22e6ff"/><path d="M150 196v6" stroke="#22e6ff" stroke-width="2.5"/></g>
-          <!-- кришка -->
-          <g class="cr-lid">
-            <path d="M150 62 270 118 150 176 30 118z" fill="url(#crT)"/>
-            <path d="M30 118 150 176v14L30 132z" fill="#2a1840"/><path d="M150 176 270 118v14l-120 58z" fill="#1a0f29"/>
-            <path d="M150 62 270 118 150 176 30 118z" fill="none" stroke="url(#crN)" stroke-width="2.5"/>
-            <path d="M30 132 150 190 270 132" fill="none" stroke="url(#crN)" stroke-width="2"/>
-            <path d="M90 90 150 118 210 90" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="2"/>
-            <path d="M150 74 238 117 150 160 62 117z" fill="none" stroke="#ff2fa0" stroke-opacity=".35" stroke-dasharray="4 6"/>
-          </g>
-          <!-- іскри -->
-          <g class="cr-sparks"><circle cx="60" cy="70" r="2.5" fill="#22e6ff"/><circle cx="245" cy="60" r="2" fill="#ff2fa0"/><circle cx="270" cy="170" r="2.5" fill="#ffc23d"/><circle cx="30" cy="180" r="2" fill="#b56bff"/><path d="M220 30l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#ffc23d"/></g>
-        </svg>
+        <div class="cs2">
+          <i class="cs2-floor"></i>
+          <i class="cs2-rays"></i>
+          <div class="cs2-box">
+            <img class="cs2-body" src="catalog/view/theme/default/image/vt/case-body.png" alt="">
+            <i class="cs2-leak"></i>
+            <img class="cs2-lid" src="catalog/view/theme/default/image/vt/case-lid.png" alt="">
+            <i class="cs2-shine"></i>
+          </div>
+          <i class="cs2-flash"></i>
+          <span class="cs2-sp s1"></span><span class="cs2-sp s2"></span><span class="cs2-sp s3"></span><span class="cs2-sp s4"></span><span class="cs2-sp s5"></span>
+        </div>
       </div>
       <div class="us-case-i">
         <span class="us-kicker">// LOOTBOX</span>
@@ -443,6 +412,44 @@
 .cr-sparks circle,.cr-sparks path{animation:crTw 2s ease-in-out infinite}
 .cr-sparks :nth-child(2){animation-delay:-.5s}.cr-sparks :nth-child(3){animation-delay:-1s}.cr-sparks :nth-child(4){animation-delay:-1.5s}
 @keyframes crTw{50%{opacity:.2}}
+
+/* --- кейс з малюнка (case-lid.png + case-body.png) --- */
+.cs2{position:relative;width:100%;max-width:340px;margin:0 auto;aspect-ratio:385/304}
+.cs2-box{position:absolute;inset:0;animation:cs2Float 4s ease-in-out infinite}
+.cs2-box img{position:absolute;left:0;width:100%;display:block;pointer-events:none;filter:drop-shadow(0 10px 24px rgba(255,47,160,.35))}
+.cs2-lid{top:0;transform-origin:50% 100%;transition:transform .5s cubic-bezier(.34,1.56,.64,1);z-index:2}
+.cs2-body{top:33.22%;z-index:1;filter:drop-shadow(0 0 0 transparent)}
+
+.cs2-floor{position:absolute;left:12%;right:12%;bottom:2%;height:16%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,47,160,.75),transparent);filter:blur(10px);animation:cs2Glow 2.6s ease-in-out infinite}
+.cs2-leak{position:absolute;left:18%;right:9%;top:31%;height:5%;z-index:3;background:radial-gradient(closest-side,#fff,#ff7ac6 45%,transparent);filter:blur(4px);opacity:0;transition:opacity .35s}
+.cs2-shine{position:absolute;inset:0;z-index:4;pointer-events:none;clip-path:polygon(9% 17%,93% 19%,94% 74%,88% 82%,30% 88%,9% 72%);
+  background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.28) 47%,rgba(255,255,255,0) 58%) no-repeat;background-size:250% 100%;background-position:150% 0;mix-blend-mode:screen;animation:cs2Shine 5s ease-in-out infinite}
+.cs2-rays{position:absolute;left:50%;top:32%;width:0;height:0;z-index:0;opacity:0}
+.cs2-rays::before{content:"";position:absolute;left:-220px;top:-220px;width:440px;height:440px;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(255,122,198,.55) 0 7deg,transparent 7deg 22deg);-webkit-mask-image:radial-gradient(closest-side,#000 20%,transparent 80%);mask-image:radial-gradient(closest-side,#000 20%,transparent 80%);animation:cs2Spin 6s linear infinite}
+.cs2-flash{position:absolute;left:50%;top:32%;width:220px;height:140px;margin:-70px 0 0 -110px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,179,223,.7) 35%,rgba(255,47,160,0) 100%);opacity:0;z-index:5;pointer-events:none;mix-blend-mode:screen}
+.cs2-sp{position:absolute;width:6px;height:6px;border-radius:50%;background:#ffd1ec;box-shadow:0 0 10px #ff2fa0;opacity:0;z-index:5;left:50%;top:32%}
+@keyframes cs2Float{50%{transform:translateY(-8px)}}
+@keyframes cs2Glow{50%{opacity:.55;transform:scaleX(.9)}}
+@keyframes cs2Shine{0%,55%{background-position:150% 0}85%,100%{background-position:-60% 0}}
+@keyframes cs2Spin{to{transform:rotate(360deg)}}
+/* наведення: кришка піднімається, зі щілини б'є світло */
+.us-case:hover .cs2-lid{transform:translateY(-7%) rotate(-2deg)}
+.us-case:hover .cs2-leak{opacity:1}
+.us-case:hover .cs2-rays{opacity:.35}
+/* відкриття */
+.us-case.opening .cs2-box{animation:cs2Rattle .1s linear 6,cs2Float 4s ease-in-out .6s infinite}
+.us-case.opening .cs2-lid{transform:translate(18%,-85%) rotate(-24deg);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1) .55s,opacity .5s ease .9s}
+.us-case.opening .cs2-leak{opacity:1;transform:scaleY(3);transition:transform .3s .55s}
+.us-case.opening .cs2-rays{opacity:1;transition:opacity .3s .55s}
+.us-case.opening .cs2-flash{animation:cs2Flash 1s ease-out .55s forwards}
+.us-case.opening .cs2-sp{animation:cs2Sp 1.1s ease-out .6s forwards}
+.us-case.opening .cs2-sp.s1{--x:-120px;--y:-140px}.us-case.opening .cs2-sp.s2{--x:110px;--y:-160px}.us-case.opening .cs2-sp.s3{--x:-170px;--y:-40px}
+.us-case.opening .cs2-sp.s4{--x:160px;--y:-60px}.us-case.opening .cs2-sp.s5{--x:10px;--y:-190px}
+@keyframes cs2Rattle{25%{transform:translate(-4px,1px) rotate(-1.5deg)}75%{transform:translate(4px,-1px) rotate(1.5deg)}}
+@keyframes cs2Flash{0%{opacity:0;transform:scale(.3)}30%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(2.2)}}
+@keyframes cs2Sp{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
+@media (prefers-reduced-motion:reduce){.cs2 *{animation:none!important}}
 </style>
 <script>
 (function(){
@@ -541,12 +548,12 @@
     if(bal===null){ /* ДЕМО для тих, хто не увійшов: нічого не списується */
       var W={rare:700,epic:220,mythic:65,legendary:15},roll=Math.random()*1000,acc=0,rr='rare';for(var k in W){acc+=W[k];if(roll<acc){rr=k;break}}
       var pool=ITEMS.filter(function(i){return i.rarity===rr}),id=pool[Math.random()*pool.length|0].id,cs=root.querySelector('.us-case');
-      rolling=true;cs.classList.add('opening');beep(180,.5,'sawtooth',.05,90);setTimeout(function(){cs.classList.remove('opening')},1800);
-      setTimeout(function(){spinRoll(id,function(){rolling=false;celebrate(id,'Це демо — UC не списано. Увійди в акаунт, щоб вибивати предмети по-справжньому.')})},900);return}
+      rolling=true;cs.classList.add('opening');beep(180,.5,'sawtooth',.05,90);setTimeout(function(){cs.classList.remove('opening')},2600);
+      setTimeout(function(){spinRoll(id,function(){rolling=false;celebrate(id,'Це демо — UC не списано. Увійди в акаунт, щоб вибивати предмети по-справжньому.')})},1700);return}
     if(bal<CASE){SND.err();return show('Не вистачає UC','Кейс коштує '+CASE+' UC, у тебе '+bal+'.',[btn('Зрозуміло','',closeAll)])}
     show('Відкрити кейс?','Це коштує '+CASE+' UC. Випаде випадковий предмет з вітрини.',[btn('Відкрити!','',function(){closeAll();rolling=true;var cs=root.querySelector('.us-case');cs.classList.add('opening');beep(180,.5,'sawtooth',.05,90);
       post(CASEURL,'go=1',function(r){if(!r.success){rolling=false;cs.classList.remove('opening');if(r.error==='login')return needLogin();SND.err();return show('Не вдалося',r.error||'Спробуй ще раз.',[btn('Закрити','ghost',closeAll)])}
-        setTimeout(function(){cs.classList.remove('opening')},1800);setTimeout(function(){spinRoll(r.item,function(){rolling=false;setBal(r.balance);addInv(r.item,MAP[r.item].name+' (з кейса)',r.order,CASE);celebrate(r.item,'Замовлення №'+r.order+'. Предмет уже в «Моїх предметах».')})},900)})}),btn('Ні','ghost',closeAll)]);
+        setTimeout(function(){cs.classList.remove('opening')},2600);setTimeout(function(){spinRoll(r.item,function(){rolling=false;setBal(r.balance);addInv(r.item,MAP[r.item].name+' (з кейса)',r.order,CASE);celebrate(r.item,'Замовлення №'+r.order+'. Предмет уже в «Моїх предметах».')})},1700)})}),btn('Ні','ghost',closeAll)]);
   };
   function spinRoll(win,done){var R=$('usRoll'),S=$('usStrip'),pool=[],w={rare:70,epic:22,mythic:6,legendary:2};
     ITEMS.forEach(function(i){for(var k=0;k<w[i.rarity];k++)pool.push(i.id)});
