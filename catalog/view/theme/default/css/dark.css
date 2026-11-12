@@ -35,6 +35,8 @@ html{scrollbar-color:#3a3d4a #131419}
 img.header__logo,.header__logo img{filter:invert(1);mix-blend-mode:screen}
 p[style*="color:#000"],p[style*="color: #000"],span[style*="color:#000"],div[style*="color:#000"]{color:#c9cbd3!important}
 
+/* монетка ультравалюти в Battle Pass — рожеве сяйво */
+img[src*="daily-ultra"]{border-radius:50%;filter:drop-shadow(0 0 5px rgba(255,62,165,.9)) drop-shadow(0 0 16px rgba(255,62,165,.5))}
 /* ===== автоматично з style.css ===== */
 .swiper-pagination-bullet{background:var(--swiper-pagination-bullet-inactive-color,#252731)}
 .swiper-cube .swiper-cube-shadow:before{background:#252731}
